@@ -65,3 +65,94 @@ test('reduced motion removes card transitions and spark animations', async ({ pa
     const styles = await page.locator('[data-card="0"] .memory-card-face, [data-card="0"] .memory-spark').evaluateAll(elements => elements.map(el => { const s = getComputedStyle(el); return { animation: s.animationName, transition: s.transitionDuration }; }));
     expect(styles).toHaveLength(2); for (const style of styles) { expect(style.animation).toBe('none'); expect(style.transition).toBe('0s'); }
 });
+
+async function stopClock(page: import('@playwright/test').Page): Promise<void> {
+    await page.clock.install({ time: new Date('2026-01-01T00:00:00Z') });
+    await page.clock.pauseAt(new Date('2026-01-01T00:00:01Z'));
+}
+
+test('preview lasts 1700–2300 ms and mismatch lasts 700–1300 ms on the simulated clock', async ({ page }) => {
+    await stopClock(page);
+    await page.addInitScript(() => localStorage.setItem('opencadkid.v1', JSON.stringify({ version: 1, locale: 'fr', voice: false, sound: false, records: {}, pairesRecords: { 1: 1, 2: 1 } })));
+    await page.goto('/');
+    for (const level of [1, 2, 3]) {
+        await page.locator('[data-game="paires"]').click(); await page.locator(`[data-level="${level}"]`).click();
+        expect((await memoryState(page)).board.preview).toBe(true);
+        await page.clock.runFor(1699);
+        expect((await memoryState(page)).board.preview).toBe(true);
+        expect(await page.locator('.memory-card.face-up').count()).toBe([4, 6, 8][level - 1]);
+        await page.clock.runFor(601);
+        expect((await memoryState(page)).board.preview).toBe(false);
+        expect(await page.locator('.memory-card.face-up').count()).toBe(0);
+        const cards = (await memoryState(page)).board.cards;
+        const wrong = cards.findIndex(c => c.motif !== cards[0]!.motif);
+        await page.locator('[data-card="0"]').click(); await page.locator(`[data-card="${wrong}"]`).click();
+        await page.clock.runFor(699);
+        expect((await memoryState(page)).board.mismatch).toBe(true);
+        expect(await page.locator('.memory-card.face-up').count()).toBe(2);
+        await page.clock.runFor(601);
+        expect((await memoryState(page)).board.mismatch).toBe(false);
+        expect(await page.locator('.memory-card.face-up').count()).toBe(0);
+        await page.locator('#back').click();
+    }
+});
+
+test('three failures after discovery make exactly the known pair glow', async ({ page }) => {
+    await stopClock(page); await prepareMemory(page, 4);
+    const cards = (await memoryState(page)).board.cards;
+    const a = 0, b = cards.findIndex((c, i) => i !== a && c.motif === cards[a]!.motif);
+    const c = cards.findIndex(card => card.motif !== cards[a]!.motif);
+    for (const [trial, [first, second]] of [[b, c], [a, c], [a, c], [a, c], [a, c]].entries()) {
+        await page.locator(`[data-card="${first}"]`).click(); await page.locator(`[data-card="${second}"]`).click();
+        if (trial < 4) expect(await page.locator('.memory-hint').count()).toBe(0);
+        await page.clock.runFor(900);
+    }
+    const glowing = await page.locator('.memory-hint').evaluateAll(elements => elements.map(el => ({ index: Number((el as HTMLElement).dataset.card), outline: getComputedStyle(el).outlineStyle, filter: getComputedStyle(el).filter })));
+    expect(glowing.map(card => card.index).sort((x, y) => x - y)).toEqual([a, b].sort((x, y) => x - y));
+    for (const card of glowing) { expect(card.outline).toBe('solid'); expect(card.filter).not.toBe('none'); }
+    await page.locator(`[data-card="${a}"]`).click(); await page.locator(`[data-card="${b}"]`).click();
+    expect(await page.locator('.memory-hint').count()).toBe(0);
+});
+
+for (const reducedMotion of ['no-preference', 'reduce'] as const) test(`closing keeps the same faces and respects motion=${reducedMotion}`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion }); await stopClock(page); await prepareMemory(page, 4);
+    const cards = (await memoryState(page)).board.cards;
+    const wrong = cards.findIndex(c => c.motif !== cards[0]!.motif);
+    await page.locator('[data-card="0"]').click(); await page.locator(`[data-card="${wrong}"]`).click();
+    const face = await page.locator('[data-card="0"] .memory-card-face').elementHandle();
+    // CSS has its own timeline: finish opening explicitly before testing closing.
+    await face.evaluate(el => { for (const animation of el.getAnimations()) animation.finish(); });
+    await page.clock.runFor(899);
+    expect(await face.evaluate(el => el.isConnected && el.parentElement!.classList.contains('face-up'))).toBe(true);
+    await page.clock.runFor(1);
+    expect(await face.evaluate(el => el === document.querySelector('[data-card="0"] .memory-card-face'))).toBe(true);
+    expect(await page.locator('[data-card="0"]').getAttribute('class')).not.toContain('face-up');
+    const style = await face.evaluate(el => { const s = getComputedStyle(el); return { transition: s.transitionDuration, transform: s.transform, animations: el.getAnimations().map(animation => ({ duration: animation.effect!.getTiming().duration, playState: animation.playState })) }; });
+    if (reducedMotion === 'reduce') {
+        expect(style.transition).toBe('0s'); expect(style.animations).toEqual([]);
+        expect(style.transform).toContain('-1');
+    } else {
+        expect(style.transition).toBe('0.24s');
+        expect(style.animations.some(animation => animation.duration === 240 && animation.playState === 'running')).toBe(true);
+        const finalTransform = await face.evaluate(el => {
+            for (const animation of el.getAnimations()) animation.finish();
+            return getComputedStyle(el).transform;
+        });
+        expect(finalTransform).toContain('-1');
+    }
+});
+
+test('English voice says the English motif name', async ({ page }) => {
+    await prepare(page, 1, { voice: true, sound: false });
+    await page.evaluate(() => {
+        const save = JSON.parse(localStorage.getItem('opencadkid.v1')!) as { locale: string; pairesRecords: Record<number, number> };
+        save.locale = 'en'; save.pairesRecords = { 1: 1, 2: 1, 3: 1 };
+        localStorage.setItem('opencadkid.v1', JSON.stringify(save));
+    });
+    await page.reload(); await page.locator('[data-game="paires"]').click(); await page.locator('[data-level="4"]').click();
+    const english = { apple: 'an apple', banana: 'a banana', cherry: 'cherries', carrot: 'a carrot', fish: 'a fish', cat: 'a cat', butterfly: 'a butterfly', snail: 'a snail', car: 'a car', boat: 'a boat', rocket: 'a rocket', house: 'a house', star: 'a star', heart: 'a heart', moon: 'a moon', umbrella: 'an umbrella' };
+    const motif = (await memoryState(page)).board.cards[0]!.motif;
+    await clearSpeech(page); await page.locator('[data-card="0"]').click();
+    expect((await media(page)).speech).toEqual([english[motif]]);
+    await expect(page.locator('[data-card="0"]')).toHaveAccessibleName(`${english[motif]} 1`);
+});

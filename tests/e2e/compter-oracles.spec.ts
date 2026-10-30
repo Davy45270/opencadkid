@@ -134,8 +134,8 @@ for (const sound of [true, false]) test(`correct answer produces oscillators onl
     else expect((await media(page)).oscillators).toBe(0);
 });
 
-for (const level of [1, 2, 3, 6, 7, 8]) test(`level ${level}: rendered objects have real size, stay inside and never overlap`, async ({ page }) => {
-    await page.setViewportSize({ width: 390, height: 844 });
+for (const width of [390, 1280]) for (const level of [1, 2, 3, 6, 7, 8]) test(`width ${width}, level ${level}: rendered objects have real size, stay inside and never overlap`, async ({ page }) => {
+    await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
     await prepare(page, level, { voice: false, sound: false });
     for (let question = 0; question < 6; question++) {
         await visibleAnswer(page);

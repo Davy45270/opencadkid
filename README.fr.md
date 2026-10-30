@@ -1,4 +1,8 @@
+## [▶ Jouer / Play](https://davy45270.github.io/opencadkid/)
+
 # Opencadkid
+
+Jouer en ligne, sans installation, hors ligne une fois ouvert.
 
 [English](README.md) · [Jouer en ligne](https://davy45270.github.io/opencadkid/)
 

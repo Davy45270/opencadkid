@@ -30,3 +30,35 @@ test('erasing progress requires an explicit second confirmation', async ({ page 
     await page.locator('#erase').click(); await page.locator('#yes').click();
     expect(await page.evaluate(() => JSON.parse(localStorage.getItem('opencadkid.v1')!) as { records: object })).toMatchObject({ records: {} });
 });
+
+test('home, level selectors and every game fit narrow widths and responsive breakpoints', async ({ page }) => {
+    test.setTimeout(180_000);
+    await page.addInitScript(() => {
+        const records = { 1: 3, 2: 3, 3: 3, 4: 3, 5: 3, 6: 3, 7: 3, 8: 3 };
+        localStorage.setItem('opencadkid.v1', JSON.stringify({ version: 1, locale: 'fr', voice: false, sound: false, records, pairesRecords: records }));
+    });
+    await page.goto('/');
+    // Include both sides of responsive breakpoints and narrow phone widths.
+    // Return offending elements so a regression identifies its source.
+    const checkWidths = async (): Promise<void> => {
+        const failures: { width: number; elements: string[] }[] = [];
+        for (const width of [320, 321, 360, 375, 390, 414, 480, 560, 640, 699, 700, 768, 939, 940, 941, 1024, 1280]) {
+            await page.setViewportSize({ width, height: 900 });
+            const overflow = await page.evaluate(() => {
+                if (document.documentElement.scrollWidth <= innerWidth) return null;
+                return [...document.querySelectorAll('#app, #app *')].filter(el => el.getBoundingClientRect().right > innerWidth + 1).slice(0, 8).map(el => `${el.tagName}.${el.getAttribute('class') ?? ''}`);
+            });
+            if (overflow) failures.push({ width, elements: overflow });
+        }
+        expect(failures).toEqual([]);
+    };
+    await checkWidths();
+    for (const game of ['compter', 'paires']) {
+        await page.locator(`[data-game="${game}"]`).click(); await checkWidths();
+        for (const level of game === 'compter' ? [1, 2, 3, 4, 5, 6, 7, 8] : [1, 2, 3, 4, 5, 6, 7]) {
+            await page.locator(`[data-level="${level}"]`).click(); await checkWidths();
+            await page.locator('#back').click(); await page.locator(`[data-game="${game}"]`).click();
+        }
+        await page.locator('#back').click();
+    }
+});

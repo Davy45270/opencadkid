@@ -31,8 +31,8 @@ export function flip(state: Board, index: number): Board {
     const card = state.cards[index];
     if (!Number.isInteger(index) || !card || card.found || state.preview || state.finished || state.mismatch || state.visible.includes(index)) return state;
     const visible = [...state.visible, index], seen = [...state.seen];
-    seen[index] = true;
-    if (visible.length === 1) return { ...state, visible, seen };
+    if (visible.length === 1) return { ...state, visible };
+    for (const i of visible) seen[i] = true;
     const first = visible[0]!, matched = state.cards[first]!.motif === card.motif;
     const cards = state.cards.map((c, i) => matched && visible.includes(i) ? { ...c, found: true } : c);
     const misses = [...state.misses];

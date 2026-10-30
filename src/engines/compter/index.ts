@@ -43,7 +43,7 @@ export function generateRound(level: number, seed: number, count = 6): Question[
     }
     return round;
 }
-export const OBJECT_DIAMETER = 48;
+export const OBJECT_DIAMETER = 68;
 export interface Position { x: number; y: number }
 /** Shuffled grid cells with bounded jitter; separation is guaranteed, not probabilistic. */
 export function layoutObjects(n: number, width: number, height: number, seed: number): Position[] {

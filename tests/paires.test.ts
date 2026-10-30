@@ -119,3 +119,58 @@ it('separate memory records round-trip, migrate old saves and reject malformed r
     expect(readSave(port)).toMatchObject({ records: { 1: 2 }, pairesRecords: {} });
     raw = JSON.stringify({ ...fresh(), pairesRecords: [] }); expect(readSave(port).pairesRecords).toEqual({});
 });
+
+it('hint history uses cards seen before the trial in either flip order: manual oracle', () => {
+    for (const reverse of [false, true]) {
+        let state = play();
+        state = { ...state, cards: ['apple', 'banana', 'apple', 'banana', 'cat', 'cat', 'fish', 'fish'].map(motif => ({ motif: motif as Board['cards'][number]['motif'], shadow: false, found: false })) };
+        const trials = [
+            { cards: [2, 1], misses: [0, 0, 0, 0, 0, 0, 0, 0], hint: [] },
+            { cards: [0, 1], misses: [0, 1, 0, 0, 0, 0, 0, 0], hint: [] },
+            { cards: [0, 1], misses: [1, 2, 0, 0, 0, 0, 0, 0], hint: [] },
+            { cards: [0, 1], misses: [2, 3, 0, 0, 0, 0, 0, 0], hint: [] },
+            { cards: [0, 1], misses: [3, 4, 0, 0, 0, 0, 0, 0], hint: [0, 2] }
+        ];
+        for (const trial of trials) {
+            const [a, b] = reverse ? [...trial.cards].reverse() : trial.cards;
+            state = flip(flip(state, a!), b!);
+            expect(state.misses).toEqual(trial.misses);
+            expect(state.hint).toEqual(trial.hint);
+            state = settle(state);
+        }
+        state = flip(flip(state, 0), 2);
+        expect(state.misses[0]).toBe(0); expect(state.hint).toEqual([]);
+    }
+});
+
+it('exact star boundaries for every level: manual threshold table', () => {
+    for (const [level, perfect, threeMax, twoMax] of [
+        [1, 2, 3, 5], [2, 3, 5, 8], [3, 4, 6, 10], [4, 6, 9, 15],
+        [5, 8, 12, 20], [6, 10, 15, 25], [7, 6, 9, 15]
+    ] as const) {
+        const state = play(level);
+        for (const [moves, expected] of [[perfect, 3], [threeMax, 3], [threeMax + 1, 2], [twoMax, 2], [twoMax + 1, 1]] as const)
+            expect(stars({ ...state, moves }), `level ${level}, moves ${moves}`).toBe(expected);
+    }
+});
+
+it('each named silhouette has its fixed geometric signature and accessible identity', () => {
+    const signatures = {
+        apple: ['M31 18', 'MCQCLLZ'], banana: ['M10 10', 'MQQQZ'], cherry: ['M16 29', 'MALLALLLZ'],
+        carrot: ['M9 59', 'MLLLLLLLLZ'], fish: ['M5 32', 'MQLLLQZ'], cat: ['M12 51', 'MQLLLLLQQZ'],
+        butterfly: ['M30 26', 'MCCCCLLZ'], snail: ['M6 54', 'MLLLLLALQZ'], car: ['M5 27', 'MLLLLLLLALALZ'],
+        boat: ['M5 40', 'MLLLLLLLLZ'], rocket: ['M22 39', 'MLLLQQLLLLLLLLZ'], house: ['M3 29', 'MLLLLLLLLLLZ'],
+        star: ['M32 3', 'MLLLLLLLLLZ'], heart: ['M32 58', 'MCCZ'], moon: ['M45 4', 'MAAZ'], umbrella: ['M4 32', 'MQLLLQLLLLQLQLLLZ']
+    };
+    for (const motif of motifs) for (const shadow of [false, true]) {
+        const rendered = motifSvg(motif, shadow);
+        expect(rendered).toContain(`data-motif="${motif}"`);
+        expect(rendered).toContain(`role="img" aria-label="${names.fr[motif]}"`);
+        expect([...rendered.matchAll(/<path /g)]).toHaveLength(1);
+        const path = / d="([^"]+)"/.exec(rendered)![1]!;
+        expect(path.startsWith(signatures[motif][0]!)).toBe(true);
+        expect(path.match(/[A-Za-z]/g)!.join('')).toBe(signatures[motif][1]);
+        if (shadow) expect(rendered).toContain('fill="#354e41"');
+        else expect(rendered).not.toContain('fill="#354e41"');
+    }
+});

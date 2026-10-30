@@ -27,7 +27,7 @@ function seed(): number { const buffer = new Uint32Array(1); try { crypto.getRan
 function persist(): void { writeSave(storage, save); }
 function cancel(): void { timers.forEach(clearTimeout); timers = []; stopSpeech(); }
 function speak(parts: string[]): void { say(parts, save.locale, save.voice); }
-function bind(selector: string, fn: (element: HTMLElement) => void): void { app.querySelectorAll<HTMLElement>(selector).forEach(el => el.addEventListener('click', () => fn(el))); }
+function bind(selector: string, fn: (element: HTMLElement) => void): void { app.querySelectorAll<HTMLElement>(selector).forEach(el => el.onclick = () => fn(el)); }
 function render(): void {
     cancel(); applyLocale(save.locale);
     if (screen === 'home') {
@@ -56,11 +56,23 @@ function render(): void {
     bind('#back', () => { screen = 'home'; session = undefined; memorySession = undefined; render(); });
 }
 function begin(level: number): void {
-    if (activeGame === 'paires') { session = undefined; memorySession = memory.newBoard(level, seed()); screen = 'game'; render(); speak([memoryView.instruction(memorySession, save.locale)]); return; }
+    if (activeGame === 'paires') { app.replaceChildren(); session = undefined; memorySession = memory.newBoard(level, seed()); screen = 'game'; render(); speak([memoryView.instruction(memorySession, save.locale)]); return; }
     memorySession = undefined; session = start(level, seed()); screen = 'game'; hint = false; expression = 'joie'; render(); speak([instruction(session.questions[0]!, save.locale)]); }
 function renderMemory(): void {
     const state = memorySession!;
-    app.innerHTML = memoryView.gameView(state, save.locale);
+    const next = document.createElement('template');
+    next.innerHTML = memoryView.gameView(state, save.locale);
+    const grid = app.querySelector('.memory-grid');
+    if (grid && !state.finished) {
+        // Keep the connected card faces: CSS can interpolate opening AND closing.
+        app.querySelector('.instruction')!.innerHTML = next.content.querySelector('.instruction')!.innerHTML;
+        next.content.querySelectorAll<HTMLButtonElement>('[data-card]').forEach(desired => {
+            const card = grid.querySelector<HTMLButtonElement>(`[data-card="${desired.dataset.card}"]`)!;
+            for (const attribute of [...card.attributes]) card.removeAttribute(attribute.name);
+            for (const attribute of [...desired.attributes]) card.setAttribute(attribute.name, attribute.value);
+            if (!card.querySelector('.memory-spark') && desired.querySelector('.memory-spark')) card.append(desired.querySelector('.memory-spark')!);
+        });
+    } else app.replaceChildren(next.content);
     bind('[data-card]', el => {
         if (!memorySession || memorySession.preview || memorySession.finished) return;
         // A touch during a mismatch only closes it. It cannot also open a third card.

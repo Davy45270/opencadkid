@@ -37,13 +37,17 @@ for (const level of [1, 2, 3]) it(`level ${level}: answer positions balanced ove
     for (const n of counts) { expect(n / 600).toBeGreaterThanOrEqual(.2); expect(n / 600).toBeLessThanOrEqual(.47); }
 });
 it('300 layouts per quantity: bounded circles, separated centres, deterministic positions', () => {
+    expect(OBJECT_DIAMETER).toBe(68);
     const failures: string[] = [];
     for (let n = 1; n <= 10; n++) for (let seed = 0; seed < 300; seed++) {
-        const positions = layoutObjects(n, 320, 220, seed);
-        if (positions.length !== n || JSON.stringify(positions) !== JSON.stringify(layoutObjects(n, 320, 220, seed))) failures.push('determinism');
+        const positions = layoutObjects(n, 288, 216, seed);
+        if (positions.length !== n || JSON.stringify(positions) !== JSON.stringify(layoutObjects(n, 288, 216, seed))) failures.push('determinism');
         for (const [i, p] of positions.entries()) {
-            if (p.x < 24 || p.x > 296 || p.y < 24 || p.y > 196) failures.push('bounds');
-            for (const other of positions.slice(i + 1)) if (Math.hypot(p.x - other.x, p.y - other.y) + .00001 < OBJECT_DIAMETER) failures.push('overlap');
+            if (p.x < 34 || p.x > 254 || p.y < 34 || p.y > 182) failures.push('bounds');
+            for (const other of positions.slice(i + 1)) {
+                if (Math.hypot(p.x - other.x, p.y - other.y) + .00001 < OBJECT_DIAMETER) failures.push('overlap');
+                if (Math.abs(p.x - other.x) + .00001 < OBJECT_DIAMETER && Math.abs(p.y - other.y) + .00001 < OBJECT_DIAMETER) failures.push('rectangle overlap');
+            }
         }
     }
     expect(failures).toEqual([]);

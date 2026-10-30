@@ -24,8 +24,8 @@ export const drawings: Record<Motif, { color: string; path: string }> = {
     moon: { color: '#7d87b4', path: 'M45 4A29 29 0 1 0 58 47A28 28 0 0 1 45 4Z' },
     umbrella: { color: '#66a58a', path: 'M4 32Q6 8 30 7L30 3L35 3L35 7Q58 9 61 32L52 27L43 32L35 28L35 51Q33 65 21 56L24 51Q30 56 30 49L30 28L21 32L12 27Z' }
 };
-export function motifSvg(motif: Motif, shadow = false): string {
+export function motifSvg(motif: Motif, shadow = false, locale: Locale = 'fr'): string {
     const drawing = drawings[motif];
-    return svg(`<path fill="${shadow ? '#354e41' : drawing.color}" stroke="#58443b" stroke-width="2" stroke-linejoin="round" d="${drawing.path}"/>`);
+    return svg(`<path fill="${shadow ? '#354e41' : drawing.color}" stroke="#58443b" stroke-width="2" stroke-linejoin="round" d="${drawing.path}"/>`).replace('aria-hidden="true"', `data-motif="${motif}" role="img" aria-label="${names[locale][motif]}"`);
 }
 export function cardBack(): string { return svg('<rect x="3" y="3" width="58" height="58" rx="12" fill="#e6dbf0"/><path fill="#f5ce6b" stroke="#8c729e" stroke-width="2" d="M32 10L38 25L54 26L42 37L46 53L32 44L18 53L22 37L10 26L26 25Z"/><circle cx="12" cy="12" r="2" fill="#8c729e"/><circle cx="52" cy="52" r="2" fill="#8c729e"/>'); }

@@ -27,7 +27,7 @@ export async function prepare(page: Page, level = 1, options: { voice?: boolean;
         }
         Object.defineProperty(window, 'SpeechSynthesisUtterance', { value: Utterance, configurable: true });
         Object.defineProperty(window, 'speechSynthesis', { configurable: true, value: {
-            cancel() {}, getVoices: () => [{ localService: true, lang: 'fr-FR' }],
+            cancel() {}, getVoices: () => [{ localService: true, lang: 'fr-FR' }, { localService: true, lang: 'en-GB' }],
             addEventListener() {}, removeEventListener() {},
             speak(utterance: Utterance) { log.speech.push(utterance.text); queueMicrotask(() => utterance.onend?.()); }
         } });
