@@ -40,7 +40,11 @@ for (const level of [4, 6, 8, 10]) test(`level ${level}: mobile noisy finger, do
             const selector = `[data-answer="${await soundAnswer(page)}"]`; await tap(selector);
             if (i === 0) { await tap(selector); expect((await soundsState(page)).index).toBe(0); expect((await soundsState(page)).sons.firstTry).toBe(1); }
         }
+        expect((await soundsState(page)).sons.placed.length).toBe(level === 10 ? 3 : 0);
+        expect((await soundsState(page)).sons.solved).toBe(true);
+        expect((await soundsState(page)).sons.finished).toBe(false);
         await expect(page.locator('#continue')).toBeVisible(); await tap('#continue');
+        await expect.poll(async () => { const s = await soundsState(page); return s.sons.finished || s.index === i + 1; }).toBe(true);
         expect(await page.evaluate(() => ({ x: scrollX, y: scrollY }))).toEqual(scroll);
     }
     expect((await soundsState(page)).sons.finished).toBe(true); await expect(page.locator('.stars')).toBeVisible();

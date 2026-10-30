@@ -124,10 +124,23 @@ for (const reducedMotion of ['no-preference', 'reduce'] as const) test(`closing 
     await face.evaluate(el => { for (const animation of el.getAnimations()) animation.finish(); });
     await page.clock.runFor(899);
     expect(await face.evaluate(el => el.isConnected && el.parentElement!.classList.contains('face-up'))).toBe(true);
+    // Observe closing in its own rendering turn, before a slow protocol round trip
+    // can consume the entire 240 ms CSS transition (CSS ignores page.clock).
+    await face.evaluate(el => {
+        const probe = window as unknown as { closingStyle: unknown };
+        const observer = new MutationObserver(() => {
+            if (el.parentElement!.classList.contains('face-up')) return;
+            const s = getComputedStyle(el), animations = el.getAnimations();
+            probe.closingStyle = { transition: s.transitionDuration, transform: s.transform, animations: animations.map(animation => ({ duration: animation.effect!.getTiming().duration, playState: animation.playState })) };
+            for (const animation of animations) animation.pause();
+            observer.disconnect();
+        });
+        observer.observe(el.parentElement!, { attributes: true, attributeFilter: ['class'] });
+    });
     await page.clock.runFor(1);
     expect(await face.evaluate(el => el === document.querySelector('[data-card="0"] .memory-card-face'))).toBe(true);
     expect(await page.locator('[data-card="0"]').getAttribute('class')).not.toContain('face-up');
-    const style = await face.evaluate(el => { const s = getComputedStyle(el); return { transition: s.transitionDuration, transform: s.transform, animations: el.getAnimations().map(animation => ({ duration: animation.effect!.getTiming().duration, playState: animation.playState })) }; });
+    const style = await page.evaluate(() => (window as unknown as { closingStyle: { transition: string; transform: string; animations: { duration: number; playState: string }[] } }).closingStyle);
     if (reducedMotion === 'reduce') {
         expect(style.transition).toBe('0s'); expect(style.animations).toEqual([]);
         expect(style.transform).toContain('-1');

@@ -38,7 +38,11 @@ for (const level of [3, 5, 6, 8, 10]) test(`level ${level}: noisy touch complete
             const selector = `[data-answer="${await shapeAnswer(page)}"]`; await tap(selector);
             if (i === 0) { await tap(selector); expect((await shapeState(page)).index).toBe(0); }
         }
+        expect((await shapeState(page)).shapes.placed.length).toBe(level === 10 ? 3 : 0);
+        expect((await shapeState(page)).shapes.solved).toBe(true);
+        expect((await shapeState(page)).shapes.finished).toBe(false);
         await expect(page.locator('#continue')).toBeVisible(); await tap('#continue');
+        await expect.poll(async () => { const s = await shapeState(page); return s.shapes.finished || s.index === i + 1; }).toBe(true);
         expect(await page.evaluate(() => ({ x: scrollX, y: scrollY }))).toEqual(scroll);
     }
     expect((await shapeState(page)).shapes.finished).toBe(true); await expect(page.locator('.stars')).toBeVisible();

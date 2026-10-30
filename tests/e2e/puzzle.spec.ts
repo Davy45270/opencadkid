@@ -91,3 +91,68 @@ test('optional puzzle captures', async ({ page }, info) => {
     await page.screenshot({ path: 'docs/captures/puzzle-debut.png' }); await solvePuzzle(page);
     await page.screenshot({ path: 'docs/captures/puzzle-fini.png' });
 });
+
+test('a successful placement restarts the full idle interval', async ({ page }) => {
+    await page.clock.install({ time: new Date('2026-01-01T00:00:00Z') });
+    await page.clock.pauseAt(new Date('2026-01-01T00:00:01Z')); await preparePuzzle(page, 4);
+    await page.clock.runFor(24_000); await dragPuzzle(page, 0);
+    await expect(page.locator('[data-piece="0"]')).toHaveAttribute('data-placed', 'true');
+    await page.clock.runFor(24_999); await expect(page.locator('[data-puzzle-hint]')).toHaveCount(0);
+    await page.clock.runFor(1); await expect(page.locator('[data-puzzle-hint]')).toHaveCount(1);
+    expect((await puzzleState(page)).puzzle.hintPiece).toBe(1);
+});
+
+for (const interruption of ['pointercancel', 'lostpointercapture', 'hidden'] as const) test(`puzzle ${interruption} preserves the last visible position and frees the gesture`, async ({ page }) => {
+    await preparePuzzle(page, 8);
+    const before = (await puzzleState(page)).puzzle.pieces[0]!, piece = page.locator('[data-piece="0"]');
+    const r = (await piece.boundingBox())!, zone = (await page.locator('.puzzle-zone').boundingBox())!;
+    await page.mouse.move(r.x + r.width / 2, r.y + r.height / 2); await page.mouse.down();
+    await page.mouse.move(r.x + r.width / 2, r.y + r.height / 2 - 35, { steps: 5 });
+    const visible = (await piece.boundingBox())!;
+    await page.evaluate(interruption => {
+        const app = document.querySelector('#app')!;
+        if (interruption === 'hidden') {
+            Object.defineProperty(document, 'hidden', { configurable: true, value: true });
+            document.dispatchEvent(new Event('visibilitychange'));
+            Object.defineProperty(document, 'hidden', { configurable: true, value: false });
+            document.dispatchEvent(new Event('visibilitychange'));
+            Reflect.deleteProperty(document, 'hidden');
+        } else app.dispatchEvent(new PointerEvent(interruption, { pointerId: 1 }));
+    }, interruption);
+    await page.mouse.up();
+    const after = (await puzzleState(page)).puzzle.pieces[0]!;
+    expect(after.placed).toBe(false); expect(after.y).toBeCloseTo(before.y - 35 * 550 / zone.height, 5);
+    const restored = (await piece.boundingBox())!;
+    expect(restored.x).toBeCloseTo(visible.x, 5); expect(restored.y).toBeCloseTo(visible.y, 5);
+    await dragPuzzle(page, 0); await expect(piece).toHaveAttribute('data-placed', 'true');
+});
+
+test('held puzzle piece paints above another piece while crossing it', async ({ page }) => {
+    await preparePuzzle(page, 8);
+    const held = page.locator('[data-piece="0"]'), other = page.locator('[data-piece="1"]');
+    const a = (await held.boundingBox())!, b = (await other.boundingBox())!;
+    await page.mouse.move(a.x + a.width / 2, a.y + a.height / 2); await page.mouse.down();
+    await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2, { steps: 8 });
+    expect(await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.closest('[data-piece]')?.getAttribute('data-piece'), { x: b.x + b.width / 2, y: b.y + b.height / 2 })).toBe('0');
+    await page.mouse.up();
+});
+
+for (const reducedMotion of ['no-preference', 'reduce'] as const) test(`puzzle completion animation respects ${reducedMotion}`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion }); await preparePuzzle(page);
+    // Capture and pause at creation, before protocol latency can finish the CSS animation.
+    await page.evaluate(() => {
+        const probe = window as unknown as { puzzleAnimation: { name: string; duration: number; state: string }[] };
+        const observer = new MutationObserver(() => {
+            const zone = document.querySelector('.puzzle-finished'); if (!zone) return;
+            const style = getComputedStyle(zone);
+            const animations = zone.getAnimations();
+            probe.puzzleAnimation = animations.map(a => ({ name: style.animationName, duration: Number(a.effect!.getTiming().duration), state: a.playState }));
+            animations.forEach(a => a.pause()); observer.disconnect();
+        });
+        observer.observe(document.querySelector('#app')!, { childList: true, subtree: true });
+    });
+    await solvePuzzle(page);
+    const animations = await page.evaluate(() => (window as unknown as { puzzleAnimation: { name: string; duration: number; state: string }[] }).puzzleAnimation);
+    if (reducedMotion === 'reduce') expect(animations).toEqual([]);
+    else expect(animations).toContainEqual({ name: 'happy', duration: 700, state: 'running' });
+});
