@@ -1,10 +1,10 @@
-# Opencadkid — game specification 0.3.0
+# Opencadkid — game specification 0.4.0
 
 Audience: ages 4–8, primarily touch phones. French first, English included. No reading is required in child play. Spoken instructions, procedural SVG pictograms, object illustrations and dot patterns convey the task. No timer, lives, punishment, advertising, purchase, account, analytics or external runtime resource. The first home gesture unlocks browser audio. Reduced motion removes shakes, bounces and decorative particles. Local speech voices are preferred; speech availability offline depends on installed device voices.
 
 ## Catalogue
 
-`compter`, `paires` and `formes` are implemented and present in the playable registry. Other catalogue entries remain planned.
+`compter`, `paires`, `formes` and `sons` are implemented and present in the playable registry. Other catalogue entries remain planned.
 
 | ID | Français | English | Guide | Skill and intended rules |
 | --- | --- | --- | --- | --- |
@@ -170,3 +170,107 @@ Authored without executing unit tests or browsers:
 Mutations to try: raise the hint threshold to three errors; remove the same-colour distractor in level six; accept every sorting box. Respectively the state/hint, 300-seed distractor, and sorting return/browser tests must fail.
 
 Visual regression guards use a literal colour-to-fill table independent of the renderer. Every palette pair differs by at least 25 degrees of hue or 0.08 relative luminance; the forbidden-pair rules remain in force. Browser checks require outline relative luminance at most 0.2 and at least 3:1 contrast against the actual background behind the drawing. Exhaustive shape/size/colour fixtures use SVG path bounds plus stroke transformed into screen pixels. Prompt outline/swatch markup, two-error speech in both languages, mixed-colour shape diversity, square area and the real wrong-box return animation have explicit regression assertions.
+
+## Sounds: Tutu's sounds (0.4.0)
+
+Tutu is the existing `singe` guide. This game uses the shared six-question session, two-error hint, separate Continue control, exact 1/2/3-star thresholds and best-score/unlock rules. `sonsRecords` is independent of every other game; old saves migrate to an empty record set and erase clears all games. No existing engine changes. Generic registry/home expectations now include four games. No behaviour-changing factorization.
+
+### Levels and native selection
+
+| Level | Mode | Choices | Letter case |
+| --- | --- | --- | --- |
+| 1 | image-lettre | 2 letters | Uppercase |
+| 2 | image-lettre | 3 letters | Uppercase |
+| 3 | image-lettre | 4 letters | Uppercase |
+| 4 | image-lettre | 4 letters | Lowercase |
+| 5 | lettre-image | 3 images | Uppercase |
+| 6 | lettre-image | 3 images | Lowercase |
+| 7 | son-lettre | 3 letters, sound only | Uppercase |
+| 8 | son-lettre | 4 letters, sound only | Lowercase |
+| 9 | trier | 3 images into 2 letter boxes | Uppercase |
+| 10 | trier | 3 images into 2 letter boxes | Lowercase |
+
+`generateRound(level, seed, locale, count = 6)` is pure and uses shared Mulberry32/Fisher–Yates. Each language has twenty families, three distinct words per family. Selection happens in that language's native list; there is no question-translation step. Motif identifiers are shared only for the same represented object. All words in the question choices are reserved for the rest of the series, including unseen image-lettre/son-lettre distractor words. Sorting has two words from one family and one from the other, shuffled; the target family box is at the drawn answer position. Every image has exactly one matching box. Each question consumes fresh words; invalid/impossible counts throw. Answer positions are drawn from all allowed slots, excluding a slot only after two consecutive occurrences. No periodic position schedule.
+
+Distractors never share the target initial and never belong to its conservative symmetric neighbour set. Sorting excludes neighbours between its two boxes. French pairs: B/P, D/T, F/V, M/N, S/Z, C/K, C/Q, K/Q, G/C, G/K, G/Q, J/G, E/I, O/U. English pairs: B/P, D/T, F/V, M/N, S/Z, C/K, C/Q, K/Q, G/C, G/K, G/Q, J/G, W/V, Y/J. Absent letters remain in the table to keep equivalent sounds explicit. French C is always hard, G always hard; English C/G also always hard. English Q always represents /kw/; Y always /j/. Neither is a vowel lesson.
+
+### Inclusion and exclusion rules
+
+Only concrete, drawable, familiar objects/animals or visible concepts are retained (including zero and a zoo). No silent initials, no French H/K/W/X/Y families, no initial CH, PH, OU, ON, or nasal vowel digraphs. A following N/M is excluded when it nasalizes the first vowel; nasal sounds later in a word do not affect its initial. French E uses only É /e/, I uses /i/, U uses /y/, A uses /a/; O uses ordinary oral O, with natural open/closed timbre variation. Accents normalize to the associated uppercase letter. French G words have /g/; there is no soft G ambiguity. English excludes KN, WR, PH, TH, SH, CH, silent letters, soft C/G and all vowel-initial families: no long/short-vowel inference is required. All retained English words begin with their family consonant sound. English Q words consistently start /kw/ and Y words /j/. Lexicon entries have no articles, so speech starts directly with the word.
+
+Hand-authored synthesis text (keys are uppercase; lowercase input is accepted):
+
+| Locale | Letter → synthesis text |
+| --- | --- |
+| FR | A → a; B → beu; C → keu; D → deu; E → é; F → fff; G → gueu; I → i; J → jjj; L → lll; M → mmm; N → nnn; O → o; P → peu; R → rrr; S → sss; T → teu; U → u; V → vvv; Z → zzz |
+| EN | B → buh; C → kuh; D → duh; F → fff; G → guh; H → huh; J → juh; K → kuh; L → lll; M → mmm; N → nnn; P → puh; Q → kwuh; R → rrr; S → sss; T → tuh; V → vvv; W → wuh; Y → yuh; Z → zzz |
+
+Stop consonants use a brief support vowel rather than an alphabet name. Text-to-speech pronunciation varies with the installed local voice: the orchestrator must listen to both languages on real devices, especially stops, French U/E, English Q/Y and sustained consonants. The table is speech text, not an IPA/audio guarantee. No external voices or recordings are fetched.
+
+### Full word → drawing lists
+
+### Français
+
+- A: abeille → bee, arbre → tree, avion → plane.
+- B: banane → banana, bateau → boat, ballon → ball.
+- C: carotte → carrot, cadeau → gift, cube → cube.
+- D: dé → dice, domino → domino, dauphin → dolphin.
+- E: écharpe → scarf, échelle → ladder, étoile → star.
+- F: fusée → rocket, fleur → flower, fourmi → ant.
+- G: gâteau → cake, gomme → eraser, gorille → gorilla.
+- I: île → island, igloo → igloo, iris → iris.
+- J: jaguar → jaguar, jupe → skirt, journal → newspaper.
+- L: lune → moon, lapin → rabbit, livre → book.
+- M: moto → motorcycle, melon → melon, mouton → sheep.
+- N: navire → ship, nid → nest, nuage → cloud.
+- O: olive → olive, orange → orange, oreiller → pillow.
+- P: pomme → apple, poisson → fish, papillon → butterfly.
+- R: robe → dress, rat → rat, robot → robot.
+- S: sac → bag, savon → soap, seau → bucket.
+- T: tortue → turtle, tomate → tomato, toupie → top.
+- U: usine → factory, ustensile → spatula, ukulélé → ukulele.
+- V: vache → cow, vélo → bicycle, voiture → car.
+- Z: zèbre → zebra, zéro → zero, zoo → zoo.
+### English
+
+- B: banana → banana, boat → boat, ball → ball.
+- C: cat → cat, cup → cup, cow → cow.
+- D: dog → dog, dice → dice, dolphin → dolphin.
+- F: fish → fish, flower → flower, fork → fork.
+- G: goat → goat, goose → goose, gorilla → gorilla.
+- H: hat → hat, hen → hen, horse → horse.
+- J: jam → jam, jug → jug, jellyfish → jellyfish.
+- K: kite → kite, key → key, kangaroo → kangaroo.
+- L: lion → lion, leaf → leaf, lemon → lemon.
+- M: moon → moon, mouse → mouse, monkey → monkey.
+- N: nest → nest, net → net, nut → nut.
+- P: pineapple → pineapple, pig → pig, panda → panda.
+- Q: queen → queen, quilt → quilt, quill → quill.
+- R: rabbit → rabbit, rat → rat, robot → robot.
+- S: sun → sun, sock → sock, seal → seal.
+- T: turtle → turtle, tomato → tomato, tiger → tiger.
+- V: van → van, vest → vest, vase → vase.
+- W: web → web, wig → wig, wagon → wagon.
+- Y: yarn → yarn, yak → yak, yoyo → yoyo.
+- Z: zebra → zebra, zip → zip, zucchini → zucchini.
+
+### Screen, voice and gestures
+
+System-font letters use 80 px type and dark AA ink on light cards/boxes. Cards and image SVG viewports measure at least 72 px; the image prompt measures 100 px. There are no printed object names, including SVG text; `aria-label`, `data-word`, `data-initial` and `data-letter` describe the pictures/letters for accessibility and independent observation. The child cannot pair a printed word with its initial. Prompts have generic short instructions and a Tutu illustration.
+
+Image-lettre says the native word then its sound. Lettre-image starts with the target sound, then names each candidate word followed by its own initial sound; the large letter is shown. Son-lettre has no image/word cue and says only the sound and generic instruction; the ear repeats it. Trier names all images with their sounds; grabbing/selecting one repeats its word and sound. After two errors the relevant letter card or sorting box pulses (and the target letter in lettre-image); speech repeats the initial sound twice with pauses before the word, then the sound. Errors keep the question open. A successful question locks and requires Continue, absorbing double touches. Sorting rejects repeat placements, counts first-try once on the last piece, and supports both primary-pointer dragging and selecting an image then its box with taps or keyboard. A 24 px snap allowance helps noisy fingers; wrong drops return over 260 ms unless reduced motion. Pointer cancellation/lost capture clears drags. Only the sorting area disables touch scrolling.
+
+`window.__kid.state()` adds a detached `sons` session, current native question, game, level/index and the common target rectangles. No mutation API. Home stars read the independent sounds records. All audio uses the existing cancellable local speech and synthesized chime shell.
+
+### Sounds test oracle (authored, not executed here)
+
+- `tests/sons.test.ts`: literal independent ten-level, phoneme and neighbour tables; twenty families × three normalized initial words per language, unique words/motifs, explicit forbidden-initial rules, every drawing present, finite well-nested SVG with no image/network/text elements. For 300 seeds × ten levels × two languages: determinism, unique answer or box per image, target-family counts, no neighbour distractors, no repeated words, no three identical answer slots, balanced position occupancy and fewer than 5% full rotations for 3+ slots. Native object sequences differ across languages. State tests check purity, second-error hints, locking, invalid input, sorting placement and final-piece credit, exact reward boundaries, perfect/low-score completion, unlocking, best scores, i18n, native spoken order, sound-only cues, no printed words, independent storage migration/filter/roundtrip/erase.
+- `tests/e2e/sons.spec.ts`: one complete series per mode in each language, DOM `data-initial`/`data-letter` oracle independently checked against the hook, exact adjacent native-word/sound utterances through shared fake local speech/WebAudio, replay, wrong answer/drop, no early hint, second-error pulse and elongated speech, three-star completion after one retried question, reload/unlock and isolation of other records. All ten levels at 320–1280 px check 72 px cards/SVGs, large letter bounds/case, AA ink/fill contrast, separated targets, detached hook and horizontal overflow. Shared fixture rejects console/page errors.
+- `tests/e2e/sons-doigt.spec.ts`: all four modes on the mobile touch project, seeded ±10 px taps, 10–16-step noisy real touch drags, wrong box, cancelled pointer, double touch, complete rounds, unchanged scroll and no page overflow.
+- `tests/e2e/captures.spec.ts`: adds optional `sons-image-lettre.png` and `sons-trier.png` under the existing capture gate. The orchestrator generates and visually reviews them; no browser was launched here.
+
+### Sounds mutations to try
+
+1. Change the sounds result hint threshold from `errors >= 2` to `errors >= 3`: unit and browser second-error assertions must fail.
+2. Remove the sounds neighbour check when choosing distractor families: seeded independent exclusion assertions must fail.
+3. Replace `Math.max` in sounds `complete` with the current score: the best-record unit assertion must fail.

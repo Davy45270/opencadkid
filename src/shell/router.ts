@@ -1,3 +1,5 @@
+import * as sounds from '../engines/sons';
+import * as soundsView from '../games/sons/view';
 import * as shapes from '../engines/formes';
 import * as shapesView from '../games/formes/view';
 import { name as shapeName } from '../games/formes/shapes';
@@ -20,6 +22,8 @@ const storage = browserStorage();
 let save = readSave(storage, detectLocale(navigator.language));
 let screen: 'home' | 'levels' | 'game' | 'parents' | 'gate' = 'home';
 let session: Session | undefined;
+let soundsSession: sounds.Session | undefined;
+let soundHintPiece = 0;
 let shapesSession: shapes.Session | undefined;
 let memorySession: memory.Board | undefined;
 let activeGame = 'compter';
@@ -40,8 +44,10 @@ function render(): void {
         bind('#parents', () => gate('parents'));
         bind('#tictac', () => gate('tictac'));
     } else if (screen === 'levels') {
-        app.innerHTML = activeGame === 'formes' ? shapesView.levelView(save) : activeGame === 'paires' ? memoryView.levelView(save) : levelView(save);
-        bind('[data-level]', el => { const level = Number(el.dataset.level); if (activeGame === 'formes' ? shapes.isUnlocked(level, save.formesRecords) : activeGame === 'paires' ? memory.isUnlocked(level, save.pairesRecords) : isUnlocked(level, save.records)) begin(level); });
+        app.innerHTML = activeGame === 'sons' ? soundsView.levelView(save) : activeGame === 'formes' ? shapesView.levelView(save) : activeGame === 'paires' ? memoryView.levelView(save) : levelView(save);
+        bind('[data-level]', el => { const level = Number(el.dataset.level); if (activeGame === 'sons' ? sounds.isUnlocked(level, save.sonsRecords) : activeGame === 'formes' ? shapes.isUnlocked(level, save.formesRecords) : activeGame === 'paires' ? memory.isUnlocked(level, save.pairesRecords) : isUnlocked(level, save.records)) begin(level); });
+    } else if (screen === 'game' && activeGame === 'sons' && soundsSession) {
+        renderSounds();
     } else if (screen === 'game' && activeGame === 'formes' && shapesSession) {
         renderShapes();
     } else if (screen === 'game' && activeGame === 'paires' && memorySession) {
@@ -59,13 +65,93 @@ function render(): void {
         bind('#again', () => begin(session!.level));
         bind('#next', () => { if (session!.level < levels.length) begin(session!.level + 1); });
     }
-    bind('#back', () => { screen = 'home'; session = undefined; memorySession = undefined; shapesSession = undefined; render(); });
+    bind('#back', () => { screen = 'home'; soundsSession = undefined; soundDrag = undefined; session = undefined; memorySession = undefined; shapesSession = undefined; render(); });
 }
 function begin(level: number): void {
+    soundsSession = undefined; soundSelected = undefined; soundDrag = undefined;
     shapesSession = undefined; selectedPiece = undefined;
+    if (activeGame === 'sons') { session = undefined; memorySession = undefined; soundsSession = sounds.start(level, seed(), save.locale); screen = 'game'; hint = false; render(); speak(soundsView.spoken(soundsSession.questions[0]!, save.locale)); return; }
     if (activeGame === 'formes') { session = undefined; memorySession = undefined; shapesSession = shapes.start(level, seed()); screen = 'game'; hint = false; render(); speak([shapesView.instruction(shapesSession.questions[0]!, save.locale)]); return; }
     if (activeGame === 'paires') { app.replaceChildren(); session = undefined; memorySession = memory.newBoard(level, seed()); screen = 'game'; render(); speak([memoryView.instruction(memorySession, save.locale)]); return; }
     memorySession = undefined; session = start(level, seed()); screen = 'game'; hint = false; expression = 'joie'; render(); speak([instruction(session.questions[0]!, save.locale)]); }
+let soundSelected: number | undefined;
+let soundDrag: { id: number; piece: number; x: number; y: number; element: HTMLElement } | undefined;
+function soundSpeech(): void {
+    const s = soundsSession!;
+    speak(s.finished ? [text(save.locale, 'finished')] : soundsView.spoken(s.questions[s.index]!, save.locale));
+}
+function renderSounds(): void {
+    const s = soundsSession!;
+    app.innerHTML = soundsView.gameView(s, save.locale, hint, soundHintPiece);
+    bind('[data-answer]', el => soundResponse(sounds.answer(soundsSession!, Number(el.dataset.answer)), Number(el.dataset.answer)));
+    bind('#listen', soundSpeech);
+    bind('#continue', () => {
+        soundsSession = sounds.advance(soundsSession!); hint = false; soundSelected = undefined;
+        if (soundsSession.finished) { save.sonsRecords = sounds.complete(save.sonsRecords, soundsSession); persist(); chime(save.sound); }
+        render(); soundSpeech();
+    });
+    bind('#again', () => begin(s.level));
+    bind('#next', () => { if (s.level < sounds.levels.length) begin(s.level + 1); });
+    // Keyboard/tap alternative. Selecting an image says its native name, then its sound.
+    bind('[data-sound-piece]', el => {
+        soundSelected = Number(el.dataset.soundPiece);
+        speak(soundsView.spoken(s.questions[s.index]!, save.locale, false, soundSelected));
+    });
+    bind('[data-sound-box]', el => {
+        if (soundSelected === undefined) return;
+        const piece = soundSelected; soundSelected = undefined;
+        soundResponse(sounds.drop(soundsSession!, piece, Number(el.dataset.soundBox)), piece);
+    });
+}
+function soundResponse(result: ReturnType<typeof sounds.answer>, index: number): void {
+    if (result.state === soundsSession) return;
+    soundsSession = result.state; hint = result.hint || (hint && !soundsSession.solved); soundHintPiece = index;
+    render();
+    if (result.correct) { chime(save.sound); speak([text(save.locale, 'bravo')]); }
+    else {
+        app.querySelector(`[data-answer="${index}"], [data-sound-piece="${index}"]`)?.classList.add('wiggle');
+        const q = soundsSession.questions[soundsSession.index]!;
+        speak([text(save.locale, 'tryAgain'), ...(hint ? soundsView.spoken(q, save.locale, true, q.mode === 'trier' ? index : undefined) : [])]);
+    }
+}
+app.addEventListener('pointerdown', event => {
+    const element = (event.target as Element).closest<HTMLElement>('[data-sound-piece]:not(:disabled)');
+    if (!element || !event.isPrimary || soundDrag || !soundsSession || soundsSession.solved) return;
+    const piece = Number(element.dataset.soundPiece);
+    soundSelected = undefined;
+    soundDrag = { id: event.pointerId, piece, x: event.clientX, y: event.clientY, element };
+    app.setPointerCapture(event.pointerId);
+    speak(soundsView.spoken(soundsSession.questions[soundsSession.index]!, save.locale, false, piece));
+});
+app.addEventListener('pointermove', event => {
+    if (soundDrag?.id !== event.pointerId) return;
+    soundDrag.element.style.transform = `translate(${event.clientX - soundDrag.x}px, ${event.clientY - soundDrag.y}px)`;
+    soundDrag.element.classList.add('dragging');
+});
+app.addEventListener('pointerup', event => {
+    if (!soundDrag || soundDrag.id !== event.pointerId) return;
+    const drag = soundDrag; soundDrag = undefined;
+    if (app.hasPointerCapture(event.pointerId)) app.releasePointerCapture(event.pointerId);
+    drag.element.style.transform = ''; drag.element.classList.remove('dragging');
+    if (Math.hypot(event.clientX - drag.x, event.clientY - drag.y) < 12) { soundSelected = drag.piece; return; }
+    const boxes = [...app.querySelectorAll<HTMLElement>('[data-sound-box]')].map(el => {
+        const r = el.getBoundingClientRect();
+        const dx = Math.max(r.left - event.clientX, 0, event.clientX - r.right), dy = Math.max(r.top - event.clientY, 0, event.clientY - r.bottom);
+        return { el, distance: Math.hypot(dx, dy) };
+    }).sort((a, b) => a.distance - b.distance);
+    if (boxes[0] && boxes[0].distance <= 24 && soundsSession) {
+        const result = sounds.drop(soundsSession, drag.piece, Number(boxes[0].el.dataset.soundBox));
+        soundResponse(result, drag.piece);
+        if (!result.correct && !matchMedia('(prefers-reduced-motion: reduce)').matches) app.querySelector(`[data-sound-piece="${drag.piece}"]`)?.animate([
+            { transform: `translate(${event.clientX - drag.x}px, ${event.clientY - drag.y}px)` }, { transform: 'translate(0, 0)' }
+        ], { duration: 260, easing: 'ease-out' });
+    }
+});
+for (const name of ['pointercancel', 'lostpointercapture']) app.addEventListener(name, () => {
+    if (soundDrag) { soundDrag.element.style.transform = ''; soundDrag.element.classList.remove('dragging'); soundDrag = undefined; }
+    if (name === 'pointercancel') soundSelected = undefined;
+});
+
 function renderShapes(): void {
     const state = shapesSession!;
     app.innerHTML = shapesView.gameView(state, save.locale, hint);
@@ -252,8 +338,8 @@ app.addEventListener('keydown', event => {
 document.addEventListener('pointerdown', () => { unlockSpeech(); if (save.sound) unlockSound(); }, { once: true, capture: true });
 document.addEventListener('visibilitychange', () => { if (document.hidden) { cancel(); stopSound(); } else { if (save.sound) unlockSound(); if (screen === 'game' && activeGame === 'paires') render(); } });
 Object.defineProperty(window, '__kid', { configurable: false, writable: false, value: Object.freeze({ state: () => {
-    const targets = [...app.querySelectorAll<HTMLElement>('button, select, input')].filter(el => !el.hasAttribute('disabled')).map(el => { const r = el.getBoundingClientRect(); return { id: el.id || (el.dataset.answer !== undefined ? `answer-${el.dataset.answer}` : el.dataset.level ? `level-${el.dataset.level}` : el.dataset.card !== undefined ? `card-${el.dataset.card}` : el.hasAttribute('data-reserve') ? `reserve-${el.dataset.reserve}` : el.hasAttribute('data-basket') ? `basket-${el.dataset.basket}` : el.dataset.piece !== undefined ? `piece-${el.dataset.piece}` : el.dataset.box !== undefined ? `box-${el.dataset.box}` : el.dataset.game || ''), x: r.x, y: r.y, width: r.width, height: r.height }; });
-    return structuredClone({ screen, game: session || memorySession || shapesSession || screen === 'levels' ? activeGame : null, level: shapesSession?.level ?? memorySession?.level ?? session?.level ?? null, index: shapesSession?.index ?? session?.index ?? 0, question: shapesSession?.questions[shapesSession.index] ?? session?.questions[session.index] ?? null, shapes: shapesSession ?? null, basket: session?.basket ?? 0, board: memorySession ? { ...memorySession, cards: memorySession.cards.map((card, i) => {
+    const targets = [...app.querySelectorAll<HTMLElement>('button, select, input')].filter(el => !el.hasAttribute('disabled')).map(el => { const r = el.getBoundingClientRect(); return { id: el.id || (el.dataset.answer !== undefined ? `answer-${el.dataset.answer}` : el.dataset.level ? `level-${el.dataset.level}` : el.dataset.card !== undefined ? `card-${el.dataset.card}` : el.hasAttribute('data-reserve') ? `reserve-${el.dataset.reserve}` : el.hasAttribute('data-basket') ? `basket-${el.dataset.basket}` : el.dataset.soundPiece !== undefined ? `sound-piece-${el.dataset.soundPiece}` : el.dataset.soundBox !== undefined ? `sound-box-${el.dataset.soundBox}` : el.dataset.piece !== undefined ? `piece-${el.dataset.piece}` : el.dataset.box !== undefined ? `box-${el.dataset.box}` : el.dataset.game || ''), x: r.x, y: r.y, width: r.width, height: r.height }; });
+    return structuredClone({ screen, game: session || memorySession || shapesSession || soundsSession || screen === 'levels' ? activeGame : null, level: soundsSession?.level ?? shapesSession?.level ?? memorySession?.level ?? session?.level ?? null, index: soundsSession?.index ?? shapesSession?.index ?? session?.index ?? 0, question: soundsSession?.questions[soundsSession.index] ?? shapesSession?.questions[shapesSession.index] ?? session?.questions[session.index] ?? null, sons: soundsSession ?? null, shapes: shapesSession ?? null, basket: session?.basket ?? 0, board: memorySession ? { ...memorySession, cards: memorySession.cards.map((card, i) => {
         const r = app.querySelector(`[data-card="${i}"]`)?.getBoundingClientRect();
         return { ...card, visible: memorySession!.preview || card.found || memorySession!.visible.includes(i), rect: r ? { x: r.x, y: r.y, width: r.width, height: r.height } : null };
     }) } : null, targets });

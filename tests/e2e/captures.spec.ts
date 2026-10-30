@@ -2,7 +2,7 @@ import { solveMemory } from './paires-helpers';
 import { test, passGate, solveRound } from './helpers';
 test.skip(process.env.CAPTURES !== '1', 'Set CAPTURES=1 to refresh the README screenshots.');
 test('mobile screenshots in both languages and counting modes', async ({ page }) => {
-    await page.addInitScript(() => localStorage.setItem('opencadkid.v1', JSON.stringify({ version: 1, locale: 'fr', voice: false, sound: false, records: { 1: 3, 2: 3, 3: 3 }, formesRecords: { 1: 3, 2: 3, 3: 3, 4: 3, 5: 3, 6: 3, 7: 3, 8: 3, 9: 3 } })));
+    await page.addInitScript(() => localStorage.setItem('opencadkid.v1', JSON.stringify({ version: 1, locale: 'fr', voice: false, sound: false, records: { 1: 3, 2: 3, 3: 3 }, sonsRecords: { 1: 3, 2: 3, 3: 3, 4: 3, 5: 3, 6: 3, 7: 3, 8: 3, 9: 3 }, formesRecords: { 1: 3, 2: 3, 3: 3, 4: 3, 5: 3, 6: 3, 7: 3, 8: 3, 9: 3 } })));
     await page.goto('/'); await page.screenshot({ path: 'docs/captures/accueil-fr.png' });
     await page.locator('#parents').click(); await passGate(page); await page.locator('#language').selectOption('en'); await page.locator('#close').click();
     await page.screenshot({ path: 'docs/captures/accueil-en.png' });
@@ -19,4 +19,8 @@ test('mobile screenshots in both languages and counting modes', async ({ page })
     await page.screenshot({ path: 'docs/captures/formes-question.png' });
     await page.locator('#back').click(); await page.locator('[data-game="formes"]').click(); await page.locator('[data-level="10"]').click();
     await page.screenshot({ path: 'docs/captures/formes-trier.png' });
+    await page.locator('#back').click(); await page.locator('[data-game="sons"]').click(); await page.locator('[data-level="3"]').click();
+    await page.screenshot({ path: 'docs/captures/sons-image-lettre.png' });
+    await page.locator('#back').click(); await page.locator('[data-game="sons"]').click(); await page.locator('[data-level="10"]').click();
+    await page.screenshot({ path: 'docs/captures/sons-trier.png' });
 });

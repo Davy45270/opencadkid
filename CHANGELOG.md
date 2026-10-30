@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0
+
+- Add Tutu’s sounds: ten levels, four modes, uppercase and lowercase, native French and English lexicons with twenty letter families and sixty words each.
+- Add seeded pure rounds, conservative sound-neighbour exclusions, two-error spoken/visual hints, native SVG pictures and touch sorting with a keyboard alternative.
+- Reuse the common rewards and preserve independent sounds progress with safe save migration; existing game engines and rules are unchanged.
+- Add independent lexicon, SVG, phoneme, seeded, session, reward, i18n and persistence tests, two browser suites and two optional captures. Tests await orchestrator execution.
+- Extend generic catalogue/home expectations from three games to four; existing game tests are unchanged.
+
 ## 0.3.0
 
 - Add CaliRoux's shapes: ten levels recognizing eight shapes, eight colours, combinations and sizes, then sorting into two or three colour boxes.
