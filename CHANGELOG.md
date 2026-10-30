@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.0
+
+- Add Pestouille’s path: eight seeded perfect mazes, finger tracing with exact cell interpolation, wall stops, backtracking, keyboard arrows and three-cell hints.
+- Add procedural destinations, optional stars and a completion medal; preserve separate best stars and medals with safe save migration.
+- Reuse screen-to-zone conversion, local speech, synthesized sound, unlocking and the read-only observation hook. Existing games’ rules are unchanged; only shared catalogue count assertions change.
+- Add independent 300-seed topology, state, interpolation, help, rewards, language and storage tests; browser DOM maze solvers, noisy mobile gestures, responsive measurements and optional start/finish captures. Unit and browser suites await orchestrator execution.
+
 ## 0.5.0
 
 - Add Pestouille’s puzzle: eight seeded levels, six procedural scenes, complementary SVG curves, gentle snapping and nonpunitive bounded drops.

@@ -8,13 +8,13 @@ Play online, without installation, offline once opened.
 
 Gentle educational games for children aged **4–8**, designed for fingers and phones. Boubou the panda, CaliRoux the red panda, Pestouille the dragon, Tutu the monkey and Lumi the unicorn guide each discovery. All artwork is generated in SVG from code.
 
-**Available: Boubou’s baskets, Lumi’s cards, CaliRoux’s shapes Tutu’s sounds and Pestouille’s puzzle.**
+**Available: Boubou’s baskets, Lumi’s cards, CaliRoux’s shapes, Tutu’s sounds, Pestouille’s puzzle and Pestouille’s path.**
 
 Boubou's baskets — count, fill and compare across eight levels — and **Lumi's cards**, a gentle memory game with 2, 3, 4, 6, 8 and 10 pairs, plus a picture-to-shadow level. Lumi offers a two-second preview on the first three levels and a glowing hint after repeated misses. Sixteen procedural shapes remain distinguishable without colour; the largest board fits a 390×844 phone without scrolling. French comes first; English is included. English is selected automatically only when the device language starts with `en`. Adults can change and save the language.
 
 **CaliRoux's shapes** is also available: ten levels of shapes, colours, combinations, sizes and finger sorting into two or three colour boxes. Eight outlined SVG shapes and eight named colours accompany spoken prompts; close colour pairs never share a question. Two errors make the answer glow and repeat its name.
 
-Planned: Pestouille's path, Lumi's patterns, CaliRoux's sorting, Tutu's drums and Boubou's workshop. These five games are described in [GAME_SPEC.md](GAME_SPEC.md); they are not playable yet. Learning to tell time is available in the sister application TicTac, through an adult-gated home card.
+Planned: Lumi's patterns, CaliRoux's sorting, Tutu's drums and Boubou's workshop. These four games are described in [GAME_SPEC.md](GAME_SPEC.md); they are not playable yet. Learning to tell time is available in the sister application TicTac, through an adult-gated home card.
 
 No reading is required to play: spoken instructions accompany pictograms, objects and dot constellations. The first touch enables browser audio. Voice availability depends on the device's speech service; install a local French or English voice for spoken play offline. The ear button repeats an instruction. A silent device still shows the visual prompts.
 
@@ -27,6 +27,10 @@ Open the online game once while connected. Use your browser's **Install app** or
 **Tutu’s sounds** connects a spoken initial sound to a large letter and a drawn picture, without reading. Ten levels cover picture-to-letter, letter-to-picture, sound-only listening and dragging pictures into two letter boxes, with uppercase then lowercase letters. French and English each have their own sixty-word lexicon across twenty letters: changing language selects native questions. The voice names pictures and sounds; no written word appears beneath a picture. Two errors bring a spoken and pulsing hint. Progress and best stars are saved separately. The optional capture suite also produces `sons-image-lettre.png` and `sons-trier.png`.
 
 **Pestouille’s puzzle** offers eight levels: 2, 3, 4, 6, 6, 9, 12 pieces, then nine pieces with complementary curved edges. Six procedural scenes feature the five guides. Slide pieces into the upper board: a gentle snap locks a close piece, while a missed drop stays where it lands. The first two levels show a faint model; the eye reveals it later. After 25 seconds without placing a piece, a pulsing piece and outline offer help; no clock appears. Finish for three stars without help, two with one aid, otherwise one. Arrow keys move a focused piece 16 pixels; Enter drops it. No rotation. Progress stays separate from other games.
+
+**Pestouille’s path** offers eight perfect mazes, from 3×3 to 9×7. Trace with a finger to reach a drawn nest, bamboo or rainbow. Walls stop the line gently; retracing erases one step. Lift and resume anywhere on your line. The bulb shows the next three cells, freely. From level four, optional stars reward exploration with a medal when all are collected. Finishing always gives three stars and unlocks the next maze; best stars and medals stay saved separately. Arrow keys move one cell. Cells measure at least 40 px on a 390×844 phone. No timer or mistake counter.
+
+The chemin suite produces `chemin-debut.png` and `chemin-fini.png` with `CAPTURES=1 npm run test:e2e -- --project=mobile tests/e2e/chemin.spec.ts`; browser execution and visual review remain pending.
 
 ## Screenshots
 

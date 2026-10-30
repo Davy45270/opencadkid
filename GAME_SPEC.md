@@ -1,10 +1,10 @@
-# Opencadkid — game specification 0.5.0
+# Opencadkid — game specification 0.6.0
 
 Audience: ages 4–8, primarily touch phones. French first, English included. No reading is required in child play. Spoken instructions, procedural SVG pictograms, object illustrations and dot patterns convey the task. No timer, lives, punishment, advertising, purchase, account, analytics or external runtime resource. The first home gesture unlocks browser audio. Reduced motion removes shakes, bounces and decorative particles. Local speech voices are preferred; speech availability offline depends on installed device voices.
 
 ## Catalogue
 
-`compter`, `paires`, `formes`, `sons` and `puzzle` are implemented and present in the playable registry. Other catalogue entries remain planned.
+`compter`, `paires`, `formes`, `sons`, `puzzle` and `chemin` are implemented and present in the playable registry. Other catalogue entries remain planned.
 
 | ID | Français | English | Guide | Skill and intended rules |
 | --- | --- | --- | --- | --- |
@@ -339,3 +339,39 @@ Puzzle review oracles added without running them:
 - `tests/e2e/paires.spec.ts` captures closing transitions in the mutation-observer turn and pauses them immediately. Slow protocol calls cannot consume the 240-ms transition before inspection; reduced motion still requires no animation and the final closed transform.
 
 These cover the eight proposed puzzle mutation behaviours; mutation executions remain for the external test environment.
+
+
+## Chemin: Pestouille’s path
+
+Eight pure seeded perfect mazes use shared Mulberry32 and randomized depth-first carving. The first two trees start with a straight left-to-right corridor; random branches attach without cycles. Later trees start at a random left-edge cell and end at a random right-edge cell. Length counts **cells including both endpoints**, not edges. The wide later ranges intentionally include every possible DFS tree route; dimensions set the difficulty, without rejecting or biasing seeds.
+
+| Level | Columns × rows | Solution length in cells | Optional stars |
+| --- | --- | --- | --- |
+| 1 | 3 × 3 | 3–3 | 0 |
+| 2 | 4 × 3 | 4–4 | 0 |
+| 3 | 5 × 4 | 5–20 | 0 |
+| 4 | 6 × 4 | 6–24 | 2 |
+| 5 | 7 × 5 | 7–35 | 2 |
+| 6 | 7 × 6 | 7–42 | 3 |
+| 7 | 8 × 6 | 8–48 | 3 |
+| 8 | 9 × 7 | 9–63 | 3 |
+
+`newMaze(level, seed)` returns reciprocal N/E/S/W openings, start, goal, solution, trace, bonuses and collected bonuses. Every tree has exactly cells − 1 passages. Optional stars lie on the solution or at dead ends at most two edges from it, with a junction strictly before the goal. Collection survives backtracking and is never mandatory. `extend` accepts only an adjacent open step; stepping to the previous cell shortens the trace. Invalid steps and walls preserve the original state. Completion locks the trace at the goal. `fromPoint(state, x, y)` uses cell units and snaps an outer quarter-cell margin inward, inclusively. Nonfinite or more distant points are rejected.
+
+`segmentCells` traverses every crossed grid boundary in order; exact corner ties cross X before Y. `interpolate` applies those steps until the first wall, preventing fast diagonal wall cutting. The UI uses the existing shared `screenToZone` conversion. One primary pointer owns capture on the stable app element, while only the maze has `touch-action: none`. Pointer cancellation or backgrounding frees the gesture and retains the drawing. Grabbing any previously traced cell resumes from that prefix on the first valid movement; simply touching or hitting a wall erases nothing. Rejected motion anchors at the head centre so a later event cannot jump across a wall. Keyboard arrows move one cell from the head.
+
+The SVG draws contrast walls, a wide coloured trace and Pestouille at its head. Nest, bamboo and rainbow destinations alternate by level. Cells are square and at least 40 real CSS pixels at 390×844, including 9×7; narrower screens scale uniformly without overflow. Header buttons measure 64 px. The bulb is always available and toggles a dotted route of the next three cells from the head, including retreat from dead ends; it never changes the reward. Every finish earns three stars. A medal additionally requires at least one bonus and all bonuses collected. Independent `cheminRecords` stores the maximum stars and `cheminMedals` preserves earned medals. Invalid records are filtered; old saves migrate, and erase clears both. Completion unlocks the next level. Level eight has no next control.
+
+Each SVG cell exposes `data-cell`, `data-open`, `data-head`, and endpoint markers; bonuses expose their collected status. `window.__kid.state().chemin` contains a detached grid, trace and solution snapshot, with no mutation function. Browser solvers read openings and SVG endpoint markers only, independently reconstructing the route before comparing with the hook.
+
+### Chemin validation and review
+
+Tests authored without executing Vitest, Playwright or a browser:
+
+- `tests/chemin.test.ts`: independent eight-level table, 300 seeds each, deterministic reciprocal in-bounds openings, exact tree edge count, connected BFS and independent simple-path enumeration, opposite borders and solution lengths; bonus placement; pure advance/retreat/rejection; five-cell fast diagonal and wall stop; quarter-cell tolerance; persistent optional collection; constant three-star completion, medal and best-score/unlock; three-cell help from a dead end; bilingual UI, DOM oracle, SVG structure and save migration/filtering/roundtrip/erase.
+- `tests/e2e/chemin.spec.ts`: DOM-only BFS solves levels 1, 4 and 8 through simulated touch, checks wall stops, retreat, help, detached hook, local speech and synthesized sound, reload/unlock and isolation. English keyboard completion and media disabled; all eight levels measure real cell squares, wall strokes, 64 px controls, valid SVG and no page overflow at widths 320–1280. Cancellation retains progress. Optional mobile captures: `chemin-debut.png`, `chemin-fini.png`.
+- `tests/e2e/chemin-doigt.spec.ts`: mobile real touch protocol, seeded ±6 px offsets, irregular steps and collinear two-cell skips, a deliberate wall, finger lift/restart at the head, DOM-derived route completion and unchanged page scroll. Shared media doubles and console guard are reused.
+
+Mutations to try: (1) remove the open-passage guard in `extend`: wall/state and browser wall tests must fail; (2) remove the previous-cell shortening branch: retreat tests must fail; (3) apply only the last cell in `interpolate`: the five-cell diagonal and fast-finger tests must fail.
+
+The orchestrator must run unit and browser suites, inspect start/finish captures for clear walls, destinations, trace, bonus and medal visibility, and verify noisy touch, restart after lifting, keyboard focus, silent mode, persisted progress, 40 px cells at 390×844 and no overflow. Only the generic registry list and home game-count expectations change outside new tests; other games’ tests and rules remain unchanged.

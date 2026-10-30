@@ -1,3 +1,5 @@
+import * as chemin from '../engines/chemin';
+import * as cheminView from '../games/chemin/view';
 import { screenToZone, distanceToZone, dragPosition } from './coordinates';
 import { bindAction } from './activation';
 import * as puzzle from '../engines/puzzle';
@@ -26,6 +28,9 @@ const storage = browserStorage();
 let save = readSave(storage, detectLocale(navigator.language));
 let screen: 'home' | 'levels' | 'game' | 'parents' | 'gate' = 'home';
 let session: Session | undefined;
+let cheminSession: chemin.Maze | undefined;
+let cheminHelp = false;
+let cheminDrag: { pointer: number; point: chemin.Point; anchor: number } | undefined;
 let puzzleSession: puzzle.Puzzle | undefined;
 let puzzleModel = false;
 let puzzleTop: number | undefined;
@@ -52,8 +57,10 @@ function render(): void {
         bind('#parents', () => gate('parents'));
         bind('#tictac', () => gate('tictac'));
     } else if (screen === 'levels') {
-        app.innerHTML = activeGame === 'puzzle' ? puzzleView.levelView(save) : activeGame === 'sons' ? soundsView.levelView(save) : activeGame === 'formes' ? shapesView.levelView(save) : activeGame === 'paires' ? memoryView.levelView(save) : levelView(save);
-        bind('[data-level]', el => { const level = Number(el.dataset.level); if (activeGame === 'puzzle' ? puzzle.isUnlocked(level, save.puzzleRecords) : activeGame === 'sons' ? sounds.isUnlocked(level, save.sonsRecords) : activeGame === 'formes' ? shapes.isUnlocked(level, save.formesRecords) : activeGame === 'paires' ? memory.isUnlocked(level, save.pairesRecords) : isUnlocked(level, save.records)) begin(level); });
+        app.innerHTML = activeGame === 'chemin' ? cheminView.levelView(save) : activeGame === 'puzzle' ? puzzleView.levelView(save) : activeGame === 'sons' ? soundsView.levelView(save) : activeGame === 'formes' ? shapesView.levelView(save) : activeGame === 'paires' ? memoryView.levelView(save) : levelView(save);
+        bind('[data-level]', el => { const level = Number(el.dataset.level); if (activeGame === 'chemin' ? chemin.isUnlocked(level, save.cheminRecords) : activeGame === 'puzzle' ? puzzle.isUnlocked(level, save.puzzleRecords) : activeGame === 'sons' ? sounds.isUnlocked(level, save.sonsRecords) : activeGame === 'formes' ? shapes.isUnlocked(level, save.formesRecords) : activeGame === 'paires' ? memory.isUnlocked(level, save.pairesRecords) : isUnlocked(level, save.records)) begin(level); });
+    } else if (screen === 'game' && activeGame === 'chemin' && cheminSession) {
+        renderChemin();
     } else if (screen === 'game' && activeGame === 'puzzle' && puzzleSession) {
         renderPuzzle();
     } else if (screen === 'game' && activeGame === 'sons' && soundsSession) {
@@ -75,9 +82,14 @@ function render(): void {
         bind('#again', () => begin(session!.level));
         bind('#next', () => { if (session!.level < levels.length) begin(session!.level + 1); });
     }
-    bind('#back', () => { screen = 'home'; puzzleSession = undefined; puzzleDrag = undefined; soundsSession = undefined; soundDrag = undefined; session = undefined; memorySession = undefined; shapesSession = undefined; render(); });
+    bind('#back', () => { screen = 'home'; cheminSession = undefined; cheminDrag = undefined; puzzleSession = undefined; puzzleDrag = undefined; soundsSession = undefined; soundDrag = undefined; session = undefined; memorySession = undefined; shapesSession = undefined; render(); });
 }
 function begin(level: number): void {
+    cheminSession = undefined; cheminDrag = undefined; cheminHelp = false;
+    if (activeGame === 'chemin') {
+        session = undefined; soundsSession = undefined; memorySession = undefined; shapesSession = undefined; puzzleSession = undefined; puzzleDrag = undefined;
+        cheminSession = chemin.newMaze(level, seed()); screen = 'game'; render(); speak([text(save.locale, 'pathInstruction')]); return;
+    }
     puzzleSession = undefined; puzzleDrag = undefined; puzzleTop = undefined;
     if (activeGame === 'puzzle') {
         session = undefined; soundsSession = undefined; memorySession = undefined; shapesSession = undefined;
@@ -90,6 +102,73 @@ function begin(level: number): void {
     if (activeGame === 'formes') { session = undefined; memorySession = undefined; shapesSession = shapes.start(level, seed()); screen = 'game'; hint = false; render(); speak([shapesView.instruction(shapesSession.questions[0]!, save.locale)]); return; }
     if (activeGame === 'paires') { app.replaceChildren(); session = undefined; memorySession = memory.newBoard(level, seed()); screen = 'game'; render(); speak([memoryView.instruction(memorySession, save.locale)]); return; }
     memorySession = undefined; session = start(level, seed()); screen = 'game'; hint = false; expression = 'joie'; render(); speak([instruction(session.questions[0]!, save.locale, true)]); }
+function renderChemin(): void {
+    const state = cheminSession!;
+    app.innerHTML = cheminView.gameView(state, save.locale, cheminHelp);
+    bind('#listen', () => speak([text(save.locale, state.finished ? 'finished' : 'pathInstruction')]));
+    bind('#help', () => {
+        cheminHelp = !cheminHelp;
+        const zone = app.querySelector('.chemin-zone')!;
+        zone.innerHTML = cheminView.boardSvg(cheminSession!, cheminHelp);
+        app.querySelector('#help')!.setAttribute('aria-pressed', String(cheminHelp));
+    });
+    bind('#again', () => begin(state.level));
+    bind('#next', () => { if (state.level < chemin.levels.length) begin(state.level + 1); });
+}
+function updateChemin(next: chemin.Maze): void {
+    if (next === cheminSession) return;
+    cheminSession = next;
+    if (next.finished) {
+        cheminDrag = undefined;
+        save.cheminRecords = chemin.complete(save.cheminRecords, next);
+        if (chemin.medal(next)) save.cheminMedals = { ...save.cheminMedals, [next.level]: true };
+        persist(); chime(save.sound); render(); speak([text(save.locale, 'finished')]);
+    } else app.querySelector('.chemin-zone')!.innerHTML = cheminView.boardSvg(next, cheminHelp);
+}
+function cheminPoint(event: PointerEvent): chemin.Point {
+    return screenToZone({ x: event.clientX, y: event.clientY }, app.querySelector('.chemin-zone')!.getBoundingClientRect(), { width: cheminSession!.columns, height: cheminSession!.rows });
+}
+app.addEventListener('pointerdown', event => {
+    if (activeGame !== 'chemin' || screen !== 'game' || !cheminSession || cheminSession.finished || cheminDrag || !event.isPrimary || event.button !== 0 || !(event.target as Element).closest('.chemin-zone')) return;
+    const point = cheminPoint(event), cell = chemin.fromPoint(cheminSession, point.x, point.y);
+    if (cell === null || !cheminSession.trace.includes(cell)) return;
+    event.preventDefault(); app.querySelector<HTMLElement>('.chemin-zone')!.focus({ preventScroll: true });
+    cheminDrag = { pointer: event.pointerId, point, anchor: cell }; app.setPointerCapture(event.pointerId);
+});
+function moveChemin(event: PointerEvent): void {
+    const drag = cheminDrag;
+    if (!drag || event.pointerId !== drag.pointer || !cheminSession) return;
+    event.preventDefault();
+    const point = cheminPoint(event), original = cheminSession;
+    const anchorIndex = original.trace.indexOf(drag.anchor);
+    const base = anchorIndex === original.trace.length - 1 ? original : { ...original, trace: original.trace.slice(0, anchorIndex + 1) };
+    const next = chemin.interpolate(base, drag.point, point);
+    // Grabbing an earlier point does not erase anything until an open step is taken.
+    if (next !== base) updateChemin(next);
+    if (!cheminDrag) return;
+    const head = cheminSession.trace.at(-1)!;
+    const under = chemin.fromPoint(cheminSession, point.x, point.y);
+    if (next !== base || base === original) {
+        drag.anchor = head;
+        drag.point = under === head ? point : chemin.centre(cheminSession, head);
+    }
+}
+app.addEventListener('pointermove', moveChemin);
+app.addEventListener('pointerup', event => {
+    if (cheminDrag?.pointer !== event.pointerId) return;
+    moveChemin(event); cheminDrag = undefined;
+    if (app.hasPointerCapture(event.pointerId)) app.releasePointerCapture(event.pointerId);
+});
+for (const name of ['pointercancel', 'lostpointercapture'] as const) app.addEventListener(name, event => {
+    if (cheminDrag?.pointer === event.pointerId) cheminDrag = undefined;
+});
+app.addEventListener('keydown', event => {
+    if (!(event.target as Element).closest('.chemin-zone') || !cheminSession || cheminDrag) return;
+    const keys: Record<string, chemin.Direction> = { ArrowLeft: 'W', ArrowRight: 'E', ArrowUp: 'N', ArrowDown: 'S' };
+    const direction = keys[event.key]; if (!direction) return;
+    event.preventDefault(); const cell = chemin.neighbour(cheminSession, cheminSession.trace.at(-1)!, direction);
+    if (cell !== null) updateChemin(chemin.extend(cheminSession, cell));
+});
 let puzzleDrag: { pointer: number; piece: number; startX: number; startY: number; x: number; y: number; element: HTMLElement } | undefined;
 function puzzleDragCoordinates(d: NonNullable<typeof puzzleDrag>, event: PointerEvent, rect: DOMRect): [number, number] {
     const p = dragPosition({ x: event.clientX, y: event.clientY }, { x: d.startX, y: d.startY }, d, rect, { width: 320, height: 550 });
@@ -454,13 +533,13 @@ app.addEventListener('keydown', event => {
 document.addEventListener('pointerdown', () => { unlockSpeech(); if (save.sound) unlockSound(); }, { once: true, capture: true });
 let puzzleHiddenAt: number | undefined;
 document.addEventListener('visibilitychange', () => {
-    if (document.hidden) { puzzleHiddenAt = performance.now(); cancelPuzzleDrag(); }
+    if (document.hidden) { cheminDrag = undefined; puzzleHiddenAt = performance.now(); cancelPuzzleDrag(); }
     else if (screen === 'game' && activeGame === 'puzzle') { if (puzzleHiddenAt !== undefined) puzzleIdleStart += performance.now() - puzzleHiddenAt; puzzleHiddenAt = undefined; render(); }
  if (document.hidden) { cancel(); stopSound(); } else { if (save.sound) unlockSound(); if (screen === 'game' && activeGame === 'paires') render(); } });
 Object.defineProperty(window, '__kid', { configurable: false, writable: false, value: Object.freeze({ state: () => {
     const targets = [...app.querySelectorAll<HTMLElement>('button, select, input')].filter(el => !el.hasAttribute('disabled')).map(el => { const r = el.getBoundingClientRect(); return { id: el.id || (el.dataset.answer !== undefined ? `answer-${el.dataset.answer}` : el.dataset.level ? `level-${el.dataset.level}` : el.dataset.card !== undefined ? `card-${el.dataset.card}` : el.hasAttribute('data-reserve') ? `reserve-${el.dataset.reserve}` : el.hasAttribute('data-basket') ? `basket-${el.dataset.basket}` : el.dataset.soundPiece !== undefined ? `sound-piece-${el.dataset.soundPiece}` : el.dataset.soundBox !== undefined ? `sound-box-${el.dataset.soundBox}` : el.dataset.piece !== undefined ? `piece-${el.dataset.piece}` : el.dataset.box !== undefined ? `box-${el.dataset.box}` : el.dataset.game || ''), x: r.x, y: r.y, width: r.width, height: r.height }; });
     const rect = (selector: string): { x: number; y: number; width: number; height: number } | null => { const r = app.querySelector(selector)?.getBoundingClientRect(); return r ? { x: r.x, y: r.y, width: r.width, height: r.height } : null; };
-    return structuredClone({ puzzle: puzzleSession ? { ...puzzleSession, zone: rect('.puzzle-zone'), boardScreen: rect('[data-puzzle-board]') } : null, screen, game: puzzleSession || session || memorySession || shapesSession || soundsSession || screen === 'levels' ? activeGame : null, level: puzzleSession?.level ?? soundsSession?.level ?? shapesSession?.level ?? memorySession?.level ?? session?.level ?? null, index: soundsSession?.index ?? shapesSession?.index ?? session?.index ?? 0, question: soundsSession?.questions[soundsSession.index] ?? shapesSession?.questions[shapesSession.index] ?? session?.questions[session.index] ?? null, sons: soundsSession ?? null, shapes: shapesSession ?? null, basket: session?.basket ?? 0, board: memorySession ? { ...memorySession, cards: memorySession.cards.map((card, i) => {
+    return structuredClone({ chemin: cheminSession ?? null, puzzle: puzzleSession ? { ...puzzleSession, zone: rect('.puzzle-zone'), boardScreen: rect('[data-puzzle-board]') } : null, screen, game: cheminSession || puzzleSession || session || memorySession || shapesSession || soundsSession || screen === 'levels' ? activeGame : null, level: cheminSession?.level ?? puzzleSession?.level ?? soundsSession?.level ?? shapesSession?.level ?? memorySession?.level ?? session?.level ?? null, index: soundsSession?.index ?? shapesSession?.index ?? session?.index ?? 0, question: soundsSession?.questions[soundsSession.index] ?? shapesSession?.questions[shapesSession.index] ?? session?.questions[session.index] ?? null, sons: soundsSession ?? null, shapes: shapesSession ?? null, basket: session?.basket ?? 0, board: memorySession ? { ...memorySession, cards: memorySession.cards.map((card, i) => {
         const r = app.querySelector(`[data-card="${i}"]`)?.getBoundingClientRect();
         return { ...card, visible: memorySession!.preview || card.found || memorySession!.visible.includes(i), rect: r ? { x: r.x, y: r.y, width: r.width, height: r.height } : null };
     }) } : null, targets });
