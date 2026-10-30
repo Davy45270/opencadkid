@@ -1,4 +1,4 @@
-import { test, expect, expectTouch, state } from './helpers';
+import { test, expect, expectTouch, state, touchFrame } from './helpers';
 import { prepareShapes, shapeAnswer, shapeState } from './formes-helpers';
 import { makeRng } from '../../src/engines/rng';
 for (const level of [3, 5, 6, 8, 10]) test(`level ${level}: noisy touch completes without scrolling, with double tap and wrong drop`, async ({ page, context }) => {
@@ -15,21 +15,22 @@ for (const level of [3, 5, 6, 8, 10]) test(`level ${level}: noisy touch complete
             const after = await shapeState(page);
             if (selector === '#continue') return before.index === 5 ? after.shapes.finished : after.index === before.index + 1;
             if (selector.includes('data-answer')) return after.index === before.index && after.shapes.solved;
-            return after.index === before.index && after.shapes.placed.length === before.shapes.placed.length;
+            return after.index === before.index && after.selection === Number(selector.match(/\d+/)![0]);
         });
     };
     const cdp = await context.newCDPSession(page);
     const drag = async (piece: number, box: string): Promise<void> => {
+        const before = (await shapeState(page)).shapes;
         const a = (await page.locator(`[data-piece="${piece}"]`).boundingBox())!, b = (await page.locator(box).boundingBox())!;
         const x = a.x + a.width / 2 + noise(), y = a.y + a.height / 2 + noise(), tx = b.x + b.width / 2, ty = b.y + b.height / 2;
         await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ id: 1, x, y }] });
         const steps = 10 + Math.floor(rng() * 7);
         for (let k = 1; k <= steps; k++) {
             await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ id: 1, x: x + (tx - x) * k / steps + noise(), y: y + (ty - y) * k / steps + noise() }] });
-            await page.waitForTimeout(8);
+            await touchFrame(page);
         }
         await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
-        await page.waitForTimeout(300);
+        await expect.poll(async () => { const after = (await shapeState(page)).shapes; return after.placed.includes(piece) || after.errors === before.errors + 1; }).toBe(true);
     };
     for (let i = 0; i < 6; i++) {
         if (level === 10) {

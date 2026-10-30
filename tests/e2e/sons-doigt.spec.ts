@@ -1,4 +1,4 @@
-import { test, expect, expectTouch, state } from './helpers';
+import { test, expect, expectTouch, state, touchFrame } from './helpers';
 import { prepareSounds, soundAnswer, soundsState } from './sons-helpers';
 import { makeRng } from '../../src/engines/rng';
 for (const level of [4, 6, 8, 10]) test(`level ${level}: mobile noisy finger, double touch and sorting without scrolling`, async ({ page, context }) => {
@@ -15,11 +15,12 @@ for (const level of [4, 6, 8, 10]) test(`level ${level}: mobile noisy finger, do
             const after = await soundsState(page);
             if (selector === '#continue') return before.index === 5 ? after.sons.finished : after.index === before.index + 1;
             if (selector.includes('data-answer')) return after.index === before.index && after.sons.solved;
-            return after.index === before.index && after.sons.placed.length === before.sons.placed.length;
+            return after.index === before.index && after.selection === Number(selector.match(/\d+/)![0]);
         });
     };
     const cdp = await context.newCDPSession(page);
     const drag = async (piece: number, correct = true): Promise<void> => {
+        const before = (await soundsState(page)).sons;
         const from = page.locator(`[data-sound-piece="${piece}"]`), initial = (await from.locator('svg').getAttribute('data-initial'))!;
         const box = page.locator('[data-sound-box]').filter(correct ? { has: page.locator(`[data-letter="${initial}"]`) } : { hasNot: page.locator(`[data-letter="${initial}"]`) });
         const a = (await from.boundingBox())!, b = (await box.boundingBox())!;
@@ -28,9 +29,9 @@ for (const level of [4, 6, 8, 10]) test(`level ${level}: mobile noisy finger, do
         const steps = 10 + Math.floor(rng() * 7);
         for (let k = 1; k <= steps; k++) {
             await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ id: 1, x: x + (tx - x) * k / steps + noise(), y: y + (ty - y) * k / steps + noise() }] });
-            await page.waitForTimeout(8);
+            await touchFrame(page);
         }
-        await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] }); await page.waitForTimeout(300);
+        await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] }); await expect.poll(async () => { const after = (await soundsState(page)).sons; return correct ? after.placed.includes(piece) : after.errors === before.errors + 1; }).toBe(true);
     };
     for (let i = 0; i < 6; i++) {
         if (level === 10) {
