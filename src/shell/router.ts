@@ -1,7 +1,7 @@
 import { backdrop } from '../ui/backdrops';
 import * as chemin from '../engines/chemin';
 import * as cheminView from '../games/chemin/view';
-import { screenToZone, distanceToZone, dragPosition } from './coordinates';
+import { screenToZone, distanceToZone, withinDropZone, dragPosition } from './coordinates';
 import { bindAction, activationEvents, acceptActivation, recordActivation, resetActivations } from './activation';
 import * as puzzle from '../engines/puzzle';
 import * as puzzleView from '../games/puzzle/view';
@@ -53,12 +53,12 @@ function actionKey(element: HTMLElement): string {
     const target = element.id || Object.entries(element.dataset).map(([key, value]) => `${key}-${value ?? ''}`).join(':');
     return `${screen}:${activeGame}:${soundsSession?.index ?? shapesSession?.index ?? session?.index ?? 0}:${target}`;
 }
-function bind(selector: string, fn: (element: HTMLElement) => void): void {
+function bind(selector: string, fn: (element: HTMLElement) => void, keyFor = actionKey): void {
     app.querySelectorAll<HTMLElement>(selector).forEach(el => {
         // Drag controllers already own release and capture; click is their keyboard alternative.
         if (el.matches('[data-piece], [data-sound-piece]')) {
             el.onclick = event => { if (event.pointerType !== 'touch') fn(el); };
-        } else bindAction(el, () => fn(el), actionKey(el));
+        } else bindAction(el, () => fn(el), keyFor(el));
     });
 }
 function render(): void {
@@ -364,9 +364,9 @@ app.addEventListener('pointerup', event => {
     if (Math.hypot(event.clientX - drag.x, event.clientY - drag.y) < 12) { soundSelected = drag.piece; return; }
     const boxes = [...app.querySelectorAll<HTMLElement>('[data-sound-box]')].map(el => {
         const r = el.getBoundingClientRect();
-        return { el, distance: distanceToZone({ x: event.clientX, y: event.clientY }, r) };
+        return { el, rect: r, distance: distanceToZone({ x: event.clientX, y: event.clientY }, r) };
     }).sort((a, b) => a.distance - b.distance);
-    if (boxes[0] && boxes[0].distance <= 24 && soundsSession) {
+    if (boxes[0] && withinDropZone({ x: event.clientX, y: event.clientY }, boxes[0].rect) && soundsSession) {
         const result = sounds.drop(soundsSession, drag.piece, Number(boxes[0].el.dataset.soundBox));
         soundResponse(result, drag.piece);
         if (!result.correct && !matchMedia('(prefers-reduced-motion: reduce)').matches) app.querySelector(`[data-sound-piece="${drag.piece}"]`)?.animate([
@@ -429,9 +429,9 @@ app.addEventListener('pointerup', event => {
     if (Math.hypot(event.clientX - drag.x, event.clientY - drag.y) < 12) { selectedPiece = drag.piece; recordActivation(`shape-piece-${drag.piece}`, event.type, true, 'selection'); return; }
     const boxes = [...app.querySelectorAll<HTMLElement>('[data-box]')].map(el => {
         const r = el.getBoundingClientRect();
-        return { el, distance: distanceToZone({ x: event.clientX, y: event.clientY }, r) };
+        return { el, rect: r, distance: distanceToZone({ x: event.clientX, y: event.clientY }, r) };
     }).sort((a, b) => a.distance - b.distance);
-    if (boxes[0] && boxes[0].distance <= 24 && shapesSession) {
+    if (boxes[0] && withinDropZone({ x: event.clientX, y: event.clientY }, boxes[0].rect) && shapesSession) {
         const result = shapes.drop(shapesSession, drag.piece, Number(boxes[0].el.dataset.box));
         recordActivation(`shape-piece-${drag.piece}`, event.type, result.correct, result.correct ? 'placed' : 'wrong-box');
         shapeResponse(result, drag.piece);
@@ -473,7 +473,7 @@ function renderMemory(): void {
         render();
         if (matched) chime(save.sound);
         speak([motifNames[save.locale][memorySession.cards[index]!.motif], ...(matched ? [text(save.locale, memorySession.finished ? 'finished' : 'bravo')] : memorySession.hint.length && !previous.hint.length ? [text(save.locale, 'memoryHint')] : [])]);
-    });
+    }, el => `${actionKey(el)}:turn-${memorySession!.moves}`);
     bind('#listen', () => speak([memoryView.instruction(memorySession!, save.locale)]));
     bind('#again', () => begin(state.level));
     bind('#next', () => { if (state.level < memory.levels.length) begin(state.level + 1); });

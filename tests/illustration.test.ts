@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { ids, expressions, drawList } from '../src/characters/model';
+import { ids, expressions, animations, drawList } from '../src/characters/model';
 import { characterSvg } from '../src/characters/svg';
 import { backdrop } from '../src/ui/backdrops';
 import { objectSvg, scenery } from '../src/ui/svg';
@@ -11,12 +11,15 @@ import { sceneIds } from '../src/engines/puzzle';
 import { canonicalPaintIds, validSvg, paintIds, paintReferences } from './svg-oracles';
 
 it('every guide and expression owns valid, finite paint servers in both motion modes', () => {
-    for (const id of ids) for (const expression of expressions) for (const motion of ['full', 'reduce'] as const) {
-        const a = characterSvg(id, expression, 'celebration', motion);
-        const b = characterSvg(id, expression, 'celebration', motion);
+    for (const id of ids) for (const expression of expressions) for (const animation of animations) for (const motion of ['full', 'reduce'] as const) {
+        const a = characterSvg(id, expression, animation, motion);
+        const b = characterSvg(id, expression, animation, motion);
         expect(validSvg(a)).toBe(true); expect(validSvg(b)).toBe(true);
         expect(a).not.toMatch(/NaN|undefined|Infinity|<image|<script/);
-        expect(a).toContain('<radialGradient'); expect(a).toContain('cy="218"');
+        expect(a).toContain('<radialGradient'); expect(a).toContain('cy="219"');
+        expect(new TextEncoder().encode(a).byteLength).toBeLessThanOrEqual(16_000);
+        expect(a).not.toContain('<style');
+        expect(motion === 'full' ? a.includes('<animateTransform') : !a.includes('<animate')).toBe(true);
         const allIds = [...paintIds(a), ...paintIds(b)];
         expect(new Set(allIds).size).toBe(allIds.length);
         for (const svg of [a, b]) for (const ref of paintReferences(svg)) expect(paintIds(svg)).toContain(ref);

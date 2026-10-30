@@ -1,5 +1,5 @@
 /** Ignore only the per-instance namespace, retaining local paint identity and all geometry. */
-export function canonicalPaintIds(svg: string): string { return svg.replace(/art-\d+(?=-)/g, 'art-instance'); }
+export function canonicalPaintIds(svg: string): string { return svg.replace(/(?:art-|guide)\d+(?=-)/g, 'paint-instance'); }
 
 export function validSvg(svg: string): boolean {
     const stack: string[] = [];

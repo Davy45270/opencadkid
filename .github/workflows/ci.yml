@@ -31,6 +31,7 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
+      - run: npm run check:precache
 
   e2e:
     needs: checks
@@ -62,6 +63,7 @@ jobs:
         if: steps.pw-cache.outputs.cache-hit == 'true'
         run: npx playwright install-deps chromium
       - run: npm run build
+      - run: npm run check:precache
       - run: npm run test:e2e
       - name: Rapport Playwright
         if: failure()

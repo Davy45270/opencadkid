@@ -1,6 +1,6 @@
 import { shapeSvg } from '../../src/games/formes/shapes';
 import type { Piece } from '../../src/engines/formes';
-import { expectedFills, luminance } from '../formes-oracles';
+import { expectedFills, luminance, hue } from '../formes-oracles';
 import { test, expect, media, clearSpeech } from './helpers';
 import { dragShape, prepareShapes, shapeAnswer, shapeState, solveShapes } from './formes-helpers';
 for (const [mode, level] of [['forme', 3], ['couleur', 5], ['les-deux', 6], ['taille', 8], ['trier', 10]] as const) test(`${mode}: complete round, gentle error, two-error hint, saved progress`, async ({ page }) => {
@@ -117,10 +117,13 @@ test('every drawn shape: actual bounds including stroke, size ratio, rendered pa
                 if (background !== 'rgba(0, 0, 0, 0)' && background !== 'transparent') break;
                 parent = parent.parentElement;
             }
+            const gradientId = /url\(["']?#([^"')]+)["']?\)/.exec(css.fill)?.[1];
+            const gradient = gradientId ? [...el.querySelectorAll('radialGradient, linearGradient')].find(g => g.id === gradientId) : undefined;
             const channels = (color: string): number[] => color.match(/[\d.]+/g)!.slice(0, 3).map(Number).map(c => c / 255);
             return { shape: el.getAttribute('data-shape'), size: el.getAttribute('data-size'), color: el.getAttribute('data-color')!,
                 width: (box.width + strokeWidth) * matrix.a, height: (box.height + strokeWidth) * matrix.d,
-                fill: css.fill, stroke: channels(css.stroke), background: channels(background), strokeWidth };
+                fill: css.fill, baseFill: el.getAttribute('data-fill'), gradientId,
+                stops: gradient ? [...gradient.querySelectorAll('stop')].map(stop => channels(getComputedStyle(stop).stopColor)) : [], stroke: channels(css.stroke), background: channels(background), strokeWidth };
         }));
         expect(drawings).toHaveLength(128);
         for (const d of drawings) {
@@ -128,7 +131,18 @@ test('every drawn shape: actual bounds including stroke, size ratio, rendered pa
             expect(d.height).toBeGreaterThanOrEqual(d.size === 'petit' ? 48 : 64);
             const hex = expectedFills[d.color as Piece['color']];
             const channels = hex.slice(1).match(/../g)!.map(c => parseInt(c, 16));
-            expect(d.fill).toBe(`rgb(${channels.join(', ')})`);
+            expect(d.baseFill).toBe(hex);
+            if (d.gradientId) {
+                expect(d.stops.length).toBeGreaterThanOrEqual(2);
+                const base = channels.map(c => c / 255), expectedHue = hue(base);
+                for (const stop of d.stops) {
+                    const difference = Math.abs(hue(stop) - expectedHue);
+                    expect(Math.min(difference, 360 - difference)).toBeLessThanOrEqual(12);
+                }
+                const average = d.stops.reduce((sum, stop) => sum + luminance(stop), 0) / d.stops.length;
+                expect(average / luminance(base)).toBeGreaterThanOrEqual(.85);
+                expect(average / luminance(base)).toBeLessThanOrEqual(1.15);
+            } else expect(d.fill).toBe(`rgb(${channels.join(', ')})`);
             const dark = luminance(d.stroke), light = luminance(d.background);
             expect(d.strokeWidth).toBeGreaterThanOrEqual(3);
             expect(dark).toBeLessThanOrEqual(.2);

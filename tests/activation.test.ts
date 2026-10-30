@@ -2,6 +2,7 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { acceptActivation, activationEvents, bindAction, resetActivations } from '../src/shell/activation';
 import * as compter from '../src/engines/compter';
 import * as formes from '../src/engines/formes';
+import * as memory from '../src/engines/paires';
 import * as sons from '../src/engines/sons';
 beforeEach(() => { resetActivations(); vi.useFakeTimers({ toFake: ['performance'] }); });
 afterEach(() => vi.useRealTimers());
@@ -149,4 +150,23 @@ for (const delay of [0, 205, 300]) it(`the final Continue cannot click the newly
     next.send('pointerdown', { pointerId: 2 }); next.send('pointerup', { pointerId: 2 });
     next.send('click', { pointerType: 'touch' });
     expect(level).toBe(5);
+});
+
+it('memory can reopen a card immediately in the next turn while duplicate touches stay ignored', () => {
+    let board = memory.newBoard(6, 73);
+    const buttons = board.cards.map(() => new Button());
+    const render = (): void => buttons.forEach((button, index) => {
+        bindAction(button as unknown as HTMLElement, () => {
+            board = board.mismatch ? memory.settle(board) : memory.flip(board, index);
+            render();
+        }, `card-${index}:turn-${board.moves}`);
+    });
+    const tap = (index: number): void => { buttons[index]!.send('pointerdown'); buttons[index]!.send('pointerup'); buttons[index]!.send('click'); };
+    render();
+    tap(0); tap(0); expect(board.visible).toEqual([0]);
+    const wrong = board.cards.findIndex(card => card.motif !== board.cards[0]!.motif);
+    tap(wrong); expect(board.mismatch).toBe(true);
+    const third = board.cards.findIndex((_, index) => index !== 0 && index !== wrong);
+    tap(third); tap(third); expect(board.visible).toEqual([]); expect(board.moves).toBe(1);
+    tap(0); expect(board.visible).toEqual([0]); expect(board.moves).toBe(1);
 });

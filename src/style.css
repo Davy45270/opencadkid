@@ -63,3 +63,12 @@ button:active{transform:translateY(3px);box-shadow:0 1px 0 #c7d5b7,inset 0 2px 4
 
 /* Held pieces track the finger directly, including after the paper styling pass. */
 .puzzle-piece,.puzzle-piece:active{transform:none;transition:none;box-shadow:none}
+
+/* Sorting pieces follow viewport coordinates without delayed hit rectangles. */
+.sort-zone .shape-choice,.sort-zone .sound-choice{transition:none}
+.chemin-instruction #guide{display:none}
+@media(min-width:390px) and (min-height:800px){
+.chemin-instruction{display:flex;align-items:center;gap:12px;min-height:96px;text-align:left}.chemin-instruction #guide{display:block;flex:none;width:96px;height:96px}
+.memory-play .instruction #guide,.sons-instruction #guide{width:96px;height:96px}
+.puzzle-instruction{height:96px}.puzzle-instruction #guide{width:96px;height:96px}
+}

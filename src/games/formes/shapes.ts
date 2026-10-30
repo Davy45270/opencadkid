@@ -23,5 +23,5 @@ export function name(piece: Piece, locale: Locale, generic = false, withSize = f
     return `${article}${withSize ? piece.size === 'petit' ? feminine ? 'petite ' : 'petit ' : feminine ? 'grande ' : 'grand ' : ''}${noun} ${colorNames.fr[piece.color][feminine ? 1 : 0]}`;
 }
 export function shapeSvg(piece: Piece, locale: Locale = 'fr', outline = false): string {
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-shape="${piece.shape}" data-color="${piece.color}" data-size="${piece.size}" role="img" aria-label="${name(piece, locale, false, true)}">${outline ? `<path d="${paths[piece.shape]}" fill="none" stroke="#403c39" stroke-width="3" stroke-linejoin="round"/>` : volume(`<path d="${paths[piece.shape]}" fill="${fills[piece.color]}" stroke="#403c39" stroke-width="3" stroke-linejoin="round"/>`)}</svg>`;
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" data-shape="${piece.shape}" data-color="${piece.color}" data-fill="${fills[piece.color]}" data-size="${piece.size}" role="img" aria-label="${name(piece, locale, false, true)}">${outline ? `<path d="${paths[piece.shape]}" fill="none" stroke="#403c39" stroke-width="3" stroke-linejoin="round"/>` : volume(`<path d="${paths[piece.shape]}" fill="${fills[piece.color]}" stroke="#403c39" stroke-width="3" stroke-linejoin="round"/>`, .04)}</svg>`;
 }

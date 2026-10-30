@@ -3,6 +3,8 @@ import { memoryState, prepareMemory, solveMemory } from './paires-helpers';
 import { makeRng } from '../../src/engines/rng';
 test('twenty cards, noisy fingers, double touch and rapid mismatch touches finish without scrolling', async ({ page }) => {
     await prepareMemory(page, 6);
+    if (page.viewportSize()!.width >= 390 && page.viewportSize()!.height >= 800)
+        expect((await page.locator('#guide').boundingBox())!.height).toBeGreaterThanOrEqual(96);
     const rng = makeRng(73), noise = (): number => (rng() * 2 - 1) * 10;
     const scroll = await page.evaluate(() => ({ x: scrollX, y: scrollY }));
     const tap = async (index: number, expected: 'activate' | 'ignored' = 'activate'): Promise<void> => {
