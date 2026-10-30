@@ -8,9 +8,9 @@ Jouer en ligne, sans installation, hors ligne une fois ouvert.
 
 Des petits jeux éducatifs et doux pour les enfants de **4 à 8 ans**, à jouer au doigt, surtout au téléphone. Boubou le panda, CaliRoux le panda roux, Pestouille le dragon, Tutu le singe et Lumi la licorne accompagnent les découvertes. Les dessins sont des SVG générés par le code.
 
-**Disponibles : Les paniers de Boubou, Les cartes de Lumi, Les formes de CaliRoux, Les sons de Tutu, Le puzzle de Pestouille et Le chemin de Pestouille.** Dénombrer, constituer et comparer en huit niveaux, puis jouer à la mémoire avec 2, 3, 4, 6, 8 et 10 paires et un niveau image–ombre. Lumi montre les cartes deux secondes dans les trois premiers niveaux et fait briller une paire déjà vue après des erreurs répétées. Les seize motifs SVG se distinguent par leur silhouette autant que leur couleur. Les vingt cartes tiennent sans défilement sur un téléphone de 390×844. Le français est la langue par défaut ; l’anglais est choisi automatiquement seulement si la langue du téléphone commence par `en`. Le choix des parents est mémorisé.
+**Disponibles : Les paniers de Boubou, Les cartes de Lumi, Les formes de CaliRoux, Les sons de Tutu, Le puzzle de Pestouille, Le chemin de Pestouille et Les suites de Lumi.** Dénombrer, constituer et comparer en huit niveaux, puis jouer à la mémoire avec 2, 3, 4, 6, 8 et 10 paires et un niveau image–ombre. Lumi montre les cartes deux secondes dans les trois premiers niveaux et fait briller une paire déjà vue après des erreurs répétées. Les seize motifs SVG se distinguent par leur silhouette autant que leur couleur. Les vingt cartes tiennent sans défilement sur un téléphone de 390×844. Le français est la langue par défaut ; l’anglais est choisi automatiquement seulement si la langue du téléphone commence par `en`. Le choix des parents est mémorisé.
 
-À venir : Les suites de Lumi, Le rangement de CaliRoux, Les tambours de Tutu et L’atelier de Boubou. Ces quatre jeux sont décrits dans [GAME_SPEC.md](GAME_SPEC.md), sans carte « bientôt » dans le jeu. L’apprentissage de l’heure se trouve dans l’application sœur TicTac, accessible depuis l’accueil après un contrôle parental.
+À venir : Le rangement de CaliRoux, Les tambours de Tutu et L’atelier de Boubou. Ces trois jeux sont décrits dans [GAME_SPEC.md](GAME_SPEC.md), sans carte « bientôt » dans le jeu. L’apprentissage de l’heure se trouve dans l’application sœur TicTac, accessible depuis l’accueil après un contrôle parental.
 
 ## Jouer et installer
 
@@ -31,6 +31,10 @@ La roue dentée ouvre le contrôle parental, puis la langue, la voix, les sons e
 **Le chemin de Pestouille** : huit labyrinthes parfaits, de 3×3 à 9×7. Trace au doigt jusqu’au nid, au bambou ou à l’arc-en-ciel dessiné. Un mur arrête le trait ; revenir en arrière efface une étape. On peut lever le doigt et reprendre sur le tracé. L’ampoule montre librement les trois prochaines cases. Dès le quatrième niveau, des étoiles facultatives donnent une médaille si elles sont toutes ramassées. Terminer donne toujours trois étoiles et débloque le niveau suivant ; meilleures étoiles et médailles sont sauvegardées séparément. Les flèches avancent d’une case. Les cases mesurent au moins 40 px sur un téléphone de 390×844. Aucun chrono ni compteur de fautes.
 
 La suite chemin produit `chemin-debut.png` et `chemin-fini.png` avec `CAPTURES=1 npm run test:e2e -- --project=mobile tests/e2e/chemin.spec.ts` ; exécution et revue visuelle restent à faire par l’orchestrateur.
+
+**Les suites de Lumi** : dix niveaux pour prolonger AB, AAB, ABB, ABC, AABB et ABCD, compléter un trou, placer les deux suivants dans l’ordre au toucher ou en glissant, puis faire grandir des groupes de points. Perles, fleurs et formes se distinguent toujours autrement que par la couleur. Après deux erreurs, le motif de base est entouré et Lumi le nomme à voix haute. Chaque série de six questions terminée donne des étoiles et débloque la suivante ; meilleurs scores indépendants. Éléments de 48 px et choix d’au moins 72 px. Sur 390×844, la suite tient sur deux lignes sans défilement. Le mouvement réduit supprime la pulsation de l’emplacement vide.
+
+Les captures mobiles facultatives `suites-question.png` et `suites-trou.png` sont prévues dans `tests/e2e/suites.spec.ts` (`CAPTURES=1`). Leur génération et leur revue visuelle restent à faire par l’orchestrateur.
 
 ## Captures
 

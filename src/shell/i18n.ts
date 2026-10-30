@@ -1,6 +1,7 @@
 export type Locale = 'fr' | 'en';
 export const messages = {
     fr: {
+        patternsNext: "Qu’est-ce qui vient après ?", patternsHole: "Qu’est-ce qui manque ?", patternsTwo: "À toi de continuer ! Place les deux suivants.",
         pathInstruction: "Trace le chemin de Pestouille jusqu’à l’arrivée.", pathHelp: "Montre le chemin", pathMedal: "Toutes les étoiles du chemin !",
         puzzleInstruction: "Glisse les pièces pour refaire l’image.", puzzleModel: "Voir le modèle", puzzlePiece: "Pièce", puzzleHint: "Cette pièce va ici !",
         soundsFindLetter: 'Touche la lettre du premier son.', soundsFindImage: 'Touche l’image qui commence par ce son.', soundsSort: 'Glisse les images dans la boîte de leur premier son.',
@@ -16,6 +17,7 @@ export const messages = {
         apple: 'pommes', pear: 'poires', berry: 'fraises', carrot: 'carottes', star: 'étoiles', fish: 'poissons', flower: 'fleurs', basket: 'Panier', reserve: 'Réserve', skill: 'Compter, remplir, comparer'
     },
     en: {
+        patternsNext: "What comes next?", patternsHole: "What is missing?", patternsTwo: "Your turn to continue! Place the next two.",
         pathInstruction: "Trace Pestouille’s path to the finish.", pathHelp: "Show the path", pathMedal: "Every path star collected!",
         puzzleInstruction: "Slide the pieces to rebuild the picture.", puzzleModel: "Show the picture", puzzlePiece: "Piece", puzzleHint: "This piece goes here!",
         soundsFindLetter: 'Touch the letter for the first sound.', soundsFindImage: 'Touch the picture starting with this sound.', soundsSort: 'Slide each picture into the box for its first sound.',

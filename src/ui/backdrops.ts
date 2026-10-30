@@ -8,5 +8,6 @@ export function backdrop(game: string): string {
     if (game === 'sons') drawing = '<path d="M8 100Q45 260 8 460T25 800M381 120Q348 350 385 480T365 800" fill="none" stroke="#5f8057" stroke-width="5"/>' + [12, 378, 18, 370, 10, 380].map((x, i) => `<path d="M${x} ${170 + i * 90}q-27 -46 13 -56q25 35 -13 56m0 -3l8 -40" fill="#6d915d" stroke="#486f4d" stroke-width="2"/>`).join('');
     if (game === 'puzzle') drawing = '<path d="M0 790V530h12v-18h10v18h15v260M355 790V530h12v-18h10v18h13v260" fill="#9b88ab"/><path d="M0 530L20 495L43 530M349 530L372 495L390 530" fill="#b087a6"/><path d="M12 575v24m359 -24v24M13 660v24m357 -24v24" stroke="#6a6082" stroke-width="6"/>';
     if (game === 'chemin') drawing = '<path d="M0 795Q90 744 190 800Q290 752 390 795V844H0Z" fill="#8cb17a"/><path d="M12 745l-7 -45m7 45l14 -32M376 745l10 -43m-10 43l-14 -28M32 820l-9 -38m9 38l12 -30M351 820l10 -38m-10 38l-12 -30" stroke="#658f61" stroke-width="3"/>';
+    if (game === 'suites') drawing = ['#db8b94', '#e6c472', '#91b792', '#88adcb', '#b598c6'].map((c, i) => `<path d="M${4 + i * 7} 200Q195 ${-80 + i * 20} ${386 - i * 7} 200" fill="none" stroke="${c}" stroke-width="6"/>`).join('');
     return svg(drawing, '0 0 390 844').replace('<svg ', '<svg class="game-backdrop" focusable="false" ');
 }

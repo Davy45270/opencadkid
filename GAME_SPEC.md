@@ -1,10 +1,10 @@
-# Opencadkid — game specification 0.6.0
+# Opencadkid — game specification 0.8.0
 
 Audience: ages 4–8, primarily touch phones. French first, English included. No reading is required in child play. Spoken instructions, procedural SVG pictograms, object illustrations and dot patterns convey the task. No timer, lives, punishment, advertising, purchase, account, analytics or external runtime resource. The first home gesture unlocks browser audio. Reduced motion removes shakes, bounces and decorative particles. Local speech voices are preferred; speech availability offline depends on installed device voices.
 
 ## Catalogue
 
-`compter`, `paires`, `formes`, `sons`, `puzzle` and `chemin` are implemented and present in the playable registry. Other catalogue entries remain planned.
+`compter`, `paires`, `formes`, `sons`, `puzzle`, `chemin` and `suites` are implemented and present in the playable registry. Other catalogue entries remain planned.
 
 | ID | Français | English | Guide | Skill and intended rules |
 | --- | --- | --- | --- | --- |
@@ -423,3 +423,43 @@ when preparation is called repeatedly in a viewport/level matrix.
 
 These regression suites are authored for the external runner; no test runner or
 browser was executed during this correction.
+
+
+## Patterns: Lumi’s patterns (0.8.0)
+
+Pure `src/engines/suites/` uses the common seeded Mulberry32 RNG. `generateRound(level, seed, count = 6)` returns reproducible questions. Every periodic question is checked against all compatible base motifs of periods 1–4, including nonprimitive motifs; exactly one offered item fits each missing position. The engine enumerates periods and their residue assignments; the unit and browser oracles separately enumerate concrete base motifs. Growing questions use the explicit rule of one additional dot, rather than a periodic oracle.
+
+| Level | Mode | Base motif | Choices |
+| --- | --- | --- | --- |
+| 1 | suivant | AB | 3 |
+| 2 | suivant | AAB | 3 |
+| 3 | suivant | ABB | 4 |
+| 4 | suivant | ABC | 4 |
+| 5 | suivant | AABB | 4 |
+| 6 | suivant | ABCD | 4 |
+| 7 | trou | ABC | 4 |
+| 8 | trou | AABB | 4 |
+| 9 | deux-suivants | ABC | 4 |
+| 10 | croissant | 1, 2, 3, 4… or 2, 3, 4, 5… dots | 4 |
+
+Next-item questions show at least two complete repetitions (8 or 9 visible objects); middle gaps have 12 positions with one interior hole. Two-item continuation extends a visible motif in order, letting the child build its continuation by tap or drag. The same choice palette remains available for the second item. Each symbol has a distinct silhouette: bead, triangle, square, flower, star or moon. Colours may be shared or paired with different shapes; colour alone never distinguishes symbols. Growing objects differ by their visible dot pattern and share a colour. Distractors prioritize wrong ranks and always include an outside motif. Where a two-symbol motif has four choices, two outside objects fill the palette; ABCD selects two wrong ranks and one outside object. Growing distractors show smaller quantities. Correct first-choice positions are randomly drawn, excluding a third consecutive identical position.
+
+The common six-question reward table applies, with one first-try credit only after all slots are filled without errors. Success locks answers; a separate Continue arrow advances. No error removes progress, and every completion unlocks the next level. `suitesRecords` stores independent maximum stars for levels 1–10, migrates safely from old saves, filters invalid entries and clears with common progress erasure. No next-level control appears at level ten.
+
+Lumi asks “Qu’est-ce qui vient après ?” / “What comes next?”, with separate spoken hole and two-item instructions. At the second error, the first base motif is outlined and spoken twice (shape and colour names, or dot quantities); the ear repeats this hint while active. A partial correct placement keeps a previously activated hint. Speech and synthesized chimes use the common media shell and respect saved settings and background cancellation.
+
+The shared header, guide and progress dots frame a discreet pale rainbow. A dashed empty slot pulses unless reduced motion is requested. Each sequence slot has a real 48×48 px SVG viewport; choices are 88×88 px with 68×68 px illustrations. Six slots fit a row on 390×844; every question fits at most two rows and the whole play screen fits without scrolling. Narrower widths wrap freely. `data-item`, `data-color`, `data-shape`, `data-dots`, `data-slot` and `data-missing` describe rendered objects; blank slots expose no answer. `window.__kid.state().suites` is a detached read-only observation, and `events()` journals activations. Touch uses shared activation debouncing; dragging uses shared viewport coordinates and the inclusive 24 px drop allowance. One primary pointer owns capture; cancel/lost capture discard a pending drop. Keyboard Enter/Space selects the next item.
+
+### Patterns verification authored for the orchestrator
+
+- `tests/suites.test.ts`: independent ten-level table, determinism and exhaustive period-1–4 continuation oracle for 300 seeds per level; visible repetitions, interior holes, distractors, no colour-only distinctions, position distribution, no triples or mechanical rotations. Pure state transitions, two-error hint, ordered placement, duplicate credit rejection, all reward boundaries, low-score unlocking, best-score preservation, storage migration/filtering/clearing, bilingual content and valid finite SVG.
+- `tests/e2e/suites.spec.ts`: complete sessions for all four modes, DOM-only answer oracle, mocked local speech and AudioContext, two-error hints, detached observations, exact stars, saved progress after reload, English keyboard play, silent settings and final-level controls. All levels measure actual targets, illustration viewports, painted geometry, SVG validity, phone row counts and overflow across widths 320–1280. The shared fixture rejects console/page errors. Optional mobile captures are `suites-question.png` and `suites-trou.png`.
+- `tests/e2e/suites-doigt.spec.ts`: four mobile sessions with deterministic ±10 px finger noise, accidental double taps, a cancelled drag and fourteen-step noisy ordered drops; no page scrolling. Shared fixture attaches `events()` history on failure.
+
+### Patterns mutations to try
+
+1. Change the hint threshold in `answer` from `errors >= 2` to `errors >= 3`: the unit and browser two-error checks must fail.
+2. Change the correct item to the following rank while retaining the shown sequence: the independent exhaustive motif oracle must fail.
+3. Credit first-try on each partial placement instead of only full success: the ordered-placement and exact reward checks must fail.
+
+No unit test runner, browser or E2E runner was launched while authoring these changes. The orchestrator must execute them, generate both optional captures, inspect the pale rainbow and empty-slot pulse (including reduced motion), and verify finger ergonomics on a real phone.
