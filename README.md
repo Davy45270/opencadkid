@@ -30,27 +30,19 @@ Open the online game once while connected. Use your browser's **Install app** or
 
 **Pestouille’s path** offers eight perfect mazes, from 3×3 to 9×7. Trace with a finger to reach a drawn nest, bamboo or rainbow. Walls stop the line gently; retracing erases one step. Lift and resume anywhere on your line. The bulb shows the next three cells, freely. From level four, optional stars reward exploration with a medal when all are collected. Finishing always gives three stars and unlocks the next maze; best stars and medals stay saved separately. Arrow keys move one cell. Cells measure at least 40 px on a 390×844 phone. No timer or mistake counter.
 
-The chemin suite produces `chemin-debut.png` and `chemin-fini.png` with `CAPTURES=1 npm run test:e2e -- --project=mobile tests/e2e/chemin.spec.ts`; browser execution and visual review remain pending.
-
 **Lumi’s patterns** offers ten levels: extend AB, AAB, ABB, ABC, AABB and ABCD motifs, fill a middle gap, place the next two objects in order by touch or drag, then grow dot groups by one. Beads, flowers and outlined shapes always differ beyond colour. Two errors outline the base motif and Lumi names it aloud. Every completed six-question round earns stars and unlocks the next level; best stars are saved separately. Illustrations measure 48 px and choices at least 72 px. On a 390×844 phone the sequence fits two rows without scrolling. Reduced motion removes the gentle empty-slot pulse.
-
-Optional mobile captures `suites-question.png` and `suites-trou.png` are authored in `tests/e2e/suites.spec.ts` (`CAPTURES=1`). Browser execution and visual review remain for the orchestrator.
 
 ## Screenshots
 
-Screenshots are produced by the optional mobile capture suite; they are not generated during source authoring. Run `CAPTURES=1 npm run test:e2e -- --project=mobile tests/e2e/captures.spec.ts` on a machine authorized to run browsers after building.
+Phone screenshots (390×844), taken from the automated test run of this version.
 
-![French home](docs/captures/accueil-fr.png)
-![English home](docs/captures/accueil-en.png)
-![Count objects](docs/captures/compter-combien.png)
-![Fill a basket](docs/captures/compter-remplir.png)
-![Completed series](docs/captures/compter-etoiles.png)
-![Lumi’s cards](docs/captures/paires-plateau.png)
-![Memory completion](docs/captures/paires-fin.png)
-
-The puzzle suite produces `puzzle-debut.png` and `puzzle-fini.png` with `CAPTURES=1 npm run test:e2e -- --project=mobile tests/e2e/puzzle.spec.ts`. These captures await browser execution and visual review.
-
-The optional capture suite also produces `formes-question.png` and `formes-trier.png` in `docs/captures/`.
+| | |
+|---|---|
+| <img src="docs/captures/accueil-fr.png" alt="Home (French)" width="240"><br>Home (French) | <img src="docs/captures/accueil-en.png" alt="Home (English)" width="240"><br>Home (English) |
+| <img src="docs/captures/compter-combien.png" alt="Boubou's baskets: how many?" width="240"><br>Boubou's baskets: how many? | <img src="docs/captures/compter-remplir.png" alt="Boubou's baskets: fill the basket" width="240"><br>Boubou's baskets: fill the basket |
+| <img src="docs/captures/paires-plateau.png" alt="Lumi's cards" width="240"><br>Lumi's cards | <img src="docs/captures/formes-trier.png" alt="CaliRoux's shapes: sort by colour" width="240"><br>CaliRoux's shapes: sort by colour |
+| <img src="docs/captures/sons-image-lettre.png" alt="Tutu's sounds" width="240"><br>Tutu's sounds | <img src="docs/captures/puzzle-chateau.png" alt="Pestouille's puzzle" width="240"><br>Pestouille's puzzle |
+| <img src="docs/captures/chemin-prairie.png" alt="Pestouille's path" width="240"><br>Pestouille's path | <img src="docs/captures/compter-etoiles.png" alt="End of a series: always rewarded" width="240"><br>End of a series: always rewarded |
 
 ## Develop
 

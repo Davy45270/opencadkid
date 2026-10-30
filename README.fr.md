@@ -30,27 +30,19 @@ La roue dentée ouvre le contrôle parental, puis la langue, la voix, les sons e
 
 **Le chemin de Pestouille** : huit labyrinthes parfaits, de 3×3 à 9×7. Trace au doigt jusqu’au nid, au bambou ou à l’arc-en-ciel dessiné. Un mur arrête le trait ; revenir en arrière efface une étape. On peut lever le doigt et reprendre sur le tracé. L’ampoule montre librement les trois prochaines cases. Dès le quatrième niveau, des étoiles facultatives donnent une médaille si elles sont toutes ramassées. Terminer donne toujours trois étoiles et débloque le niveau suivant ; meilleures étoiles et médailles sont sauvegardées séparément. Les flèches avancent d’une case. Les cases mesurent au moins 40 px sur un téléphone de 390×844. Aucun chrono ni compteur de fautes.
 
-La suite chemin produit `chemin-debut.png` et `chemin-fini.png` avec `CAPTURES=1 npm run test:e2e -- --project=mobile tests/e2e/chemin.spec.ts` ; exécution et revue visuelle restent à faire par l’orchestrateur.
-
 **Les suites de Lumi** : dix niveaux pour prolonger AB, AAB, ABB, ABC, AABB et ABCD, compléter un trou, placer les deux suivants dans l’ordre au toucher ou en glissant, puis faire grandir des groupes de points. Perles, fleurs et formes se distinguent toujours autrement que par la couleur. Après deux erreurs, le motif de base est entouré et Lumi le nomme à voix haute. Chaque série de six questions terminée donne des étoiles et débloque la suivante ; meilleurs scores indépendants. Éléments de 48 px et choix d’au moins 72 px. Sur 390×844, la suite tient sur deux lignes sans défilement. Le mouvement réduit supprime la pulsation de l’emplacement vide.
-
-Les captures mobiles facultatives `suites-question.png` et `suites-trou.png` sont prévues dans `tests/e2e/suites.spec.ts` (`CAPTURES=1`). Leur génération et leur revue visuelle restent à faire par l’orchestrateur.
 
 ## Captures
 
-Les captures seront créées par la suite mobile facultative, après compilation, sur une machine autorisée à lancer les navigateurs : `CAPTURES=1 npm run test:e2e -- --project=mobile tests/e2e/captures.spec.ts`. Elles ne sont pas générées pendant cette passe de rédaction des sources.
+Captures sur téléphone (390×844), prises pendant les tests automatiques de cette version.
 
-![Accueil français](docs/captures/accueil-fr.png)
-![Accueil anglais](docs/captures/accueil-en.png)
-![Dénombrer](docs/captures/compter-combien.png)
-![Remplir](docs/captures/compter-remplir.png)
-![Étoiles](docs/captures/compter-etoiles.png)
-![Cartes de Lumi](docs/captures/paires-plateau.png)
-![Fin des paires](docs/captures/paires-fin.png)
-
-La suite puzzle produit `puzzle-debut.png` et `puzzle-fini.png` avec `CAPTURES=1 npm run test:e2e -- --project=mobile tests/e2e/puzzle.spec.ts`. Ces captures attendent une exécution et une revue visuelle par l’orchestrateur.
-
-La suite facultative produit aussi `formes-question.png` et `formes-trier.png` dans `docs/captures/`.
+| | |
+|---|---|
+| <img src="docs/captures/accueil-fr.png" alt="Accueil (français)" width="240"><br>Accueil (français) | <img src="docs/captures/accueil-en.png" alt="Accueil (anglais)" width="240"><br>Accueil (anglais) |
+| <img src="docs/captures/compter-combien.png" alt="Les paniers de Boubou : combien ?" width="240"><br>Les paniers de Boubou : combien ? | <img src="docs/captures/compter-remplir.png" alt="Les paniers de Boubou : remplir le panier" width="240"><br>Les paniers de Boubou : remplir le panier |
+| <img src="docs/captures/paires-plateau.png" alt="Les cartes de Lumi" width="240"><br>Les cartes de Lumi | <img src="docs/captures/formes-trier.png" alt="Les formes de CaliRoux : trier par couleur" width="240"><br>Les formes de CaliRoux : trier par couleur |
+| <img src="docs/captures/sons-image-lettre.png" alt="Les sons de Tutu" width="240"><br>Les sons de Tutu | <img src="docs/captures/puzzle-chateau.png" alt="Le puzzle de Pestouille" width="240"><br>Le puzzle de Pestouille |
+| <img src="docs/captures/chemin-prairie.png" alt="Le chemin de Pestouille" width="240"><br>Le chemin de Pestouille | <img src="docs/captures/compter-etoiles.png" alt="Fin de série : toujours récompensée" width="240"><br>Fin de série : toujours récompensée |
 
 ## Développer
 
