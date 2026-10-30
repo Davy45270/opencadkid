@@ -2,7 +2,7 @@ import type { BrowserContext, Page } from '@playwright/test';
 import { expect, prepare, touchFrame } from './helpers';
 export interface CheminProbe { game: string; level: number; chemin: { columns: number; rows: number; grid: string[][]; trace: number[]; solution: number[]; bonuses: number[]; collected: number[]; finished: boolean } }
 export const cheminState = (page: Page): Promise<CheminProbe> => page.evaluate(() => (window as unknown as { __kid: { state: () => CheminProbe } }).__kid.state());
-export async function prepareChemin(page: Page, level = 1, locale = 'fr'): Promise<void> {
+export async function prepareChemin(page: Page, level = 1, locale = 'fr', seed?: number): Promise<void> {
     await prepare(page);
     await page.evaluate(({ level, locale }) => {
         const save = JSON.parse(localStorage.getItem('opencadkid.v1')!) as { locale: string; cheminRecords: Record<number, number> };
@@ -10,7 +10,17 @@ export async function prepareChemin(page: Page, level = 1, locale = 'fr'): Promi
         for (let i = 1; i < level; i++) save.cheminRecords[i] = 3;
         localStorage.setItem('opencadkid.v1', JSON.stringify(save));
     }, { level, locale });
-    await page.reload(); await page.locator('[data-game="chemin"]').click(); await page.locator(`[data-level="${level}"]`).click();
+    await page.reload(); await page.locator('[data-game="chemin"]').click();
+    if (seed !== undefined) await page.evaluate(seed => {
+        // Override only the next seed request; restore the native generator immediately.
+        const original = crypto.getRandomValues.bind(crypto);
+        crypto.getRandomValues = <T extends ArrayBufferView<ArrayBuffer>>(array: T): T => {
+            crypto.getRandomValues = original;
+            if (array instanceof Uint32Array && array.length === 1) { array[0] = seed; return array; }
+            return original(array);
+        };
+    }, seed);
+    await page.locator(`[data-level="${level}"]`).click();
 }
 export async function mazeDom(page: Page): Promise<{ columns: number; rows: number; start: number; goal: number; edges: Record<number, number[]> }> {
     return page.locator('.chemin-zone>svg').evaluate(svg => {

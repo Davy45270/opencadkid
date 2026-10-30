@@ -7,6 +7,9 @@ import { objectSvg, scenery } from '../src/ui/svg';
 import { shapeSvg } from '../src/games/formes/shapes';
 import { motifSvg } from '../src/games/paires/motifs';
 import { sceneSvg } from '../src/games/puzzle/scenes';
+import { home } from '../src/ui/home';
+import { fresh } from '../src/shell/storage';
+import { volume } from '../src/ui/illustration';
 import { sceneIds } from '../src/engines/puzzle';
 import { canonicalPaintIds, validSvg, paintIds, paintReferences } from './svg-oracles';
 
@@ -35,6 +38,25 @@ it('all six repeated puzzle scenes keep their nested character paint servers iso
         expect(validSvg(svg)).toBe(true);
         for (const ref of paintReferences(svg)) expect(paintIds(svg)).toContain(ref);
     }
+});
+it('complete scenes and rendered home contain no duplicate IDs in each document', () => {
+    const documents = [...sceneIds.map(scene => sceneSvg(scene)), home(fresh()), home(fresh())];
+    for (const document of documents) {
+        const ids = paintIds(document);
+        expect(new Set(ids).size).toBe(ids.length);
+        for (const reference of paintReferences(document)) expect(ids).toContain(reference);
+    }
+});
+it('volume preserves embedded characters byte for byte and isolates each call', () => {
+    const character = characterSvg('dragon', 'joie', 'repos', 'reduce');
+    const nested = `<svg><g>${character}</g></svg>`;
+    const body = `<circle fill="#dd8844"/>${nested}<path fill="#dd8844"/>`;
+    const a = volume(body), b = volume(body);
+    expect(a).toContain(nested); expect(b).toContain(nested);
+    expect(a.match(/style="fill:url/g)).toHaveLength(2);
+    const outerIds = [a, b].flatMap(svg => paintIds(svg.replace(nested, '')));
+    expect(outerIds).toHaveLength(2);
+    expect(new Set(outerIds).size).toBe(outerIds.length);
 });
 it('shaded objects retain exact silhouette geometry and outlines stay unpainted', () => {
     const shape = { shape: 'carre', color: 'rouge', size: 'grand' } as const;

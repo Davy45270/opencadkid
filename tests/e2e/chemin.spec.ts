@@ -71,12 +71,31 @@ test('all levels: real cells, painted strokes, header targets, valid SVG and zer
     }
 });
 test('grabbing earlier trace, cancellation and resumed pointer preserve the drawing', async ({ page, context }) => {
-    await prepareChemin(page, 4); const path = await mazeRoute(page);
-    await touchTrace(page, context, path.slice(0, 3));
+    await prepareChemin(page, 4);
+    let path = await mazeRoute(page);
+    const findWall = async (): Promise<number | undefined> => {
+        const dom = await mazeDom(page);
+        // Leave two later cells: grabbing this cell must grab an earlier trace,
+        // and the initial drawing must remain unfinished.
+        return path.slice(0, -2).find(cell => {
+            const x = cell % dom.columns, y = Math.floor(cell / dom.columns);
+            return dom.edges[cell]!.length < Number(x > 0) + Number(x + 1 < dom.columns) + Number(y > 0) + Number(y + 1 < dom.rows);
+        });
+    };
+    let wallCell = await findWall();
+    if (wallCell === undefined) {
+        // Level 4, seed 18 has an interior wall on an earlier solution cell;
+        // tests/chemin.test.ts locks down this fallback fixture.
+        await prepareChemin(page, 4, 'fr', 18);
+        path = await mazeRoute(page); wallCell = await findWall();
+    }
+    expect(wallCell).toBeDefined();
+    const wallIndex = path.indexOf(wallCell!);
+    await touchTrace(page, context, path.slice(0, Math.max(3, wallIndex + 2)));
     const longer = (await cheminState(page)).chemin.trace;
-    await touchTrace(page, context, [path[0]!, await wallNeighbour(page, path[0]!)]);
+    await touchTrace(page, context, [wallCell!, await wallNeighbour(page, wallCell!)]);
     expect((await cheminState(page)).chemin.trace).toEqual(longer);
-    await touchTrace(page, context, [path[1]!, path[0]!]);
+    await touchTrace(page, context, [...longer].reverse());
     expect((await cheminState(page)).chemin.trace).toEqual([path[0]]);
     await touchTrace(page, context, path.slice(0, 2));
     const original = (await cheminState(page)).chemin.trace;

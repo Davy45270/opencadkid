@@ -206,3 +206,22 @@ it('fast exits retain crossed cells to the border or first wall without changing
     ] as const) expect(segmentCells(f, a, b)).toEqual(cells);
     for (const b of [{ x: NaN, y: 0 }, { x: 0, y: Infinity }]) expect(interpolate(f, { x: .5, y: .5 }, b)).toBe(f);
 });
+
+// Fallback for the DOM-only earlier-trace wall search in the pointer E2E.
+it('level 4 seed 18 has an interior wall before the last two solution cells', () => {
+    const s = newMaze(4, 18), path = solve(s);
+    const cell = path.slice(0, -2).find(cell => {
+        const x = cell % s.columns, y = Math.floor(cell / s.columns);
+        return neighbours(s, cell).length < Number(x > 0) + Number(x + 1 < s.columns) + Number(y > 0) + Number(y + 1 < s.rows);
+    });
+    expect(cell).toBeDefined();
+    const blocked = Array.from({ length: s.grid.length }, (_, n) => n).find(n =>
+        Math.abs(n % s.columns - cell! % s.columns) + Math.abs(Math.floor(n / s.columns) - Math.floor(cell! / s.columns)) === 1 && !neighbours(s, cell!).includes(n));
+    expect(blocked).toBeDefined();
+    const trace = path.slice(0, Math.max(3, path.indexOf(cell!) + 2));
+    expect(trace.indexOf(cell!)).toBeLessThan(trace.length - 1);
+    expect(trace.length).toBeLessThan(path.length);
+    let drawn = s;
+    for (const step of path.slice(1, path.indexOf(cell!) + 1)) drawn = extend(drawn, step);
+    expect(extend(drawn, blocked!)).toBe(drawn);
+});

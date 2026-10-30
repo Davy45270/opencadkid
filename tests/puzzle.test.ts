@@ -155,8 +155,10 @@ it('rendered classic paths have visible heads, narrow necks and complementary cu
 });
 it('each scene contains the requested characters, including both picnic friends', () => {
     const subjects = { castle: ['dragon'], bamboo: ['panda'], rainbow: ['licorne'], jungle: ['singe'], autumn: ['pandaroux'], picnic: ['panda', 'dragon'] } as const;
-    for (const scene of sceneIds) for (const subject of subjects[scene]) {
-        expect(canonicalPaintIds(sceneSvg(scene))).toContain(canonicalPaintIds(characterSvg(subject, 'joie', 'repos', 'reduce').replace('<svg ', '<svg style="width:240px;height:240px" ')));
+    for (const scene of sceneIds) {
+        const embedded = sceneSvg(scene).match(/<svg style="width:240px;height:240px" [\s\S]*?<\/svg>/g) ?? [];
+        const expected = subjects[scene].map(subject => characterSvg(subject, 'joie', 'repos', 'reduce').replace('<svg ', '<svg style="width:240px;height:240px" '));
+        expect(embedded.map(canonicalPaintIds)).toEqual(expected.map(canonicalPaintIds));
     }
 });
 it('completion renders the celebration expression and pose in both motion preferences', () => {
