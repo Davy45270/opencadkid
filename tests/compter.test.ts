@@ -1,6 +1,12 @@
 import { expect, it } from 'vitest';
-import { levels, generateRound, layoutObjects, OBJECT_DIAMETER, start, answer, advance, stars, complete, isUnlocked, moveObject } from '../src/engines/compter';
-for (const level of levels) it(`level ${level.id}: all rules over 300 seeds`, () => {
+import { generateRound, layoutObjects, OBJECT_DIAMETER, start, answer, advance, stars, complete, isUnlocked, moveObject } from '../src/engines/compter';
+const expectedLevels = [
+    { id: 1, mode: 'combien', max: 3 }, { id: 2, mode: 'combien', max: 5 },
+    { id: 3, mode: 'combien', max: 10 }, { id: 4, mode: 'remplir', max: 5 },
+    { id: 5, mode: 'remplir', max: 10 }, { id: 6, mode: 'plus', max: 5, comparison: 'more' },
+    { id: 7, mode: 'plus', max: 10, comparison: 'more' }, { id: 8, mode: 'plus', max: 10, comparison: 'less' }
+];
+for (const level of expectedLevels) it(`level ${level.id}: all rules over 300 seeds`, () => {
     const failures: string[] = [];
     for (let seed = 0; seed < 300; seed++) {
         const round = generateRound(level.id, seed);
@@ -82,4 +88,14 @@ it('finishing unlocks the next level even with errors; records never decrease', 
 });
 it('invalid levels and impossible layouts fail explicitly', () => {
     expect(() => generateRound(0, 1)).toThrow(); expect(() => layoutObjects(10, 40, 40, 1)).toThrow();
+});
+
+for (const level of [1, 2, 3]) it(`level ${level}: random positions avoid triples and periodic rotation over 300 seeds`, () => {
+    let rotations = 0;
+    for (let seed = 0; seed < 300; seed++) {
+        const positions = generateRound(level, seed).map(q => q.choices.indexOf(q.answer));
+        for (let i = 2; i < positions.length; i++) expect(positions.slice(i - 2, i + 1).every(p => p === positions[i])).toBe(false);
+        if (positions.slice(1).every((p, i) => p === (positions[i]! + 1) % 3)) rotations++;
+    }
+    expect(rotations / 300).toBeLessThan(.05);
 });

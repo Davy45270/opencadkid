@@ -63,15 +63,24 @@ function respond(choice: number, element: HTMLElement): void {
 }
 function showHint(): void {
     const q = session!.questions[session!.index]!;
-    const scope = q.mode === 'plus' ? app.querySelector(`[data-answer="${q.answer}"]`) : q.mode === 'remplir' ? app.querySelector('.fill-zone') : app.querySelector('.objects');
-    const items = [...(scope?.querySelectorAll<HTMLElement>('[data-object], .token') ?? [])];
-    const n = q.mode === 'plus' ? q.answer === 0 ? q.left : q.right : q.target;
+    const scope = q.mode === 'plus' ? app.querySelector(`[data-answer="${q.answer}"]`) : app.querySelector('.objects');
+    const basket = [...app.querySelectorAll<HTMLElement>('#basket .token')];
+    const reserve = [...app.querySelectorAll<HTMLElement>('#reserve .token')];
+    const items = q.mode === 'remplir'
+        ? [...basket, ...reserve.slice(0, Math.max(0, q.target - basket.length))]
+        : [...(scope?.querySelectorAll<HTMLElement>('[data-object]') ?? [])];
+    const n = q.mode === 'remplir' ? Math.max(q.target, basket.length) : q.mode === 'plus' ? q.answer === 0 ? q.left : q.right : q.target;
     for (let i = 0; i < n; i++) timers.push(setTimeout(() => {
         items.forEach(el => el.classList.remove('counting'));
         items[i]?.classList.add('counting');
         app.querySelector('.instruction-pic')?.classList.add('counting');
         speak([String(i + 1)]);
     }, 1100 + i * 850));
+    if (q.mode === 'remplir' && basket.length > q.target) timers.push(setTimeout(() => {
+        items.forEach(el => el.classList.remove('counting'));
+        basket.slice(q.target).forEach(el => el.classList.add('counting'));
+        speak([save.locale === 'fr' ? `${basket.length - q.target} en trop` : `${basket.length - q.target} too many`]);
+    }, 1100 + n * 850));
 }
 function gate(destination: 'parents' | 'tictac'): void {
     cancel(); screen = 'gate';
@@ -117,12 +126,12 @@ app.addEventListener('pointerup', event => {
     if (g.moved && !end?.closest(g.area === 'reserve' ? '#basket' : '#reserve')) return;
     if (performance.now() - lastMove < 180) return;
     lastMove = performance.now();
-    if (session) { session = moveObject(session, g.area === 'reserve' ? 1 : -1); render(); }
+    if (session) { session = moveObject(session, g.area === 'reserve' ? 1 : -1); render(); if (hint) showHint(); }
 });
 for (const name of ['pointercancel', 'lostpointercapture']) app.addEventListener(name, () => { gesture = undefined; });
 app.addEventListener('keydown', event => {
     const token = (event.target as Element).closest('.token');
-    if (token && (event.key === 'Enter' || event.key === ' ') && session) { event.preventDefault(); session = moveObject(session, token.hasAttribute('data-reserve') ? 1 : -1); render(); }
+    if (token && (event.key === 'Enter' || event.key === ' ') && session) { event.preventDefault(); session = moveObject(session, token.hasAttribute('data-reserve') ? 1 : -1); render(); if (hint) showHint(); }
 });
 document.addEventListener('pointerdown', () => { unlockSpeech(); if (save.sound) unlockSound(); }, { once: true, capture: true });
 document.addEventListener('visibilitychange', () => { if (document.hidden) { cancel(); stopSound(); } else if (save.sound) unlockSound(); });

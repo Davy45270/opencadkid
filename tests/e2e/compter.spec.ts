@@ -1,16 +1,17 @@
-import { test, expect, prepare, state, solveRound, solveQuestion } from './helpers';
-for (const [mode, level] of [['combien', 1], ['remplir', 4], ['plus', 6]] as const) test(`${mode}: a complete series, stored stars and next level`, async ({ page }) => {
-    await prepare(page, level); expect((await state(page)).question!.mode).toBe(mode);
-    for (const r of (await state(page)).targets) { expect(r.width).toBeGreaterThanOrEqual(48); expect(r.height).toBeGreaterThanOrEqual(48); }
+import { test, expect, prepare, state, solveRound, solveQuestion, visibleAnswer } from './helpers';
+for (const [mode, level] of [['combien', 1], ['remplir', 4], ['plus', 6], ['moins', 8]] as const) test(`${mode}: a complete series, stored stars and next level`, async ({ page }) => {
+    await prepare(page, level); expect((await state(page)).question!.mode).toBe(mode === 'moins' ? 'plus' : mode);
+    for (const r of (await state(page)).targets) { const min = r.id.startsWith('answer-') || r.id === 'check' ? 72 : 48; expect(r.width).toBeGreaterThanOrEqual(min); expect(r.height).toBeGreaterThanOrEqual(min); }
     await solveRound(page); await expect(page.locator('.stars')).toHaveAttribute('aria-label', '3 étoiles');
     await page.locator('#back').click(); await page.reload();
     await page.locator('[data-game]').click();
     await expect(page.locator(`[data-level="${level}"]`)).toContainText('★★★');
-    await expect(page.locator(`[data-level="${level + 1}"]`)).toBeEnabled();
+    if (level < 8) await expect(page.locator(`[data-level="${level + 1}"]`)).toBeEnabled();
 });
 test('two mistakes encourage, retain the same question, and count a visual hint', async ({ page }) => {
     await prepare(page); const initial = await state(page), q = initial.question!;
-    const wrong = q.choices.find(n => n !== q.answer)!;
+    const correct = await visibleAnswer(page);
+    const wrong = q.choices.find(n => n !== correct)!;
     await page.locator(`[data-answer="${wrong}"]`).click();
     await expect(page.locator('#feedback')).toHaveText('Essaie encore !');
     expect((await state(page)).index).toBe(0); await expect(page.locator('.hint')).toHaveCount(0);
@@ -23,7 +24,8 @@ test('a completed low-score series still unlocks the next level', async ({ page 
     await prepare(page);
     for (let i = 0; i < 6; i++) {
         const q = (await state(page)).question!;
-        await page.locator(`[data-answer="${q.choices.find(n => n !== q.answer)!}"]`).click();
+        const correct = await visibleAnswer(page);
+        await page.locator(`[data-answer="${q.choices.find(n => n !== correct)!}"]`).click();
         await solveQuestion(page);
     }
     await expect(page.locator('.stars')).toHaveAttribute('aria-label', '1 étoiles');

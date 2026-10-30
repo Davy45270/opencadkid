@@ -1,4 +1,4 @@
-import { test, expect, prepare, state, type Target } from './helpers';
+import { test, expect, prepare, state, visibleAnswer, type Target } from './helpers';
 import { makeRng } from '../../src/engines/rng';
 for (const level of [1, 4, 6]) test(`noisy finger series at level ${level}, including drag and accidental double tap`, async ({ page, context }) => {
     await prepare(page, level);
@@ -34,7 +34,7 @@ for (const level of [1, 4, 6]) test(`noisy finger series at level ${level}, incl
             }
             await tap('check');
         } else {
-            const r = await target(`answer-${q.answer}`);
+            const r = await target(`answer-${await visibleAnswer(page)}`);
             await page.touchscreen.tap(r.x + r.width / 2 + noise(), r.y + r.height / 2 + noise());
             if (!doubled) { await page.touchscreen.tap(r.x + r.width / 2, r.y + r.height / 2); doubled = true; }
         }

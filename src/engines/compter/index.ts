@@ -20,7 +20,7 @@ export function generateRound(level: number, seed: number, count = 6): Question[
     const rng = makeRng(seed);
     const integer = (max: number): number => 1 + Math.floor(rng() * max);
     const round: Question[] = [];
-    const offset = Math.floor(rng() * 3);
+    const positions: number[] = [];
     for (let index = 0; index < count; index++) {
         let target = integer(spec.max);
         const previous = round.at(-1);
@@ -31,7 +31,10 @@ export function generateRound(level: number, seed: number, count = 6): Question[
         const distractors = [...new Set(candidates)].slice(0, 2);
         // max is at least three; near neighbours always supply two distractors.
         const choices = [...distractors];
-        choices.splice((index + offset) % 3, 0, target);
+        const allowed = [0, 1, 2].filter(position => !(positions.at(-1) === position && positions.at(-2) === position));
+        const position = allowed[Math.floor(rng() * allowed.length)]!;
+        positions.push(position);
+        choices.splice(position, 0, target);
         const left = target;
         let right = integer(spec.max);
         if (right === left) right = right % spec.max + 1;
