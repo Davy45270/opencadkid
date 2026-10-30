@@ -49,7 +49,8 @@ export function generateRound(level: number, seed: number, count = 6): Question[
         const growing = spec.mode === 'croissant';
         const first = 1 + Math.floor(rng() * 2);
         const dotItem = (dots: number): Item => ({ shape: 'points', color: palette[0]!, dots });
-        const length = growing ? 4 : spec.mode === 'trou' ? 12 : Math.ceil(8 / pattern.length) * pattern.length;
+        // Stop at any motif residue after at least two full repetitions.
+        const length = growing ? 4 : spec.mode === 'trou' ? 12 : Math.ceil(8 / pattern.length) * pattern.length + (spec.mode === 'suivant' ? Math.floor(rng() * pattern.length) : 0);
         const sequence: (Item | null)[] = Array.from({ length }, (_, i) => growing ? dotItem(first + i) : pattern[i % pattern.length]!);
         const slots = spec.mode === 'trou' ? [4 + Math.floor(rng() * 4)] : Array.from({ length: spec.mode === 'deux-suivants' ? 2 : 1 }, (_, i) => length + i);
         const targets = slots.map(i => growing ? dotItem(first + i) : pattern[i % pattern.length]!);
@@ -58,7 +59,7 @@ export function generateRound(level: number, seed: number, count = 6): Question[
         // a second outside item because duplicate choices would be ambiguous.
         const unique = [...new Map(pattern.map(p => [key(p), p])).values()];
         const outside = items.filter(p => !unique.some(u => key(u) === key(p)));
-        let choices = growing ? [dotItem(first + length - 1), dotItem(first + length - 2), dotItem(first + length - 3)] : [...shuffle(unique.filter(p => key(p) !== key(targets[0]!)), rng).slice(0, spec.choices - 2), ...outside];
+        let choices = growing ? [dotItem(first + length - 1), dotItem(first + length + 1), dotItem(first + length + 2)] : [...shuffle(unique.filter(p => key(p) !== key(targets[0]!)), rng).slice(0, spec.choices - 2), ...outside];
         choices = choices.slice(0, spec.choices - 1);
         const allowed = Array.from({ length: spec.choices }, (_, i) => i).filter(i => !(positions.at(-1) === i && positions.at(-2) === i));
         const position = allowed[Math.floor(rng() * allowed.length)]!;

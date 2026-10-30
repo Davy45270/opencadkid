@@ -19,7 +19,9 @@ const paths = {
 };
 export function name(item: Item, locale: Locale): string { return item.shape === 'points' ? `${item.dots} ${shapeNames[locale].points}` : `${shapeNames[locale][item.shape]}, ${colorNames[locale][item.color]}`; }
 export function itemSvg(item: Item, locale: Locale = 'fr'): string {
-    const body = item.shape === 'points' ? Array.from({ length: item.dots }, (_, i) => `<circle cx="${12 + i % 3 * 20}" cy="${item.dots <= 3 ? 32 : 18 + Math.floor(i / 3) * 27}" r="7" fill="${fills[item.color]}" stroke="#354e41" stroke-width="2"/>`).join('') : `<path d="${paths[item.shape]}" fill="${fills[item.color]}" fill-rule="evenodd" stroke="#354e41" stroke-width="2" stroke-linejoin="round"/>`;
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 -4 72 72" role="img" aria-label="${name(item, locale)}">${volume(body)}</svg>`;
+    // Diagonal first pair keeps even two dots legible in both dimensions.
+    // The single dot fills the same visual area as the other silhouettes.
+    const body = item.shape === 'points' ? Array.from({ length: item.dots }, (_, i) => `<circle cx="${item.dots === 1 ? 32 : [10, 54, 54, 10, 32, 32, 10, 54][i]}" cy="${item.dots === 1 ? 32 : [10, 54, 10, 54, 32, 10, 32, 32][i]}" r="${item.dots === 1 ? 26 : 7}" fill="${fills[item.color]}" stroke="#354e41" stroke-width="2"/>`).join('') : `<path d="${paths[item.shape]}" fill="${fills[item.color]}" fill-rule="evenodd" stroke="#354e41" stroke-width="2" stroke-linejoin="round"/>`;
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="1 1 62 62" role="img" aria-label="${name(item, locale)}">${volume(body)}</svg>`;
 }
 export const pictogram = itemSvg({ shape: 'fleur', color: 'violet', dots: 0 });

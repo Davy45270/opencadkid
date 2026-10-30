@@ -150,3 +150,78 @@ it('independent saved records migrate, filter, round-trip and clear', () => {
     expect(readSave(port).suitesRecords).toEqual({}); expect(readSave(port).records).toEqual({ 1: 2 });
     expect(fresh().suitesRecords).toEqual({});
 });
+
+it('next ranks cover every motif residue over 300 seeds without a first-item shortcut', () => {
+    for (const [index, [mode, motif]] of table.entries()) {
+        if (mode !== 'suivant') continue;
+        const ranks = Array<number>(motif.length).fill(0), firstRanks = [...ranks];
+        for (let seed = 0; seed < 300; seed++) {
+            for (const [n, q] of generateRound(index + 1, seed).entries()) {
+                // Read the visible length, independently of pattern and declared answers.
+                const visible = q.sequence.findIndex(p => p === null);
+                const rank = visible % motif.length;
+                ranks[rank]!++; if (n === 0) firstRanks[rank]!++;
+                const candidates = possibilities(q, visible);
+                expect(candidates).toHaveLength(1);
+                expect(identity(q.choices[candidates[0]!]!)).toBe(identity(q.sequence[rank]!));
+            }
+        }
+        for (const count of ranks) expect(count / 1800).toBeGreaterThanOrEqual(.15);
+        for (const count of firstRanks) expect(count / 300).toBeGreaterThanOrEqual(.15);
+        expect(ranks.slice(1).reduce((a, b) => a + b, 0)).toBeGreaterThan(0);
+    }
+}, 30_000);
+it('growing choices straddle the independently inferred answer on 300 seeds', () => {
+    let largest = 0, questions = 0;
+    for (let seed = 0; seed < 300; seed++) for (const q of generateRound(10, seed)) {
+        const possible = possibilities(q, q.sequence.findIndex(p => p === null));
+        expect(possible).toHaveLength(1);
+        const target = q.choices[possible[0]!]!.dots;
+        const distractors = q.choices.filter((_, i) => i !== possible[0]).map(p => p.dots);
+        expect(distractors.some(n => n < target)).toBe(true);
+        expect(distractors.some(n => n > target)).toBe(true);
+        largest += Number(distractors.every(n => n < target)); questions++;
+    }
+    expect(largest / questions).toBeLessThanOrEqual(.4);
+});
+it('exact French and English object vocabulary and rendered descriptive attributes', () => {
+    const vocabulary = {
+        fr: { colors: ['rouge', 'bleu', 'jaune', 'vert', 'violet', 'orange'], shapes: ['perle', 'triangle', 'carré', 'fleur', 'étoile', 'lune', 'points'] },
+        en: { colors: ['red', 'blue', 'yellow', 'green', 'purple', 'orange'], shapes: ['bead', 'triangle', 'square', 'flower', 'star', 'moon', 'dots'] }
+    };
+    for (const locale of ['fr', 'en'] as const) {
+        expect(Object.values(colorNames[locale])).toEqual(vocabulary[locale].colors);
+        expect(Object.values(shapeNames[locale])).toEqual(vocabulary[locale].shapes);
+        for (const [shapeIndex, shape] of (['perle', 'triangle', 'carre', 'fleur', 'etoile', 'lune'] as const).entries()) {
+            for (const [colorIndex, color] of (['rouge', 'bleu', 'jaune', 'vert', 'violet', 'orange'] as const).entries()) {
+                const label = `${vocabulary[locale].shapes[shapeIndex]}, ${vocabulary[locale].colors[colorIndex]}`;
+                expect(name({ shape, color, dots: 0 }, locale)).toBe(label);
+                expect(itemSvg({ shape, color, dots: 0 }, locale)).toContain(`aria-label="${label}"`);
+            }
+        }
+        for (let dots = 1; dots <= 8; dots++) expect(name({ shape: 'points', color: 'bleu', dots }, locale)).toBe(`${dots} ${vocabulary[locale].shapes[6]}`);
+        for (let level = 1; level <= 10; level++) {
+            const html = gameView(start(level, 42), locale, false);
+            const tags = [...html.matchAll(/<[^>]+data-item="([^"]+)"[^>]*>/g)];
+            expect(tags.length).toBeGreaterThan(0);
+            for (const [tag, item] of tags) {
+                const [shape, color, dots] = item!.split(':');
+                expect(tag).toContain(`data-shape="${shape}"`);
+                expect(tag).toContain(`data-color="${color}"`);
+                expect(tag).toContain(`data-dots="${dots}"`);
+            }
+        }
+    }
+});
+it('base hint remains visible after the first correct double placement', () => {
+    const initial = start(9, 14), q = initial.questions[0]!;
+    const wrong = (q.answer + 1) % q.choices.length;
+    const twice = answer(answer(initial, wrong).state, wrong);
+    expect(twice.hint).toBe(true);
+    const partial = answer(twice.state, q.answers[0]!).state;
+    expect(partial.placed).toHaveLength(1); expect(partial.solved).toBe(false);
+    for (const state of [twice.state, partial]) {
+        const slots = [...gameView(state, 'fr', true).matchAll(/<div data-slot="(\d+)"[^>]*class="([^"]*)"/g)];
+        expect(slots.filter(([, , classes]) => classes!.split(' ').includes('suites-base')).map(([, i]) => Number(i))).toEqual([0, 1, 2]);
+    }
+});

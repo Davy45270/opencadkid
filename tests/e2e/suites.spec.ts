@@ -1,3 +1,5 @@
+import { itemSvg } from '../../src/games/suites/items';
+import type { Item } from '../../src/engines/suites';
 import { test, expect, media, clearSpeech, state } from './helpers';
 import { patternAnswer, patternDom, patternState, prepareSuites, solvePattern } from './suites-helpers';
 for (const [level, mode, prompt] of [
@@ -56,10 +58,12 @@ test('all levels: real targets, painted SVG geometry, two rows on phone, no over
             for (const r of sizes) { expect(r.width).toBeGreaterThanOrEqual(48); expect(r.height).toBeGreaterThanOrEqual(48); }
             const geometry = await page.locator('.suites-slot[data-item]>svg, .suites-choice>svg').evaluateAll(elements => elements.map(el => {
                 const svg = el as SVGSVGElement, m = svg.getScreenCTM()!, b = svg.getBBox();
-                const a = new DOMPoint(b.x, b.y).matrixTransform(m), z = new DOMPoint(b.x + b.width, b.y + b.height).matrixTransform(m), r = svg.getBoundingClientRect();
+                // Every painted path/circle has a 2-unit round stroke. Include it,
+                // rather than confusing the viewport with the actual drawing.
+                const a = new DOMPoint(b.x - 1, b.y - 1).matrixTransform(m), z = new DOMPoint(b.x + b.width + 1, b.y + b.height + 1).matrixTransform(m), r = svg.getBoundingClientRect();
                 return { width: z.x - a.x, height: z.y - a.y, inside: a.x >= r.left - 1 && z.x <= r.right + 1 && a.y >= r.top - 1 && z.y <= r.bottom + 1, valid: !new DOMParser().parseFromString(svg.outerHTML, 'image/svg+xml').querySelector('parsererror') };
             }));
-            for (const g of geometry) { expect(g.width).toBeGreaterThan(8); expect(g.height).toBeGreaterThan(8); expect(g.inside).toBe(true); expect(g.valid).toBe(true); }
+            for (const g of geometry) { expect(g.width).toBeGreaterThanOrEqual(48); expect(g.height).toBeGreaterThanOrEqual(48); expect(g.inside).toBe(true); expect(g.valid).toBe(true); }
             if (width === 390) {
                 const rows = await page.locator('[data-slot]').evaluateAll(els => [...new Set(els.map(el => Math.round(el.getBoundingClientRect().top)))]);
                 expect(rows.length).toBeLessThanOrEqual(2);
@@ -72,4 +76,48 @@ for (const [level, file] of [[1, 'suites-question.png'], [7, 'suites-trou.png']]
     test.skip(process.env.CAPTURES !== '1' || info.project.name !== 'mobile', 'Optional mobile capture for orchestrator review');
     await page.setViewportSize({ width: 390, height: 844 }); await page.emulateMedia({ reducedMotion: 'reduce' });
     await prepareSuites(page, level); await page.screenshot({ path: `docs/captures/${file}` });
+});
+
+test('empty active slot breathes normally and stops with reduced motion', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await prepareSuites(page, 1);
+    const slot = page.locator('.suites-empty.suites-active');
+    await expect(slot).toHaveCSS('animation-name', 'suites-breathe');
+    await expect(slot).toHaveCSS('animation-duration', '1.8s');
+    await expect(slot).toHaveCSS('animation-iteration-count', 'infinite');
+    expect(await slot.evaluate(el => el.getAnimations().some(a => a.playState === 'running'))).toBe(true);
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await expect(slot).toHaveCSS('animation-name', 'none');
+    expect(await slot.evaluate(el => el.getAnimations().length)).toBe(0);
+});
+test('two-error base highlight persists through a partial double continuation', async ({ page }) => {
+    await prepareSuites(page, 9);
+    const correct = await patternAnswer(page), wrong = (correct + 1) % 4;
+    await page.locator(`[data-pattern-choice="${wrong}"]`).click(); await page.waitForTimeout(205);
+    await page.locator(`[data-pattern-choice="${wrong}"]`).click();
+    const highlighted = await page.locator('.suites-base').evaluateAll(els => els.map(el => el.getAttribute('data-slot')));
+    expect(highlighted).toEqual(['0', '1', '2']);
+    await page.locator(`[data-pattern-choice="${correct}"]`).click();
+    expect((await patternState(page)).suites.placed).toHaveLength(1);
+    expect(await page.locator('.suites-base').evaluateAll(els => els.map(el => el.getAttribute('data-slot')))).toEqual(highlighted);
+    await expect(page.locator('.suites-empty')).toHaveCount(1);
+});
+
+test('every silhouette and one to eight dots paint at least 48 px including stroke', async ({ page }) => {
+    await prepareSuites(page, 1);
+    const samples: Item[] = (['perle', 'triangle', 'carre', 'fleur', 'etoile', 'lune'] as const).map(shape => ({ shape, color: 'bleu', dots: 0 }));
+    for (let dots = 1; dots <= 8; dots++) samples.push({ shape: 'points', color: 'bleu', dots });
+    const slot = page.locator('.suites-slot[data-item]').first();
+    for (const item of samples) {
+        await slot.evaluate((el, markup) => { el.innerHTML = markup; }, itemSvg(item));
+        const painted = await slot.locator('svg').evaluate(el => {
+            const svg = el as SVGSVGElement, b = svg.getBBox(), m = svg.getScreenCTM()!, r = svg.getBoundingClientRect();
+            const a = new DOMPoint(b.x - 1, b.y - 1).matrixTransform(m);
+            const z = new DOMPoint(b.x + b.width + 1, b.y + b.height + 1).matrixTransform(m);
+            return { width: z.x - a.x, height: z.y - a.y, inside: a.x >= r.left && a.y >= r.top && z.x <= r.right && z.y <= r.bottom };
+        });
+        expect(painted.width, `${item.shape}:${item.dots}`).toBeGreaterThanOrEqual(48);
+        expect(painted.height, `${item.shape}:${item.dots}`).toBeGreaterThanOrEqual(48);
+        expect(painted.inside, `${item.shape}:${item.dots}`).toBe(true);
+    }
 });

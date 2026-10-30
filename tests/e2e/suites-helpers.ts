@@ -21,6 +21,10 @@ export async function patternDom(page: Page): Promise<{ mode: string; slots: { i
 }
 /** Exhaustive DOM-only base motifs. No pattern, target or answer from __kid. */
 export async function patternAnswer(page: Page): Promise<number> {
+    const attributes = await page.locator('.suites-zone [data-item]').evaluateAll(elements => elements.map(el => ({
+        item: el.getAttribute('data-item'), shape: el.getAttribute('data-shape'), color: el.getAttribute('data-color'), dots: el.getAttribute('data-dots')
+    })));
+    for (const a of attributes) expect(a.item).toBe(`${a.shape}:${a.color}:${a.dots}`);
     const dom = await patternDom(page), slot = dom.slots.findIndex(s => s.item === null);
     expect(slot).toBeGreaterThanOrEqual(0);
     let matches: number[];

@@ -8,17 +8,40 @@ async function point(page: Page, selector: string): Promise<{ x: number; y: numb
     return { x: r!.x + r!.width / 2 + noise(), y: r!.y + r!.height / 2 + noise() };
 }
 async function tap(page: Page, selector: string): Promise<void> { const p = await point(page, selector); await page.touchscreen.tap(p.x, p.y); }
-async function drag(page: Page, context: BrowserContext, choice: number, cancel = false): Promise<void> {
-    const begin = await point(page, `[data-pattern-choice="${choice}"]`), end = await point(page, '.suites-empty.suites-active');
+async function drag(page: Page, context: BrowserContext, choice: number, outcome: 'drop' | 'cancel' | 'outside' | 'lost' = 'drop'): Promise<void> {
+    const selector = `[data-pattern-choice="${choice}"]`;
+    const begin = await point(page, selector), target = await point(page, '.suites-empty.suites-active');
+    const end = outcome === 'outside' ? { x: 10, y: 10 } : target;
+    const original = (await page.locator(selector).boundingBox())!;
+    await page.locator(selector).evaluate(el => el.addEventListener('pointerdown', event => {
+        (el as HTMLElement).dataset.testPointer = String((event as PointerEvent).pointerId);
+    }, { once: true }));
     const cdp = await context.newCDPSession(page);
     try {
         await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ id: 1, ...begin }] });
         for (let step = 1; step <= 14; step++) {
             const t = step / 14;
-            await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ id: 1, x: begin.x + (end.x - begin.x) * t + (step === 14 ? 0 : noise()), y: begin.y + (end.y - begin.y) * t + (step === 14 ? 0 : noise()) }] });
+            const finger = { x: begin.x + (end.x - begin.x) * t + (step === 14 ? 0 : noise()), y: begin.y + (end.y - begin.y) * t + (step === 14 ? 0 : noise()) };
+            await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ id: 1, ...finger }] });
             await touchFrame(page);
+            if (Math.hypot(finger.x - begin.x, finger.y - begin.y) >= 12) {
+                const painted = (await page.locator(selector).boundingBox())!;
+                // Preserve the original grab offset, in actual viewport pixels.
+                expect(Math.abs(painted.x - original.x - (finger.x - begin.x))).toBeLessThan(1);
+                expect(Math.abs(painted.y - original.y - (finger.y - begin.y))).toBeLessThan(1);
+            }
         }
-        await cdp.send('Input.dispatchTouchEvent', { type: cancel ? 'touchCancel' : 'touchEnd', touchPoints: [] }); await touchFrame(page);
+        if (outcome === 'lost') {
+            await page.locator(selector).evaluate(el => el.releasePointerCapture(Number((el as HTMLElement).dataset.testPointer)));
+            // Capture changes are dispatched before the next pointer event.
+            await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ id: 1, ...end }] });
+            await touchFrame(page);
+            await expect(page.locator(selector)).not.toHaveClass(/dragging/);
+            expect(await page.locator(selector).evaluate(el => (el as HTMLElement).style.transform)).toBe('');
+        }
+        await cdp.send('Input.dispatchTouchEvent', { type: outcome === 'cancel' ? 'touchCancel' : 'touchEnd', touchPoints: [] }); await touchFrame(page);
+        await expect(page.locator(selector)).not.toHaveClass(/dragging/);
+        expect(await page.locator(selector).evaluate(el => (el as HTMLElement).style.transform)).toBe('');
     } finally { await cdp.detach(); }
 }
 for (const level of [1, 7, 9, 10]) test(`suites ${level}: noisy mobile finger, double touch, ordered drag, no scroll`, async ({ page, context, isMobile }) => {
@@ -35,8 +58,11 @@ for (const level of [1, 7, 9, 10]) test(`suites ${level}: noisy mobile finger, d
             await tap(page, `[data-pattern-choice="${wrong}"]`); await page.waitForTimeout(205); await tap(page, `[data-pattern-choice="${wrong}"]`);
             expect((await patternState(page)).suites.errors).toBe(2); expect(await page.locator('.suites-base').count()).toBeGreaterThan(0);
             if (level === 9) {
-                const before = await patternState(page); await drag(page, context, choice, true);
-                expect(await patternState(page)).toEqual(before);
+                const before = await patternState(page);
+                for (const outcome of ['cancel', 'outside', 'lost'] as const) {
+                    await drag(page, context, choice, outcome);
+                    expect(await patternState(page)).toEqual(before);
+                }
             }
             await tap(page, `[data-pattern-choice="${choice}"]`); await tap(page, `[data-pattern-choice="${choice}"]`);
             await expectTouch(page, 'Double touch must place once and cannot skip the question', async () => {
