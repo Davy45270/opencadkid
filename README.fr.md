@@ -8,9 +8,9 @@ Jouer en ligne, sans installation, hors ligne une fois ouvert.
 
 Des petits jeux éducatifs et doux pour les enfants de **4 à 8 ans**, à jouer au doigt, surtout au téléphone. Boubou le panda, CaliRoux le panda roux, Pestouille le dragon, Tutu le singe et Lumi la licorne accompagnent les découvertes. Les dessins sont des SVG générés par le code.
 
-**Disponibles : Les paniers de Boubou, Les cartes de Lumi, Les formes de CaliRoux et Les sons de Tutu.** Dénombrer, constituer et comparer en huit niveaux, puis jouer à la mémoire avec 2, 3, 4, 6, 8 et 10 paires et un niveau image–ombre. Lumi montre les cartes deux secondes dans les trois premiers niveaux et fait briller une paire déjà vue après des erreurs répétées. Les seize motifs SVG se distinguent par leur silhouette autant que leur couleur. Les vingt cartes tiennent sans défilement sur un téléphone de 390×844. Le français est la langue par défaut ; l’anglais est choisi automatiquement seulement si la langue du téléphone commence par `en`. Le choix des parents est mémorisé.
+**Disponibles : Les paniers de Boubou, Les cartes de Lumi, Les formes de CaliRoux Les sons de Tutu et Le puzzle de Pestouille.** Dénombrer, constituer et comparer en huit niveaux, puis jouer à la mémoire avec 2, 3, 4, 6, 8 et 10 paires et un niveau image–ombre. Lumi montre les cartes deux secondes dans les trois premiers niveaux et fait briller une paire déjà vue après des erreurs répétées. Les seize motifs SVG se distinguent par leur silhouette autant que leur couleur. Les vingt cartes tiennent sans défilement sur un téléphone de 390×844. Le français est la langue par défaut ; l’anglais est choisi automatiquement seulement si la langue du téléphone commence par `en`. Le choix des parents est mémorisé.
 
-À venir : Le puzzle de Pestouille, Le chemin de Pestouille, Les suites de Lumi, Le rangement de CaliRoux, Les tambours de Tutu et L’atelier de Boubou. Ces six jeux sont décrits dans [GAME_SPEC.md](GAME_SPEC.md), sans carte « bientôt » dans le jeu. L’apprentissage de l’heure se trouve dans l’application sœur TicTac, accessible depuis l’accueil après un contrôle parental.
+À venir : Le chemin de Pestouille, Les suites de Lumi, Le rangement de CaliRoux, Les tambours de Tutu et L’atelier de Boubou. Ces cinq jeux sont décrits dans [GAME_SPEC.md](GAME_SPEC.md), sans carte « bientôt » dans le jeu. L’apprentissage de l’heure se trouve dans l’application sœur TicTac, accessible depuis l’accueil après un contrôle parental.
 
 ## Jouer et installer
 
@@ -26,6 +26,8 @@ La roue dentée ouvre le contrôle parental, puis la langue, la voix, les sons e
 
 **Les sons de Tutu** relie un son initial à une grande lettre et à une image dessinée, sans lire. Dix niveaux proposent image–lettre, lettre–image, son seul et tri au doigt dans deux boîtes, en majuscules puis en minuscules. Chaque langue possède son propre lexique de soixante mots pour vingt lettres : changer de langue tire des questions dans le lexique choisi. La voix dit les mots et leurs sons ; aucun mot n’est écrit sous les images. Après deux erreurs, un indice vocal accompagne la lettre qui pulse. Les étoiles et la progression sont indépendantes. La suite de captures facultative produit aussi `sons-image-lettre.png` et `sons-trier.png`.
 
+**Le puzzle de Pestouille** : huit niveaux de 2, 3, 4, 6, 6, 9, 12 pièces puis neuf pièces aux bords ondulés complémentaires. Six scènes dessinées par le code mettent en scène les cinq guides. Glisse une pièce sur le plateau : près de sa place, elle s’aimante et se verrouille ; ailleurs, elle reste où tu la lâches. Le modèle apparaît en filigrane aux deux premiers niveaux, puis avec le bouton œil. Après 25 secondes sans pièce posée, une pièce et sa place pulsent, sans chrono affiché. Terminer donne trois étoiles sans aide, deux avec une aide, sinon une. Au clavier, les flèches déplacent la pièce focalisée de 16 pixels ; Entrée la lâche. Aucune rotation. Progression indépendante.
+
 ## Captures
 
 Les captures seront créées par la suite mobile facultative, après compilation, sur une machine autorisée à lancer les navigateurs : `CAPTURES=1 npm run test:e2e -- --project=mobile tests/e2e/captures.spec.ts`. Elles ne sont pas générées pendant cette passe de rédaction des sources.
@@ -37,6 +39,8 @@ Les captures seront créées par la suite mobile facultative, après compilation
 ![Étoiles](docs/captures/compter-etoiles.png)
 ![Cartes de Lumi](docs/captures/paires-plateau.png)
 ![Fin des paires](docs/captures/paires-fin.png)
+
+La suite puzzle produit `puzzle-debut.png` et `puzzle-fini.png` avec `CAPTURES=1 npm run test:e2e -- --project=mobile tests/e2e/puzzle.spec.ts`. Ces captures attendent une exécution et une revue visuelle par l’orchestrateur.
 
 La suite facultative produit aussi `formes-question.png` et `formes-trier.png` dans `docs/captures/`.
 

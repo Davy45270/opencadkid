@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.0
+
+- Add Pestouille’s puzzle: eight seeded levels, six procedural scenes, complementary SVG curves, gentle snapping and nonpunitive bounded drops.
+- Add primary pointer capture, noisy touch support, 16 px keyboard movement, optional model, idle hints, speech, chimes and reduced-motion celebration.
+- Keep separate best puzzle stars with safe migration and shared unlocking conventions. Puzzle rewards count assistance rather than question answers.
+- Add independent seeded geometry, state, SVG, i18n and persistence tests; complete drag and noisy mobile suites, responsive painted-size checks and optional start/finish captures. Browser and unit suites await orchestrator execution.
+- Update only generic registry and home game-count expectations. Other games’ rules and tests are unchanged.
+
 ## 0.4.0
 
 - Add Tutu’s sounds: ten levels, four modes, uppercase and lowercase, native French and English lexicons with twenty letter families and sixty words each.

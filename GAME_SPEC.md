@@ -1,10 +1,10 @@
-# Opencadkid — game specification 0.4.0
+# Opencadkid — game specification 0.5.0
 
 Audience: ages 4–8, primarily touch phones. French first, English included. No reading is required in child play. Spoken instructions, procedural SVG pictograms, object illustrations and dot patterns convey the task. No timer, lives, punishment, advertising, purchase, account, analytics or external runtime resource. The first home gesture unlocks browser audio. Reduced motion removes shakes, bounces and decorative particles. Local speech voices are preferred; speech availability offline depends on installed device voices.
 
 ## Catalogue
 
-`compter`, `paires`, `formes` and `sons` are implemented and present in the playable registry. Other catalogue entries remain planned.
+`compter`, `paires`, `formes`, `sons` and `puzzle` are implemented and present in the playable registry. Other catalogue entries remain planned.
 
 | ID | Français | English | Guide | Skill and intended rules |
 | --- | --- | --- | --- | --- |
@@ -12,7 +12,7 @@ Audience: ages 4–8, primarily touch phones. French first, English included. No
 | paires | Les cartes de Lumi | Lumi's cards | Lumi | Remember illustrated cards and uncover identical pairs, no time limit. |
 | formes | Les formes de CaliRoux | CaliRoux's shapes | CaliRoux | Recognize shapes and colours named aloud, choose the matching illustration. |
 | sons | Les sons de Tutu | Tutu's sounds | Tutu | Match initial sounds and letters with illustrations; separate native vocabulary and recordings/speech text for each language. |
-| puzzle | Le puzzle de Pestouille | Pestouille's puzzle | Pestouille | Drag illustrated pieces into a 2×2 then 3×3 image; offer soft snap assistance. |
+| puzzle | Le puzzle de Pestouille | Pestouille's puzzle | Pestouille | Rebuild six illustrated scenes with 2–12 pieces and soft snap assistance. |
 | chemin | Le chemin de Pestouille | Pestouille's path | Pestouille | Trace a maze with a finger; guide gently at walls, never reset progress as punishment. |
 | suites | Les suites de Lumi | Lumi's patterns | Lumi | Extend AB, ABC, AAB and related illustrated sequences by selecting the next object. |
 | ranger | Le rangement de CaliRoux | CaliRoux's sorting | CaliRoux | Sort illustrated objects by spoken colour, shape, size or category. |
@@ -287,3 +287,41 @@ The correction oracles cover the eight additional review mutations (authored her
 6. Remove the entry announcement: speech asserted immediately after level entry, before touching the ear.
 7. Disable box activation: full sorting questions via image selection then box, using taps/clicks and keyboard activation.
 8. Remove the outside capture allowance: a drop 18 px outside succeeds; one 26 px outside leaves the question unchanged.
+
+
+## Puzzle: Pestouille’s puzzle (0.5.0)
+
+Pure `newPuzzle(level, seed)` uses shared Mulberry32 and Fisher–Yates. Scene selection, shared edges and shuffled reserve slots are seeded. The 320×550 stage contains a 300×240 board at (10,8) and a reserve starting at y=280. All positions describe centres in stage units. Uniform CSS scaling keeps piece geometry and pointer coordinates consistent. At 390×844 the board measures 300 px across; the stage and controls fit without scrolling. At 320 px the stage uses the full window width, preserving a 300 px board and pieces at least 64 px through nine pieces and 56 px for twelve. No rotation at any level.
+
+| Level | Pieces | Columns × rows | Initial model | Edges |
+| --- | --- | --- | --- | --- |
+| 1 | 2 | 2 × 1 halves | Faint model | Straight |
+| 2 | 3 | 3 × 1 | Faint model | Straight |
+| 3 | 4 | 2 × 2 | Eye button | Straight |
+| 4 | 6 | 3 × 2 | Eye button | Straight |
+| 5 | 6 | 3 × 2 | Eye button, no automatic model | Straight |
+| 6 | 9 | 3 × 3 | Eye button | Straight |
+| 7 | 12 | 4 × 3 | Eye button | Straight |
+| 8 | 9 | 3 × 3 | Eye button | Wavy, complementary tabs and sockets |
+
+Level five consolidates six pieces without an automatic model; rotation remains disabled throughout. Six local SVG scenes depict Pestouille above a castle, Boubou in bamboo, Lumi under a rainbow, Tutu in the jungle, CaliRoux among autumn leaves and a picnic with Boubou and Pestouille. No imported image or runtime network resource. The image is clipped by each piece’s generated SVG path. Inner edges share canonical cubic points, traversed in reverse by the neighbour, so the exact same curve makes a tab and socket. Outside edges are straight. Reserve slots include full curve extents and do not overlap; no piece starts on its home.
+
+`drop` snaps at a strictly radial distance <32 stage pixels and locks the piece; otherwise it preserves the release point, bounded so the painted piece remains within the stage. Locked pieces reject further drops. Primary pointer capture preserves the grab offset, raises the held piece and ignores a second finger. Touch action is disabled only inside the play zone. Cancellation releases ownership and bounds the last visible position. Each piece remains focusable; arrows move it by 16 stage pixels and Enter drops it. Placement plays the shared soft chime; completion celebrates with Pestouille and animates the board except with reduced motion.
+
+The UI supplies elapsed active time to `hint`: at 25,000 ms without a placement, the first unplaced piece and its home pulse. No displayed timer or penalty. Missed drops and model toggles do not restart the idle period. A placement restarts it; hiding the document pauses it and stops speech/audio. A hint already active is not charged twice. The introductory models are free; revealing the model later counts one aid per reveal. Three stars for zero aids, two for one, otherwise one; never zero. This differs from the common question-based star thresholds because a puzzle has no answers to count. Unlocking reuses the common function; completion follows its max-score record convention without changing other engines. Optional `puzzleRecords` migrates to an empty object, filters levels 1–8 and integer scores 1–3, persists independently and clears with all progress.
+
+`window.__kid.state().puzzle` exposes a detached state, the stage rectangle (`zone`) and board screen rectangle (`boardScreen`). DOM pieces carry `data-piece`, `data-home-x`, `data-home-y` and `data-placed`. E2E solves from these DOM attributes and measured stage bounds; the hook only checks agreement and progress.
+
+### Puzzle test oracle (authored without running tests or browsers)
+
+- `tests/puzzle.test.ts`: independent eight-level table, 300 seeds per level, deterministic puzzle equality; exact base rectangle area, image containment and pairwise nonintersection; full reserve extents, pairwise nonoverlap and distance from homes; canonical inner curves in reverse and straight outer edges. State cases cover strict snap−1/snap/snap+1 and diagonal distances, bounds, purity, invalid input, locking, all-level completion, exact 25-second hints, assistance rewards, best scores and unlocking. Six distinct finite SVG scenes, bilingual labels and save migration/filtering/round trips are checked.
+- `tests/e2e/puzzle.spec.ts`: levels 1, 4 and 8 finish by independent DOM-guided dragging, including a missed drop that stays put and an out-of-zone bounded drop. Shared speech and AudioContext doubles check replay, placement-only chimes and disabled media. Reload preserves stars and unlocks. `page.clock` verifies no hint before 25 seconds and a hint after, despite a missed drop. English, model assistance, keyboard steps, locked pieces, XML parsing, actual painted piece dimensions and target sizes, and zero page overflow at widths 320–1280 are covered. Shared fixture rejects console and page errors. Optional mobile captures write `puzzle-debut.png` and `puzzle-fini.png`.
+- `tests/e2e/puzzle-doigt.spec.ts`: mobile levels 7 and 8, twelve-piece and wavy boards; ±8 px grab offsets, 12–20 steps with ±6 px noise, each rendered position follows the original grab point, final centre within snap−8, a missed drop then retry, simultaneous second finger ignored and unchanged page scroll throughout.
+
+### Puzzle mutations to try
+
+1. Change `distance < state.snap` to `distance <= state.snap`: the exact-boundary unit assertion must fail.
+2. Remove the `piece.placed` guard from `drop`: locked-piece unit and keyboard assertions must fail.
+3. Remove a neighbour’s `reverse: true`: shared-edge reversal checks must fail and visual seams should appear.
+
+The orchestrator must run the unit and browser suites, generate both captures, review illustration continuity and curved seams, check mobile grab-offset tracking and second-finger ownership, and confirm real painted sizes, no scrolling, media behavior and persistence. No screenshots were generated during authoring.

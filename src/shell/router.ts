@@ -1,3 +1,5 @@
+import * as puzzle from '../engines/puzzle';
+import * as puzzleView from '../games/puzzle/view';
 import * as sounds from '../engines/sons';
 import * as soundsView from '../games/sons/view';
 import * as shapes from '../engines/formes';
@@ -22,6 +24,10 @@ const storage = browserStorage();
 let save = readSave(storage, detectLocale(navigator.language));
 let screen: 'home' | 'levels' | 'game' | 'parents' | 'gate' = 'home';
 let session: Session | undefined;
+let puzzleSession: puzzle.Puzzle | undefined;
+let puzzleModel = false;
+let puzzleTop: number | undefined;
+let puzzleIdleStart = 0;
 let soundsSession: sounds.Session | undefined;
 let soundHintPiece = 0;
 let shapesSession: shapes.Session | undefined;
@@ -44,8 +50,10 @@ function render(): void {
         bind('#parents', () => gate('parents'));
         bind('#tictac', () => gate('tictac'));
     } else if (screen === 'levels') {
-        app.innerHTML = activeGame === 'sons' ? soundsView.levelView(save) : activeGame === 'formes' ? shapesView.levelView(save) : activeGame === 'paires' ? memoryView.levelView(save) : levelView(save);
-        bind('[data-level]', el => { const level = Number(el.dataset.level); if (activeGame === 'sons' ? sounds.isUnlocked(level, save.sonsRecords) : activeGame === 'formes' ? shapes.isUnlocked(level, save.formesRecords) : activeGame === 'paires' ? memory.isUnlocked(level, save.pairesRecords) : isUnlocked(level, save.records)) begin(level); });
+        app.innerHTML = activeGame === 'puzzle' ? puzzleView.levelView(save) : activeGame === 'sons' ? soundsView.levelView(save) : activeGame === 'formes' ? shapesView.levelView(save) : activeGame === 'paires' ? memoryView.levelView(save) : levelView(save);
+        bind('[data-level]', el => { const level = Number(el.dataset.level); if (activeGame === 'puzzle' ? puzzle.isUnlocked(level, save.puzzleRecords) : activeGame === 'sons' ? sounds.isUnlocked(level, save.sonsRecords) : activeGame === 'formes' ? shapes.isUnlocked(level, save.formesRecords) : activeGame === 'paires' ? memory.isUnlocked(level, save.pairesRecords) : isUnlocked(level, save.records)) begin(level); });
+    } else if (screen === 'game' && activeGame === 'puzzle' && puzzleSession) {
+        renderPuzzle();
     } else if (screen === 'game' && activeGame === 'sons' && soundsSession) {
         renderSounds();
     } else if (screen === 'game' && activeGame === 'formes' && shapesSession) {
@@ -65,15 +73,112 @@ function render(): void {
         bind('#again', () => begin(session!.level));
         bind('#next', () => { if (session!.level < levels.length) begin(session!.level + 1); });
     }
-    bind('#back', () => { screen = 'home'; soundsSession = undefined; soundDrag = undefined; session = undefined; memorySession = undefined; shapesSession = undefined; render(); });
+    bind('#back', () => { screen = 'home'; puzzleSession = undefined; puzzleDrag = undefined; soundsSession = undefined; soundDrag = undefined; session = undefined; memorySession = undefined; shapesSession = undefined; render(); });
 }
 function begin(level: number): void {
+    puzzleSession = undefined; puzzleDrag = undefined; puzzleTop = undefined;
+    if (activeGame === 'puzzle') {
+        session = undefined; soundsSession = undefined; memorySession = undefined; shapesSession = undefined;
+        puzzleSession = puzzle.newPuzzle(level, seed()); puzzleModel = puzzle.levels[level - 1]!.model;
+        puzzleIdleStart = performance.now(); screen = 'game'; render(); speak([text(save.locale, 'puzzleInstruction')]); return;
+    }
     soundsSession = undefined; soundSelected = undefined; soundDrag = undefined;
     shapesSession = undefined; selectedPiece = undefined;
     if (activeGame === 'sons') { session = undefined; memorySession = undefined; soundsSession = sounds.start(level, seed(), save.locale); screen = 'game'; hint = false; render(); speak(soundsView.spoken(soundsSession.questions[0]!, save.locale)); return; }
     if (activeGame === 'formes') { session = undefined; memorySession = undefined; shapesSession = shapes.start(level, seed()); screen = 'game'; hint = false; render(); speak([shapesView.instruction(shapesSession.questions[0]!, save.locale)]); return; }
     if (activeGame === 'paires') { app.replaceChildren(); session = undefined; memorySession = memory.newBoard(level, seed()); screen = 'game'; render(); speak([memoryView.instruction(memorySession, save.locale)]); return; }
     memorySession = undefined; session = start(level, seed()); screen = 'game'; hint = false; expression = 'joie'; render(); speak([instruction(session.questions[0]!, save.locale, true)]); }
+let puzzleDrag: { pointer: number; piece: number; startX: number; startY: number; x: number; y: number; element: HTMLElement } | undefined;
+function puzzleZone(): DOMRect | undefined { return app.querySelector('.puzzle-zone')?.getBoundingClientRect(); }
+function puzzlePosition(element: HTMLElement, p: puzzle.Piece, x: number, y: number): void {
+    const pad = puzzleSession && puzzle.levels[puzzleSession.level - 1]!.wavy ? 3 : 0;
+    element.style.left = `${(x - p.width / 2 - pad) / 320 * 100}%`;
+    element.style.top = `${(y - p.height / 2 - pad) / 550 * 100}%`;
+}
+function armPuzzleHint(): void {
+    if (!puzzleSession || puzzleSession.finished || puzzleSession.hintPiece !== null || document.hidden) return;
+    timers.push(setTimeout(() => {
+        if (screen !== 'game' || activeGame !== 'puzzle' || !puzzleSession || document.hidden) return;
+        puzzleSession = puzzle.hint(puzzleSession, performance.now() - puzzleIdleStart);
+        if (puzzleSession.hintPiece !== null) {
+            // Avoid replacing a captured piece during a gesture; show the cue on release.
+            if (!puzzleDrag) render();
+            speak([text(save.locale, 'puzzleHint')]);
+        } else armPuzzleHint();
+    }, Math.max(1, 25_000 - (performance.now() - puzzleIdleStart))));
+}
+function renderPuzzle(): void {
+    const state = puzzleSession!;
+    app.innerHTML = puzzleView.gameView(state, save.locale, puzzleModel);
+    if (puzzleTop !== undefined && !state.pieces[puzzleTop]!.placed) {
+        const top = app.querySelector<HTMLElement>(`[data-piece="${puzzleTop}"]`); if (top) top.style.zIndex = '3';
+    }
+    bind('#listen', () => speak([text(save.locale, state.finished ? 'finished' : 'puzzleInstruction')]));
+    bind('#model', () => {
+        puzzleModel = !puzzleModel;
+        if (puzzleModel && !puzzle.levels[state.level - 1]!.model && !state.finished) puzzleSession = { ...puzzleSession!, aids: puzzleSession!.aids + 1 };
+        render();
+    });
+    bind('#again', () => begin(state.level));
+    bind('#next', () => { if (state.level < puzzle.levels.length) begin(state.level + 1); });
+    armPuzzleHint();
+}
+function puzzleDrop(id: number, x: number, y: number): void {
+    if (!puzzleSession) return;
+    const before = puzzleSession; puzzleTop = id;
+    puzzleSession = puzzle.drop(before, id, x, y);
+    const placed = !before.pieces[id]!.placed && puzzleSession.pieces[id]!.placed;
+    if (placed) {
+        puzzleIdleStart = performance.now(); chime(save.sound);
+        if (puzzleSession.finished) { save.puzzleRecords = puzzle.complete(save.puzzleRecords, puzzleSession); persist(); }
+    }
+    render();
+    app.querySelector<HTMLElement>(`[data-piece="${id}"]`)?.focus({ preventScroll: true });
+    if (placed) speak([text(save.locale, puzzleSession.finished ? 'finished' : 'bravo')]);
+}
+app.addEventListener('pointerdown', event => {
+    const element = (event.target as Element).closest<HTMLElement>('.puzzle-piece');
+    if (!element || !event.isPrimary || puzzleDrag || !puzzleSession || screen !== 'game') return;
+    const piece = Number(element.dataset.piece), p = puzzleSession.pieces[piece]!;
+    if (p.placed) return;
+    event.preventDefault(); element.focus({ preventScroll: true });
+    puzzleDrag = { pointer: event.pointerId, piece, startX: event.clientX, startY: event.clientY, x: p.x, y: p.y, element };
+    element.style.zIndex = '4'; app.setPointerCapture(event.pointerId);
+});
+app.addEventListener('pointermove', event => {
+    if (puzzleDrag?.pointer !== event.pointerId || !puzzleSession) return;
+    const r = puzzleZone()!; const d = puzzleDrag;
+    puzzlePosition(d.element, puzzleSession.pieces[d.piece]!, d.x + (event.clientX - d.startX) * 320 / r.width, d.y + (event.clientY - d.startY) * 550 / r.height);
+});
+app.addEventListener('pointerup', event => {
+    if (puzzleDrag?.pointer !== event.pointerId) return;
+    const d = puzzleDrag, r = puzzleZone()!; puzzleDrag = undefined;
+    if (app.hasPointerCapture(event.pointerId)) app.releasePointerCapture(event.pointerId);
+    puzzleDrop(d.piece, d.x + (event.clientX - d.startX) * 320 / r.width, d.y + (event.clientY - d.startY) * 550 / r.height);
+});
+for (const name of ['pointercancel', 'lostpointercapture']) app.addEventListener(name, event => {
+    if (!puzzleDrag || (event as PointerEvent).pointerId !== puzzleDrag.pointer) return;
+    const d = puzzleDrag; puzzleDrag = undefined;
+    // Cancellation leaves the piece at its last visible location, bounded as any drop.
+    const r = d.element.getBoundingClientRect(), zone = puzzleZone()!;
+    puzzleDrop(d.piece, (r.x + r.width / 2 - zone.x) * 320 / zone.width, (r.y + r.height / 2 - zone.y) * 550 / zone.height);
+});
+app.addEventListener('keydown', event => {
+    const el = (event.target as Element).closest<HTMLElement>('.puzzle-piece');
+    if (!el || !puzzleSession || puzzleDrag) return;
+    const id = Number(el.dataset.piece), p = puzzleSession.pieces[id]!;
+    if (p.placed) return;
+    if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); puzzleDrop(id, p.x, p.y); return; }
+    const delta: Record<string, readonly [number, number]> = { ArrowLeft: [-16, 0], ArrowRight: [16, 0], ArrowUp: [0, -16], ArrowDown: [0, 16] };
+    const d = delta[event.key]; if (!d) return;
+    event.preventDefault();
+    const pad = puzzle.levels[puzzleSession.level - 1]!.wavy ? 3 : 0;
+    const x = Math.max(p.width / 2 + pad, Math.min(320 - pad - p.width / 2, p.x + d[0]));
+    const y = Math.max(p.height / 2 + pad, Math.min(550 - pad - p.height / 2, p.y + d[1]));
+    puzzleSession = { ...puzzleSession, pieces: puzzleSession.pieces.map(piece => piece.id === id ? { ...piece, x, y } : piece) };
+    puzzlePosition(el, p, x, y);
+});
+
 let soundSelected: number | undefined;
 let soundDrag: { id: number; piece: number; x: number; y: number; element: HTMLElement } | undefined;
 function soundSpeech(): void {
@@ -336,10 +441,15 @@ app.addEventListener('keydown', event => {
     if (token && (event.key === 'Enter' || event.key === ' ') && session) { event.preventDefault(); session = moveObject(session, token.hasAttribute('data-reserve') ? 1 : -1); render(); if (hint) showHint(); }
 });
 document.addEventListener('pointerdown', () => { unlockSpeech(); if (save.sound) unlockSound(); }, { once: true, capture: true });
-document.addEventListener('visibilitychange', () => { if (document.hidden) { cancel(); stopSound(); } else { if (save.sound) unlockSound(); if (screen === 'game' && activeGame === 'paires') render(); } });
+let puzzleHiddenAt: number | undefined;
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) { puzzleHiddenAt = performance.now(); puzzleDrag = undefined; }
+    else if (screen === 'game' && activeGame === 'puzzle') { if (puzzleHiddenAt !== undefined) puzzleIdleStart += performance.now() - puzzleHiddenAt; puzzleHiddenAt = undefined; render(); }
+ if (document.hidden) { cancel(); stopSound(); } else { if (save.sound) unlockSound(); if (screen === 'game' && activeGame === 'paires') render(); } });
 Object.defineProperty(window, '__kid', { configurable: false, writable: false, value: Object.freeze({ state: () => {
     const targets = [...app.querySelectorAll<HTMLElement>('button, select, input')].filter(el => !el.hasAttribute('disabled')).map(el => { const r = el.getBoundingClientRect(); return { id: el.id || (el.dataset.answer !== undefined ? `answer-${el.dataset.answer}` : el.dataset.level ? `level-${el.dataset.level}` : el.dataset.card !== undefined ? `card-${el.dataset.card}` : el.hasAttribute('data-reserve') ? `reserve-${el.dataset.reserve}` : el.hasAttribute('data-basket') ? `basket-${el.dataset.basket}` : el.dataset.soundPiece !== undefined ? `sound-piece-${el.dataset.soundPiece}` : el.dataset.soundBox !== undefined ? `sound-box-${el.dataset.soundBox}` : el.dataset.piece !== undefined ? `piece-${el.dataset.piece}` : el.dataset.box !== undefined ? `box-${el.dataset.box}` : el.dataset.game || ''), x: r.x, y: r.y, width: r.width, height: r.height }; });
-    return structuredClone({ screen, game: session || memorySession || shapesSession || soundsSession || screen === 'levels' ? activeGame : null, level: soundsSession?.level ?? shapesSession?.level ?? memorySession?.level ?? session?.level ?? null, index: soundsSession?.index ?? shapesSession?.index ?? session?.index ?? 0, question: soundsSession?.questions[soundsSession.index] ?? shapesSession?.questions[shapesSession.index] ?? session?.questions[session.index] ?? null, sons: soundsSession ?? null, shapes: shapesSession ?? null, basket: session?.basket ?? 0, board: memorySession ? { ...memorySession, cards: memorySession.cards.map((card, i) => {
+    const rect = (selector: string): { x: number; y: number; width: number; height: number } | null => { const r = app.querySelector(selector)?.getBoundingClientRect(); return r ? { x: r.x, y: r.y, width: r.width, height: r.height } : null; };
+    return structuredClone({ puzzle: puzzleSession ? { ...puzzleSession, zone: rect('.puzzle-zone'), boardScreen: rect('[data-puzzle-board]') } : null, screen, game: puzzleSession || session || memorySession || shapesSession || soundsSession || screen === 'levels' ? activeGame : null, level: puzzleSession?.level ?? soundsSession?.level ?? shapesSession?.level ?? memorySession?.level ?? session?.level ?? null, index: soundsSession?.index ?? shapesSession?.index ?? session?.index ?? 0, question: soundsSession?.questions[soundsSession.index] ?? shapesSession?.questions[shapesSession.index] ?? session?.questions[session.index] ?? null, sons: soundsSession ?? null, shapes: shapesSession ?? null, basket: session?.basket ?? 0, board: memorySession ? { ...memorySession, cards: memorySession.cards.map((card, i) => {
         const r = app.querySelector(`[data-card="${i}"]`)?.getBoundingClientRect();
         return { ...card, visible: memorySession!.preview || card.found || memorySession!.visible.includes(i), rect: r ? { x: r.x, y: r.y, width: r.width, height: r.height } : null };
     }) } : null, targets });

@@ -1,6 +1,7 @@
 export type Locale = 'fr' | 'en';
 export const messages = {
     fr: {
+        puzzleInstruction: "Glisse les pièces pour refaire l’image.", puzzleModel: "Voir le modèle", puzzlePiece: "Pièce", puzzleHint: "Cette pièce va ici !",
         soundsFindLetter: 'Touche la lettre du premier son.', soundsFindImage: 'Touche l’image qui commence par ce son.', soundsSort: 'Glisse les images dans la boîte de leur premier son.',
         matchCards: 'Trouve les deux mêmes images.', matchShadows: 'Trouve chaque image et son ombre.', previewCards: 'Regarde les images !', hiddenCard: 'Carte cachée', memoryHint: 'Ces deux cartes vont ensemble !', memoryEncourage: 'Lumi cherche avec toi !', rewardStar: 'étoile', rewardStars: 'étoiles',
         welcome: 'À toi de jouer !', parents: 'Parents', home: 'Accueil', listen: 'Écouter',
@@ -14,6 +15,7 @@ export const messages = {
         apple: 'pommes', pear: 'poires', berry: 'fraises', carrot: 'carottes', star: 'étoiles', fish: 'poissons', flower: 'fleurs', basket: 'Panier', reserve: 'Réserve', skill: 'Compter, remplir, comparer'
     },
     en: {
+        puzzleInstruction: "Slide the pieces to rebuild the picture.", puzzleModel: "Show the picture", puzzlePiece: "Piece", puzzleHint: "This piece goes here!",
         soundsFindLetter: 'Touch the letter for the first sound.', soundsFindImage: 'Touch the picture starting with this sound.', soundsSort: 'Slide each picture into the box for its first sound.',
         matchCards: 'Find the two matching pictures.', matchShadows: 'Find each picture and its shadow.', previewCards: 'Look at the pictures!', hiddenCard: 'Hidden card', memoryHint: 'These two cards go together!', memoryEncourage: 'Lumi is looking with you!', rewardStar: 'star', rewardStars: 'stars',
         welcome: 'Your turn to play!', parents: 'Parents', home: 'Home', listen: 'Listen',
