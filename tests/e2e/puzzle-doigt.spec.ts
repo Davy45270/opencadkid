@@ -1,4 +1,4 @@
-import { test, expect } from './helpers';
+import { test, expect, expectTouch } from './helpers';
 import { pieceTarget, preparePuzzle, puzzleState } from './puzzle-helpers';
 for (const level of [7, 8]) test(`mobile noisy puzzle ${level}, retry, second finger ignored and no scrolling`, async ({ page, context }, info) => {
     test.skip(info.project.name !== 'mobile', 'Real mobile touch input only.'); test.setTimeout(120_000);
@@ -18,6 +18,10 @@ for (const level of [7, 8]) test(`mobile noisy puzzle ${level}, retry, second fi
             const px = x + (tx - x) * k / steps + noise(6), py = y + (ty - y) * k / steps + noise(6);
             await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ id: 1, x: px, y: py }] });
             // The captured piece follows the original grab point, including the ±8px offset.
+            await expectTouch(page, `pièce ${id}, déplacement ${k}/${steps}`, async () => {
+                const box = (await page.locator(`[data-piece="${id}"]`).boundingBox())!;
+                return Math.abs(box.x + box.width / 2 + offsetX - px) < 1 && Math.abs(box.y + box.height / 2 + offsetY - py) < 1;
+            });
             const box = (await page.locator(`[data-piece="${id}"]`).boundingBox())!;
             expect(Math.abs(box.x + box.width / 2 + offsetX - px)).toBeLessThan(1);
             expect(Math.abs(box.y + box.height / 2 + offsetY - py)).toBeLessThan(1);

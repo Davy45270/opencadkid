@@ -1,4 +1,4 @@
-import { test, expect } from './helpers';
+import { test, expect, expectTouch, touchFrame } from './helpers';
 import { cellPoint, cheminState, head, mazeDom, mazeRoute, prepareChemin, touchTrace, wallNeighbour } from './chemin-helpers';
 for (const level of [1, 4, 8]) test(`mobile noisy chemin ${level}: irregular fast steps, lifted finger, wall and no scrolling`, async ({ page, context }, info) => {
     test.skip(info.project.name !== 'mobile', 'Real mobile touch input only.'); test.setTimeout(120_000);
@@ -39,9 +39,9 @@ for (const level of [1, 4, 8]) test(`mobile noisy chemin ${level}: irregular fas
         for (let k = 1; k <= steps; k++) {
             point = { id: 1, x: start.x + (end.x - start.x) * k / steps, y: start.y + (end.y - start.y) * k / steps };
             await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [point] });
-            await unchangedScroll();
+            await touchFrame(page); await unchangedScroll();
         }
-        expect(await head(page)).toBe(path[target]);
+        await expectTouch(page, `chemin ${level}, cellule ${current} → ${path[target]!}`, async () => await head(page) === path[target]);
         const trace = (await cheminState(page)).chemin.trace; expect(trace).toEqual(path.slice(0, target + 1));
         if (target < path.length - 1) {
             const cell = path[target]!, x = cell % dom.columns, y = Math.floor(cell / dom.columns);
@@ -49,11 +49,13 @@ for (const level of [1, 4, 8]) test(`mobile noisy chemin ${level}: irregular fas
             if (!hitWall && dom.edges[cell]!.length < physical) {
                 const blocked = await noisy(await wallNeighbour(page, cell));
                 await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [blocked] });
+                await touchFrame(page);
                 expect((await cheminState(page)).chemin.trace).toEqual(trace);
                 point = await noisy(cell); await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [point] }); hitWall = true;
             }
             if (!lifted && target >= Math.floor(path.length / 2)) {
                 await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+                await touchFrame(page);
                 expect((await cheminState(page)).chemin.trace).toEqual(trace);
                 point = await noisy(cell); await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [point] }); lifted = true;
             }

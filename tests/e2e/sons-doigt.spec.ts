@@ -1,4 +1,4 @@
-import { test, expect } from './helpers';
+import { test, expect, expectTouch, state } from './helpers';
 import { prepareSounds, soundAnswer, soundsState } from './sons-helpers';
 import { makeRng } from '../../src/engines/rng';
 for (const level of [4, 6, 8, 10]) test(`level ${level}: mobile noisy finger, double touch and sorting without scrolling`, async ({ page, context }) => {
@@ -7,9 +7,16 @@ for (const level of [4, 6, 8, 10]) test(`level ${level}: mobile noisy finger, do
     const rng = makeRng(91), noise = (): number => rng() * 20 - 10;
     const scroll = await page.evaluate(() => ({ x: scrollX, y: scrollY }));
     const tap = async (selector: string): Promise<void> => {
+        const before = await soundsState(page);
         const r = (await page.locator(selector).boundingBox())!;
         expect(r.width).toBeGreaterThanOrEqual(72); expect(r.height).toBeGreaterThanOrEqual(72);
         await page.touchscreen.tap(r.x + r.width / 2 + noise(), r.y + r.height / 2 + noise());
+        await expectTouch(page, `${selector}, question ${before.index}`, async () => {
+            const after = await soundsState(page);
+            if (selector === '#continue') return before.index === 5 ? after.sons.finished : after.index === before.index + 1;
+            if (selector.includes('data-answer')) return after.index === before.index && after.sons.solved;
+            return after.index === before.index && after.sons.placed.length === before.sons.placed.length;
+        });
     };
     const cdp = await context.newCDPSession(page);
     const drag = async (piece: number, correct = true): Promise<void> => {
@@ -37,14 +44,15 @@ for (const level of [4, 6, 8, 10]) test(`level ${level}: mobile noisy finger, do
             }
             for (let piece = 0; piece < 3; piece++) await drag(piece);
         } else {
-            const selector = `[data-answer="${await soundAnswer(page)}"]`; await tap(selector);
+            const selector = `[data-answer="${await soundAnswer(page)}"]`; await tap(selector); await expectTouch(page, `réponse question ${i}`, async () => (await soundsState(page)).sons.solved);
             if (i === 0) { await tap(selector); expect((await soundsState(page)).index).toBe(0); expect((await soundsState(page)).sons.firstTry).toBe(1); }
         }
         expect((await soundsState(page)).sons.placed.length).toBe(level === 10 ? 3 : 0);
         expect((await soundsState(page)).sons.solved).toBe(true);
         expect((await soundsState(page)).sons.finished).toBe(false);
         await expect(page.locator('#continue')).toBeVisible(); await tap('#continue');
-        await expect.poll(async () => { const s = await soundsState(page); return s.sons.finished || s.index === i + 1; }).toBe(true);
+        await expectTouch(page, `Continuer question ${i}`, async () => { const s = await soundsState(page); return i === 5 ? s.sons.finished : s.index === i + 1; });
+        expect((await state(page)).level).toBe(level);
         expect(await page.evaluate(() => ({ x: scrollX, y: scrollY }))).toEqual(scroll);
     }
     expect((await soundsState(page)).sons.finished).toBe(true); await expect(page.locator('.stars')).toBeVisible();

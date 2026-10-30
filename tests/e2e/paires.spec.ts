@@ -116,12 +116,26 @@ test('three failures after discovery make exactly the known pair glow', async ({
 
 for (const reducedMotion of ['no-preference', 'reduce'] as const) test(`closing keeps the same faces and respects motion=${reducedMotion}`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion }); await stopClock(page); await prepareMemory(page, 4);
+    // Force CSS creation and pause in the mutation turn, before the next paint.
+    await page.evaluate(() => {
+        const pauseNew = (): void => {
+            for (const animation of document.getAnimations()) {
+                if (animation.playState === 'running') { animation.pause(); animation.currentTime = 0; }
+            }
+        };
+        new MutationObserver(pauseNew).observe(document.documentElement, { subtree: true, childList: true, attributes: true, attributeFilter: ['class'] });
+    });
     const cards = (await memoryState(page)).board.cards;
     const wrong = cards.findIndex(c => c.motif !== cards[0]!.motif);
     await page.locator('[data-card="0"]').click(); await page.locator(`[data-card="${wrong}"]`).click();
     const face = await page.locator('[data-card="0"] .memory-card-face').elementHandle();
     // CSS has its own timeline: finish opening explicitly before testing closing.
-    await face.evaluate(el => { for (const animation of el.getAnimations()) animation.finish(); });
+    const openTransform = await face.evaluate(el => {
+        for (const animation of document.getAnimations()) animation.finish();
+        // Establish the open computed style before the closing class mutation.
+        return getComputedStyle(el).transform;
+    });
+    expect(openTransform).not.toContain('-1');
     await page.clock.runFor(899);
     expect(await face.evaluate(el => el.isConnected && el.parentElement!.classList.contains('face-up'))).toBe(true);
     // Observe closing in its own rendering turn, before a slow protocol round trip
@@ -130,9 +144,9 @@ for (const reducedMotion of ['no-preference', 'reduce'] as const) test(`closing 
         const probe = window as unknown as { closingStyle: unknown };
         const observer = new MutationObserver(() => {
             if (el.parentElement!.classList.contains('face-up')) return;
-            const s = getComputedStyle(el), animations = el.getAnimations();
+            const s = getComputedStyle(el), animations = document.getAnimations().filter(animation => (animation.effect as KeyframeEffect).target === el);
+            for (const animation of animations) { animation.pause(); animation.currentTime = 0; }
             probe.closingStyle = { transition: s.transitionDuration, transform: s.transform, animations: animations.map(animation => ({ duration: animation.effect!.getTiming().duration, playState: animation.playState })) };
-            for (const animation of animations) animation.pause();
             observer.disconnect();
         });
         observer.observe(el.parentElement!, { attributes: true, attributeFilter: ['class'] });
@@ -146,12 +160,18 @@ for (const reducedMotion of ['no-preference', 'reduce'] as const) test(`closing 
         expect(style.transform).toContain('-1');
     } else {
         expect(style.transition).toBe('0.24s');
-        expect(style.animations.some(animation => animation.duration === 240 && animation.playState === 'running')).toBe(true);
+        expect(style.animations.some(animation => animation.duration === 240 && animation.playState === 'paused')).toBe(true);
+        const middle = await face.evaluate(el => {
+            for (const animation of el.getAnimations()) animation.currentTime = 120;
+            return getComputedStyle(el).transform;
+        });
+        expect(middle).not.toBe(style.transform);
         const finalTransform = await face.evaluate(el => {
             for (const animation of el.getAnimations()) animation.finish();
             return getComputedStyle(el).transform;
         });
         expect(finalTransform).toContain('-1');
+        expect(middle).not.toBe(finalTransform);
     }
 });
 

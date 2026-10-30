@@ -4,11 +4,17 @@ export interface Target { id: string; x: number; y: number; width: number; heigh
 export interface State { screen: string; game: string | null; level: number | null; index: number; question: Question | null; basket: number; targets: Target[] }
 export const state = (page: Page): Promise<State> => page.evaluate(() => (window as unknown as { __kid: { state: () => State } }).__kid.state());
 export const test = base.extend<{ consoleGuard: boolean }>({
-    consoleGuard: [async ({ page }, use) => {
+    consoleGuard: [async ({ page }, use, info) => {
         const errors: string[] = [];
         page.on('pageerror', error => errors.push(error.message));
         page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
-        await use(true); expect(errors).toEqual([]);
+        await use(true);
+        if (info.errors.length && /-doigt/.test(info.file)) {
+            const events = await activationLog(page);
+            await info.attach('activations', { body: events, contentType: 'application/json' });
+            for (const error of info.errors) error.message = `${error.message ?? ''}\nActivations: ${events}`;
+        }
+        expect(errors).toEqual([]);
     }, { auto: true }]
 });
 export { expect };
@@ -20,6 +26,7 @@ export async function clearSpeech(page: Page): Promise<void> {
 export async function prepare(page: Page, level = 1, options: { voice?: boolean; sound?: boolean } = {}): Promise<void> {
     await page.addInitScript(({ level, voice, sound }) => {
         const log = { speech: [] as string[], rates: [] as number[], oscillators: 0 };
+        if (Object.hasOwn(window, '__media')) return;
         Object.defineProperty(window, '__media', { value: log });
         class Utterance {
             text: string; rate = 1; onend: (() => void) | null = null;
@@ -87,4 +94,16 @@ export async function solveRound(page: Page): Promise<void> {
 export async function passGate(page: Page): Promise<void> {
     const numbers = (await page.locator('.calculation').innerText()).match(/\d+/g)!.map(Number);
     await page.locator(`[data-parent="${numbers[0]! * numbers[1]!}"]`).click();
+}
+
+export async function activationLog(page: Page): Promise<string> {
+    return page.evaluate(() => JSON.stringify((window as unknown as { __kid?: { events: () => unknown } }).__kid?.events() ?? []));
+}
+/** Keep the failing gesture and its event history in the assertion itself. */
+export async function expectTouch(page: Page, label: string, check: () => Promise<boolean>): Promise<void> {
+    await expect.poll(async () => await check() ? 'advanced' : await activationLog(page), { message: label }).toBe('advanced');
+}
+/** Touch protocol completion precedes the rendering turn which dispatches pointermove. */
+export async function touchFrame(page: Page): Promise<void> {
+    await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => resolve())));
 }

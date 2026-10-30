@@ -330,7 +330,7 @@ The orchestrator must run the unit and browser suites, generate both captures, r
 
 All four drag games share `src/shell/coordinates.ts`: viewport-to-zone conversion, rectangular drop distance and grab-offset-preserving movement. Counting tests the destination rectangle directly, so a decorative or captured element cannot hide the basket from a hit test. `tests/coordinates.test.ts` covers shifted and scaled stages, exact edges and the 24-pixel distance. `tests/activation.test.ts` checks validation and six sorting questions without any compatibility click, then delivers that click late and checks exactly one activation; cancellation, movement, mouse and keyboard remain covered. Mobile sorting E2E checks all three placements, `solved` before Continue and actual progress after every arrow.
 
-The failure snapshots show a filled counting basket and solved sorting questions, so they do not establish a missed drop. The touch command path previously relied exclusively on the browser's later click. Its release handler now commits directly, with duplicate-click suppression. Confirming the precise event ordering of the reported runs still requires the browser rerun; no browser or test runner was executed during this correction.
+Earlier corrections committed Check and Continue on release. The current regression shows why every command, including Next after completion, must also reject the resulting compatibility click. The touch activation contract below records this behavior and its event-sequence coverage; the next browser run can inspect the activation history at each gesture.
 
 Puzzle review oracles added without running them:
 
@@ -375,3 +375,51 @@ Tests authored without executing Vitest, Playwright or a browser:
 Mutations to try: (1) remove the open-passage guard in `extend`: wall/state and browser wall tests must fail; (2) remove the previous-cell shortening branch: retreat tests must fail; (3) apply only the last cell in `interpolate`: the five-cell diagonal and fast-finger tests must fail.
 
 The orchestrator must run unit and browser suites, inspect start/finish captures for clear walls, destinations, trace, bonus and medal visibility, and verify noisy touch, restart after lifting, keyboard focus, silent mode, persisted progress, 40 px cells at 390×844 and no overflow. Only the generic registry list and home game-count expectations change outside new tests; other games’ tests and rules remain unchanged.
+
+### Touch activation contract
+
+A primary touch commits on release inside its original target bounds, provided it
+has moved less than 12 CSS pixels. Each distinct touch on a distinct target acts
+exactly once, even when Continue follows an answer immediately or 205 ms later.
+A second touch on the same logical target within 180 ms of its last accepted tap
+is a double tap and acts only once. Target identity includes the game, question
+and control, and survives replacement of that control during rendering. The next
+question has independent targets. There is no global suppression interval.
+
+The failed final counting snapshot asks for nine flowers although level four is
+limited to five: it has already entered level five. Likewise the failed shapes
+snapshots show the next levels' four choices, two size choices, and two sorting
+boxes. A delayed Continue click could reach the newly rendered Next control,
+which formerly used an unfiltered click handler. All command buttons now use the
+same touch-aware activation binding, including Next. Literal event-sequence unit
+tests deliver that retargeted click at 0, 205 and 300 ms, then require a fresh
+primary touch on Next to advance exactly once.
+
+A browser compatibility click delivered 0–300 ms after a touch does not activate
+that touch again, including when rendering replaced its target. Keyboard clicks
+remain available, and a new mouse pointer starts an independent click. Secondary
+pointers cannot take ownership. A cancelled or moved command touch does not
+activate; a completed drag does not suppress a following tap. Counting applies
+its double-tap guard per token target, and only taps start that guard.
+
+`window.__kid.events()` returns a detached, read-only observation of the last 200
+activation decisions: logical target, input type, milliseconds relative to page
+initialization, accepted/ignored and reason. It cannot change game state. Finger
+specs check question/state progress at the gesture that should cause it; failed
+assertions and the failure attachment include this history. Touch protocol moves
+are checked after their rendering turn, retaining exact position, trace and
+scroll assertions.
+
+Maze updates preserve connected cell nodes while replacing only drawing layers.
+Each cell uses an integer CSS pixel scale so measured width and height agree at
+all supported widths. Puzzle pieces have no button press transform or transition:
+the original grab point follows the finger directly; paper styling remains on
+other controls. Memory faces use a single 240 ms transform transition in both
+directions. The closing test controls application timers with `page.clock` and
+pauses CSS animations in the mutation turn which creates them, then checks their
+midpoint and final transform. Reduced motion still requires an immediate closing
+transform and no animation. The media fixture installs once per document even
+when preparation is called repeatedly in a viewport/level matrix.
+
+These regression suites are authored for the external runner; no test runner or
+browser was executed during this correction.

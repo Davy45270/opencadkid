@@ -1,4 +1,4 @@
-import { test, expect, prepare, state, visibleAnswer, type Target } from './helpers';
+import { test, expect, prepare, state, visibleAnswer, expectTouch, type Target } from './helpers';
 import { makeRng } from '../../src/engines/rng';
 for (const level of [1, 4, 6]) test(`noisy finger series at level ${level}, including drag and accidental double tap`, async ({ page, context }) => {
     await prepare(page, level);
@@ -9,6 +9,7 @@ for (const level of [1, 4, 6]) test(`noisy finger series at level ${level}, incl
     const cdp = await context.newCDPSession(page);
     let dragged = false, doubled = false;
     for (let i = 0; i < 6; i++) {
+        expect((await state(page)).index).toBe(i);
         const q = (await state(page)).question!;
         if (q.mode === 'remplir') {
             for (let n = 0; n < q.target; n++) {
@@ -30,7 +31,7 @@ for (const level of [1, 4, 6]) test(`noisy finger series at level ${level}, incl
                     await page.touchscreen.tap(r.x + r.width / 2 + noise(), r.y + r.height / 2 + noise());
                     expect((await state(page)).basket).toBe(before + 1); await page.waitForTimeout(205); doubled = true;
                 } else await tap('reserve-0');
-                expect((await state(page)).basket).toBe(n + 1);
+                await expectTouch(page, `question ${i}, objet ${n + 1}`, async () => (await state(page)).basket === n + 1);
             }
             await tap('check');
         } else {
@@ -38,7 +39,10 @@ for (const level of [1, 4, 6]) test(`noisy finger series at level ${level}, incl
             await page.touchscreen.tap(r.x + r.width / 2 + noise(), r.y + r.height / 2 + noise());
             if (!doubled) { await page.touchscreen.tap(r.x + r.width / 2, r.y + r.height / 2); doubled = true; }
         }
+        await expectTouch(page, `réponse question ${i}`, () => page.locator('#continue').isVisible());
         await expect(page.locator('#continue')).toBeVisible(); await tap('continue');
+        await expectTouch(page, `Continuer question ${i}`, async () => i === 5 ? await page.locator('.stars').isVisible() : (await state(page)).index === i + 1);
+        expect((await state(page)).level).toBe(level);
         expect(await page.evaluate(() => ({ x: scrollX, y: scrollY }))).toEqual(scroll);
     }
     await expect(page.locator('.stars')).toBeVisible(); expect(doubled).toBe(true);

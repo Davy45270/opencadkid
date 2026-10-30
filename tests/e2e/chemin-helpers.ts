@@ -1,5 +1,5 @@
 import type { BrowserContext, Page } from '@playwright/test';
-import { expect, prepare } from './helpers';
+import { expect, prepare, touchFrame } from './helpers';
 export interface CheminProbe { game: string; level: number; chemin: { columns: number; rows: number; grid: string[][]; trace: number[]; solution: number[]; bonuses: number[]; collected: number[]; finished: boolean } }
 export const cheminState = (page: Page): Promise<CheminProbe> => page.evaluate(() => (window as unknown as { __kid: { state: () => CheminProbe } }).__kid.state());
 export async function prepareChemin(page: Page, level = 1, locale = 'fr'): Promise<void> {
@@ -33,13 +33,17 @@ export async function mazeRoute(page: Page, start?: number, goal?: number): Prom
     return path;
 }
 export async function cellPoint(page: Page, cell: number): Promise<{ x: number; y: number }> {
-    const r = (await page.locator(`[data-cell="${cell}"]`).boundingBox())!;
+    const r = await page.locator(`[data-cell="${cell}"]`).boundingBox();
+    if (!r) throw new Error(`Cellule ${cell} absente ou détachée : ${JSON.stringify(await cheminState(page))}`);
     return { x: r.x + r.width / 2, y: r.y + r.height / 2 };
 }
 export async function touchTrace(page: Page, context: BrowserContext, cells: number[]): Promise<void> {
     const cdp = await context.newCDPSession(page);
     await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ id: 1, ...await cellPoint(page, cells[0]!) }] });
-    for (const cell of cells.slice(1)) await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ id: 1, ...await cellPoint(page, cell) }] });
+    for (const cell of cells.slice(1)) {
+        await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ id: 1, ...await cellPoint(page, cell) }] });
+        await touchFrame(page);
+    }
     await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] }); await cdp.detach();
 }
 export async function head(page: Page): Promise<number> { return Number(await page.locator('[data-head="true"]').getAttribute('data-cell')); }

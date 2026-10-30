@@ -2,7 +2,7 @@ import { backdrop } from '../ui/backdrops';
 import * as chemin from '../engines/chemin';
 import * as cheminView from '../games/chemin/view';
 import { screenToZone, distanceToZone, dragPosition } from './coordinates';
-import { bindAction } from './activation';
+import { bindAction, activationEvents, acceptActivation, recordActivation, resetActivations } from './activation';
 import * as puzzle from '../engines/puzzle';
 import * as puzzleView from '../games/puzzle/view';
 import * as sounds from '../engines/sons';
@@ -49,7 +49,18 @@ function seed(): number { const buffer = new Uint32Array(1); try { crypto.getRan
 function persist(): void { writeSave(storage, save); }
 function cancel(): void { timers.forEach(clearTimeout); timers = []; stopSpeech(); }
 function speak(parts: string[], rate = 0.82): void { say(parts, save.locale, save.voice, undefined, rate); }
-function bind(selector: string, fn: (element: HTMLElement) => void): void { app.querySelectorAll<HTMLElement>(selector).forEach(el => { if (el.id === 'check' || el.id === 'continue') bindAction(el, () => fn(el)); else el.onclick = () => fn(el); }); }
+function actionKey(element: HTMLElement): string {
+    const target = element.id || Object.entries(element.dataset).map(([key, value]) => `${key}-${value ?? ''}`).join(':');
+    return `${screen}:${activeGame}:${soundsSession?.index ?? shapesSession?.index ?? session?.index ?? 0}:${target}`;
+}
+function bind(selector: string, fn: (element: HTMLElement) => void): void {
+    app.querySelectorAll<HTMLElement>(selector).forEach(el => {
+        // Drag controllers already own release and capture; click is their keyboard alternative.
+        if (el.matches('[data-piece], [data-sound-piece]')) {
+            el.onclick = event => { if (event.pointerType !== 'touch') fn(el); };
+        } else bindAction(el, () => fn(el), actionKey(el));
+    });
+}
 function render(): void {
     cancel(); applyLocale(save.locale);
     app.dataset.theme = screen === 'game' || screen === 'levels' ? activeGame : screen;
@@ -88,6 +99,7 @@ function render(): void {
     bind('#back', () => { screen = 'home'; cheminSession = undefined; cheminDrag = undefined; puzzleSession = undefined; puzzleDrag = undefined; soundsSession = undefined; soundDrag = undefined; session = undefined; memorySession = undefined; shapesSession = undefined; render(); });
 }
 function begin(level: number): void {
+    resetActivations();
     cheminSession = undefined; cheminDrag = undefined; cheminHelp = false;
     if (activeGame === 'chemin') {
         session = undefined; soundsSession = undefined; memorySession = undefined; shapesSession = undefined; puzzleSession = undefined; puzzleDrag = undefined;
@@ -111,12 +123,24 @@ function renderChemin(): void {
     bind('#listen', () => speak([text(save.locale, state.finished ? 'finished' : 'pathInstruction')]));
     bind('#help', () => {
         cheminHelp = !cheminHelp;
-        const zone = app.querySelector('.chemin-zone')!;
-        zone.innerHTML = cheminView.boardSvg(cheminSession!, cheminHelp);
+        patchChemin();
         app.querySelector('#help')!.setAttribute('aria-pressed', String(cheminHelp));
     });
     bind('#again', () => begin(state.level));
     bind('#next', () => { if (state.level < chemin.levels.length) begin(state.level + 1); });
+}
+function patchChemin(): void {
+    const zone = app.querySelector('.chemin-zone')!;
+    const template = document.createElement('template');
+    template.innerHTML = cheminView.boardSvg(cheminSession!, cheminHelp);
+    const desired = template.content.querySelector('svg')!;
+    const svg = zone.querySelector('svg')!;
+    for (const cell of svg.querySelectorAll('[data-cell]')) {
+        cell.setAttribute('data-head', String(Number(cell.getAttribute('data-cell')) === cheminSession!.trace.at(-1)));
+    }
+    // Preserve the cell nodes, replacing only decorations and the drawing.
+    for (const child of [...svg.children]) if (!child.hasAttribute('data-cell')) child.remove();
+    for (const child of [...desired.children]) if (!child.hasAttribute('data-cell')) svg.append(child);
 }
 function updateChemin(next: chemin.Maze): void {
     if (next === cheminSession) return;
@@ -126,7 +150,7 @@ function updateChemin(next: chemin.Maze): void {
         save.cheminRecords = chemin.complete(save.cheminRecords, next);
         if (chemin.medal(next)) save.cheminMedals = { ...save.cheminMedals, [next.level]: true };
         persist(); chime(save.sound); render(); speak([text(save.locale, 'finished')]);
-    } else app.querySelector('.chemin-zone')!.innerHTML = cheminView.boardSvg(next, cheminHelp);
+    } else patchChemin();
 }
 function cheminPoint(event: PointerEvent): chemin.Point {
     return screenToZone({ x: event.clientX, y: event.clientY }, app.querySelector('.chemin-zone')!.getBoundingClientRect(), { width: cheminSession!.columns, height: cheminSession!.rows });
@@ -136,7 +160,8 @@ app.addEventListener('pointerdown', event => {
     const point = cheminPoint(event), cell = chemin.fromPoint(cheminSession, point.x, point.y);
     if (cell === null || !cheminSession.trace.includes(cell)) return;
     event.preventDefault(); app.querySelector<HTMLElement>('.chemin-zone')!.focus({ preventScroll: true });
-    cheminDrag = { pointer: event.pointerId, point, anchor: cell }; app.setPointerCapture(event.pointerId);
+    cheminDrag = { pointer: event.pointerId, point, anchor: cell };
+    recordActivation(`chemin-cell-${cell}`, event.type, true, 'trace-grab'); app.setPointerCapture(event.pointerId);
 });
 function moveChemin(event: PointerEvent): void {
     const drag = cheminDrag;
@@ -147,6 +172,7 @@ function moveChemin(event: PointerEvent): void {
     const base = anchorIndex === original.trace.length - 1 ? original : { ...original, trace: original.trace.slice(0, anchorIndex + 1) };
     const next = chemin.interpolate(base, drag.point, point);
     // Grabbing an earlier point does not erase anything until an open step is taken.
+    recordActivation(`chemin-cell-${chemin.fromPoint(original, point.x, point.y) ?? 'outside'}`, event.type, next !== base, next !== base ? 'trace-advanced' : 'no-open-step');
     if (next !== base) updateChemin(next);
     if (!cheminDrag) return;
     const head = cheminSession.trace.at(-1)!;
@@ -159,7 +185,7 @@ function moveChemin(event: PointerEvent): void {
 app.addEventListener('pointermove', moveChemin);
 app.addEventListener('pointerup', event => {
     if (cheminDrag?.pointer !== event.pointerId) return;
-    moveChemin(event); cheminDrag = undefined;
+    moveChemin(event); recordActivation('chemin-trace', event.type, true, 'primary-gesture'); cheminDrag = undefined;
     if (app.hasPointerCapture(event.pointerId)) app.releasePointerCapture(event.pointerId);
 });
 for (const name of ['pointercancel', 'lostpointercapture'] as const) app.addEventListener(name, event => {
@@ -241,6 +267,7 @@ app.addEventListener('pointerdown', event => {
     if (p.placed) return;
     event.preventDefault(); element.focus({ preventScroll: true });
     puzzleDrag = { pointer: event.pointerId, piece, startX: event.clientX, startY: event.clientY, x: p.x, y: p.y, element };
+    recordActivation(`puzzle-piece-${piece}`, event.type, true, 'drag-grab');
     element.style.zIndex = '4'; app.setPointerCapture(event.pointerId);
 });
 app.addEventListener('pointermove', event => {
@@ -252,6 +279,7 @@ app.addEventListener('pointerup', event => {
     if (puzzleDrag?.pointer !== event.pointerId) return;
     const d = puzzleDrag, r = puzzleZone()!; puzzleDrag = undefined;
     if (app.hasPointerCapture(event.pointerId)) app.releasePointerCapture(event.pointerId);
+    recordActivation(`puzzle-piece-${d.piece}`, event.type, true, 'primary-drag');
     puzzleDrop(d.piece, ...puzzleDragCoordinates(d, event, r));
 });
 for (const name of ['pointercancel', 'lostpointercapture']) app.addEventListener(name, event => {
@@ -346,8 +374,9 @@ app.addEventListener('pointerup', event => {
         ], { duration: 260, easing: 'ease-out' });
     }
 });
-for (const name of ['pointercancel', 'lostpointercapture']) app.addEventListener(name, () => {
-    if (soundDrag) { soundDrag.element.style.transform = ''; soundDrag.element.classList.remove('dragging'); soundDrag = undefined; }
+for (const name of ['pointercancel', 'lostpointercapture']) app.addEventListener(name, event => {
+    if (soundDrag?.id !== (event as PointerEvent).pointerId) return;
+    soundDrag.element.style.transform = ''; soundDrag.element.classList.remove('dragging'); soundDrag = undefined;
     if (name === 'pointercancel') soundSelected = undefined;
 });
 
@@ -397,13 +426,14 @@ app.addEventListener('pointerup', event => {
     const drag = shapeDrag; shapeDrag = undefined;
     if (app.hasPointerCapture(event.pointerId)) app.releasePointerCapture(event.pointerId);
     drag.element.style.transform = ''; drag.element.classList.remove('dragging');
-    if (Math.hypot(event.clientX - drag.x, event.clientY - drag.y) < 12) { selectedPiece = drag.piece; return; }
+    if (Math.hypot(event.clientX - drag.x, event.clientY - drag.y) < 12) { selectedPiece = drag.piece; recordActivation(`shape-piece-${drag.piece}`, event.type, true, 'selection'); return; }
     const boxes = [...app.querySelectorAll<HTMLElement>('[data-box]')].map(el => {
         const r = el.getBoundingClientRect();
         return { el, distance: distanceToZone({ x: event.clientX, y: event.clientY }, r) };
     }).sort((a, b) => a.distance - b.distance);
     if (boxes[0] && boxes[0].distance <= 24 && shapesSession) {
         const result = shapes.drop(shapesSession, drag.piece, Number(boxes[0].el.dataset.box));
+        recordActivation(`shape-piece-${drag.piece}`, event.type, result.correct, result.correct ? 'placed' : 'wrong-box');
         shapeResponse(result, drag.piece);
         if (result.returned && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
             app.querySelector<HTMLElement>(`[data-piece="${drag.piece}"]`)?.animate([
@@ -412,8 +442,9 @@ app.addEventListener('pointerup', event => {
         }
     }
 });
-for (const eventName of ['pointercancel', 'lostpointercapture']) app.addEventListener(eventName, () => {
-    if (shapeDrag) { shapeDrag.element.style.transform = ''; shapeDrag.element.classList.remove('dragging'); shapeDrag = undefined; }
+for (const eventName of ['pointercancel', 'lostpointercapture']) app.addEventListener(eventName, event => {
+    if (shapeDrag?.id !== (event as PointerEvent).pointerId) return;
+    shapeDrag.element.style.transform = ''; shapeDrag.element.classList.remove('dragging'); shapeDrag = undefined;
 });
 function renderMemory(): void {
     const state = memorySession!;
@@ -509,12 +540,12 @@ function settings(): void {
     bind('#close', () => { screen = 'home'; render(); });
 }
 // One primary pointer owns the gesture. DOM updates only after release.
-let gesture: { id: number; x: number; y: number; area: 'reserve' | 'basket'; moved: boolean } | undefined;
-let lastMove = -1000;
+let gesture: { id: number; x: number; y: number; area: 'reserve' | 'basket'; moved: boolean; key: string } | undefined;
+
 app.addEventListener('pointerdown', event => {
     if (gesture || !event.isPrimary || !session || session.solved) return;
     const token = (event.target as Element).closest<HTMLElement>('.token'); if (!token) return;
-    gesture = { id: event.pointerId, x: event.clientX, y: event.clientY, area: token.hasAttribute('data-reserve') ? 'reserve' : 'basket', moved: false };
+    gesture = { id: event.pointerId, x: event.clientX, y: event.clientY, area: token.hasAttribute('data-reserve') ? 'reserve' : 'basket', moved: false, key: actionKey(token) };
     app.setPointerCapture(event.pointerId);
 });
 app.addEventListener('pointermove', event => { if (gesture?.id === event.pointerId && Math.hypot(event.clientX - gesture.x, event.clientY - gesture.y) > 12) gesture.moved = true; });
@@ -524,11 +555,10 @@ app.addEventListener('pointerup', event => {
     if (app.hasPointerCapture(event.pointerId)) app.releasePointerCapture(event.pointerId);
     const zone = app.querySelector(g.area === 'reserve' ? '#basket' : '#reserve')?.getBoundingClientRect();
     if (g.moved && (!zone || distanceToZone({ x: event.clientX, y: event.clientY }, zone) !== 0)) return;
-    if (performance.now() - lastMove < 180) return;
-    lastMove = performance.now();
+    if (!acceptActivation(g.key, event.type, !g.moved)) return;
     if (session) { session = moveObject(session, g.area === 'reserve' ? 1 : -1); render(); if (hint) showHint(); }
 });
-for (const name of ['pointercancel', 'lostpointercapture']) app.addEventListener(name, () => { gesture = undefined; });
+for (const name of ['pointercancel', 'lostpointercapture']) app.addEventListener(name, event => { if (gesture?.id === (event as PointerEvent).pointerId) gesture = undefined; });
 app.addEventListener('keydown', event => {
     const token = (event.target as Element).closest('.token');
     if (token && (event.key === 'Enter' || event.key === ' ') && session) { event.preventDefault(); session = moveObject(session, token.hasAttribute('data-reserve') ? 1 : -1); render(); if (hint) showHint(); }
@@ -539,7 +569,7 @@ document.addEventListener('visibilitychange', () => {
     if (document.hidden) { cheminDrag = undefined; puzzleHiddenAt = performance.now(); cancelPuzzleDrag(); }
     else if (screen === 'game' && activeGame === 'puzzle') { if (puzzleHiddenAt !== undefined) puzzleIdleStart += performance.now() - puzzleHiddenAt; puzzleHiddenAt = undefined; render(); }
  if (document.hidden) { cancel(); stopSound(); } else { if (save.sound) unlockSound(); if (screen === 'game' && activeGame === 'paires') render(); } });
-Object.defineProperty(window, '__kid', { configurable: false, writable: false, value: Object.freeze({ state: () => {
+Object.defineProperty(window, '__kid', { configurable: false, writable: false, value: Object.freeze({ events: activationEvents, state: () => {
     const targets = [...app.querySelectorAll<HTMLElement>('button, select, input')].filter(el => !el.hasAttribute('disabled')).map(el => { const r = el.getBoundingClientRect(); return { id: el.id || (el.dataset.answer !== undefined ? `answer-${el.dataset.answer}` : el.dataset.level ? `level-${el.dataset.level}` : el.dataset.card !== undefined ? `card-${el.dataset.card}` : el.hasAttribute('data-reserve') ? `reserve-${el.dataset.reserve}` : el.hasAttribute('data-basket') ? `basket-${el.dataset.basket}` : el.dataset.soundPiece !== undefined ? `sound-piece-${el.dataset.soundPiece}` : el.dataset.soundBox !== undefined ? `sound-box-${el.dataset.soundBox}` : el.dataset.piece !== undefined ? `piece-${el.dataset.piece}` : el.dataset.box !== undefined ? `box-${el.dataset.box}` : el.dataset.game || ''), x: r.x, y: r.y, width: r.width, height: r.height }; });
     const rect = (selector: string): { x: number; y: number; width: number; height: number } | null => { const r = app.querySelector(selector)?.getBoundingClientRect(); return r ? { x: r.x, y: r.y, width: r.width, height: r.height } : null; };
     return structuredClone({ chemin: cheminSession ?? null, puzzle: puzzleSession ? { ...puzzleSession, zone: rect('.puzzle-zone'), boardScreen: rect('[data-puzzle-board]') } : null, screen, game: cheminSession || puzzleSession || session || memorySession || shapesSession || soundsSession || screen === 'levels' ? activeGame : null, level: cheminSession?.level ?? puzzleSession?.level ?? soundsSession?.level ?? shapesSession?.level ?? memorySession?.level ?? session?.level ?? null, index: soundsSession?.index ?? shapesSession?.index ?? session?.index ?? 0, question: soundsSession?.questions[soundsSession.index] ?? shapesSession?.questions[shapesSession.index] ?? session?.questions[session.index] ?? null, sons: soundsSession ?? null, shapes: shapesSession ?? null, basket: session?.basket ?? 0, board: memorySession ? { ...memorySession, cards: memorySession.cards.map((card, i) => {

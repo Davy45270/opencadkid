@@ -1,4 +1,4 @@
-import { test, expect } from './helpers';
+import { test, expect, expectTouch, state } from './helpers';
 import { prepareShapes, shapeAnswer, shapeState } from './formes-helpers';
 import { makeRng } from '../../src/engines/rng';
 for (const level of [3, 5, 6, 8, 10]) test(`level ${level}: noisy touch completes without scrolling, with double tap and wrong drop`, async ({ page, context }) => {
@@ -7,9 +7,16 @@ for (const level of [3, 5, 6, 8, 10]) test(`level ${level}: noisy touch complete
     const rng = makeRng(73), noise = (): number => rng() * 20 - 10;
     const scroll = await page.evaluate(() => ({ x: scrollX, y: scrollY }));
     const tap = async (selector: string): Promise<void> => {
+        const before = await shapeState(page);
         const r = (await page.locator(selector).boundingBox())!;
         expect(r.width).toBeGreaterThanOrEqual(64); expect(r.height).toBeGreaterThanOrEqual(64);
         await page.touchscreen.tap(r.x + r.width / 2 + noise(), r.y + r.height / 2 + noise());
+        await expectTouch(page, `${selector}, question ${before.index}`, async () => {
+            const after = await shapeState(page);
+            if (selector === '#continue') return before.index === 5 ? after.shapes.finished : after.index === before.index + 1;
+            if (selector.includes('data-answer')) return after.index === before.index && after.shapes.solved;
+            return after.index === before.index && after.shapes.placed.length === before.shapes.placed.length;
+        });
     };
     const cdp = await context.newCDPSession(page);
     const drag = async (piece: number, box: string): Promise<void> => {
@@ -35,14 +42,15 @@ for (const level of [3, 5, 6, 8, 10]) test(`level ${level}: noisy touch complete
             }
             for (let piece = 0; piece < 3; piece++) { const c = await page.locator(`[data-piece="${piece}"] svg`).getAttribute('data-color'); await drag(piece, `[data-box][data-color="${c!}"]`); }
         } else {
-            const selector = `[data-answer="${await shapeAnswer(page)}"]`; await tap(selector);
+            const selector = `[data-answer="${await shapeAnswer(page)}"]`; await tap(selector); await expectTouch(page, `réponse question ${i}`, async () => (await shapeState(page)).shapes.solved);
             if (i === 0) { await tap(selector); expect((await shapeState(page)).index).toBe(0); }
         }
         expect((await shapeState(page)).shapes.placed.length).toBe(level === 10 ? 3 : 0);
         expect((await shapeState(page)).shapes.solved).toBe(true);
         expect((await shapeState(page)).shapes.finished).toBe(false);
         await expect(page.locator('#continue')).toBeVisible(); await tap('#continue');
-        await expect.poll(async () => { const s = await shapeState(page); return s.shapes.finished || s.index === i + 1; }).toBe(true);
+        await expectTouch(page, `Continuer question ${i}`, async () => { const s = await shapeState(page); return i === 5 ? s.shapes.finished : s.index === i + 1; });
+        expect((await state(page)).level).toBe(level);
         expect(await page.evaluate(() => ({ x: scrollX, y: scrollY }))).toEqual(scroll);
     }
     expect((await shapeState(page)).shapes.finished).toBe(true); await expect(page.locator('.stars')).toBeVisible();
