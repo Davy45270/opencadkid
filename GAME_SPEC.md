@@ -38,7 +38,7 @@ All sessions contain six questions. Levels unlock in numerical order after compl
 
 `generateRound(level, seed, count = 6)` is deterministic with Mulberry32. Each question uses one illustrated object type: apple, pear, strawberry, carrot, star, fish or flower. Consecutive targets differ. Counting cards contain three distinct integers within the level's range; the answer appears once. Distractors differ from the target by one or two. Each answer position is drawn with the seeded RNG from all three positions, excluding the previous position only when it has already appeared twice consecutively. Across 600 questions each position must receive 20–47% of answers; triples are forbidden and fewer than 5% of 300 seeded rounds may follow a complete +1 modulo 3 rotation.
 
-Filling provides at least target + 2 objects (up to target + 4). Touch a reserve object or drag it onto the basket to add one; touch a basket object or drag it back to remove one. Validate explicitly. The engine clamps quantities to 0…reserve. Only a primary pointer owns a drag; cancelled or lost capture clears it. Drags use `touch-action: none` only in the filling zone; other controls use manipulation. A 180 ms transfer debounce absorbs accidental double taps. Answer validation locks the solved question; a separate arrow continues, so an accidental second answer cannot skip a question.
+Filling provides at least target + 2 objects (up to target + 4). Touch a reserve object or drag it onto the basket to add one; touch a basket object or drag it back to remove one. Validate explicitly. The engine clamps quantities to 0…reserve. Only a primary pointer owns a drag; cancelled or lost capture clears it. Drags use `touch-action: none` only in the filling zone; other controls use manipulation. A 350 ms per-token transfer debounce absorbs accidental double taps. Answer validation locks the solved question; a separate arrow continues, so an accidental second answer cannot skip a question.
 
 Comparison baskets are never equal. Both quantities lie in the level range. The answer is index 0 for the left basket or 1 for the right. More and fewer are actual inequality rules, not visual size comparisons.
 
@@ -381,10 +381,19 @@ The orchestrator must run unit and browser suites, inspect start/finish captures
 A primary touch commits on release inside its original target bounds, provided it
 has moved less than 12 CSS pixels. Each distinct touch on a distinct target acts
 exactly once, even when Continue follows an answer immediately or 205 ms later.
-A second touch on the same logical target within 180 ms of its last accepted tap
+A second touch on the same logical target within 350 ms of its last accepted tap
 is a double tap and acts only once. Target identity includes the game, question
-and control, and survives replacement of that control during rendering. The next
-question has independent targets. There is no global suppression interval.
+and control, and survives replacement of that control during rendering. Sorting
+box keys also include the selected image/piece, read at pointerdown (selection
+need not render). Selecting A → box X → selecting B → box X therefore commits
+two placements even at 0, 50, 120 or 300 ms; box X twice with the same selection
+within 350 ms commits once. The key is frozen for the duration of the gesture.
+Counting filling keys include question, reserve/basket and token index; distinct
+tokens act immediately, while a duplicate on the same token is merged. Memory
+card keys include the turn, so the same card can reopen in the next turn.
+Puzzle pieces and path traces use their primary-pointer drag controllers: piece
+identity/position and trace/head define each move, with no tap debounce on drags.
+The next question has independent targets. There is no global suppression interval.
 
 The failed final counting snapshot asks for nine flowers although level four is
 limited to five: it has already entered level five. Likewise the failed shapes
@@ -423,3 +432,9 @@ when preparation is called repeatedly in a viewport/level matrix.
 
 These regression suites are authored for the external runner; no test runner or
 browser was executed during this correction.
+
+Sorting regression coverage uses synthetic performance timestamps in Vitest,
+without sleeping, and mobile touch sequences for both sounds and shapes. Each
+observed touch polls `window.__kid` for selection or placement; a separate burst
+sends all four touches without intervening waits or assertions. Noisy finger
+specs use state polling after release rather than fixed machine-speed delays.

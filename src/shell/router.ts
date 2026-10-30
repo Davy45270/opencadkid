@@ -51,14 +51,16 @@ function cancel(): void { timers.forEach(clearTimeout); timers = []; stopSpeech(
 function speak(parts: string[], rate = 0.82): void { say(parts, save.locale, save.voice, undefined, rate); }
 function actionKey(element: HTMLElement): string {
     const target = element.id || Object.entries(element.dataset).map(([key, value]) => `${key}-${value ?? ''}`).join(':');
-    return `${screen}:${activeGame}:${soundsSession?.index ?? shapesSession?.index ?? session?.index ?? 0}:${target}`;
+    const selection = element.matches('[data-sound-box]') ? `:piece-${soundSelected ?? 'none'}`
+        : element.matches('[data-box]') ? `:piece-${selectedPiece ?? 'none'}` : '';
+    return `${screen}:${activeGame}:${soundsSession?.index ?? shapesSession?.index ?? session?.index ?? 0}:${target}${selection}`;
 }
 function bind(selector: string, fn: (element: HTMLElement) => void, keyFor = actionKey): void {
     app.querySelectorAll<HTMLElement>(selector).forEach(el => {
         // Drag controllers already own release and capture; click is their keyboard alternative.
         if (el.matches('[data-piece], [data-sound-piece]')) {
             el.onclick = event => { if (event.pointerType !== 'touch') fn(el); };
-        } else bindAction(el, () => fn(el), keyFor(el));
+        } else bindAction(el, () => fn(el), () => keyFor(el));
     });
 }
 function render(): void {
@@ -555,7 +557,7 @@ app.addEventListener('pointerup', event => {
     if (app.hasPointerCapture(event.pointerId)) app.releasePointerCapture(event.pointerId);
     const zone = app.querySelector(g.area === 'reserve' ? '#basket' : '#reserve')?.getBoundingClientRect();
     if (g.moved && (!zone || distanceToZone({ x: event.clientX, y: event.clientY }, zone) !== 0)) return;
-    if (!acceptActivation(g.key, event.type, !g.moved)) return;
+    if (!acceptActivation(g.key, event.type, event.pointerType === 'touch' && !g.moved)) return;
     if (session) { session = moveObject(session, g.area === 'reserve' ? 1 : -1); render(); if (hint) showHint(); }
 });
 for (const name of ['pointercancel', 'lostpointercapture']) app.addEventListener(name, event => { if (gesture?.id === (event as PointerEvent).pointerId) gesture = undefined; });
@@ -572,7 +574,7 @@ document.addEventListener('visibilitychange', () => {
 Object.defineProperty(window, '__kid', { configurable: false, writable: false, value: Object.freeze({ events: activationEvents, state: () => {
     const targets = [...app.querySelectorAll<HTMLElement>('button, select, input')].filter(el => !el.hasAttribute('disabled')).map(el => { const r = el.getBoundingClientRect(); return { id: el.id || (el.dataset.answer !== undefined ? `answer-${el.dataset.answer}` : el.dataset.level ? `level-${el.dataset.level}` : el.dataset.card !== undefined ? `card-${el.dataset.card}` : el.hasAttribute('data-reserve') ? `reserve-${el.dataset.reserve}` : el.hasAttribute('data-basket') ? `basket-${el.dataset.basket}` : el.dataset.soundPiece !== undefined ? `sound-piece-${el.dataset.soundPiece}` : el.dataset.soundBox !== undefined ? `sound-box-${el.dataset.soundBox}` : el.dataset.piece !== undefined ? `piece-${el.dataset.piece}` : el.dataset.box !== undefined ? `box-${el.dataset.box}` : el.dataset.game || ''), x: r.x, y: r.y, width: r.width, height: r.height }; });
     const rect = (selector: string): { x: number; y: number; width: number; height: number } | null => { const r = app.querySelector(selector)?.getBoundingClientRect(); return r ? { x: r.x, y: r.y, width: r.width, height: r.height } : null; };
-    return structuredClone({ chemin: cheminSession ?? null, puzzle: puzzleSession ? { ...puzzleSession, zone: rect('.puzzle-zone'), boardScreen: rect('[data-puzzle-board]') } : null, screen, game: cheminSession || puzzleSession || session || memorySession || shapesSession || soundsSession || screen === 'levels' ? activeGame : null, level: cheminSession?.level ?? puzzleSession?.level ?? soundsSession?.level ?? shapesSession?.level ?? memorySession?.level ?? session?.level ?? null, index: soundsSession?.index ?? shapesSession?.index ?? session?.index ?? 0, question: soundsSession?.questions[soundsSession.index] ?? shapesSession?.questions[shapesSession.index] ?? session?.questions[session.index] ?? null, sons: soundsSession ?? null, shapes: shapesSession ?? null, basket: session?.basket ?? 0, board: memorySession ? { ...memorySession, cards: memorySession.cards.map((card, i) => {
+    return structuredClone({ chemin: cheminSession ?? null, puzzle: puzzleSession ? { ...puzzleSession, zone: rect('.puzzle-zone'), boardScreen: rect('[data-puzzle-board]') } : null, screen, game: cheminSession || puzzleSession || session || memorySession || shapesSession || soundsSession || screen === 'levels' ? activeGame : null, level: cheminSession?.level ?? puzzleSession?.level ?? soundsSession?.level ?? shapesSession?.level ?? memorySession?.level ?? session?.level ?? null, index: soundsSession?.index ?? shapesSession?.index ?? session?.index ?? 0, selection: soundSelected ?? selectedPiece ?? null, question: soundsSession?.questions[soundsSession.index] ?? shapesSession?.questions[shapesSession.index] ?? session?.questions[session.index] ?? null, sons: soundsSession ?? null, shapes: shapesSession ?? null, basket: session?.basket ?? 0, board: memorySession ? { ...memorySession, cards: memorySession.cards.map((card, i) => {
         const r = app.querySelector(`[data-card="${i}"]`)?.getBoundingClientRect();
         return { ...card, visible: memorySession!.preview || card.found || memorySession!.visible.includes(i), rect: r ? { x: r.x, y: r.y, width: r.width, height: r.height } : null };
     }) } : null, targets });

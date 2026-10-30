@@ -101,6 +101,9 @@ it('a logical target survives rerender, but a new question has an independent ta
     nextQuestion.send('pointerdown'); nextQuestion.send('pointerup');
     expect(calls).toBe(2);
     vi.advanceTimersByTime(205);
+    replacement.send('pointerdown'); replacement.send('pointerup');
+    expect(calls).toBe(2);
+    vi.advanceTimersByTime(145);
     replacement.send('pointerdown'); replacement.send('pointerup'); replacement.send('click');
     expect(calls).toBe(3);
 });
@@ -169,4 +172,35 @@ it('memory can reopen a card immediately in the next turn while duplicate touche
     const third = board.cards.findIndex((_, index) => index !== 0 && index !== wrong);
     tap(third); tap(third); expect(board.visible).toEqual([]); expect(board.moves).toBe(1);
     tap(0); expect(board.visible).toEqual([0]); expect(board.moves).toBe(1);
+});
+
+for (const delay of [0, 50, 120, 300]) it(`different selected pieces reach the same box at ${delay} ms`, () => {
+    for (const engine of [formes, sons]) {
+        resetActivations();
+        let s = engine === formes ? formes.start(9, 17) : sons.start(9, 17, 'fr');
+        const q = s.questions[0]!;
+        const labels = 'locale' in s ? s.questions[0]!.choices.map(p => p.initial) : s.questions[0]!.choices.map(p => p.color);
+        const pieces = labels.map((label, i) => labels.indexOf(label) !== i ? [labels.indexOf(label), i] : []).find(pair => pair.length === 2)!;
+        const boxes: readonly string[] = q.boxes;
+        const boxIndex = boxes.indexOf(labels[pieces[0]!]!);
+        let selected: number | undefined;
+        const box = new Button();
+        bindAction(box as unknown as HTMLElement, () => {
+            const piece = selected!; selected = undefined;
+            s = 'locale' in s ? sons.drop(s, piece, boxIndex).state : formes.drop(s, piece, boxIndex).state;
+        }, () => `q${s.index}:box-0:piece-${selected ?? 'none'}`);
+        const tap = (): void => { box.send('pointerdown'); box.send('pointerup'); box.send('click'); };
+        selected = pieces[0]!; tap();
+        vi.advanceTimersByTime(delay);
+        selected = pieces[1]!; tap();
+        expect(s.placed).toEqual(pieces);
+    }
+});
+it('the same box and unchanged selection at 120 ms commit only once', () => {
+    const box = new Button(); let calls = 0;
+    bindAction(box as unknown as HTMLElement, () => calls++, () => 'q0:box-X:piece-A');
+    box.send('pointerdown'); box.send('pointerup');
+    vi.advanceTimersByTime(120);
+    box.send('pointerdown'); box.send('pointerup');
+    expect(calls).toBe(1);
 });

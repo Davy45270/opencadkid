@@ -118,9 +118,9 @@ for (const method of ['tap', 'keyboard'] as const) test(`sorting by image select
         if (method === 'keyboard') {
             await image.focus(); await page.keyboard.press('Enter');
             await box.focus(); await page.keyboard.press('Space');
-        } else if (test.info().project.use.hasTouch) { await image.tap(); await box.tap(); }
+        } else if (test.info().project.use.hasTouch) { await image.tap(); await expect.poll(async () => (await soundsState(page)).selection).toBe(piece); await box.tap(); }
         else { await image.click(); await box.click(); }
-        expect((await soundsState(page)).sons.placed).toEqual(Array.from({ length: piece + 1 }, (_, i) => i));
+        await expect.poll(async () => (await soundsState(page)).sons.placed).toEqual(Array.from({ length: piece + 1 }, (_, i) => i));
         expect((await soundsState(page)).sons.errors).toBe(0);
     }
     await expect(page.locator('#continue')).toBeVisible();
@@ -138,5 +138,37 @@ test('sorting captures an exterior drop within 24px, rejects one beyond it', asy
     await dropOutside(26); expect((await soundsState(page)).sons.placed).toEqual([]);
     expect((await soundsState(page)).sons.errors).toBe(0);
     await dropOutside(18); expect((await soundsState(page)).sons.placed).toEqual([0]);
+    expect((await soundsState(page)).sons.errors).toBe(0);
+});
+
+for (const rapid of [false, true]) test(`sorting two images into the same box with ${rapid ? 'uninterrupted' : 'observed'} touches`, async ({ page }) => {
+    test.skip(!test.info().project.use.hasTouch, 'Requires the mobile touch project.');
+    await prepareSounds(page, 9);
+    const images = await page.locator('[data-sound-piece]').evaluateAll(elements => elements.map(el => ({
+        piece: Number(el.getAttribute('data-sound-piece')),
+        label: el.querySelector('svg')!.getAttribute('data-initial')!,
+        x: el.getBoundingClientRect().x + el.getBoundingClientRect().width / 2,
+        y: el.getBoundingClientRect().y + el.getBoundingClientRect().height / 2
+    })));
+    const second = images.find((image, i) => images.slice(0, i).some(other => other.label === image.label))!;
+    const first = images.find(image => image.label === second.label)!;
+    const box = page.locator('[data-sound-box]').filter({ has: page.locator('[data-letter="' + first.label + '"]') });
+    const r = (await box.boundingBox())!, x = r.x + r.width / 2, y = r.y + r.height / 2;
+    if (rapid) {
+        // Protocol calls only: no polling, locator actionability or delay between touches.
+        await page.touchscreen.tap(first.x, first.y);
+        await page.touchscreen.tap(x, y);
+        await page.touchscreen.tap(second.x, second.y);
+        await page.touchscreen.tap(x, y);
+    } else {
+        await page.touchscreen.tap(first.x, first.y);
+        await expect.poll(async () => (await soundsState(page)).selection).toBe(first.piece);
+        await page.touchscreen.tap(x, y);
+        await expect.poll(async () => (await soundsState(page)).sons.placed).toEqual([first.piece]);
+        await page.touchscreen.tap(second.x, second.y);
+        await expect.poll(async () => (await soundsState(page)).selection).toBe(second.piece);
+        await page.touchscreen.tap(x, y);
+    }
+    await expect.poll(async () => (await soundsState(page)).sons.placed).toEqual([first.piece, second.piece]);
     expect((await soundsState(page)).sons.errors).toBe(0);
 });

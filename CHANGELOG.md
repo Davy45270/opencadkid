@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.1
+
+- Correction : deux images posées rapidement dans la même boîte sont désormais toutes deux acceptées.
+
 ## 0.7.0
 
 - Give Boubou a softly shaded cream coat, dark eye patches, paw pads, bamboo and fruit basket; CaliRoux a warm red coat, white face mask and striped plume; Pestouille a red coat, cream belly, curved gold horns, veined green wings and book; Tutu a warm face, pink flower and layered tutu; Lumi a rainbow mane, blue eyes, twisted gold horn and star.

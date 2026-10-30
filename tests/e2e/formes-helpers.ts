@@ -1,6 +1,6 @@
 import type { Locator, Page } from '@playwright/test';
 import { expect, prepare } from './helpers';
-export interface ShapeProbe { game: string; index: number; shapes: { errors: number; solved: boolean; finished: boolean; firstTry: number; placed: number[] }; question: { answer: number } }
+export interface ShapeProbe { game: string; selection: number | null; index: number; shapes: { errors: number; solved: boolean; finished: boolean; firstTry: number; placed: number[] }; question: { answer: number } }
 export const shapeState = (page: Page): Promise<ShapeProbe> => page.evaluate(() => (window as unknown as { __kid: { state: () => ShapeProbe } }).__kid.state());
 export async function prepareShapes(page: Page, level = 1, locale = 'fr'): Promise<void> {
     // Install the exact shared speech/AudioContext doubles before entering this game.

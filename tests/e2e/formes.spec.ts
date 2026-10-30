@@ -198,3 +198,35 @@ test('wrong box animates a gradual return to the original position', async ({ pa
     expect((await shapeState(page)).shapes.placed).toEqual([]);
     await expect(piece).toBeEnabled();
 });
+
+for (const rapid of [false, true]) test(`sorting two images into the same box with ${rapid ? 'uninterrupted' : 'observed'} touches`, async ({ page }) => {
+    test.skip(!test.info().project.use.hasTouch, 'Requires the mobile touch project.');
+    await prepareShapes(page, 9);
+    const images = await page.locator('[data-piece]').evaluateAll(elements => elements.map(el => ({
+        piece: Number(el.getAttribute('data-piece')),
+        label: el.querySelector('svg')!.getAttribute('data-color')!,
+        x: el.getBoundingClientRect().x + el.getBoundingClientRect().width / 2,
+        y: el.getBoundingClientRect().y + el.getBoundingClientRect().height / 2
+    })));
+    const second = images.find((image, i) => images.slice(0, i).some(other => other.label === image.label))!;
+    const first = images.find(image => image.label === second.label)!;
+    const box = page.locator('[data-box][data-color="' + first.label + '"]');
+    const r = (await box.boundingBox())!, x = r.x + r.width / 2, y = r.y + r.height / 2;
+    if (rapid) {
+        // Protocol calls only: no polling, locator actionability or delay between touches.
+        await page.touchscreen.tap(first.x, first.y);
+        await page.touchscreen.tap(x, y);
+        await page.touchscreen.tap(second.x, second.y);
+        await page.touchscreen.tap(x, y);
+    } else {
+        await page.touchscreen.tap(first.x, first.y);
+        await expect.poll(async () => (await shapeState(page)).selection).toBe(first.piece);
+        await page.touchscreen.tap(x, y);
+        await expect.poll(async () => (await shapeState(page)).shapes.placed).toEqual([first.piece]);
+        await page.touchscreen.tap(second.x, second.y);
+        await expect.poll(async () => (await shapeState(page)).selection).toBe(second.piece);
+        await page.touchscreen.tap(x, y);
+    }
+    await expect.poll(async () => (await shapeState(page)).shapes.placed).toEqual([first.piece, second.piece]);
+    expect((await shapeState(page)).shapes.errors).toBe(0);
+});

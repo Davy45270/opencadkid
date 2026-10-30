@@ -15,7 +15,7 @@ export async function prepareMemory(page: Page, level = 1): Promise<void> {
 }
 export async function solveMemory(page: Page, tap: (index: number) => Promise<void> = async index => { await page.locator(`[data-card="${index}"]`).click(); }): Promise<void> {
     let state = (await memoryState(page)).board;
-    if (state.mismatch) { await page.waitForTimeout(950); state = (await memoryState(page)).board; }
+    if (state.mismatch) { await expect.poll(async () => (await memoryState(page)).board.mismatch).toBe(false); state = (await memoryState(page)).board; }
     for (let i = 0; i < state.cards.length; i++) {
         state = (await memoryState(page)).board;
         if (state.cards[i]!.found) continue;

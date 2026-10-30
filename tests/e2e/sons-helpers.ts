@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test';
 import { expect, prepare } from './helpers';
-export interface SoundsProbe { game: string; index: number; question: { answer: number }; sons: { errors: number; solved: boolean; finished: boolean; firstTry: number; placed: number[] }; targets: { width: number; height: number }[] }
+export interface SoundsProbe { game: string; selection: number | null; index: number; question: { answer: number }; sons: { errors: number; solved: boolean; finished: boolean; firstTry: number; placed: number[] }; targets: { width: number; height: number }[] }
 export const soundsState = (page: Page): Promise<SoundsProbe> => page.evaluate(() => (window as unknown as { __kid: { state: () => SoundsProbe } }).__kid.state());
 export const sounds: Record<string, Record<string, string>> = {
     fr: { A: 'a', B: 'beu', C: 'keu', D: 'deu', E: 'é', F: 'fff', G: 'gueu', I: 'i', J: 'jjj', L: 'lll', M: 'mmm', N: 'nnn', O: 'o', P: 'peu', R: 'rrr', S: 'sss', T: 'teu', U: 'u', V: 'vvv', Z: 'zzz' },
