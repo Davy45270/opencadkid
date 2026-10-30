@@ -1,0 +1,51 @@
+# Opencadkid
+
+[English](README.md) · [Jouer en ligne](https://davy45270.github.io/opencadkid/)
+
+Des petits jeux éducatifs et doux pour les enfants de **4 à 8 ans**, à jouer au doigt, surtout au téléphone. Boubou le panda, CaliRoux le panda roux, Pestouille le dragon, Tutu le singe et Lumi la licorne accompagnent les découvertes. Les dessins sont des SVG générés par le code.
+
+**Disponible : Les paniers de Boubou.** Dénombrer, constituer une quantité et comparer, en huit niveaux progressifs. Le français est la langue par défaut ; l’anglais est choisi automatiquement seulement si la langue du téléphone commence par `en`. Le choix des parents est mémorisé.
+
+À venir : Les cartes de Lumi, Les formes de CaliRoux, Les sons de Tutu, Le puzzle de Pestouille, Le chemin de Pestouille, Les suites de Lumi, Le rangement de CaliRoux, Les tambours de Tutu et L’atelier de Boubou. Ces neuf jeux sont décrits dans [GAME_SPEC.md](GAME_SPEC.md), sans carte « bientôt » dans le jeu. L’apprentissage de l’heure se trouve dans l’application sœur TicTac, accessible depuis l’accueil après un contrôle parental.
+
+## Jouer et installer
+
+Aucune lecture n’est nécessaire pour jouer : chaque consigne est dite et accompagnée d’un pictogramme. Les réponses associent chiffres et constellations de points. Le premier toucher débloque l’audio ; l’oreille permet de réécouter. La voix dépend du navigateur et du téléphone : une voix française ou anglaise installée localement permet de parler hors ligne. Les consignes restent illustrées si la voix est indisponible.
+
+Ouvrir le jeu une première fois avec une connexion, puis choisir **Installer l’application** ou **Sur l’écran d’accueil** dans le navigateur. Une fois le service worker installé, le jeu entier fonctionne hors ligne. Les sons sont synthétisés sur place.
+
+Pas de chrono, pas de vies, pas d’échec punitif, pas de publicité, pas d’achat, pas de compte, pas de collecte ni d’envoi de statistiques. Une erreur encourage à réessayer ; après deux erreurs, les objets sont surlignés et comptés. Terminer donne toujours des étoiles et débloque le niveau suivant. Progression et réglages restent dans le navigateur. Rien ne sort du téléphone à l’initiative du jeu. Le seul lien externe, vers TicTac, demande une réponse écrite pour adulte.
+
+La roue dentée ouvre le contrôle parental, puis la langue, la voix, les sons et l’effacement de la progression, avec une confirmation supplémentaire. Ce petit contrôle évite une ouverture accidentelle ; il ne vérifie pas l’identité ni l’âge.
+
+## Captures
+
+Les captures seront créées par la suite mobile facultative, après compilation, sur une machine autorisée à lancer les navigateurs : `CAPTURES=1 npm run test:e2e -- --project=mobile tests/e2e/captures.spec.ts`. Elles ne sont pas fournies dans cette première livraison de sources.
+
+![Accueil français](docs/captures/accueil-fr.png)
+![Accueil anglais](docs/captures/accueil-en.png)
+![Dénombrer](docs/captures/compter-combien.png)
+![Remplir](docs/captures/compter-remplir.png)
+![Étoiles](docs/captures/compter-etoiles.png)
+
+## Développer
+
+Utiliser la version Node de `.nvmrc`.
+
+```sh
+npm ci
+npm run dev
+npm run lint
+npm run typecheck
+npm test
+npm run build
+npm run test:e2e
+```
+
+La configuration E2E démarre automatiquement `preview` après le build, avec un seul worker, pour un bureau et un téléphone tactile Chromium. Les icônes PWA sont reproductibles avec `node scripts/make-icons.js`, sans dépendance d’image.
+
+Les moteurs purs dans `src/engines/` reçoivent une graine ; ils n’utilisent ni DOM, ni heure, ni hasard ambiant. L’interface dessine et transmet les gestes. Le crochet de lecture `window.__kid.state()` donne une copie détachée de l’état et des rectangles des cibles, sans permettre de modifier le jeu. Les tests vérifient notamment 300 graines par niveau et par quantité disposée. Les E2E couvrent les séries, le doigt bruité, la langue, le contrôle parental et le hors ligne. Les tests ont été écrits sans être exécutés pendant cette livraison ; seuls lint, types et build sont validés localement.
+
+Le catalogue jouable est dans `src/registry.ts`. Les règles et l’oracle des tests sont dans [GAME_SPEC.md](GAME_SPEC.md). La CI vérifie le projet puis Pages déploie lorsque la CI de main réussit. Les actions sont épinglées.
+
+MIT © 2026 David Sevin. Voir [LICENSE](LICENSE) et [SECURITY.md](SECURITY.md).
