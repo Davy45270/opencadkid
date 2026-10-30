@@ -4,12 +4,12 @@ export { isUnlocked } from '../compter';
 export const levels = [
     { id: 1, columns: 3, rows: 3, min: 3, max: 3, bonuses: 0 },
     { id: 2, columns: 4, rows: 3, min: 4, max: 4, bonuses: 0 },
-    { id: 3, columns: 5, rows: 4, min: 5, max: 20, bonuses: 0 },
-    { id: 4, columns: 6, rows: 4, min: 6, max: 24, bonuses: 2 },
-    { id: 5, columns: 7, rows: 5, min: 7, max: 35, bonuses: 2 },
-    { id: 6, columns: 7, rows: 6, min: 7, max: 42, bonuses: 3 },
-    { id: 7, columns: 8, rows: 6, min: 8, max: 48, bonuses: 3 },
-    { id: 8, columns: 9, rows: 7, min: 9, max: 63, bonuses: 3 }
+    { id: 3, columns: 5, rows: 4, min: 7, max: 20, bonuses: 0 },
+    { id: 4, columns: 6, rows: 4, min: 9, max: 24, bonuses: 2 },
+    { id: 5, columns: 7, rows: 5, min: 11, max: 35, bonuses: 2 },
+    { id: 6, columns: 7, rows: 6, min: 11, max: 42, bonuses: 3 },
+    { id: 7, columns: 8, rows: 6, min: 12, max: 48, bonuses: 3 },
+    { id: 8, columns: 9, rows: 7, min: 14, max: 63, bonuses: 3 }
 ] as const;
 export const directions = ['N', 'E', 'S', 'W'] as const;
 export type Direction = typeof directions[number];
@@ -40,16 +40,27 @@ export function newMaze(level: number, seed: number): Maze {
     const config = levels[level - 1]; if (!config) throw new RangeError('Unknown maze level');
     const { columns, rows } = config, rng = makeRng(seed);
     const grid: Direction[][] = Array.from({ length: columns * rows }, () => []);
-    const start = Math.floor(rng() * rows) * columns;
-    const goal = (level <= 2 ? start : Math.floor(rng() * rows) * columns) + columns - 1;
+    const start = (level <= 2 ? Math.floor(rng() * rows) : rng() < .5 ? 0 : rows - 1) * columns;
+    const goal = start + columns - 1;
     const state: Maze = { level, columns, rows, grid, start, goal, solution: [], trace: [start], bonuses: [], collected: [], finished: false };
     const seen = new Set<number>([start]);
     const open = (a: number, b: number, d: Direction): void => {
         grid[a]!.push(d); grid[b]!.push(directions[(directions.indexOf(d) + 2) % 4]!); seen.add(b);
     };
-    // Seed the first two trees with a direct corridor, then attach random branches.
+    // Seed a simple route before attaching branches: a direct corridor for beginners,
+    // otherwise a U-shaped detour whose depth guarantees the configured minimum.
     const roots = [start];
     if (level <= 2) for (let c = start; c < goal; c++) { open(c, c + 1, 'E'); roots.push(c + 1); }
+    else {
+        const minimumDepth = Math.ceil((config.min - columns) / 2);
+        const depth = minimumDepth + Math.floor(rng() * (rows - minimumDepth));
+        const down = start === 0, step = down ? columns : -columns;
+        let cell = start;
+        const stepTo = (next: number, direction: Direction): void => { open(cell, next, direction); roots.push(next); cell = next; };
+        for (let i = 0; i < depth; i++) stepTo(cell + step, down ? 'S' : 'N');
+        for (let i = 1; i < columns; i++) stepTo(cell + 1, 'E');
+        for (let i = 0; i < depth; i++) stepTo(cell - step, down ? 'N' : 'S');
+    }
     const grow = (cell: number): void => {
         for (const d of shuffle(directions, rng)) {
             const next = neighbour(state, cell, d);
@@ -85,12 +96,23 @@ export function fromPoint(state: Pick<Maze, 'columns' | 'rows'>, x: number, y: n
 export function centre(state: Pick<Maze, 'columns'>, cell: number): Point { return { x: cell % state.columns + .5, y: Math.floor(cell / state.columns) + .5 }; }
 /** Exact grid traversal. Corner ties cross X then Y, so diagonal wall cutting is impossible. */
 export function segmentCells(state: Pick<Maze, 'columns' | 'rows'>, a: Point, b: Point): number[] {
-    const first = fromPoint(state, a.x, a.y), last = fromPoint(state, b.x, b.y);
-    if (first === null || last === null) return [];
+    const first = fromPoint(state, a.x, a.y);
+    if (first === null || !Number.isFinite(b.x) || !Number.isFinite(b.y)) return [];
     const clamp = (p: Point): Point => ({ x: Math.max(0, Math.min(state.columns - 1e-9, p.x)), y: Math.max(0, Math.min(state.rows - 1e-9, p.y)) });
-    a = clamp(a); b = clamp(b);
+    a = clamp(a);
+    // Clip along the original segment, rather than clamping each end coordinate
+    // independently (which would change the slope and the cells traversed).
+    const vx = b.x - a.x, vy = b.y - a.y;
+    let exit = 1;
+    if (vx > 0) exit = Math.min(exit, (state.columns - a.x) / vx);
+    if (vx < 0) exit = Math.min(exit, -a.x / vx);
+    if (vy > 0) exit = Math.min(exit, (state.rows - a.y) / vy);
+    if (vy < 0) exit = Math.min(exit, -a.y / vy);
+    const end = exit < 1 ? exit * (1 - 1e-10) : exit;
+    b = clamp({ x: a.x + end * vx, y: a.y + end * vy });
+    const last = fromPoint(state, b.x, b.y)!;
     let x = Math.floor(a.x), y = Math.floor(a.y);
-    const dx = b.x - a.x, dy = b.y - a.y, sx = Math.sign(dx), sy = Math.sign(dy);
+    const dx = vx, dy = vy, sx = Math.sign(dx), sy = Math.sign(dy);
     let tx = dx === 0 ? Infinity : ((sx > 0 ? x + 1 : x) - a.x) / dx;
     let ty = dy === 0 ? Infinity : ((sy > 0 ? y + 1 : y) - a.y) / dy;
     const cells = [first];

@@ -112,3 +112,51 @@ test('optional bonus detours earn a persistent medal; a replay preserves the bes
     await page.reload(); await page.locator('[data-game="chemin"]').click();
     await expect(page.locator('[data-level="4"]')).toContainText('★★★'); await expect(page.locator('[data-level="4"]')).toContainText('🏅');
 });
+
+test('visibilitychange cancels the held gesture and permits a fresh primary gesture', async ({ page }) => {
+    await prepareChemin(page, 4);
+    const path = await mazeRoute(page), start = await cellPoint(page, path[0]!), next = await cellPoint(page, path[1]!);
+    await page.mouse.move(start.x, start.y); await page.mouse.down();
+    await page.evaluate(() => {
+        Object.defineProperty(document, 'hidden', { configurable: true, value: true });
+        document.dispatchEvent(new Event('visibilitychange'));
+        Reflect.deleteProperty(document, 'hidden');
+        document.dispatchEvent(new Event('visibilitychange'));
+    });
+    await page.mouse.move(next.x, next.y);
+    expect((await cheminState(page)).chemin.trace).toEqual([path[0]]);
+    await page.mouse.up();
+    expect((await cheminState(page)).chemin.trace).toEqual([path[0]]);
+    await page.mouse.move(start.x, start.y); await page.mouse.down();
+    await page.mouse.move(next.x, next.y); await page.mouse.up();
+    expect((await cheminState(page)).chemin.trace).toEqual(path.slice(0, 2));
+});
+
+test('non-primary pointer cannot own a gesture while a primary pointer can', async ({ page }) => {
+    await prepareChemin(page, 4);
+    const path = await mazeRoute(page), start = await cellPoint(page, path[0]!), next = await cellPoint(page, path[1]!);
+    // Hold a real mouse pointer outside the board, so capture is available to
+    // the synthetic non-primary down without starting a board gesture first.
+    const outside = (await page.locator('.chemin-instruction').boundingBox())!;
+    await page.mouse.move(outside.x + outside.width / 2, outside.y + outside.height / 2); await page.mouse.down();
+    await page.locator('.chemin-zone').dispatchEvent('pointerdown', {
+        pointerId: 1, pointerType: 'mouse', isPrimary: false, button: 0, buttons: 1, clientX: start.x, clientY: start.y
+    });
+    await page.mouse.move(next.x, next.y);
+    expect((await cheminState(page)).chemin.trace).toEqual([path[0]]);
+    await page.mouse.up();
+    expect((await cheminState(page)).chemin.trace).toEqual([path[0]]);
+    await page.mouse.move(start.x, start.y); await page.mouse.down();
+    await page.mouse.move(next.x, next.y); await page.mouse.up();
+    expect((await cheminState(page)).chemin.trace).toEqual(path.slice(0, 2));
+});
+
+test('a fast pointer release beyond the board applies the corridor to its destination', async ({ page }) => {
+    await prepareChemin(page, 1);
+    const path = await mazeRoute(page), start = await cellPoint(page, path[0]!);
+    const zone = (await page.locator('.chemin-zone').boundingBox())!;
+    await page.mouse.move(start.x, start.y); await page.mouse.down();
+    await page.mouse.move(zone.x + zone.width + 40, start.y); await page.mouse.up();
+    expect((await cheminState(page)).chemin.trace).toEqual(path);
+    await expect(page.locator('.stars')).toBeVisible();
+});

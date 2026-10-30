@@ -5,7 +5,7 @@ import { fresh, readSave, writeSave } from '../src/shell/storage';
 import { boardSvg, gameView } from '../src/games/chemin/view';
 
 // Independent dimensions, lengths in CELLS (including both endpoints), and bonus counts.
-const oracle = [[3, 3, 3, 3, 0], [4, 3, 4, 4, 0], [5, 4, 5, 20, 0], [6, 4, 6, 24, 2], [7, 5, 7, 35, 2], [7, 6, 7, 42, 3], [8, 6, 8, 48, 3], [9, 7, 9, 63, 3]] as const;
+const oracle = [[3, 3, 3, 3, 0], [4, 3, 4, 4, 0], [5, 4, 7, 20, 0], [6, 4, 9, 24, 2], [7, 5, 11, 35, 2], [7, 6, 11, 42, 3], [8, 6, 12, 48, 3], [9, 7, 14, 63, 3]] as const;
 function neighbours(s: Maze, cell: number): number[] {
     return s.grid[cell]!.map(d => {
         const x = cell % s.columns, y = Math.floor(cell / s.columns);
@@ -31,6 +31,7 @@ for (const [i, [columns, rows, min, max, bonuses]] of oracle.entries()) it(`leve
             expect(new Set(s.grid[c]).size).toBe(s.grid[c]!.length);
             for (const n of neighbours(s, c)) expect(neighbours(s, n)).toContain(c);
         }
+        if (i >= 3) expect(min).toBeGreaterThanOrEqual(1.5 * columns);
         const solution = solve(s); expect(solution.length).toBeGreaterThanOrEqual(min); expect(solution.length).toBeLessThanOrEqual(max);
         expect(s.solution).toEqual(solution);
         // Independent simple-path enumeration, without reading the stored solution.
@@ -123,4 +124,85 @@ it('separate records/medals migrate safely, filter, roundtrip, and erase without
     raw = JSON.stringify({ version: 1, locale: 'fr', voice: true, sound: true, records: { 1: 2 } });
     expect(readSave(port).cheminRecords).toEqual({}); expect(readSave(port).cheminMedals).toEqual({});
     writeSave(port, fresh()); expect(readSave(port).cheminRecords).toEqual({}); expect(readSave(port).cheminMedals).toEqual({});
+});
+
+function attribute(svg: string, marker: string, name: string): string {
+    const tag = svg.match(new RegExp(`<[^>]*\\b${marker}(?:[\\s=>])[^>]*>`))?.[0];
+    expect(tag, marker).toBeDefined();
+    const value = tag!.match(new RegExp(`\\b${name}="([^"]*)"`))?.[1];
+    expect(value, `${marker}.${name}`).toBeDefined();
+    return value!;
+}
+it('painted walls match every closed grid edge and leave every passage open', () => {
+    for (let level = 1; level <= 8; level++) {
+        const s = newMaze(level, 17), svg = boardSvg(s, false);
+        const d = attribute(svg, 'data-walls', 'd');
+        const segments = [...d.matchAll(/M(\d+) (\d+)([hv])1/g)].map(m => `${m[1]},${m[2]},${m[3]}`);
+        expect(d).toBe(segments.map(v => { const [x, y, axis] = v.split(','); return `M${x} ${y}${axis}1`; }).join(''));
+        const expected: string[] = [];
+        for (let y = 0; y <= s.rows; y++) for (let x = 0; x < s.columns; x++) {
+            if (y === 0 || y === s.rows || !neighbours(s, (y - 1) * s.columns + x).includes(y * s.columns + x)) expected.push(`${x},${y},h`);
+        }
+        for (let x = 0; x <= s.columns; x++) for (let y = 0; y < s.rows; y++) {
+            if (x === 0 || x === s.columns || !neighbours(s, y * s.columns + x - 1).includes(y * s.columns + x)) expected.push(`${x},${y},v`);
+        }
+        expect(segments.sort()).toEqual(expected.sort());
+    }
+});
+it('painted trace and character follow advance and retreat', () => {
+    const s = fixture(), advanced = extend(extend(s, 1), 4);
+    for (const [state, points, translation] of [
+        [s, '0.5,0.5', [.15, .15]],
+        [advanced, '0.5,0.5 1.5,0.5 1.5,1.5', [1.15, 1.15]],
+        [extend(advanced, 1), '0.5,0.5 1.5,0.5', [1.15, .15]]
+    ] as const) {
+        const svg = boardSvg(state, false);
+        expect(attribute(svg, 'data-trace', 'points')).toBe(points);
+        const transform = attribute(svg, 'data-guide', 'transform');
+        const xy = transform.match(/translate\(([^ ]+) ([^)]+)\)/)!;
+        expect(Number(xy[1])).toBeCloseTo(translation[0]); expect(Number(xy[2])).toBeCloseTo(translation[1]);
+        expect(transform).toContain('scale(');
+    }
+});
+it('painted help shows three upcoming cells with visible dashed ink', () => {
+    for (const [state, points] of [
+        [fixture(), '0.5,0.5 1.5,0.5 1.5,1.5 2.5,1.5'],
+        [extend(extend(fixture(), 3), 6), '0.5,2.5 0.5,1.5 0.5,0.5 1.5,0.5']
+    ] as const) {
+        const svg = boardSvg(state, true);
+        expect(attribute(svg, 'data-hint', 'points')).toBe(points);
+        expect(attribute(svg, 'data-hint', 'stroke-dasharray')).toBe('.12 .13');
+        expect(attribute(svg, 'data-hint', 'stroke')).toBe('#6d52a1');
+        expect(Number(attribute(svg, 'data-hint', 'stroke-width'))).toBeGreaterThan(0);
+        expect(boardSvg(state, false)).not.toContain('data-hint');
+        expect(boardSvg({ ...state, finished: true }, true)).not.toContain('data-hint');
+    }
+});
+it('destinations paint nest bamboo and rainbow in their respective levels', () => {
+    const drawings: string[] = [];
+    for (let level = 1; level <= 8; level++) {
+        const drawing = boardSvg(newMaze(level, 17), false).match(/<g data-destination[^>]*>(.*?)<\/g>/)![1]!;
+        if (level % 3 === 1) { expect(drawing).toContain('<ellipse'); expect(drawing).toContain('fill="#f5e5b7"'); }
+        if (level % 3 === 2) { expect(drawing).toContain('d="M.35 .85V.15M.65 .85V.15M.2 .35H.5M.5 .6H.8"'); expect(drawing).toContain('fill="#72a552"'); }
+        if (level % 3 === 0) { expect(drawing).toContain('A.38 .38'); expect(drawing).toContain('A.22 .22'); }
+        drawings.push(drawing);
+        if (level > 3) expect(drawing).toBe(drawings[level - 4]);
+    }
+    expect(new Set(drawings).size).toBe(3);
+});
+it('fast exits retain crossed cells to the border or first wall without changing slope', () => {
+    const s = newMaze(1, 0), a = centre(s, s.start);
+    expect(segmentCells(s, a, { x: 30, y: a.y })).toEqual([s.start, s.start + 1, s.start + 2]);
+    expect(interpolate(s, a, { x: 30, y: a.y }).finished).toBe(true);
+    const f = fixture();
+    expect(segmentCells(f, { x: .5, y: .5 }, { x: 9.5, y: 9.5 })).toEqual([0, 1, 4, 5, 8]);
+    expect(interpolate(f, { x: .5, y: .5 }, { x: 30, y: .5 }).trace).toEqual([0, 1]);
+    expect(segmentCells(f, { x: .5, y: .5 }, { x: 8.5, y: 4.5 })).toEqual([0, 1, 4, 5]);
+    expect(interpolate(f, { x: .5, y: .5 }, { x: 8.5, y: 4.5 }).trace).toEqual([0, 1, 4, 5]);
+    for (const [a, b, cells] of [
+        [{ x: 2.5, y: 1.5 }, { x: -20, y: 1.5 }, [5, 4, 3]],
+        [{ x: 1.5, y: 2.5 }, { x: 1.5, y: -20 }, [7, 4, 1]],
+        [{ x: 1.5, y: .5 }, { x: 1.5, y: 20 }, [1, 4, 7]]
+    ] as const) expect(segmentCells(f, a, b)).toEqual(cells);
+    for (const b of [{ x: NaN, y: 0 }, { x: 0, y: Infinity }]) expect(interpolate(f, { x: .5, y: .5 }, b)).toBe(f);
 });

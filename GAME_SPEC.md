@@ -343,22 +343,22 @@ These cover the eight proposed puzzle mutation behaviours; mutation executions r
 
 ## Chemin: Pestouille’s path
 
-Eight pure seeded perfect mazes use shared Mulberry32 and randomized depth-first carving. The first two trees start with a straight left-to-right corridor; random branches attach without cycles. Later trees start at a random left-edge cell and end at a random right-edge cell. Length counts **cells including both endpoints**, not edges. The wide later ranges intentionally include every possible DFS tree route; dimensions set the difficulty, without rejecting or biasing seeds.
+Eight pure seeded perfect mazes use shared Mulberry32 and randomized depth-first carving. The first two trees start with a straight left-to-right corridor; random branches attach without cycles. Later trees first carve a U-shaped route from a seeded choice of top or bottom left corner to the corresponding right corner. Its seeded depth guarantees the minimum length before random branches attach, without retries. Length counts **cells including both endpoints**, not edges. From level four the minimum is at least 1.5 times the width; an independent table checks every bound over 300 seeds per level.
 
 | Level | Columns × rows | Solution length in cells | Optional stars |
 | --- | --- | --- | --- |
 | 1 | 3 × 3 | 3–3 | 0 |
 | 2 | 4 × 3 | 4–4 | 0 |
-| 3 | 5 × 4 | 5–20 | 0 |
-| 4 | 6 × 4 | 6–24 | 2 |
-| 5 | 7 × 5 | 7–35 | 2 |
-| 6 | 7 × 6 | 7–42 | 3 |
-| 7 | 8 × 6 | 8–48 | 3 |
-| 8 | 9 × 7 | 9–63 | 3 |
+| 3 | 5 × 4 | 7–20 | 0 |
+| 4 | 6 × 4 | 9–24 | 2 |
+| 5 | 7 × 5 | 11–35 | 2 |
+| 6 | 7 × 6 | 11–42 | 3 |
+| 7 | 8 × 6 | 12–48 | 3 |
+| 8 | 9 × 7 | 14–63 | 3 |
 
 `newMaze(level, seed)` returns reciprocal N/E/S/W openings, start, goal, solution, trace, bonuses and collected bonuses. Every tree has exactly cells − 1 passages. Optional stars lie on the solution or at dead ends at most two edges from it, with a junction strictly before the goal. Collection survives backtracking and is never mandatory. `extend` accepts only an adjacent open step; stepping to the previous cell shortens the trace. Invalid steps and walls preserve the original state. Completion locks the trace at the goal. `fromPoint(state, x, y)` uses cell units and snaps an outer quarter-cell margin inward, inclusively. Nonfinite or more distant points are rejected.
 
-`segmentCells` traverses every crossed grid boundary in order; exact corner ties cross X before Y. `interpolate` applies those steps until the first wall, preventing fast diagonal wall cutting. The UI uses the existing shared `screenToZone` conversion. One primary pointer owns capture on the stable app element, while only the maze has `touch-action: none`. Pointer cancellation or backgrounding frees the gesture and retains the drawing. Grabbing any previously traced cell resumes from that prefix on the first valid movement; simply touching or hitting a wall erases nothing. Rejected motion anchors at the head centre so a later event cannot jump across a wall. Keyboard arrows move one cell from the head.
+`segmentCells` traverses every crossed grid boundary in order; exact corner ties cross X before Y. `interpolate` applies those steps until the first wall, preventing fast diagonal wall cutting. A finite endpoint outside the board clips the original segment at its first border intersection, preserving its slope and applying all crossed cells up to the border, goal or first wall. The UI uses the existing shared `screenToZone` conversion. One primary pointer owns capture on the stable app element, while only the maze has `touch-action: none`. Pointer cancellation or backgrounding frees the gesture and retains the drawing. Grabbing any previously traced cell resumes from that prefix on the first valid movement; simply touching or hitting a wall erases nothing. Rejected motion anchors at the head centre so a later event cannot jump across a wall. Keyboard arrows move one cell from the head.
 
 The SVG draws contrast walls, a wide coloured trace and Pestouille at its head. Nest, bamboo and rainbow destinations alternate by level. Cells are square and at least 40 real CSS pixels at 390×844, including 9×7; narrower screens scale uniformly without overflow. Header buttons measure 64 px. The bulb is always available and toggles a dotted route of the next three cells from the head, including retreat from dead ends; it never changes the reward. Every finish earns three stars. A medal additionally requires at least one bonus and all bonuses collected. Independent `cheminRecords` stores the maximum stars and `cheminMedals` preserves earned medals. Invalid records are filtered; old saves migrate, and erase clears both. Completion unlocks the next level. Level eight has no next control.
 
@@ -368,8 +368,8 @@ Each SVG cell exposes `data-cell`, `data-open`, `data-head`, and endpoint marker
 
 Tests authored without executing Vitest, Playwright or a browser:
 
-- `tests/chemin.test.ts`: independent eight-level table, 300 seeds each, deterministic reciprocal in-bounds openings, exact tree edge count, connected BFS and independent simple-path enumeration, opposite borders and solution lengths; bonus placement; pure advance/retreat/rejection; five-cell fast diagonal and wall stop; quarter-cell tolerance; persistent optional collection; constant three-star completion, medal and best-score/unlock; three-cell help from a dead end; bilingual UI, DOM oracle, SVG structure and save migration/filtering/roundtrip/erase.
-- `tests/e2e/chemin.spec.ts`: DOM-only BFS solves levels 1, 4 and 8 through simulated touch, checks wall stops, retreat, help, detached hook, local speech and synthesized sound, reload/unlock and isolation. English keyboard completion and media disabled; all eight levels measure real cell squares, wall strokes, 64 px controls, valid SVG and no page overflow at widths 320–1280. Cancellation retains progress. Optional mobile captures: `chemin-debut.png`, `chemin-fini.png`.
+- `tests/chemin.test.ts`: independent eight-level table, 300 seeds each, deterministic reciprocal in-bounds openings, exact tree edge count, connected BFS and independent simple-path enumeration, opposite borders and solution lengths; bonus placement; pure advance/retreat/rejection; five-cell fast diagonal and wall stop; quarter-cell tolerance; persistent optional collection; constant three-star completion, medal and best-score/unlock; three-cell help from a dead end; bilingual UI, DOM oracle, SVG structure and save migration/filtering/roundtrip/erase. Render assertions compare every painted wall with closed edges, the trace points and character translation after advance/retreat, the visible dashed help points including a dead-end retreat, and the actual nest/bamboo/rainbow drawings. Fast-exit cases cover all four borders, an oblique exit, first-wall stopping and nonfinite rejection.
+- `tests/e2e/chemin.spec.ts`: DOM-only BFS solves levels 1, 4 and 8 through simulated touch, checks wall stops, retreat, help, detached hook, local speech and synthesized sound, reload/unlock and isolation. English keyboard completion and media disabled; all eight levels measure real cell squares, wall strokes, 64 px controls, valid SVG and no page overflow at widths 320–1280. Cancellation retains progress. Dedicated cases reject a non-primary pointer, cancel a held gesture on visibilitychange, verify fresh primary gestures still work, and finish a fast gesture beyond the board. Optional mobile captures: `chemin-debut.png`, `chemin-fini.png`.
 - `tests/e2e/chemin-doigt.spec.ts`: mobile real touch protocol, seeded ±6 px offsets, irregular steps and collinear two-cell skips, a deliberate wall, finger lift/restart at the head, DOM-derived route completion and unchanged page scroll. Shared media doubles and console guard are reused.
 
 Mutations to try: (1) remove the open-passage guard in `extend`: wall/state and browser wall tests must fail; (2) remove the previous-cell shortening branch: retreat tests must fail; (3) apply only the last cell in `interpolate`: the five-cell diagonal and fast-finger tests must fail.
