@@ -1,7 +1,8 @@
 import { expect, it } from 'vitest';
+import { expectedFills, hue, luminance, rgb } from './formes-oracles';
 import { advance, answer, complete, drop, forbiddenPairs, generateRound, isUnlocked, levels, start, stars, type Piece, type Question } from '../src/engines/formes';
 import { colorNames, name, paths, shapeNames, shapeSvg } from '../src/games/formes/shapes';
-import { instruction } from '../src/games/formes/view';
+import { gameView, instruction } from '../src/games/formes/view';
 import { fresh, readSave, writeSave } from '../src/shell/storage';
 const table = [
     ['forme', 3, false], ['forme', 4, false], ['forme', 6, true], ['couleur', 3, false], ['couleur', 3, true],
@@ -42,6 +43,7 @@ for (const [index, [mode, count, mixed]] of table.entries()) it(`level ${index +
                 if (q.choices.length !== count || q.choices.filter(p => oracle(q, p)).length !== 1 || !oracle(q, q.choices[q.answer]!)) failures.push('unique answer');
                 if (mode === 'forme' && new Set(q.choices.map(p => p.shape)).size !== count) failures.push('distinct shapes');
                 if (mode === 'forme' && !mixed && new Set(q.choices.map(p => p.color)).size !== 1) failures.push('same colour');
+                if (mode === 'couleur' && mixed && new Set(q.choices.map(p => p.shape)).size !== count) failures.push('varied shapes');
                 if (mode === 'couleur' && (!mixed && q.choices.some(p => p.shape !== q.target.shape))) failures.push('same shape');
                 if (mode === 'les-deux' && (!q.choices.some(p => p.shape === q.target.shape && p.color !== q.target.color) || !q.choices.some(p => p.color === q.target.color && p.shape !== q.target.shape))) failures.push('distractors');
                 if (mode === 'taille' && !q.choices.some(p => p.shape === q.target.shape && p.size !== q.target.size)) failures.push('size');
@@ -94,7 +96,7 @@ it('exact shared reward table; every level finishes, unlocks and preserves its b
 it('eight finite SVG paths have hard-coded geometric signatures and bilingual accessible names', () => {
     const signatures = { rond: 'MAAZ', carre: 'MHVHZ', triangle: 'MLLZ', rectangle: 'MHVHZ', etoile: 'MLLLLLLLLLZ', coeur: 'MCCZ', losange: 'MLLLZ', ovale: 'MAAZ' };
     // Full starts distinguish circles/ovals and squares/rectangles with equal commands.
-    const starts = { rond: 'M32 4A28 28', carre: 'M5 5H59', triangle: 'M32 4L60', rectangle: 'M4 14H60', etoile: 'M32 4L40', coeur: 'M32 59C', losange: 'M32 3L60', ovale: 'M32 13A29 19' };
+    const starts = { rond: 'M32 4A28 28', carre: 'M5 5H59', triangle: 'M32 4L60', rectangle: 'M4 8H60', etoile: 'M32 4L40', coeur: 'M32 59C', losange: 'M32 3L60', ovale: 'M32 8A29 24' };
     expect(new Set(Object.values(paths)).size).toBe(8);
     for (const shape of Object.keys(signatures) as Piece['shape'][]) {
         expect(paths[shape].match(/[A-Za-z]/g)!.join('')).toBe(signatures[shape]); expect(paths[shape].startsWith(starts[shape])).toBe(true);
@@ -127,4 +129,45 @@ it('shape records migrate independently, filter bad entries, persist and clear',
     writeSave(port, s); expect(readSave(port)).toEqual(s);
     raw = JSON.stringify({ version: 1, locale: 'fr', voice: true, sound: true, records: { 1: 2 } }); expect(readSave(port).formesRecords).toEqual({});
     expect(fresh().formesRecords).toEqual({});
+});
+
+it('rendered fills match every colour and outlines stay empty and dark', () => {
+    for (const [color, fill] of Object.entries(expectedFills)) {
+        const piece: Piece = { shape: 'carre', color: color as Piece['color'], size: 'grand' };
+        expect(shapeSvg(piece)).toContain(`fill="${fill}"`);
+        const outline = shapeSvg(piece, 'fr', true);
+        expect(outline).toContain('fill="none"');
+        const stroke = outline.match(/stroke="(#[a-f\d]{6})"/)![1]!;
+        expect(luminance(rgb(stroke))).toBeLessThanOrEqual(.2);
+    }
+    // Every pair must differ by >=25 degrees of hue OR >=0.08 relative luminance.
+    // This is a palette separation guard, not a guarantee for every colour vision.
+    const palette = Object.values(expectedFills).map(rgb);
+    for (const [i, a] of palette.entries()) for (const b of palette.slice(i + 1)) {
+        const angle = Math.abs(hue(a) - hue(b));
+        expect(Math.min(angle, 360 - angle) >= 25 || Math.abs(luminance(a) - luminance(b)) >= .08).toBe(true);
+    }
+});
+it('square encloses a full two-dimensional area', () => {
+    const coordinates = paths.carre.match(/^M([\d.]+) ([\d.]+)H([\d.]+)V([\d.]+)H([\d.]+)Z$/)!;
+    expect(coordinates).not.toBeNull();
+    const [, left, top, right, bottom, close] = coordinates.map(Number);
+    expect(close).toBe(left);
+    expect(right! - left!).toBe(54); expect(bottom! - top!).toBe(54);
+    expect((right! - left!) * (bottom! - top!)).toBe(2916);
+});
+it('instruction pictograms contain the requested outline and colour swatch', () => {
+    for (const level of [1, 4, 6, 8, 9]) {
+        const state = start(level, 21), q = state.questions[0]!;
+        const view = gameView(state, 'fr', false);
+        const pictogram = view.split('class="instruction-pic"')[1]!.split('</div>')[0]!;
+        if (q.mode !== 'couleur' && q.mode !== 'trier') {
+            expect(pictogram).toContain(`<path d="${paths[q.target.shape]}" fill="none"`);
+            expect(pictogram).toContain(`data-shape="${q.target.shape}"`);
+        }
+        if (q.mode !== 'forme' && q.mode !== 'taille') {
+            expect(pictogram).toContain(`data-swatch="${q.target.color}"`);
+            expect(pictogram).toContain(`<circle cx="32" cy="32" r="27" fill="${expectedFills[q.target.color]}"`);
+        }
+    }
 });

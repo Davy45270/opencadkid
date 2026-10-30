@@ -10,9 +10,9 @@ export const colorNames: Record<Locale, Record<Color, readonly [string, string]>
 };
 export const fills: Record<Color, string> = { rouge: '#ce3449', bleu: '#287cc1', jaune: '#f4d442', vert: '#30834c', orange: '#ef8a28', violet: '#8246a5', rose: '#ec86b1', marron: '#805338' };
 export const paths: Record<Shape, string> = {
-    rond: 'M32 4A28 28 0 1 1 32 60A28 28 0 1 1 32 4Z', carre: 'M5 5H59V59H5Z', triangle: 'M32 4L60 59H4Z', rectangle: 'M4 14H60V50H4Z',
+    rond: 'M32 4A28 28 0 1 1 32 60A28 28 0 1 1 32 4Z', carre: 'M5 5H59V59H5Z', triangle: 'M32 4L60 59H4Z', rectangle: 'M4 8H60V56H4Z',
     etoile: 'M32 4L40 23L60 25L45 39L49 60L32 49L15 60L19 39L4 25L24 23Z', coeur: 'M32 59C-15 29 7 -7 32 15C57 -7 79 29 32 59Z',
-    losange: 'M32 3L60 32L32 61L4 32Z', ovale: 'M32 13A29 19 0 1 1 32 51A29 19 0 1 1 32 13Z'
+    losange: 'M32 3L60 32L32 61L4 32Z', ovale: 'M32 8A29 24 0 1 1 32 56A29 24 0 1 1 32 8Z'
 };
 export function name(piece: Piece, locale: Locale, generic = false, withSize = false): string {
     const feminine = generic || piece.shape === 'etoile';
