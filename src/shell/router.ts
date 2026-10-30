@@ -1,4 +1,7 @@
 import { start, answer, advance, moveObject, complete, levels, isUnlocked, type Session } from '../engines/compter';
+import * as memory from '../engines/paires';
+import * as memoryView from '../games/paires/view';
+import { names as motifNames } from '../games/paires/motifs';
 import { home } from '../ui/home';
 import { levelView, gameView, instruction } from '../games/compter/view';
 import { icon } from '../ui/svg';
@@ -14,6 +17,8 @@ const storage = browserStorage();
 let save = readSave(storage, detectLocale(navigator.language));
 let screen: 'home' | 'levels' | 'game' | 'parents' | 'gate' = 'home';
 let session: Session | undefined;
+let memorySession: memory.Board | undefined;
+let activeGame = 'compter';
 let hint = false;
 let expression: Expression = 'joie';
 let seedCounter = 0;
@@ -27,12 +32,14 @@ function render(): void {
     cancel(); applyLocale(save.locale);
     if (screen === 'home') {
         app.innerHTML = home(save);
-        bind('[data-game]', () => { screen = 'levels'; render(); speak([games[0]!.names[save.locale], text(save.locale, 'levels')]); });
+        bind('[data-game]', el => { activeGame = el.dataset.game!; screen = 'levels'; render(); speak([games.find(g => g.id === activeGame)!.names[save.locale], text(save.locale, 'levels')]); });
         bind('#parents', () => gate('parents'));
         bind('#tictac', () => gate('tictac'));
     } else if (screen === 'levels') {
-        app.innerHTML = levelView(save);
-        bind('[data-level]', el => { const level = Number(el.dataset.level); if (isUnlocked(level, save.records)) begin(level); });
+        app.innerHTML = activeGame === 'paires' ? memoryView.levelView(save) : levelView(save);
+        bind('[data-level]', el => { const level = Number(el.dataset.level); if (activeGame === 'paires' ? memory.isUnlocked(level, save.pairesRecords) : isUnlocked(level, save.records)) begin(level); });
+    } else if (screen === 'game' && activeGame === 'paires' && memorySession) {
+        renderMemory();
     } else if (screen === 'game' && session) {
         app.innerHTML = gameView(session, save.locale, expression, hint);
         bind('[data-answer]', el => respond(Number(el.dataset.answer), el));
@@ -46,9 +53,33 @@ function render(): void {
         bind('#again', () => begin(session!.level));
         bind('#next', () => { if (session!.level < levels.length) begin(session!.level + 1); });
     }
-    bind('#back', () => { screen = 'home'; session = undefined; render(); });
+    bind('#back', () => { screen = 'home'; session = undefined; memorySession = undefined; render(); });
 }
-function begin(level: number): void { session = start(level, seed()); screen = 'game'; hint = false; expression = 'joie'; render(); speak([instruction(session.questions[0]!, save.locale)]); }
+function begin(level: number): void {
+    if (activeGame === 'paires') { session = undefined; memorySession = memory.newBoard(level, seed()); screen = 'game'; render(); speak([memoryView.instruction(memorySession, save.locale)]); return; }
+    memorySession = undefined; session = start(level, seed()); screen = 'game'; hint = false; expression = 'joie'; render(); speak([instruction(session.questions[0]!, save.locale)]); }
+function renderMemory(): void {
+    const state = memorySession!;
+    app.innerHTML = memoryView.gameView(state, save.locale);
+    bind('[data-card]', el => {
+        if (!memorySession || memorySession.preview || memorySession.finished) return;
+        // A touch during a mismatch only closes it. It cannot also open a third card.
+        if (memorySession.mismatch) { memorySession = memory.settle(memorySession); render(); return; }
+        const index = Number(el.dataset.card), previous = memorySession;
+        memorySession = memory.flip(previous, index);
+        if (memorySession === previous) return;
+        const matched = memorySession.cards.filter(c => c.found).length > previous.cards.filter(c => c.found).length;
+        if (memorySession.finished) { save.pairesRecords = memory.complete(save.pairesRecords, memorySession); persist(); }
+        render();
+        if (matched) chime(save.sound);
+        speak([motifNames[save.locale][memorySession.cards[index]!.motif], ...(matched ? [text(save.locale, memorySession.finished ? 'finished' : 'bravo')] : memorySession.hint.length && !previous.hint.length ? [text(save.locale, 'memoryHint')] : [])]);
+    });
+    bind('#listen', () => speak([memoryView.instruction(memorySession!, save.locale)]));
+    bind('#again', () => begin(state.level));
+    bind('#next', () => { if (state.level < memory.levels.length) begin(state.level + 1); });
+    if (state.preview) timers.push(setTimeout(() => { memorySession = memory.endPreview(memorySession!); render(); speak([memoryView.instruction(memorySession, save.locale)]); }, memory.levels[state.level - 1]!.preview));
+    if (state.mismatch) timers.push(setTimeout(() => { memorySession = memory.settle(memorySession!); render(); }, 900));
+}
 function respond(choice: number, element: HTMLElement): void {
     if (!session || session.solved || session.finished) return;
     const result = answer(session, choice); session = result.state; hint = result.hint;
@@ -134,9 +165,12 @@ app.addEventListener('keydown', event => {
     if (token && (event.key === 'Enter' || event.key === ' ') && session) { event.preventDefault(); session = moveObject(session, token.hasAttribute('data-reserve') ? 1 : -1); render(); if (hint) showHint(); }
 });
 document.addEventListener('pointerdown', () => { unlockSpeech(); if (save.sound) unlockSound(); }, { once: true, capture: true });
-document.addEventListener('visibilitychange', () => { if (document.hidden) { cancel(); stopSound(); } else if (save.sound) unlockSound(); });
+document.addEventListener('visibilitychange', () => { if (document.hidden) { cancel(); stopSound(); } else { if (save.sound) unlockSound(); if (screen === 'game' && activeGame === 'paires') render(); } });
 Object.defineProperty(window, '__kid', { configurable: false, writable: false, value: Object.freeze({ state: () => {
-    const targets = [...app.querySelectorAll<HTMLElement>('button, select, input')].filter(el => !el.hasAttribute('disabled')).map(el => { const r = el.getBoundingClientRect(); return { id: el.id || (el.dataset.answer !== undefined ? `answer-${el.dataset.answer}` : el.dataset.level ? `level-${el.dataset.level}` : el.hasAttribute('data-reserve') ? `reserve-${el.dataset.reserve}` : el.hasAttribute('data-basket') ? `basket-${el.dataset.basket}` : el.dataset.game || ''), x: r.x, y: r.y, width: r.width, height: r.height }; });
-    return structuredClone({ screen, game: session || screen === 'levels' ? 'compter' : null, level: session?.level ?? null, index: session?.index ?? 0, question: session?.questions[session.index] ?? null, basket: session?.basket ?? 0, targets });
+    const targets = [...app.querySelectorAll<HTMLElement>('button, select, input')].filter(el => !el.hasAttribute('disabled')).map(el => { const r = el.getBoundingClientRect(); return { id: el.id || (el.dataset.answer !== undefined ? `answer-${el.dataset.answer}` : el.dataset.level ? `level-${el.dataset.level}` : el.dataset.card !== undefined ? `card-${el.dataset.card}` : el.hasAttribute('data-reserve') ? `reserve-${el.dataset.reserve}` : el.hasAttribute('data-basket') ? `basket-${el.dataset.basket}` : el.dataset.game || ''), x: r.x, y: r.y, width: r.width, height: r.height }; });
+    return structuredClone({ screen, game: session || memorySession || screen === 'levels' ? activeGame : null, level: memorySession?.level ?? session?.level ?? null, index: session?.index ?? 0, question: session?.questions[session.index] ?? null, basket: session?.basket ?? 0, board: memorySession ? { ...memorySession, cards: memorySession.cards.map((card, i) => {
+        const r = app.querySelector(`[data-card="${i}"]`)?.getBoundingClientRect();
+        return { ...card, visible: memorySession!.preview || card.found || memorySession!.visible.includes(i), rect: r ? { x: r.x, y: r.y, width: r.width, height: r.height } : null };
+    }) } : null, targets });
 } }) });
 render();

@@ -1,6 +1,7 @@
 export type Locale = 'fr' | 'en';
 export const messages = {
     fr: {
+        matchCards: 'Trouve les deux mêmes images.', matchShadows: 'Trouve chaque image et son ombre.', previewCards: 'Regarde les images !', hiddenCard: 'Carte cachée', memoryHint: 'Ces deux cartes vont ensemble !', memoryEncourage: 'Lumi cherche avec toi !', rewardStars: 'étoiles',
         welcome: 'À toi de jouer !', parents: 'Parents', home: 'Accueil', listen: 'Écouter',
         levels: 'Choisis une pastille', again: 'Encore', next: 'Niveau suivant', continue: 'Continuer',
         tryAgain: 'Essaie encore !', bravo: 'Bravo !', finished: 'Bravo, tu as terminé !',
@@ -12,6 +13,7 @@ export const messages = {
         apple: 'pommes', pear: 'poires', berry: 'fraises', carrot: 'carottes', star: 'étoiles', fish: 'poissons', flower: 'fleurs', basket: 'Panier', reserve: 'Réserve', skill: 'Compter, remplir, comparer'
     },
     en: {
+        matchCards: 'Find the two matching pictures.', matchShadows: 'Find each picture and its shadow.', previewCards: 'Look at the pictures!', hiddenCard: 'Hidden card', memoryHint: 'These two cards go together!', memoryEncourage: 'Lumi is looking with you!', rewardStars: 'stars',
         welcome: 'Your turn to play!', parents: 'Parents', home: 'Home', listen: 'Listen',
         levels: 'Choose a dot', again: 'Again', next: 'Next level', continue: 'Continue',
         tryAgain: 'Try again!', bravo: 'Well done!', finished: 'Well done, you finished!',

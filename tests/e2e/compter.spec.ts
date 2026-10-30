@@ -4,7 +4,7 @@ for (const [mode, level] of [['combien', 1], ['remplir', 4], ['plus', 6], ['moin
     for (const r of (await state(page)).targets) { const min = r.id.startsWith('answer-') || r.id === 'check' ? 72 : 48; expect(r.width).toBeGreaterThanOrEqual(min); expect(r.height).toBeGreaterThanOrEqual(min); }
     await solveRound(page); await expect(page.locator('.stars')).toHaveAttribute('aria-label', '3 étoiles');
     await page.locator('#back').click(); await page.reload();
-    await page.locator('[data-game]').click();
+    await page.locator('[data-game="compter"]').click();
     await expect(page.locator(`[data-level="${level}"]`)).toContainText('★★★');
     if (level < 8) await expect(page.locator(`[data-level="${level + 1}"]`)).toBeEnabled();
 });

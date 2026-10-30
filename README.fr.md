@@ -4,9 +4,9 @@
 
 Des petits jeux éducatifs et doux pour les enfants de **4 à 8 ans**, à jouer au doigt, surtout au téléphone. Boubou le panda, CaliRoux le panda roux, Pestouille le dragon, Tutu le singe et Lumi la licorne accompagnent les découvertes. Les dessins sont des SVG générés par le code.
 
-**Disponible : Les paniers de Boubou.** Dénombrer, constituer une quantité et comparer, en huit niveaux progressifs. Le français est la langue par défaut ; l’anglais est choisi automatiquement seulement si la langue du téléphone commence par `en`. Le choix des parents est mémorisé.
+**Disponibles : Les paniers de Boubou et Les cartes de Lumi.** Dénombrer, constituer et comparer en huit niveaux, puis jouer à la mémoire avec 2, 3, 4, 6, 8 et 10 paires et un niveau image–ombre. Lumi montre les cartes deux secondes dans les trois premiers niveaux et fait briller une paire déjà vue après des erreurs répétées. Les seize motifs SVG se distinguent par leur silhouette autant que leur couleur. Les vingt cartes tiennent sans défilement sur un téléphone de 390×844. Le français est la langue par défaut ; l’anglais est choisi automatiquement seulement si la langue du téléphone commence par `en`. Le choix des parents est mémorisé.
 
-À venir : Les cartes de Lumi, Les formes de CaliRoux, Les sons de Tutu, Le puzzle de Pestouille, Le chemin de Pestouille, Les suites de Lumi, Le rangement de CaliRoux, Les tambours de Tutu et L’atelier de Boubou. Ces neuf jeux sont décrits dans [GAME_SPEC.md](GAME_SPEC.md), sans carte « bientôt » dans le jeu. L’apprentissage de l’heure se trouve dans l’application sœur TicTac, accessible depuis l’accueil après un contrôle parental.
+À venir : Les formes de CaliRoux, Les sons de Tutu, Le puzzle de Pestouille, Le chemin de Pestouille, Les suites de Lumi, Le rangement de CaliRoux, Les tambours de Tutu et L’atelier de Boubou. Ces huit jeux sont décrits dans [GAME_SPEC.md](GAME_SPEC.md), sans carte « bientôt » dans le jeu. L’apprentissage de l’heure se trouve dans l’application sœur TicTac, accessible depuis l’accueil après un contrôle parental.
 
 ## Jouer et installer
 
@@ -14,19 +14,21 @@ Aucune lecture n’est nécessaire pour jouer : chaque consigne est dite et acco
 
 Ouvrir le jeu une première fois avec une connexion, puis choisir **Installer l’application** ou **Sur l’écran d’accueil** dans le navigateur. Une fois le service worker installé, le jeu entier fonctionne hors ligne. Les sons sont synthétisés sur place.
 
-Pas de chrono, pas de vies, pas d’échec punitif, pas de publicité, pas d’achat, pas de compte, pas de collecte ni d’envoi de statistiques. Une erreur encourage à réessayer ; après deux erreurs, les objets sont surlignés et comptés. Terminer donne toujours des étoiles et débloque le niveau suivant. Progression et réglages restent dans le navigateur. Rien ne sort du téléphone à l’initiative du jeu. Le seul lien externe, vers TicTac, demande une réponse écrite pour adulte.
+Pas de chrono, pas de vies, pas d’échec punitif, pas de publicité, pas d’achat, pas de compte, pas de collecte ni d’envoi de statistiques. Une erreur encourage à réessayer ; après deux erreurs, les objets sont surlignés et comptés. Terminer donne toujours des étoiles et débloque le niveau suivant. Les meilleurs scores et les déblocages sont séparés par jeu ; les anciennes sauvegardes de compter restent valides. Progression et réglages restent dans le navigateur. Rien ne sort du téléphone à l’initiative du jeu. Le seul lien externe, vers TicTac, demande une réponse écrite pour adulte.
 
 La roue dentée ouvre le contrôle parental, puis la langue, la voix, les sons et l’effacement de la progression, avec une confirmation supplémentaire. Ce petit contrôle évite une ouverture accidentelle ; il ne vérifie pas l’identité ni l’âge.
 
 ## Captures
 
-Les captures seront créées par la suite mobile facultative, après compilation, sur une machine autorisée à lancer les navigateurs : `CAPTURES=1 npm run test:e2e -- --project=mobile tests/e2e/captures.spec.ts`. Elles ne sont pas fournies dans cette première livraison de sources.
+Les captures seront créées par la suite mobile facultative, après compilation, sur une machine autorisée à lancer les navigateurs : `CAPTURES=1 npm run test:e2e -- --project=mobile tests/e2e/captures.spec.ts`. Elles ne sont pas générées pendant cette passe de rédaction des sources.
 
 ![Accueil français](docs/captures/accueil-fr.png)
 ![Accueil anglais](docs/captures/accueil-en.png)
 ![Dénombrer](docs/captures/compter-combien.png)
 ![Remplir](docs/captures/compter-remplir.png)
 ![Étoiles](docs/captures/compter-etoiles.png)
+![Cartes de Lumi](docs/captures/paires-plateau.png)
+![Fin des paires](docs/captures/paires-fin.png)
 
 ## Développer
 
@@ -44,7 +46,7 @@ npm run test:e2e
 
 La configuration E2E démarre automatiquement `preview` après le build, avec un seul worker, pour un bureau et un téléphone tactile Chromium. Les icônes PWA sont reproductibles avec `node scripts/make-icons.js`, sans dépendance d’image.
 
-Les moteurs purs dans `src/engines/` reçoivent une graine ; ils n’utilisent ni DOM, ni heure, ni hasard ambiant. L’interface dessine et transmet les gestes. Le crochet de lecture `window.__kid.state()` donne une copie détachée de l’état et des rectangles des cibles, sans permettre de modifier le jeu. Les tests vérifient notamment 300 graines par niveau et par quantité disposée. Les E2E couvrent les séries, le doigt bruité, la langue, le contrôle parental et le hors ligne. Les tests ont été écrits sans être exécutés pendant cette livraison ; seuls lint, types et build sont validés localement.
+Les moteurs purs dans `src/engines/` reçoivent une graine ; ils n’utilisent ni DOM, ni heure, ni hasard ambiant. L’interface dessine et transmet les gestes. Le crochet de lecture `window.__kid.state()` donne une copie détachée de l’état et des rectangles des cibles, avec les motifs, faces visibles, cartes trouvées, coups, erreur en cours et rectangles des cartes de mémoire, sans permettre de modifier le jeu. Les tests vérifient notamment 300 graines par niveau et par quantité disposée. Les E2E couvrent les séries, le doigt bruité, la langue, le contrôle parental et le hors ligne. Les tests ont été écrits sans être exécutés pendant cette livraison ; seuls lint, types et build sont validés localement.
 
 Le catalogue jouable est dans `src/registry.ts`. Les règles et l’oracle des tests sont dans [GAME_SPEC.md](GAME_SPEC.md). La CI vérifie le projet puis Pages déploie lorsque la CI de main réussit. Les actions sont épinglées.
 

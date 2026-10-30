@@ -7,6 +7,6 @@ test('installed precache reloads and completes a game without network', async ({
     });
     await context.setOffline(true); await page.reload();
     await expect(page.locator('h1')).toHaveText('Opencadkid');
-    await page.locator('[data-game]').click(); await page.locator('[data-level="1"]').click();
+    await page.locator('[data-game="compter"]').click(); await page.locator('[data-level="1"]').click();
     await solveRound(page); await expect(page.locator('.stars')).toBeVisible(); await context.setOffline(false);
 });
