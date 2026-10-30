@@ -28,7 +28,7 @@ test('a completed low-score series still unlocks the next level', async ({ page 
         await page.locator(`[data-answer="${q.choices.find(n => n !== correct)!}"]`).click();
         await solveQuestion(page);
     }
-    await expect(page.locator('.stars')).toHaveAttribute('aria-label', '1 étoiles');
+    await expect(page.locator('.stars')).toHaveAttribute('aria-label', '1 étoile');
     await page.locator('#next').click(); expect((await state(page)).level).toBe(2);
 });
 test('basket objects can be removed before checking', async ({ page }) => {

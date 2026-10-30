@@ -1,5 +1,5 @@
 import type { ObjectKind } from '../engines/compter';
-export function svg(body: string, box = '0 0 64 64'): string { return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${box}" aria-hidden="true">${body}</svg>`; }
+export function svg(body: string, box = '0 0 64 64'): string { return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${box}" preserveAspectRatio="xMidYMid meet" aria-hidden="true">${body}</svg>`; }
 const stroke = 'stroke="#58443b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"';
 export function objectSvg(kind: ObjectKind): string {
     const drawings: Record<ObjectKind, string> = {
@@ -14,7 +14,9 @@ export function objectSvg(kind: ObjectKind): string {
     return svg(`<g ${stroke}>${drawings[kind]}</g>`);
 }
 export function dots(n: number): string {
-    return svg(Array.from({ length: n }, (_, i) => `<circle cx="${12 + i % 5 * 10}" cy="${n > 5 ? 22 + Math.floor(i / 5) * 18 : 32}" r="3.6" fill="currentColor"/>`).join(''));
+    const dice: readonly (readonly [number, number])[][] = [[], [[36, 24]], [[12, 8], [60, 40]], [[12, 8], [36, 24], [60, 40]], [[12, 8], [60, 8], [12, 40], [60, 40]], [[12, 8], [60, 8], [36, 24], [12, 40], [60, 40]], [[12, 8], [60, 8], [12, 24], [60, 24], [12, 40], [60, 40]]];
+    const positions = n <= 6 ? dice[n]! : Array.from({ length: n }, (_, i) => [8 + i % 5 * 14, 14 + Math.floor(i / 5) * 20] as const);
+    return svg(positions.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="5.5" fill="currentColor"/>`).join(''), '0 0 72 48');
 }
 export type Icon = 'home' | 'ear' | 'gear' | 'clock' | 'basket' | 'eye' | 'compare' | 'check' | 'arrow' | 'replay' | 'lock' | 'close';
 export function icon(name: Icon): string {

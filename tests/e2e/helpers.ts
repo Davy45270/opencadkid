@@ -12,24 +12,24 @@ export const test = base.extend<{ consoleGuard: boolean }>({
     }, { auto: true }]
 });
 export { expect };
-export interface MediaLog { speech: string[]; oscillators: number }
+export interface MediaLog { speech: string[]; rates: number[]; oscillators: number }
 export const media = (page: Page): Promise<MediaLog> => page.evaluate(() => (window as unknown as { __media: MediaLog }).__media);
 export async function clearSpeech(page: Page): Promise<void> {
     await page.evaluate(() => { (window as unknown as { __media: MediaLog }).__media.speech = []; });
 }
 export async function prepare(page: Page, level = 1, options: { voice?: boolean; sound?: boolean } = {}): Promise<void> {
     await page.addInitScript(({ level, voice, sound }) => {
-        const log = { speech: [] as string[], oscillators: 0 };
+        const log = { speech: [] as string[], rates: [] as number[], oscillators: 0 };
         Object.defineProperty(window, '__media', { value: log });
         class Utterance {
-            text: string; onend: (() => void) | null = null;
+            text: string; rate = 1; onend: (() => void) | null = null;
             constructor(text: string) { this.text = text; }
         }
         Object.defineProperty(window, 'SpeechSynthesisUtterance', { value: Utterance, configurable: true });
         Object.defineProperty(window, 'speechSynthesis', { configurable: true, value: {
             cancel() {}, getVoices: () => [{ localService: true, lang: 'fr-FR' }, { localService: true, lang: 'en-GB' }],
             addEventListener() {}, removeEventListener() {},
-            speak(utterance: Utterance) { log.speech.push(utterance.text); queueMicrotask(() => utterance.onend?.()); }
+            speak(utterance: Utterance) { log.speech.push(utterance.text); log.rates.push(utterance.rate); queueMicrotask(() => utterance.onend?.()); }
         } });
         class FakeAudioContext {
             currentTime = 0; destination = {};

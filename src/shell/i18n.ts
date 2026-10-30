@@ -2,7 +2,7 @@ export type Locale = 'fr' | 'en';
 export const messages = {
     fr: {
         soundsFindLetter: 'Touche la lettre du premier son.', soundsFindImage: 'Touche l’image qui commence par ce son.', soundsSort: 'Glisse les images dans la boîte de leur premier son.',
-        matchCards: 'Trouve les deux mêmes images.', matchShadows: 'Trouve chaque image et son ombre.', previewCards: 'Regarde les images !', hiddenCard: 'Carte cachée', memoryHint: 'Ces deux cartes vont ensemble !', memoryEncourage: 'Lumi cherche avec toi !', rewardStars: 'étoiles',
+        matchCards: 'Trouve les deux mêmes images.', matchShadows: 'Trouve chaque image et son ombre.', previewCards: 'Regarde les images !', hiddenCard: 'Carte cachée', memoryHint: 'Ces deux cartes vont ensemble !', memoryEncourage: 'Lumi cherche avec toi !', rewardStar: 'étoile', rewardStars: 'étoiles',
         welcome: 'À toi de jouer !', parents: 'Parents', home: 'Accueil', listen: 'Écouter',
         levels: 'Choisis une pastille', again: 'Encore', next: 'Niveau suivant', continue: 'Continuer',
         tryAgain: 'Essaie encore !', bravo: 'Bravo !', finished: 'Bravo, tu as terminé !',
@@ -15,7 +15,7 @@ export const messages = {
     },
     en: {
         soundsFindLetter: 'Touch the letter for the first sound.', soundsFindImage: 'Touch the picture starting with this sound.', soundsSort: 'Slide each picture into the box for its first sound.',
-        matchCards: 'Find the two matching pictures.', matchShadows: 'Find each picture and its shadow.', previewCards: 'Look at the pictures!', hiddenCard: 'Hidden card', memoryHint: 'These two cards go together!', memoryEncourage: 'Lumi is looking with you!', rewardStars: 'stars',
+        matchCards: 'Find the two matching pictures.', matchShadows: 'Find each picture and its shadow.', previewCards: 'Look at the pictures!', hiddenCard: 'Hidden card', memoryHint: 'These two cards go together!', memoryEncourage: 'Lumi is looking with you!', rewardStar: 'star', rewardStars: 'stars',
         welcome: 'Your turn to play!', parents: 'Parents', home: 'Home', listen: 'Listen',
         levels: 'Choose a dot', again: 'Again', next: 'Next level', continue: 'Continue',
         tryAgain: 'Try again!', bravo: 'Well done!', finished: 'Well done, you finished!',
@@ -31,3 +31,7 @@ export type MessageKey = keyof typeof messages.fr;
 export function detectLocale(language: string): Locale { return language.toLowerCase().startsWith('en') ? 'en' : 'fr'; }
 export function text(locale: Locale, key: MessageKey): string { return messages[locale][key]; }
 export function applyLocale(locale: Locale): void { document.documentElement.lang = locale; }
+
+export function rewardLabel(count: number, locale: Locale): string {
+    return `${count} ${text(locale, count === 1 ? 'rewardStar' : 'rewardStars')}`;
+}

@@ -24,7 +24,7 @@ it('ignored and untracked files are never read, including without git', () => {
         const ignored = ['.home/.npm/_cacache', '.cache', 'node_modules', 'dist', 'test-results', 'src/.hidden'];
         for (const folder of ignored) {
             mkdirSync(join(root, folder), { recursive: true });
-            // Invalid UTF-8 would pollute the result if these files were read.
+            // Invalid UTF encoding would pollute the result if these files were read.
             writeFileSync(join(root, folder, 'private.txt'), Buffer.from([255]));
         }
         const tracked = () => ['src/visible.ts', ...ignored.map(folder => `${folder}/private.txt`)];

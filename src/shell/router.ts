@@ -34,7 +34,7 @@ let timers: ReturnType<typeof setTimeout>[] = [];
 function seed(): number { const buffer = new Uint32Array(1); try { crypto.getRandomValues(buffer); return buffer[0]!; } catch { return ++seedCounter * 7919; } }
 function persist(): void { writeSave(storage, save); }
 function cancel(): void { timers.forEach(clearTimeout); timers = []; stopSpeech(); }
-function speak(parts: string[]): void { say(parts, save.locale, save.voice); }
+function speak(parts: string[], rate = 0.82): void { say(parts, save.locale, save.voice, undefined, rate); }
 function bind(selector: string, fn: (element: HTMLElement) => void): void { app.querySelectorAll<HTMLElement>(selector).forEach(el => el.onclick = () => fn(el)); }
 function render(): void {
     cancel(); applyLocale(save.locale);
@@ -59,9 +59,9 @@ function render(): void {
         bind('#continue', () => {
             session = advance(session!); hint = false; expression = 'joie';
             if (session.finished) { save.records = complete(save.records, session); persist(); chime(save.sound); }
-            render(); speak([session.finished ? text(save.locale, 'finished') : instruction(session.questions[session.index]!, save.locale)]);
+            render(); speak([session.finished ? text(save.locale, 'finished') : instruction(session.questions[session.index]!, save.locale, true)]);
         });
-        bind('#listen', () => speak([session!.finished ? text(save.locale, 'finished') : instruction(session!.questions[session!.index]!, save.locale)]));
+        bind('#listen', () => speak([session!.finished ? text(save.locale, 'finished') : instruction(session!.questions[session!.index]!, save.locale, true)]));
         bind('#again', () => begin(session!.level));
         bind('#next', () => { if (session!.level < levels.length) begin(session!.level + 1); });
     }
@@ -73,7 +73,7 @@ function begin(level: number): void {
     if (activeGame === 'sons') { session = undefined; memorySession = undefined; soundsSession = sounds.start(level, seed(), save.locale); screen = 'game'; hint = false; render(); speak(soundsView.spoken(soundsSession.questions[0]!, save.locale)); return; }
     if (activeGame === 'formes') { session = undefined; memorySession = undefined; shapesSession = shapes.start(level, seed()); screen = 'game'; hint = false; render(); speak([shapesView.instruction(shapesSession.questions[0]!, save.locale)]); return; }
     if (activeGame === 'paires') { app.replaceChildren(); session = undefined; memorySession = memory.newBoard(level, seed()); screen = 'game'; render(); speak([memoryView.instruction(memorySession, save.locale)]); return; }
-    memorySession = undefined; session = start(level, seed()); screen = 'game'; hint = false; expression = 'joie'; render(); speak([instruction(session.questions[0]!, save.locale)]); }
+    memorySession = undefined; session = start(level, seed()); screen = 'game'; hint = false; expression = 'joie'; render(); speak([instruction(session.questions[0]!, save.locale, true)]); }
 let soundSelected: number | undefined;
 let soundDrag: { id: number; piece: number; x: number; y: number; element: HTMLElement } | undefined;
 function soundSpeech(): void {
@@ -111,7 +111,7 @@ function soundResponse(result: ReturnType<typeof sounds.answer>, index: number):
     else {
         app.querySelector(`[data-answer="${index}"], [data-sound-piece="${index}"]`)?.classList.add('wiggle');
         const q = soundsSession.questions[soundsSession.index]!;
-        speak([text(save.locale, 'tryAgain'), ...(hint ? soundsView.spoken(q, save.locale, true, q.mode === 'trier' ? index : undefined) : [])]);
+        speak([text(save.locale, 'tryAgain'), ...(hint ? soundsView.spoken(q, save.locale, true, q.mode === 'trier' ? index : undefined) : [])], hint ? 0.6 : 0.82);
     }
 }
 app.addEventListener('pointerdown', event => {

@@ -1,4 +1,5 @@
 import { test, expect, prepare, media, clearSpeech, visibleAnswer, solveQuestion, solveRound } from './helpers';
+import { gameView } from '../../src/games/compter/view';
 import type { Page } from '@playwright/test';
 
 async function freezeClock(page: Page): Promise<void> {
@@ -10,7 +11,7 @@ async function freezeClock(page: Page): Promise<void> {
     await page.clock.runFor(elapsed + 1000);
 }
 async function instructionIsSpoken(page: Page): Promise<void> {
-    const instruction = await page.locator('.instruction p').innerText();
+    const instruction = (await page.locator('.instruction p').innerText()).replace(/Mets 1 (poisson)/, 'Mets un $1').replace(/Mets 1 /, 'Mets une ');
     expect((await media(page)).speech).toContain(instruction);
 }
 async function seekMultiple(page: Page, mode: 'combien' | 'remplir'): Promise<number> {
@@ -28,7 +29,7 @@ for (const [mode, level] of [['combien', 3], ['remplir', 5]] as const) {
         await prepare(page, level);
         for (let i = 0; i < 6; i++) {
             await instructionIsSpoken(page);
-            const instruction = await page.locator('.instruction p').innerText();
+            const instruction = (await page.locator('.instruction p').innerText()).replace(/Mets 1 (poisson)/, 'Mets un $1').replace(/Mets 1 /, 'Mets une ');
             await clearSpeech(page);
             await page.locator('#listen').click();
             expect((await media(page)).speech).toEqual([instruction]);
@@ -206,4 +207,39 @@ for (const level of [4, 5]) test(`level ${level}: reserve and basket objects fit
         expect(target.width).toBeGreaterThanOrEqual(48);
         expect(target.height).toBeGreaterThanOrEqual(48);
     }
+});
+
+for (const width of [320, 390, 768, 1280]) test(`answer dots at ${width}px have visible diameters and exact counts`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await prepare(page, 3, { voice: false, sound: false });
+    for (let i = 0; i < 6; i++) {
+        for (const card of await page.locator('.answers button').all()) {
+            const count = Number(await card.locator('b').innerText());
+            const dots = await card.locator('circle').evaluateAll(elements => elements.map(el => {
+                const r = el.getBoundingClientRect(); return { width: r.width, height: r.height };
+            }));
+            expect(dots).toHaveLength(count);
+            for (const dot of dots) { expect(dot.width).toBeGreaterThanOrEqual(10); expect(dot.height).toBeGreaterThanOrEqual(10); }
+        }
+        await solveQuestion(page);
+    }
+});
+
+test('ten objects at 320px keep 52 CSS pixels and fit without overlap', async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 900 });
+    await prepare(page, 3, { voice: false, sound: false });
+    const html = gameView({ level: 3, index: 0, errors: 0, firstTry: 0, solved: false, basket: 0, finished: false, questions: [{ mode: 'combien', target: 10, object: 'berry', seed: 17, choices: [8, 9, 10], left: 10, right: 8, answer: 10, reserve: 12 }] }, 'fr', 'joie', false);
+    await page.locator('#app').evaluate((el, html) => { el.innerHTML = html; }, html);
+    const scene = (await page.locator('.objects').boundingBox())!;
+    const objects = await page.locator('[data-object]>svg').evaluateAll(elements => elements.map(el => {
+        const r = el.getBoundingClientRect(); return { x: r.x, y: r.y, right: r.right, bottom: r.bottom, width: r.width, height: r.height };
+    }));
+    expect(objects).toHaveLength(10);
+    for (const [i, a] of objects.entries()) {
+        expect(a.width).toBe(52); expect(a.height).toBe(52);
+        expect(a.x).toBeGreaterThanOrEqual(scene.x); expect(a.right).toBeLessThanOrEqual(scene.x + scene.width);
+        expect(a.y).toBeGreaterThanOrEqual(scene.y); expect(a.bottom).toBeLessThanOrEqual(scene.y + scene.height);
+        for (const b of objects.slice(i + 1)) expect(a.right <= b.x || b.right <= a.x || a.bottom <= b.y || b.bottom <= a.y).toBe(true);
+    }
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });

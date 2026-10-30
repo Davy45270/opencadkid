@@ -8,7 +8,7 @@ export function stopSpeech(): void {
     removeVoiceListener?.(); removeVoiceListener = undefined;
     try { window.speechSynthesis.cancel(); } catch { /* Optional browser capability. */ }
 }
-export function say(parts: string[], locale: Locale, enabled: boolean, onPart?: (index: number) => void): void {
+export function say(parts: string[], locale: Locale, enabled: boolean, onPart?: (index: number) => void, rate = 0.82): void {
     stopSpeech();
     if (!enabled || !unlocked) return;
     const token = generation;
@@ -30,7 +30,7 @@ export function say(parts: string[], locale: Locale, enabled: boolean, onPart?: 
             if (!voice) return;
             const utterance = new SpeechSynthesisUtterance(parts[index]);
             utterance.lang = locale === 'fr' ? 'fr-FR' : 'en-GB';
-            utterance.rate = 0.82; utterance.voice = voice;
+            utterance.rate = rate; utterance.voice = voice;
             utterance.onend = () => next(index + 1);
             synthesis.speak(utterance);
         } catch { /* Silent devices still show the instruction pictogram. */ }

@@ -15,7 +15,9 @@ export async function prepareSounds(page: Page, level = 1, locale = 'fr'): Promi
         for (let i = 1; i < level; i++) save.sonsRecords[i] = 1;
         localStorage.setItem('opencadkid.v1', JSON.stringify(save));
     }, { level, locale });
-    await page.reload(); await page.locator('[data-game="sons"]').click(); await page.locator(`[data-level="${level}"]`).click();
+    await page.reload(); await page.locator('[data-game="sons"]').click();
+    await page.evaluate(() => { const log = (window as unknown as { __media: { speech: string[]; rates: number[] } }).__media; log.speech = []; log.rates = []; });
+    await page.locator(`[data-level="${level}"]`).click();
 }
 /** DOM initials and letters are the independent oracle. The hook only checks agreement. */
 export async function soundAnswer(page: Page): Promise<number> {

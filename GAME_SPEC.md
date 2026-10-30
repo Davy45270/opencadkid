@@ -42,7 +42,7 @@ Filling provides at least target + 2 objects (up to target + 4). Touch a reserve
 
 Comparison baskets are never equal. Both quantities lie in the level range. The answer is index 0 for the left basket or 1 for the right. More and fewer are actual inequality rules, not visual size comparisons.
 
-`layoutObjects(n, width, height, seed)` uses shuffled grid cells with bounded jitter. Each circle has diameter 48. Cell spacing minus maximum jitter remains at least the diameter. Circles stay within the scene and centres remain at least 48 apart for n = 1…10 in 320×220, as well as the UI's 288-wide scenes. Nested object SVG viewports explicitly retain their 48×48 size despite the generic SVG rule. On a 390×844 phone, rendered objects measure 40–64 px, remain inside their scene and their rectangles do not overlap (2 px measurement tolerance). An impossible scene throws instead of silently overlapping objects. Quantity zero returns an empty layout.
+`layoutObjects(n, width, height, seed)` uses shuffled grid cells with bounded jitter. Each layout cell reserves a diameter of 68; the rendered object has a fixed 52 CSS pixel viewport. Cell spacing minus maximum jitter remains at least the diameter. Circles stay within the scene and centres remain at least 68 apart for n = 1…10 in 320×220, as well as the UI's 288-wide scenes. Objects are absolutely positioned in a 280×216 CSS pixel scene without an outer SVG transform; their SVG viewports retain their 52×52 size. On a 390×844 phone, rendered objects measure 40–64 px, remain inside their scene and their rectangles do not overlap (2 px measurement tolerance). An impossible scene throws instead of silently overlapping objects. Quantity zero returns an empty layout.
 
 ## Memory: Lumi's cards
 
@@ -254,11 +254,13 @@ Stop consonants use a brief support vowel rather than an alphabet name. Text-to-
 - Y: yarn → yarn, yak → yak, yoyo → yoyo.
 - Z: zebra → zebra, zip → zip, zucchini → zucchini.
 
+Round generation plans family capacities with backtracking before selecting distinct words. It preserves seeded determinism and succeeds for every feasible requested count, including rounds consuming all sixty words. Sorting spends singleton and spare third words before breaking a remaining pair.
+
 ### Screen, voice and gestures
 
 System-font letters use 80 px type and dark AA ink on light cards/boxes. Cards and image SVG viewports measure at least 72 px; the image prompt measures 100 px. There are no printed object names, including SVG text; `aria-label`, `data-word`, `data-initial` and `data-letter` describe the pictures/letters for accessibility and independent observation. The child cannot pair a printed word with its initial. Prompts have generic short instructions and a Tutu illustration.
 
-Image-lettre says the native word then its sound. Lettre-image starts with the target sound, then names each candidate word followed by its own initial sound; the large letter is shown. Son-lettre has no image/word cue and says only the sound and generic instruction; the ear repeats it. Trier names all images with their sounds; grabbing/selecting one repeats its word and sound. After two errors the relevant letter card or sorting box pulses (and the target letter in lettre-image); speech repeats the initial sound twice with pauses before the word, then the sound. Errors keep the question open. A successful question locks and requires Continue, absorbing double touches. Sorting rejects repeat placements, counts first-try once on the last piece, and supports both primary-pointer dragging and selecting an image then its box with taps or keyboard. A 24 px snap allowance helps noisy fingers; wrong drops return over 260 ms unless reduced motion. Pointer cancellation/lost capture clears drags. Only the sorting area disables touch scrolling.
+Image-lettre says the native word then its sound. Lettre-image starts with the target sound, then names each candidate word followed by its own initial sound; the large letter is shown. Son-lettre has no image/word cue and says only the sound and generic instruction; the ear repeats it. Trier names all images with their sounds; grabbing/selecting one repeats its word and sound. After two errors the relevant letter card or sorting box pulses (and the target letter in lettre-image); speech stretches the initial sound once before the word (for example “sss… sac”), then says the sound. This hint uses a reduced speech rate of 0.6 instead of 0.82; the actual acoustic stretching depends on the installed local voice and requires listening on the device. Errors keep the question open. A successful question locks and requires Continue, absorbing double touches. Sorting rejects repeat placements, counts first-try once on the last piece, and supports both primary-pointer dragging and selecting an image then its box with taps or keyboard. A 24 px snap allowance helps noisy fingers; wrong drops return over 260 ms unless reduced motion. Pointer cancellation/lost capture clears drags. Only the sorting area disables touch scrolling.
 
 `window.__kid.state()` adds a detached `sons` session, current native question, game, level/index and the common target rectangles. No mutation API. Home stars read the independent sounds records. All audio uses the existing cancellable local speech and synthesized chime shell.
 
@@ -274,3 +276,14 @@ Image-lettre says the native word then its sound. Lettre-image starts with the t
 1. Change the sounds result hint threshold from `errors >= 2` to `errors >= 3`: unit and browser second-error assertions must fail.
 2. Remove the sounds neighbour check when choosing distractor families: seeded independent exclusion assertions must fail.
 3. Replace `Math.max` in sounds `complete` with the current score: the best-record unit assertion must fail.
+
+The correction oracles cover the eight additional review mutations (authored here; execution belongs to the test runner):
+
+1. Truncate a valid count to six: short/long/full round length and distinct-word checks, over 300 seeds in each language and level.
+2. Assign the cat word to an axe: literal native word-to-motif tables, plus the cat silhouette signature.
+3. Empty the ladder path: nonempty geometry checks and the literal two-rail/four-rung signature.
+4. Give boxes the same fill as their ink: contrast measured from computed ink and the actual opaque ancestor background.
+5. Disable hint animation: computed animation name, duration, iteration count and real keyframes, with reduced-motion coverage.
+6. Remove the entry announcement: speech asserted immediately after level entry, before touching the ear.
+7. Disable box activation: full sorting questions via image selection then box, using taps/clicks and keyboard activation.
+8. Remove the outside capture allowance: a drop 18 px outside succeeds; one 26 px outside leaves the question unchanged.

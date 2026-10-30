@@ -147,7 +147,7 @@ it('i18n, spoken word then sound, sound-only cue, elongated hint and no printed 
         expect(instruction(q, locale).length).toBeGreaterThan(0);
         if (q.mode === 'image-lettre') expect(spoken(q, locale).slice(0, 2)).toEqual([q.target.word, sounds[locale][q.target.initial]]);
         if (q.mode === 'son-lettre') { expect(spoken(q, locale)[0]).toBe(sounds[locale][q.target.initial]); expect(html).not.toContain('data-word='); }
-        expect(spoken(q, locale, true)[0]).toBe(`${sounds[locale][q.target.initial]!}… ${sounds[locale][q.target.initial]!}… ${q.target.word}`);
+        expect(spoken(q, locale, true)[0]).toBe(`${sounds[locale][q.target.initial]!}… ${q.target.word}`);
         const visible = html.replace(/<[^>]*>/g, ' ');
         for (const w of lexicon[locale]) expect(visible).not.toMatch(new RegExp(`\\b${w.word}\\b`, 'i'));
         if (level === 4) expect(html).toContain(`data-letter="${q.target.initial}">${q.target.initial.toLowerCase()}</span>`);
@@ -159,4 +159,49 @@ it('safe independent records: migration, filtering, roundtrip and erase', () => 
     const s = readSave(port); expect(s.sonsRecords).toEqual({ 1: 1, 10: 3 }); expect(s.records).toEqual({ 1: 3 }); expect(s.pairesRecords).toEqual({ 2: 2 }); expect(s.formesRecords).toEqual({ 3: 1 });
     writeSave(port, s); expect(readSave(port)).toEqual(s);
     raw = JSON.stringify({ version: 1, locale: 'fr', voice: true, sound: true, records: { 1: 2 } }); expect(readSave(port).sonsRecords).toEqual({}); expect(fresh().sonsRecords).toEqual({});
+});
+it('feasible short and full rounds preserve length and distinct words over 300 seeds', () => {
+    for (const locale of ['fr', 'en'] as const) for (const level of levels) {
+        const maximum = level.mode === 'trier' ? 20 : Math.floor(60 / level.choices);
+        for (const count of [1, 7, maximum - 1, maximum]) for (let seed = 0; seed < 300; seed++) {
+            const round = generateRound(level.id, seed, locale, count);
+            expect(round).toHaveLength(count);
+            const words = round.flatMap(q => q.choices.map(w => w.word));
+            expect(new Set(words).size).toBe(count * (level.mode === 'trier' ? 3 : level.choices));
+            for (const q of round) {
+                const alternatives = q.letters.filter(l => l !== q.target.initial);
+                expect(q.letters[q.answer]).toBe(q.target.initial);
+                for (const other of alternatives) expect(banned[locale].some(pair => pair.includes(other) && pair.includes(q.target.initial))).toBe(false);
+                expect(q.choices.filter(w => w.initial === q.target.initial)).toHaveLength(level.mode === 'trier' ? 2 : 1);
+            }
+        }
+    }
+}, 120_000);
+it('authored native word-to-picture oracle and visible drawing geometry', () => {
+    const identities = {
+        fr: 'abeille:bee arbre:tree avion:plane banane:banana bateau:boat ballon:ball carotte:carrot cadeau:gift cube:cube dé:dice domino:domino dauphin:dolphin écharpe:scarf échelle:ladder étoile:star fusée:rocket fleur:flower fourmi:ant gâteau:cake gomme:eraser gorille:gorilla île:island igloo:igloo iris:iris jaguar:jaguar jupe:skirt journal:newspaper lune:moon lapin:rabbit livre:book moto:motorcycle melon:melon mouton:sheep navire:ship nid:nest nuage:cloud olive:olive orange:orange oreiller:pillow pomme:apple poisson:fish papillon:butterfly robe:dress rat:rat robot:robot sac:bag savon:soap seau:bucket tortue:turtle tomate:tomato toupie:top usine:factory ustensile:spatula ukulélé:ukulele vache:cow vélo:bicycle voiture:car zèbre:zebra zéro:zero zoo:zoo',
+        en: 'banana:banana boat:boat ball:ball cat:cat cup:cup cow:cow dog:dog dice:dice dolphin:dolphin fish:fish flower:flower fork:fork goat:goat goose:goose gorilla:gorilla hat:hat hen:hen horse:horse jam:jam jug:jug jellyfish:jellyfish kite:kite key:key kangaroo:kangaroo lion:lion leaf:leaf lemon:lemon moon:moon mouse:mouse monkey:monkey nest:nest net:net nut:nut pineapple:pineapple pig:pig panda:panda queen:queen quilt:quilt quill:quill rabbit:rabbit rat:rat robot:robot sun:sun sock:sock seal:seal turtle:turtle tomato:tomato tiger:tiger van:van vest:vest vase:vase web:web wig:wig wagon:wagon yarn:yarn yak:yak yoyo:yoyo zebra:zebra zip:zip zucchini:zucchini'
+    };
+    for (const locale of ['fr', 'en'] as const) {
+        expect(lexicon[locale].map(w => `${w.word}:${w.motif}`).sort()).toEqual(identities[locale].split(' ').sort());
+        for (const word of lexicon[locale]) {
+            const drawing = drawings[word.motif]!;
+            for (const [, d] of drawing.matchAll(/<path\b[^>]* d="([^"]*)"/g)) {
+                expect(d!.trim()).not.toBe('');
+                expect(d).toMatch(/[MLHVCAQ]/); expect(d).toMatch(/\d/);
+            }
+            for (const [, attribute, value] of drawing.matchAll(/\b(r|width|height)="([^"]*)"/g)) {
+                expect(['r', 'width', 'height']).toContain(attribute);
+                expect(Number(value)).toBeGreaterThan(0);
+            }
+        }
+    }
+    // Semantic landmarks: cat ears/body and the ladder's two rails/four rungs.
+    expect(drawings.cat).toContain('M12 51Q4 37 14 24L12 6L28 17L39 16L54 5L52 26Q62 45 49 53Q30 63 12 51Z');
+    expect(drawings.ladder).toContain('M15 4V60M49 4V60M15 12H49M15 25H49M15 38H49M15 51H49');
+});
+it('stretching is one slow onset before the native word, never two repetitions', () => {
+    const q = { ...generateRound(1, 1, 'fr')[0]!, target: { word: 'sac', initial: 'S', motif: 'bag' } };
+    expect(spoken(q, 'fr', true)).toEqual(['sss… sac', 'sss']);
+    expect(spoken({ ...q, target: { word: 'sun', initial: 'S', motif: 'sun' } }, 'en', true)).toEqual(['sss… sun', 'sss']);
 });

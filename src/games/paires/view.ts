@@ -1,6 +1,6 @@
 import { characterSvg } from '../../characters/svg';
 import { levels, isUnlocked, stars, type Board } from '../../engines/paires';
-import { text, type Locale } from '../../shell/i18n';
+import { text, rewardLabel, type Locale } from '../../shell/i18n';
 import type { Save } from '../../shell/storage';
 import { icon, dots } from '../../ui/svg';
 import { cardBack, motifSvg, names } from './motifs';
@@ -10,7 +10,7 @@ export function levelView(save: Save): string {
 }
 export function gameView(state: Board, locale: Locale): string {
     const top = `<header class="play-header memory-header"><button id="back" class="round" aria-label="${text(locale, 'home')}">${icon('home')}</button><div class="memory-prompt" aria-hidden="true">${cardBack()}${icon('compare')}${cardBack()}</div><button id="listen" class="round" aria-label="${text(locale, 'listen')}">${icon('ear')}</button></header>`;
-    if (state.finished) return `${top}<section class="finish"><div class="celebration">${characterSvg('licorne', 'celebration', 'celebration', matchMedia('(prefers-reduced-motion: reduce)').matches ? 'reduce' : 'full')}</div><h1>${text(locale, 'finished')}</h1><div class="stars" aria-label="${stars(state)} ${text(locale, 'rewardStars')}">${'★'.repeat(stars(state))}</div><div class="finish-actions"><button id="again">${icon('replay')}<span>${text(locale, 'again')}</span></button>${state.level < levels.length ? `<button id="next">${icon('arrow')}<span>${text(locale, 'next')}</span></button>` : ''}</div></section>`;
+    if (state.finished) return `${top}<section class="finish"><div class="celebration">${characterSvg('licorne', 'celebration', 'celebration', matchMedia('(prefers-reduced-motion: reduce)').matches ? 'reduce' : 'full')}</div><h1>${text(locale, 'finished')}</h1><div class="stars" aria-label="${rewardLabel(stars(state), locale)}">${'★'.repeat(stars(state))}</div><div class="finish-actions"><button id="again">${icon('replay')}<span>${text(locale, 'again')}</span></button>${state.level < levels.length ? `<button id="next">${icon('arrow')}<span>${text(locale, 'next')}</span></button>` : ''}</div></section>`;
     return `${top}<section class="memory-play"><div class="instruction"><div id="guide">${characterSvg('licorne', 'joie')}</div><div><div class="instruction-pic">${state.preview ? icon('eye') : motifSvg('fish')}${motifSvg('fish', levels[state.level - 1]!.shadows)}</div><p>${instruction(state, locale)}</p><p class="memory-encouragement">${text(locale, state.hint.length ? 'memoryHint' : 'memoryEncourage')}</p></div></div><div class="memory-grid" style="--columns:${state.columns}">${state.cards.map((card, i) => {
         const visible = state.preview || card.found || state.visible.includes(i);
         return `<button data-card="${i}" class="memory-card ${visible ? 'face-up' : ''} ${card.found ? 'matched' : ''} ${state.hint.includes(i) ? 'memory-hint' : ''}" aria-label="${visible ? names[locale][card.motif] : text(locale, 'hiddenCard')} ${i + 1}" aria-pressed="${visible}" ${state.preview || card.found ? 'disabled' : ''}><span class="memory-card-back">${cardBack()}</span><span class="memory-card-face" role="img" aria-label="${names[locale][card.motif]}">${motifSvg(card.motif, card.shadow)}</span>${card.found ? '<span class="memory-spark" aria-hidden="true">✦</span>' : ''}</button>`;

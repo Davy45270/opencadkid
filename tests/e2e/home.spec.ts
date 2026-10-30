@@ -62,3 +62,28 @@ test('home, level selectors and every game fit narrow widths and responsive brea
         await page.locator('#back').click();
     }
 });
+
+test('all five landscape guides and the sun fit the banner and window', async ({ page }) => {
+    await page.goto('/');
+    for (const width of [320, 390, 768, 1280]) {
+        await page.setViewportSize({ width, height: 900 });
+        const bounds = await page.locator('.landscape').boundingBox();
+        const guides = page.locator('.cast > svg');
+        await expect(guides).toHaveCount(5);
+        // Test both SVG viewports and actual painted geometry, so clipping cannot pass.
+        const boxes = await page.locator('.cast > svg, .landscape > svg > circle').evaluateAll(elements => elements.flatMap(el => {
+            const r = el.getBoundingClientRect();
+            const svg = el as SVGGraphicsElement, b = svg.getBBox(), m = svg.getScreenCTM()!;
+            const a = new DOMPoint(b.x, b.y).matrixTransform(m), z = new DOMPoint(b.x + b.width, b.y + b.height).matrixTransform(m);
+            return [{ left: r.left, right: r.right, top: r.top, bottom: r.bottom }, { left: a.x, right: z.x, top: a.y, bottom: z.y }];
+        }));
+        for (const b of boxes) {
+            expect(b.right - b.left).toBeGreaterThan(0);
+            expect(b.left).toBeGreaterThanOrEqual(bounds!.x);
+            expect(b.right).toBeLessThanOrEqual(bounds!.x + bounds!.width);
+            expect(b.top).toBeGreaterThanOrEqual(bounds!.y);
+            expect(b.bottom).toBeLessThanOrEqual(bounds!.y + bounds!.height);
+            expect(b.left).toBeGreaterThanOrEqual(0); expect(b.right).toBeLessThanOrEqual(width);
+        }
+    }
+});

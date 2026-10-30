@@ -31,27 +31,56 @@ export function generateRound(level: number, seed: number, locale: Locale, count
     const spec = levels.find(l => l.id === level);
     // Each sorting question consumes three words. Reject impossible distinct-word requests.
     if (!spec || !Number.isInteger(count) || count < 1 || count * (spec.mode === 'trier' ? 3 : spec.choices) > lexicon[locale].length) throw new RangeError('Invalid round');
-    const rng = makeRng(seed), used = new Set<string>(), round: Question[] = [];
-    for (let n = 0; n < count; n++) {
-        const available = shuffle(lexicon[locale].filter(w => !used.has(w.word)), rng);
-        // Sorting needs two different words from the target family.
-        const target = available.find(w => spec.mode !== 'trier' || available.filter(p => p.initial === w.initial).length >= 2);
-        if (!target) throw new RangeError('Not enough words');
-        const other = available.find(w => compatible(target.initial, w.initial, locale));
-        if (!other) throw new RangeError('Not enough sound families');
-        const slots = Array.from({ length: spec.choices }, (_, i) => i).filter(i => !(n >= 2 && round[n - 1]!.answer === i && round[n - 2]!.answer === i));
-        const answer = slots[Math.floor(rng() * slots.length)]!;
-        const candidates: Word[] = [];
-        for (const word of available) if (compatible(target.initial, word.initial, locale) && !candidates.some(w => w.initial === word.initial)) candidates.push(word);
-        if (candidates.length < spec.choices - 1) throw new RangeError('Not enough sound families');
-        const choices = candidates.slice(0, spec.choices - 1); choices.splice(answer, 0, target);
-        const letters = choices.map(w => w.initial), boxes: string[] = [];
-        if (spec.mode === 'trier') {
-            boxes.push(other.initial); boxes.splice(answer, 0, target.initial);
-            letters.splice(0, letters.length, ...boxes);
-            choices.splice(0, choices.length, ...shuffle([target, available.find(w => w.initial === target.initial && w.word !== target.word)!, other], rng));
+    const rng = makeRng(seed), round: Question[] = [];
+    const families = shuffle([...new Set(lexicon[locale].map(w => w.initial))], rng);
+    const words = families.map(initial => shuffle(lexicon[locale].filter(w => w.initial === initial), rng));
+    const remaining = words.map(group => group.length), sorting = spec.mode === 'trier';
+    const plan: number[][] = [], failed = new Set<string>();
+    // Search capacities before drawing words. Undoing a choice preserves every feasible
+    // partition, including full-lexicon rounds. Seeded order breaks equal-capacity ties.
+    const search = (left: number): boolean => {
+        if (!left) return true;
+        const key = `${left}:${remaining.join(',')}`;
+        if (failed.has(key)) return false;
+        if (sorting ? remaining.reduce((sum, n) => sum + Math.floor(n / 2), 0) < left
+            : remaining.reduce((sum, n) => sum + Math.min(n, left), 0) < left * spec.choices) return false;
+        const targets = families.map((_, i) => i).filter(i => remaining[i]! >= (sorting ? 2 : 1));
+        targets.sort((a, b) => sorting ? remaining[a]! - remaining[b]! : remaining[b]! - remaining[a]!);
+        for (const target of targets) {
+            const others = families.map((_, i) => i).filter(i => remaining[i]! > 0 && compatible(families[target]!, families[i]!, locale));
+            // In sorting, spend singletons first, then spare third words; keep pairs.
+            const cost = (i: number): number => remaining[i] === 1 ? 0 : remaining[i] === 3 ? 1 : 2;
+            others.sort((a, b) => sorting ? cost(a) - cost(b) : remaining[b]! - remaining[a]!);
+            const choose = (start: number, selected: number[]): boolean => {
+                if (selected.length === (sorting ? 1 : spec.choices - 1)) {
+                    const group = sorting ? [target, target, ...selected] : [target, ...selected];
+                    group.forEach(i => remaining[i]!--);
+                    plan.push(group);
+                    if (search(left - 1)) return true;
+                    plan.pop(); group.forEach(i => remaining[i]!++);
+                    return false;
+                }
+                for (let i = start; i < others.length; i++) if (choose(i + 1, [...selected, others[i]!])) return true;
+                return false;
+            };
+            if (choose(0, [])) return true;
         }
-        choices.forEach(w => used.add(w.word));
+        failed.add(key); return false;
+    };
+    if (!search(count)) throw new RangeError('Not enough sound families');
+    for (const group of plan) {
+        const selected = group.map(i => words[i]!.pop()!), target = selected[0]!;
+        const slots = Array.from({ length: spec.choices }, (_, i) => i).filter(i => !(round.length >= 2 && round.at(-1)!.answer === i && round.at(-2)!.answer === i));
+        const answer = slots[Math.floor(rng() * slots.length)]!;
+        const boxes: string[] = [];
+        let choices: Word[], letters: string[];
+        if (sorting) {
+            boxes.push(selected[2]!.initial); boxes.splice(answer, 0, target.initial);
+            letters = [...boxes]; choices = shuffle(selected, rng);
+        } else {
+            choices = selected.slice(1); choices.splice(answer, 0, target);
+            letters = choices.map(w => w.initial);
+        }
         round.push({ mode: spec.mode, target, choices, letters, boxes, answer, lowercase: spec.lowercase });
     }
     return round;
