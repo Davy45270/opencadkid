@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.7.0
+
+- Give Boubou a softly shaded cream coat, dark eye patches, paw pads, bamboo and fruit basket; CaliRoux a warm red coat, white face mask and striped plume; Pestouille a red coat, cream belly, curved gold horns, veined green wings and book; Tutu a warm face, pink flower and layered tutu; Lumi a rainbow mane, blue eyes, twisted gold horn and star.
+- Add per-instance radial paint servers, ground shadows, bright eyes, expressive brows and coloured outlines, keeping the character API and reduced-motion drawing stable.
+- Enrich the home panorama with layered hills, luminous clouds, trees and flowers. Add discreet peripheral bamboo, night-sky, autumn, jungle, castle and meadow decorations to the six games.
+- Give cards and buttons gentle depth, a pressed state, a short entrance and a waving guide with reduced-motion support. Keep responses at least 72 px, including four-column memory grids on narrow phones.
+- Shade fruit, shape, memory, sound and puzzle illustrations without changing their silhouettes, measured sizes, identifiers or geometric signatures. Outline prompts and memory shadows stay solid.
+- Add SVG validity, paint-server isolation, calculated text contrast and generated precache gzip-budget tests. Canonicalize only instance namespaces in exact character comparisons; extend the sound SVG vocabulary for gradient definitions. Extend mobile captures to the entire catalogue, puzzle and path screens.
+- Version 0.7.0. Unit and browser suites await orchestrator execution; neither suite nor a browser is run during this beauty pass.
+
 ## 0.6.0
 
 - Add Pestouille’s path: eight seeded perfect mazes, finger tracing with exact cell interpolation, wall stops, backtracking, keyboard arrows and three-cell hints.

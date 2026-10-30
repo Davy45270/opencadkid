@@ -5,6 +5,7 @@ import { characterSvg } from '../src/characters/svg';
 import { sceneSvg, sceneNames } from '../src/games/puzzle/scenes';
 import { messages } from '../src/shell/i18n';
 import { fresh, readSave, writeSave } from '../src/shell/storage';
+import { canonicalPaintIds } from './svg-oracles';
 function validSvg(svg: string): boolean {
     const stack: string[] = [];
     for (const token of svg.match(/<[^>]+>/g) ?? []) {
@@ -155,7 +156,7 @@ it('rendered classic paths have visible heads, narrow necks and complementary cu
 it('each scene contains the requested characters, including both picnic friends', () => {
     const subjects = { castle: ['dragon'], bamboo: ['panda'], rainbow: ['licorne'], jungle: ['singe'], autumn: ['pandaroux'], picnic: ['panda', 'dragon'] } as const;
     for (const scene of sceneIds) for (const subject of subjects[scene]) {
-        expect(sceneSvg(scene)).toContain(characterSvg(subject, 'joie', 'repos', 'reduce').replace('<svg ', '<svg style="width:240px;height:240px" '));
+        expect(canonicalPaintIds(sceneSvg(scene))).toContain(canonicalPaintIds(characterSvg(subject, 'joie', 'repos', 'reduce').replace('<svg ', '<svg style="width:240px;height:240px" ')));
     }
 });
 it('completion renders the celebration expression and pose in both motion preferences', () => {
@@ -166,7 +167,7 @@ it('completion renders the celebration expression and pose in both motion prefer
             const idle = gameView(s, 'fr', false);
             for (const p of s.pieces) s = drop(s, p.id, p.homeX, p.homeY);
             const finished = gameView(s, 'fr', false);
-            expect(finished).toContain(characterSvg('dragon', 'celebration', 'celebration', reduce ? 'reduce' : 'full'));
+            expect(canonicalPaintIds(finished)).toContain(canonicalPaintIds(characterSvg('dragon', 'celebration', 'celebration', reduce ? 'reduce' : 'full')));
             expect(idle).not.toContain('puzzle-finished'); expect(finished).toContain('puzzle-finished');
         } finally { vi.unstubAllGlobals(); }
     }

@@ -1,3 +1,4 @@
+import { volume } from '../../ui/illustration';
 import type { Motif } from '../../engines/paires';
 import { svg } from '../../ui/svg';
 import type { Locale } from '../../shell/i18n';
@@ -26,6 +27,7 @@ export const drawings: Record<Motif, { color: string; path: string }> = {
 };
 export function motifSvg(motif: Motif, shadow = false, locale: Locale = 'fr'): string {
     const drawing = drawings[motif];
-    return svg(`<path fill="${shadow ? '#354e41' : drawing.color}" stroke="#58443b" stroke-width="2" stroke-linejoin="round" d="${drawing.path}"/>`).replace('aria-hidden="true"', `data-motif="${motif}" role="img" aria-label="${names[locale][motif]}"`);
+    const body = `<path fill="${shadow ? '#354e41' : drawing.color}" stroke="#58443b" stroke-width="2" stroke-linejoin="round" d="${drawing.path}"/>`;
+    return svg(shadow ? body : volume(body)).replace('aria-hidden="true"', `data-motif="${motif}" role="img" aria-label="${names[locale][motif]}"`);
 }
-export function cardBack(): string { return svg('<rect x="3" y="3" width="58" height="58" rx="12" fill="#e6dbf0"/><path fill="#f5ce6b" stroke="#8c729e" stroke-width="2" d="M32 10L38 25L54 26L42 37L46 53L32 44L18 53L22 37L10 26L26 25Z"/><circle cx="12" cy="12" r="2" fill="#8c729e"/><circle cx="52" cy="52" r="2" fill="#8c729e"/>'); }
+export function cardBack(): string { return svg(volume('<rect x="3" y="3" width="58" height="58" rx="12" fill="#e6dbf0"/><path fill="#f5ce6b" stroke="#8c729e" stroke-width="2" d="M32 10L38 25L54 26L42 37L46 53L32 44L18 53L22 37L10 26L26 25Z"/><circle cx="12" cy="12" r="2" fill="#8c729e"/><circle cx="52" cy="52" r="2" fill="#8c729e"/>')); }

@@ -1,9 +1,12 @@
 import { solveMemory } from './paires-helpers';
 import { test, passGate, solveRound } from './helpers';
 test.skip(process.env.CAPTURES !== '1', 'Set CAPTURES=1 to refresh the README screenshots.');
-test('mobile screenshots in both languages and counting modes', async ({ page }) => {
+test('mobile illustrations in both languages and all six games', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.addInitScript(() => localStorage.setItem('opencadkid.v1', JSON.stringify({ version: 1, locale: 'fr', voice: false, sound: false, records: { 1: 3, 2: 3, 3: 3 }, sonsRecords: { 1: 3, 2: 3, 3: 3, 4: 3, 5: 3, 6: 3, 7: 3, 8: 3, 9: 3 }, formesRecords: { 1: 3, 2: 3, 3: 3, 4: 3, 5: 3, 6: 3, 7: 3, 8: 3, 9: 3 } })));
     await page.goto('/'); await page.screenshot({ path: 'docs/captures/accueil-fr.png' });
+    await page.screenshot({ path: 'docs/captures/accueil-catalogue.png', fullPage: true });
     await page.locator('#parents').click(); await passGate(page); await page.locator('#language').selectOption('en'); await page.locator('#close').click();
     await page.screenshot({ path: 'docs/captures/accueil-en.png' });
     await page.locator('#parents').click(); await passGate(page); await page.locator('#language').selectOption('fr'); await page.locator('#close').click();
@@ -23,4 +26,8 @@ test('mobile screenshots in both languages and counting modes', async ({ page })
     await page.screenshot({ path: 'docs/captures/sons-image-lettre.png' });
     await page.locator('#back').click(); await page.locator('[data-game="sons"]').click(); await page.locator('[data-level="10"]').click();
     await page.screenshot({ path: 'docs/captures/sons-trier.png' });
+    await page.locator('#back').click(); await page.locator('[data-game="puzzle"]').click(); await page.locator('[data-level="1"]').click();
+    await page.screenshot({ path: 'docs/captures/puzzle-chateau.png' });
+    await page.locator('#back').click(); await page.locator('[data-game="chemin"]').click(); await page.locator('[data-level="1"]').click();
+    await page.screenshot({ path: 'docs/captures/chemin-prairie.png' });
 });

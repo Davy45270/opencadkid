@@ -1,3 +1,4 @@
+import { volume } from './illustration';
 import type { ObjectKind } from '../engines/compter';
 export function svg(body: string, box = '0 0 64 64'): string { return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${box}" preserveAspectRatio="xMidYMid meet" aria-hidden="true">${body}</svg>`; }
 const stroke = 'stroke="#58443b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"';
@@ -11,7 +12,7 @@ export function objectSvg(kind: ObjectKind): string {
         fish: '<path fill="#77bfc5" d="M44 30L59 15V49L44 36Q25 58 6 33Q24 8 44 30Z"/><circle fill="#fff" cx="20" cy="29" r="5"/><circle fill="#58443b" cx="20" cy="29" r="2"/>',
         flower: '<path stroke="#70a75a" stroke-width="5" d="M32 30V59"/><path fill="#86bd76" d="M32 49Q11 50 14 38Q30 36 32 49"/><g fill="#efa9c2"><circle cx="32" cy="14" r="10"/><circle cx="46" cy="25" r="10"/><circle cx="41" cy="41" r="10"/><circle cx="23" cy="41" r="10"/><circle cx="17" cy="25" r="10"/></g><circle fill="#f6cf63" cx="32" cy="28" r="10"/>'
     };
-    return svg(`<g ${stroke}>${drawings[kind]}</g>`);
+    return svg(volume(`<g ${stroke}>${drawings[kind]}</g>`));
 }
 export function dots(n: number): string {
     const dice: readonly (readonly [number, number])[][] = [[], [[36, 24]], [[12, 8], [60, 40]], [[12, 8], [36, 24], [60, 40]], [[12, 8], [60, 8], [12, 40], [60, 40]], [[12, 8], [60, 8], [36, 24], [12, 40], [60, 40]], [[12, 8], [60, 8], [12, 24], [60, 24], [12, 40], [60, 40]]];
@@ -33,4 +34,19 @@ export function icon(name: Icon): string {
     };
     return svg(`<g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">${paths[name]}</g>`);
 }
-export function scenery(): string { return svg('<rect width="900" height="300" fill="#e2f2ef"/><circle cx="748" cy="63" r="39" fill="#f7d783"/><g fill="#fffdf5"><ellipse cx="140" cy="56" rx="65" ry="18"/><ellipse cx="182" cy="41" rx="39" ry="26"/><ellipse cx="573" cy="43" rx="57" ry="21"/></g><path d="M0 230Q210 100 450 234Q690 125 900 200V300H0" fill="#c4deb0"/><path d="M0 275Q400 190 900 268V300H0" fill="#a9cc94"/><path d="M65 260L78 81" stroke="#ae8766" stroke-width="23"/><g fill="#8dbe86"><circle cx="70" cy="99" r="65"/><circle cx="31" cy="137" r="42"/><circle cx="109" cy="140" r="47"/></g>', '0 0 900 300'); }
+export function scenery(): string {
+    return svg(volume(`<rect width="900" height="300" fill="#c5eaf0"/>
+    <circle cx="748" cy="63" r="50" fill="#fff0b0" opacity=".35"/><circle cx="748" cy="63" r="35" fill="#f8d982"/>
+    <g fill="#fffdf5"><path d="M101 66C70 42 113 23 138 38C142 10 199 15 203 39C247 37 254 68 217 72Z"/><path d="M499 65C475 45 505 30 526 39C537 11 581 18 587 36C627 28 647 63 613 68Z"/></g>
+    <path d="M0 211Q128 107 292 174Q427 106 564 191Q740 117 900 179V300H0Z" fill="#badbb3"/>
+    <path d="M0 254Q190 157 398 233Q651 139 900 232V300H0Z" fill="#95c59c"/>
+    <path d="M0 284Q259 227 452 266Q687 213 900 271V300H0Z" fill="#81b382"/>
+    <path d="M55 265Q68 171 66 94M67 174L33 135M66 152L100 111" fill="none" stroke="#a8805c" stroke-width="17" stroke-linecap="round"/>
+    <g fill="#71ac79"><ellipse cx="60" cy="83" rx="44" ry="58"/><ellipse cx="26" cy="123" rx="31" ry="42"/><ellipse cx="99" cy="117" rx="36" ry="47"/></g>
+    <g fill="#add29b"><path d="M34 72Q42 38 62 42Q47 53 34 72Z"/><path d="M79 98Q99 77 113 91Q96 88 79 98Z"/></g>
+    <path d="M858 265L850 122M850 174L824 148" fill="none" stroke="#b38a62" stroke-width="12"/>
+    <g fill="#88b880"><ellipse cx="849" cy="105" rx="39" ry="51"/><ellipse cx="817" cy="141" rx="29" ry="35"/><ellipse cx="881" cy="142" rx="32" ry="39"/></g>
+    <g stroke="#56865b" stroke-width="2" fill="none"><path d="M24 289l-7 -14m7 14l8 -18M302 285l-6 -15m6 15l7 -19M612 282l-5 -13m5 13l9 -16M872 287l-5 -18m5 18l9 -12"/></g>
+    <g fill="#ffe9c1"><path d="M25 276c-14 -8 -7 -15 0 -7c8 -10 15 -1 0 7Z"/><path d="M610 272c-12 -9 -4 -15 1 -7c9 -6 13 4 -1 7Z"/></g>
+    <g fill="#f3b6c8"><path d="M303 275c-12 -7 -7 -15 0 -8c8 -8 15 2 0 8Z"/><path d="M874 276c-13 -8 -6 -15 0 -8c9 -9 16 2 0 8Z"/></g>`), '0 0 900 300');
+}

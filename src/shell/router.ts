@@ -1,3 +1,4 @@
+import { backdrop } from '../ui/backdrops';
 import * as chemin from '../engines/chemin';
 import * as cheminView from '../games/chemin/view';
 import { screenToZone, distanceToZone, dragPosition } from './coordinates';
@@ -51,6 +52,7 @@ function speak(parts: string[], rate = 0.82): void { say(parts, save.locale, sav
 function bind(selector: string, fn: (element: HTMLElement) => void): void { app.querySelectorAll<HTMLElement>(selector).forEach(el => { if (el.id === 'check' || el.id === 'continue') bindAction(el, () => fn(el)); else el.onclick = () => fn(el); }); }
 function render(): void {
     cancel(); applyLocale(save.locale);
+    app.dataset.theme = screen === 'game' || screen === 'levels' ? activeGame : screen;
     if (screen === 'home') {
         app.innerHTML = home(save);
         bind('[data-game]', el => { activeGame = el.dataset.game!; screen = 'levels'; render(); speak([games.find(g => g.id === activeGame)!.names[save.locale], text(save.locale, 'levels')]); });
@@ -82,6 +84,7 @@ function render(): void {
         bind('#again', () => begin(session!.level));
         bind('#next', () => { if (session!.level < levels.length) begin(session!.level + 1); });
     }
+    if (screen === 'game' || screen === 'levels') app.insertAdjacentHTML('afterbegin', backdrop(activeGame));
     bind('#back', () => { screen = 'home'; cheminSession = undefined; cheminDrag = undefined; puzzleSession = undefined; puzzleDrag = undefined; soundsSession = undefined; soundDrag = undefined; session = undefined; memorySession = undefined; shapesSession = undefined; render(); });
 }
 function begin(level: number): void {

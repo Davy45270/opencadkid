@@ -15,7 +15,7 @@ export const characters = {
         fr: 'CaliRoux', subtitle: 'Panda roux joueur et câlin', motto: 'Des jeux et des câlins !', en: 'CaliRoux', accent: '#ed8b25', coat: '#df7133'
     },
     dragon: {
-        fr: 'Pestouille', subtitle: 'Dragon assidu', motto: 'Un petit pas à la fois !', en: 'Pestouille', accent: '#e83e42', coat: '#f05c29'
+        fr: 'Pestouille', subtitle: 'Dragon assidu', motto: 'Un petit pas à la fois !', en: 'Pestouille', accent: '#e83e42', coat: '#ed4b32'
     },
     singe: {
         fr: 'Tutu', subtitle: 'Singe en tutu', motto: 'Des pirouettes et des sourires !', en: 'Tutu', accent: '#ec79ac', coat: '#a36a49'
@@ -185,6 +185,10 @@ export function drawList(id: CharacterId, pose: Pose = 'face', expression: Expre
     if (id === 'dragon') {
         path([149, 181], [[[218, 210], [213, 139], [207, 141]], [[195, 166], [169, 155], [149, 181]]], coat);
         for (const x of [65, 153]) path([x, 136], [[[x - 27, 92], [x - 16, 85], [x + 7, 109]], [[x + 31, 84], [x + 40, 113], [x + 20, 147]]], '#4db9a0');
+        for (const x of [65, 153]) {
+            line([[x + 8, 112], [x - 9, 104]], '#347b69', 2);
+            line([[x + 8, 112], [x + 20, 137]], '#347b69', 2);
+        }
         for (let i = 0; i < 4; i++) polygon([[113 + i * 11, 68 + i * 12], [135 + i * 11, 66 + i * 12], [123 + i * 11, 46 + i * 12]], '#4db9a0');
     }
     if (id === 'licorne') for (let i = 5; i >= 0; i--) path([152 + i * 2, 155], [[[220 + i * 2, 145], [190 + i * 2, 215], [214, 210 - i * 4]]], rainbow[i] ?? cream, 9, false, rainbow[i]);
@@ -223,6 +227,13 @@ export function drawList(id: CharacterId, pose: Pose = 'face', expression: Expre
         }
     }
     for (const x of [73, 167]) ellipse(x, 150, 16, 27, id === 'panda' || id === 'pandaroux' ? dark : coat, x < 120 ? -0.4 : 0.4);
+    // Small warm pads and curved toe marks read as soft paws rather than flat discs.
+    for (const x of [92, 146]) {
+        if (id === 'panda' || id === 'pandaroux') {
+            ellipse(x, 204, 9, 5, '#a77f78', 0, 0);
+            for (const dx of [-8, 0, 8]) circle(x + dx, 197, 2.4, '#c49e93');
+        } else line([[x - 6, 207], [x + 5, 207]], id === 'singe' ? '#b34a80' : '#b48255', 1.5);
+    }
     // Ears are separate lobes, with pointed tufts for the red panda.
     if (id === 'pandaroux' || id === 'licorne') {
         for (const x of side ? [108] : [80, 159]) {
@@ -234,6 +245,9 @@ export function drawList(id: CharacterId, pose: Pose = 'face', expression: Expre
         if (id === 'singe') ellipse(x, 69, 16, 16, '#eac0a9', 0, 0);
     }
     if (id === 'dragon') for (const x of [86, 153]) path([x - 9, 65], [[[x - 27, 39], [x - 20, 16], [x - 14, 12]], [[x - 16, 34], [x + 14, 42], [x + 10, 64]]], gold);
+    if (id === 'dragon') for (const x of [86, 153]) {
+        for (let i = 0; i < 3; i++) path([x - 14 + i * 3, 32 + i * 9], [[[x - 10 + i * 3, 35 + i * 9], [x - 5 + i * 3, 37 + i * 9], [x + i * 3, 35 + i * 9]]], '', 1.5, false, '#b77a30');
+    }
     if (id === 'licorne') {
         for (let i = 5; i >= 0; i--) path([86 + i * 10, 65], [[[102 + i * 10, 42], [185 + i * 3, 66], [170 + i * 2, 106]], [[154 + i * 2, 128], [197 + i * 2, 144], [171 + i * 2, 157]]], rainbow[i] ?? cream, 12, false, rainbow[i]);
     }
@@ -242,6 +256,10 @@ export function drawList(id: CharacterId, pose: Pose = 'face', expression: Expre
     else path([66, 83], [[[65, 42], [171, 43], [177, 83]], [[194, 124], [159, 144], [121, 141]], [[79, 144], [48, 124], [66, 83]]], coat);
     if (side) path([99, 73], [[[108, 55], [139, 54], [150, 69]], [[132, 59], [113, 63], [99, 73]]], sheen, 0);
     else path([81, 78], [[[87, 53], [119, 54], [129, 61]], [[111, 57], [94, 65], [81, 78]]], sheen, 0);
+    // Three curved tufts catch the light along the brow; no fine texture to alias.
+    if (id !== 'licorne') {
+        path([108, 56], [[[103, 49], [109, 44], [114, 48]], [[116, 40], [124, 42], [126, 49]], [[134, 43], [140, 48], [136, 55]]], coat, 2);
+    }
     if (back) {
         if (id === 'panda') ellipse(120, 143, 40, 13, dark, 0, 0);
         if (id === 'dragon') for (let i = 0; i < 5; i++) polygon([[113, 69 + i * 17], [128, 64 + i * 17], [126, 81 + i * 17]], '#4db9a0', 1);
@@ -263,6 +281,7 @@ export function drawList(id: CharacterId, pose: Pose = 'face', expression: Expre
             }
         }
         if (id === 'dragon' || id === 'licorne') ellipse(side ? 153 : 128, 118, 32, 19, id === 'dragon' ? cream : '#ffe3df', 0, 2);
+        if (id === 'panda') ellipse(side ? 164 : 121, 119, 23, 16, '#fff4de', 0, 0);
         const eyes = side ? [140] : [97, 145];
         for (const x of eyes) {
             if (id === 'panda') ellipse(x, 97, 20, 24, dark, x < 120 ? 0.35 : -0.35, 0);
@@ -275,6 +294,7 @@ export function drawList(id: CharacterId, pose: Pose = 'face', expression: Expre
             ellipse(x + 2, 98, 4, 7, dark, 0, 0);
             circle(x - 2, 90, 3.7, '#ffffff');
             circle(x + 5, 98, 1.8, '#ffffff');
+            if (expression !== 'triste' && expression !== 'concentre') path([x - 9, expression === 'surprise' ? 70 : 75], [[[x - 3, expression === 'surprise' ? 65 : 71], [x + 4, expression === 'surprise' ? 65 : 71], [x + 10, expression === 'surprise' ? 71 : 76]]], '', 2.5, false);
             if (expression === 'concentre') line([[x - 12, 78], [x + 9, 84]], ink, 4);
             if (expression === 'triste') line([[x - 10, 79 + (x < 120 ? 6 : 0)], [x + 10, 79 + (x < 120 ? 0 : 6)]], ink, 3);
         }
@@ -305,6 +325,10 @@ export function drawList(id: CharacterId, pose: Pose = 'face', expression: Expre
         path([105, 61], [[[107, 47], [115, 17], [119, 19]], [[122, 31], [129, 49], [129, 61]]], gold);
         for (let i = 0; i < 3; i++) line([[110 + i * 2, 48 - i * 8], [126 - i * 2, 53 - i * 8]], '#a87a29', 2);
         if (!back) for (let i = 0; i < 6; i++) path([89 + i * 10, 67], [[[92 + i * 10, 48], [111 + i * 10, 53], [111 + i * 9, 74]]], rainbow[i] ?? cream, 7, false, rainbow[i]);
+    }
+    if (id === 'licorne' && !back) {
+        star(68, 161, 15, '#ffe08a');
+        ellipse(63, 156, 3, 2, '#fff9e8', -.4, 0);
     }
     if (id === 'singe') {
         for (let i = 0; i < 5; i++) {

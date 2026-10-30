@@ -1,3 +1,4 @@
+import { volume } from '../../ui/illustration';
 import { drawings as memoryDrawings } from '../paires/motifs';
 import type { Word } from '../../engines/sons/lexicon';
 // Small native SVG drawings. Shared outlines represent the same object in both languages.
@@ -109,5 +110,5 @@ export const drawings: Readonly<Record<string, string>> = {
 export function motifSvg(word: Word): string {
     const drawing = drawings[word.motif];
     if (!drawing) throw new RangeError('Unknown motif');
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-3 -3 70 70" role="img" aria-label="${word.word}" data-word="${word.word}" data-initial="${word.initial}" data-motif="${word.motif}"><g stroke="#354e41" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">${drawing}</g></svg>`;
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-3 -3 70 70" role="img" aria-label="${word.word}" data-word="${word.word}" data-initial="${word.initial}" data-motif="${word.motif}"><g stroke="#354e41" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">${volume(drawing)}</g></svg>`;
 }

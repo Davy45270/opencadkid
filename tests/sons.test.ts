@@ -36,9 +36,9 @@ it('native lexicons: twenty families of three unique, drawable words; conservati
             expect(svg).not.toMatch(/NaN|undefined|Infinity|<text|<image|<script|href=/);
             // Well-nested, known SVG vocabulary; self-closing primitives have finite attributes.
             const stack: string[] = [];
-            for (const match of svg.matchAll(/<(\/?)([a-z]+)\b[^>]*?(\/?)>/g)) {
+            for (const match of svg.matchAll(/<(\/?)([A-Za-z]+)\b[^>]*?(\/?)>/g)) {
                 const [, close, tag, self] = match;
-                expect(['svg', 'g', 'path', 'rect', 'circle']).toContain(tag);
+                expect(['svg', 'g', 'path', 'rect', 'circle', 'defs', 'radialGradient', 'stop']).toContain(tag);
                 if (close) expect(stack.pop()).toBe(tag); else if (!self) stack.push(tag!);
             }
             expect(stack).toEqual([]);
