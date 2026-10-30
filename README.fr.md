@@ -8,9 +8,9 @@ Jouer en ligne, sans installation, hors ligne une fois ouvert.
 
 Des petits jeux éducatifs et doux pour les enfants de **4 à 8 ans**, à jouer au doigt, surtout au téléphone. Boubou le panda, CaliRoux le panda roux, Pestouille le dragon, Tutu le singe et Lumi la licorne accompagnent les découvertes. Les dessins sont des SVG générés par le code.
 
-**Disponibles : Les paniers de Boubou et Les cartes de Lumi.** Dénombrer, constituer et comparer en huit niveaux, puis jouer à la mémoire avec 2, 3, 4, 6, 8 et 10 paires et un niveau image–ombre. Lumi montre les cartes deux secondes dans les trois premiers niveaux et fait briller une paire déjà vue après des erreurs répétées. Les seize motifs SVG se distinguent par leur silhouette autant que leur couleur. Les vingt cartes tiennent sans défilement sur un téléphone de 390×844. Le français est la langue par défaut ; l’anglais est choisi automatiquement seulement si la langue du téléphone commence par `en`. Le choix des parents est mémorisé.
+**Disponibles : Les paniers de Boubou, Les cartes de Lumi et Les formes de CaliRoux.** Dénombrer, constituer et comparer en huit niveaux, puis jouer à la mémoire avec 2, 3, 4, 6, 8 et 10 paires et un niveau image–ombre. Lumi montre les cartes deux secondes dans les trois premiers niveaux et fait briller une paire déjà vue après des erreurs répétées. Les seize motifs SVG se distinguent par leur silhouette autant que leur couleur. Les vingt cartes tiennent sans défilement sur un téléphone de 390×844. Le français est la langue par défaut ; l’anglais est choisi automatiquement seulement si la langue du téléphone commence par `en`. Le choix des parents est mémorisé.
 
-À venir : Les formes de CaliRoux, Les sons de Tutu, Le puzzle de Pestouille, Le chemin de Pestouille, Les suites de Lumi, Le rangement de CaliRoux, Les tambours de Tutu et L’atelier de Boubou. Ces huit jeux sont décrits dans [GAME_SPEC.md](GAME_SPEC.md), sans carte « bientôt » dans le jeu. L’apprentissage de l’heure se trouve dans l’application sœur TicTac, accessible depuis l’accueil après un contrôle parental.
+À venir : Les sons de Tutu, Le puzzle de Pestouille, Le chemin de Pestouille, Les suites de Lumi, Le rangement de CaliRoux, Les tambours de Tutu et L’atelier de Boubou. Ces sept jeux sont décrits dans [GAME_SPEC.md](GAME_SPEC.md), sans carte « bientôt » dans le jeu. L’apprentissage de l’heure se trouve dans l’application sœur TicTac, accessible depuis l’accueil après un contrôle parental.
 
 ## Jouer et installer
 
@@ -21,6 +21,8 @@ Ouvrir le jeu une première fois avec une connexion, puis choisir **Installer l�
 Pas de chrono, pas de vies, pas d’échec punitif, pas de publicité, pas d’achat, pas de compte, pas de collecte ni d’envoi de statistiques. Une erreur encourage à réessayer ; après deux erreurs, les objets sont surlignés et comptés. Terminer donne toujours des étoiles et débloque le niveau suivant. Les meilleurs scores et les déblocages sont séparés par jeu ; les anciennes sauvegardes de compter restent valides. Progression et réglages restent dans le navigateur. Rien ne sort du téléphone à l’initiative du jeu. Le seul lien externe, vers TicTac, demande une réponse écrite pour adulte.
 
 La roue dentée ouvre le contrôle parental, puis la langue, la voix, les sons et l’effacement de la progression, avec une confirmation supplémentaire. Ce petit contrôle évite une ouverture accidentelle ; il ne vérifie pas l’identité ni l’âge.
+
+**Les formes de CaliRoux** : dix niveaux pour reconnaître huit formes et huit couleurs, les combiner, comparer petit et grand puis glisser les formes dans deux ou trois boîtes de couleur. Les consignes sont dites et illustrées. Les couleurs proches ne sont jamais réunies dans une question ; après deux erreurs, la réponse pulse et son nom est redit. Une erreur ne retire rien. Les étoiles sont conservées séparément.
 
 ## Captures
 
@@ -33,6 +35,8 @@ Les captures seront créées par la suite mobile facultative, après compilation
 ![Étoiles](docs/captures/compter-etoiles.png)
 ![Cartes de Lumi](docs/captures/paires-plateau.png)
 ![Fin des paires](docs/captures/paires-fin.png)
+
+La suite facultative produit aussi `formes-question.png` et `formes-trier.png` dans `docs/captures/`.
 
 ## Développer
 

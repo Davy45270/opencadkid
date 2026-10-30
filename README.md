@@ -10,7 +10,9 @@ Gentle educational games for children aged **4–8**, designed for fingers and p
 
 **Available:** Boubou's baskets — count, fill and compare across eight levels — and **Lumi's cards**, a gentle memory game with 2, 3, 4, 6, 8 and 10 pairs, plus a picture-to-shadow level. Lumi offers a two-second preview on the first three levels and a glowing hint after repeated misses. Sixteen procedural shapes remain distinguishable without colour; the largest board fits a 390×844 phone without scrolling. French comes first; English is included. English is selected automatically only when the device language starts with `en`. Adults can change and save the language.
 
-Planned: CaliRoux's shapes, Tutu's sounds, Pestouille's puzzle, Pestouille's path, Lumi's patterns, CaliRoux's sorting, Tutu's drums and Boubou's workshop. These eight games are described in [GAME_SPEC.md](GAME_SPEC.md); they are not playable yet. Learning to tell time is available in the sister application TicTac, through an adult-gated home card.
+**CaliRoux's shapes** is also available: ten levels of shapes, colours, combinations, sizes and finger sorting into two or three colour boxes. Eight outlined SVG shapes and eight named colours accompany spoken prompts; close colour pairs never share a question. Two errors make the answer glow and repeat its name.
+
+Planned: Tutu's sounds, Pestouille's puzzle, Pestouille's path, Lumi's patterns, CaliRoux's sorting, Tutu's drums and Boubou's workshop. These seven games are described in [GAME_SPEC.md](GAME_SPEC.md); they are not playable yet. Learning to tell time is available in the sister application TicTac, through an adult-gated home card.
 
 No reading is required to play: spoken instructions accompany pictograms, objects and dot constellations. The first touch enables browser audio. Voice availability depends on the device's speech service; install a local French or English voice for spoken play offline. The ear button repeats an instruction. A silent device still shows the visual prompts.
 
@@ -31,6 +33,8 @@ Screenshots are produced by the optional mobile capture suite; they are not gene
 ![Completed series](docs/captures/compter-etoiles.png)
 ![Lumi’s cards](docs/captures/paires-plateau.png)
 ![Memory completion](docs/captures/paires-fin.png)
+
+The optional capture suite also produces `formes-question.png` and `formes-trier.png` in `docs/captures/`.
 
 ## Develop
 

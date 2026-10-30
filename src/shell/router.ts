@@ -1,3 +1,6 @@
+import * as shapes from '../engines/formes';
+import * as shapesView from '../games/formes/view';
+import { name as shapeName } from '../games/formes/shapes';
 import { start, answer, advance, moveObject, complete, levels, isUnlocked, type Session } from '../engines/compter';
 import * as memory from '../engines/paires';
 import * as memoryView from '../games/paires/view';
@@ -17,6 +20,7 @@ const storage = browserStorage();
 let save = readSave(storage, detectLocale(navigator.language));
 let screen: 'home' | 'levels' | 'game' | 'parents' | 'gate' = 'home';
 let session: Session | undefined;
+let shapesSession: shapes.Session | undefined;
 let memorySession: memory.Board | undefined;
 let activeGame = 'compter';
 let hint = false;
@@ -36,8 +40,10 @@ function render(): void {
         bind('#parents', () => gate('parents'));
         bind('#tictac', () => gate('tictac'));
     } else if (screen === 'levels') {
-        app.innerHTML = activeGame === 'paires' ? memoryView.levelView(save) : levelView(save);
-        bind('[data-level]', el => { const level = Number(el.dataset.level); if (activeGame === 'paires' ? memory.isUnlocked(level, save.pairesRecords) : isUnlocked(level, save.records)) begin(level); });
+        app.innerHTML = activeGame === 'formes' ? shapesView.levelView(save) : activeGame === 'paires' ? memoryView.levelView(save) : levelView(save);
+        bind('[data-level]', el => { const level = Number(el.dataset.level); if (activeGame === 'formes' ? shapes.isUnlocked(level, save.formesRecords) : activeGame === 'paires' ? memory.isUnlocked(level, save.pairesRecords) : isUnlocked(level, save.records)) begin(level); });
+    } else if (screen === 'game' && activeGame === 'formes' && shapesSession) {
+        renderShapes();
     } else if (screen === 'game' && activeGame === 'paires' && memorySession) {
         renderMemory();
     } else if (screen === 'game' && session) {
@@ -53,11 +59,78 @@ function render(): void {
         bind('#again', () => begin(session!.level));
         bind('#next', () => { if (session!.level < levels.length) begin(session!.level + 1); });
     }
-    bind('#back', () => { screen = 'home'; session = undefined; memorySession = undefined; render(); });
+    bind('#back', () => { screen = 'home'; session = undefined; memorySession = undefined; shapesSession = undefined; render(); });
 }
 function begin(level: number): void {
+    shapesSession = undefined; selectedPiece = undefined;
+    if (activeGame === 'formes') { session = undefined; memorySession = undefined; shapesSession = shapes.start(level, seed()); screen = 'game'; hint = false; render(); speak([shapesView.instruction(shapesSession.questions[0]!, save.locale)]); return; }
     if (activeGame === 'paires') { app.replaceChildren(); session = undefined; memorySession = memory.newBoard(level, seed()); screen = 'game'; render(); speak([memoryView.instruction(memorySession, save.locale)]); return; }
     memorySession = undefined; session = start(level, seed()); screen = 'game'; hint = false; expression = 'joie'; render(); speak([instruction(session.questions[0]!, save.locale)]); }
+function renderShapes(): void {
+    const state = shapesSession!;
+    app.innerHTML = shapesView.gameView(state, save.locale, hint);
+    bind('[data-answer]', el => shapeResponse(shapes.answer(shapesSession!, Number(el.dataset.answer)), Number(el.dataset.answer)));
+    bind('#listen', () => speak([state.finished ? text(save.locale, 'finished') : shapesView.instruction(state.questions[state.index]!, save.locale)]));
+    bind('#continue', () => {
+        shapesSession = shapes.advance(shapesSession!); hint = false;
+        if (shapesSession.finished) { save.formesRecords = shapes.complete(save.formesRecords, shapesSession); persist(); chime(save.sound); }
+        render(); speak([shapesSession.finished ? text(save.locale, 'finished') : shapesView.instruction(shapesSession.questions[shapesSession.index]!, save.locale)]);
+    });
+    bind('#again', () => begin(state.level));
+    bind('#next', () => { if (state.level < shapes.levels.length) begin(state.level + 1); });
+    // Keyboard alternative: select a piece, then its box.
+    bind('[data-piece]', el => { selectedPiece = Number(el.dataset.piece); });
+    bind('[data-box]', el => { if (selectedPiece !== undefined) { const piece = selectedPiece; selectedPiece = undefined; shapeResponse(shapes.drop(shapesSession!, piece, Number(el.dataset.box)), piece); } });
+}
+let selectedPiece: number | undefined;
+function shapeResponse(result: ReturnType<typeof shapes.answer>, index: number): void {
+    if (result.state === shapesSession) return;
+    shapesSession = result.state; hint = shapesSession.errors >= 2 && !shapesSession.solved;
+    render();
+    if (result.correct) { chime(save.sound); speak([text(save.locale, 'bravo')]); }
+    else {
+        app.querySelector(`[data-answer="${index}"], [data-piece="${index}"]`)?.classList.add('wiggle');
+        const q = shapesSession.questions[shapesSession.index]!;
+        speak([text(save.locale, 'tryAgain'), ...(hint ? [q.mode === 'trier' ? shapeName(q.choices[index]!, save.locale) : shapesView.instruction(q, save.locale)] : [])]);
+    }
+}
+let shapeDrag: { id: number; piece: number; x: number; y: number; element: HTMLElement } | undefined;
+app.addEventListener('pointerdown', event => {
+    const element = (event.target as Element).closest<HTMLElement>('[data-piece]:not(:disabled)');
+    if (!element || !event.isPrimary || shapeDrag || !shapesSession || shapesSession.solved) return;
+    selectedPiece = undefined;
+    shapeDrag = { id: event.pointerId, piece: Number(element.dataset.piece), x: event.clientX, y: event.clientY, element };
+    app.setPointerCapture(event.pointerId);
+});
+app.addEventListener('pointermove', event => {
+    if (shapeDrag?.id !== event.pointerId) return;
+    shapeDrag.element.style.transform = `translate(${event.clientX - shapeDrag.x}px, ${event.clientY - shapeDrag.y}px)`;
+    shapeDrag.element.classList.add('dragging');
+});
+app.addEventListener('pointerup', event => {
+    if (!shapeDrag || shapeDrag.id !== event.pointerId) return;
+    const drag = shapeDrag; shapeDrag = undefined;
+    if (app.hasPointerCapture(event.pointerId)) app.releasePointerCapture(event.pointerId);
+    drag.element.style.transform = ''; drag.element.classList.remove('dragging');
+    if (Math.hypot(event.clientX - drag.x, event.clientY - drag.y) < 12) { selectedPiece = drag.piece; return; }
+    const boxes = [...app.querySelectorAll<HTMLElement>('[data-box]')].map(el => {
+        const r = el.getBoundingClientRect();
+        const dx = Math.max(r.left - event.clientX, 0, event.clientX - r.right), dy = Math.max(r.top - event.clientY, 0, event.clientY - r.bottom);
+        return { el, distance: Math.hypot(dx, dy) };
+    }).sort((a, b) => a.distance - b.distance);
+    if (boxes[0] && boxes[0].distance <= 24 && shapesSession) {
+        const result = shapes.drop(shapesSession, drag.piece, Number(boxes[0].el.dataset.box));
+        shapeResponse(result, drag.piece);
+        if (result.returned && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            app.querySelector<HTMLElement>(`[data-piece="${drag.piece}"]`)?.animate([
+                { transform: `translate(${event.clientX - drag.x}px, ${event.clientY - drag.y}px)` }, { transform: 'translate(0, 0)' }
+            ], { duration: 260, easing: 'ease-out' });
+        }
+    }
+});
+for (const eventName of ['pointercancel', 'lostpointercapture']) app.addEventListener(eventName, () => {
+    if (shapeDrag) { shapeDrag.element.style.transform = ''; shapeDrag.element.classList.remove('dragging'); shapeDrag = undefined; }
+});
 function renderMemory(): void {
     const state = memorySession!;
     const next = document.createElement('template');
@@ -179,8 +252,8 @@ app.addEventListener('keydown', event => {
 document.addEventListener('pointerdown', () => { unlockSpeech(); if (save.sound) unlockSound(); }, { once: true, capture: true });
 document.addEventListener('visibilitychange', () => { if (document.hidden) { cancel(); stopSound(); } else { if (save.sound) unlockSound(); if (screen === 'game' && activeGame === 'paires') render(); } });
 Object.defineProperty(window, '__kid', { configurable: false, writable: false, value: Object.freeze({ state: () => {
-    const targets = [...app.querySelectorAll<HTMLElement>('button, select, input')].filter(el => !el.hasAttribute('disabled')).map(el => { const r = el.getBoundingClientRect(); return { id: el.id || (el.dataset.answer !== undefined ? `answer-${el.dataset.answer}` : el.dataset.level ? `level-${el.dataset.level}` : el.dataset.card !== undefined ? `card-${el.dataset.card}` : el.hasAttribute('data-reserve') ? `reserve-${el.dataset.reserve}` : el.hasAttribute('data-basket') ? `basket-${el.dataset.basket}` : el.dataset.game || ''), x: r.x, y: r.y, width: r.width, height: r.height }; });
-    return structuredClone({ screen, game: session || memorySession || screen === 'levels' ? activeGame : null, level: memorySession?.level ?? session?.level ?? null, index: session?.index ?? 0, question: session?.questions[session.index] ?? null, basket: session?.basket ?? 0, board: memorySession ? { ...memorySession, cards: memorySession.cards.map((card, i) => {
+    const targets = [...app.querySelectorAll<HTMLElement>('button, select, input')].filter(el => !el.hasAttribute('disabled')).map(el => { const r = el.getBoundingClientRect(); return { id: el.id || (el.dataset.answer !== undefined ? `answer-${el.dataset.answer}` : el.dataset.level ? `level-${el.dataset.level}` : el.dataset.card !== undefined ? `card-${el.dataset.card}` : el.hasAttribute('data-reserve') ? `reserve-${el.dataset.reserve}` : el.hasAttribute('data-basket') ? `basket-${el.dataset.basket}` : el.dataset.piece !== undefined ? `piece-${el.dataset.piece}` : el.dataset.box !== undefined ? `box-${el.dataset.box}` : el.dataset.game || ''), x: r.x, y: r.y, width: r.width, height: r.height }; });
+    return structuredClone({ screen, game: session || memorySession || shapesSession || screen === 'levels' ? activeGame : null, level: shapesSession?.level ?? memorySession?.level ?? session?.level ?? null, index: shapesSession?.index ?? session?.index ?? 0, question: shapesSession?.questions[shapesSession.index] ?? session?.questions[session.index] ?? null, shapes: shapesSession ?? null, basket: session?.basket ?? 0, board: memorySession ? { ...memorySession, cards: memorySession.cards.map((card, i) => {
         const r = app.querySelector(`[data-card="${i}"]`)?.getBoundingClientRect();
         return { ...card, visible: memorySession!.preview || card.found || memorySession!.visible.includes(i), rect: r ? { x: r.x, y: r.y, width: r.width, height: r.height } : null };
     }) } : null, targets });

@@ -1,10 +1,10 @@
-# Opencadkid — game specification 0.2.0
+# Opencadkid — game specification 0.3.0
 
 Audience: ages 4–8, primarily touch phones. French first, English included. No reading is required in child play. Spoken instructions, procedural SVG pictograms, object illustrations and dot patterns convey the task. No timer, lives, punishment, advertising, purchase, account, analytics or external runtime resource. The first home gesture unlocks browser audio. Reduced motion removes shakes, bounces and decorative particles. Local speech voices are preferred; speech availability offline depends on installed device voices.
 
 ## Catalogue
 
-`compter` and `paires` are implemented and present in the playable registry. Other catalogue entries remain planned.
+`compter`, `paires` and `formes` are implemented and present in the playable registry. Other catalogue entries remain planned.
 
 | ID | Français | English | Guide | Skill and intended rules |
 | --- | --- | --- | --- | --- |
@@ -133,3 +133,38 @@ Tests are written for independent execution; no Vitest, Playwright or browser wa
 1. In `src/engines/compter/index.ts`, change the hint comparison from `errors >= 2` to `errors >= 3`. The state unit test and the two-error browser test must fail.
 2. In the same engine, change the comparison answer rule from `left > right` to `left < right` for more. Per-level seeded rule tests must fail, independently calculating the inequality.
 3. In the same engine, make `complete` return a new lower score instead of taking `Math.max`. The best-record preservation unit test must fail.
+
+
+## Shapes: CaliRoux's shapes
+
+CaliRoux uses the existing `pandaroux` character identifier. The ten levels each contain six questions. Recognition has one matching choice; sorting has three pieces per question, each with exactly one matching box. Answer positions are drawn from the seeded RNG, excluding a position only after two consecutive uses. Adjacent requested shapes differ. No ambient randomness, time or DOM enters the engine. The scoring and unlocking functions are imported unchanged from counting: 0–2 clean questions earn one star, 3–4 two, 5–6 three. Sorting credits a question only when all three pieces were placed without error. Every finish unlocks the next level and preserves the best score in `formesRecords`; missing records migrate safely.
+
+| Level | Mode | Choices | Task |
+| --- | --- | --- | --- |
+| 1 | forme | 3 | Different shapes, same colour |
+| 2 | forme | 4 | Different shapes, same colour |
+| 3 | forme | 6 | Different shapes, mixed colours |
+| 4 | couleur | 3 | Same shape, distinct colours |
+| 5 | couleur | 3 | Varied shapes, distinct colours |
+| 6 | les-deux | 4 | Shape and colour; one same-shape and one same-colour distractor |
+| 7 | taille | 2 | Same shape in small and large sizes |
+| 8 | taille | 4 | Small/large with other shapes as distractors |
+| 9 | trier | 2 boxes | Three shapes sorted by colour |
+| 10 | trier | 3 boxes | Three shapes sorted by colour |
+
+Shapes: circle, square, triangle, rectangle, star, heart, diamond, oval. Colours: red, blue, yellow, green, orange, purple, pink, brown. Symmetric forbidden colour pairs: red/green, blue/purple, pink/orange, red/brown, green/brown, red/orange, red/pink, yellow/orange, purple/pink. Palettes are assembled from a seeded shuffle with pairwise exclusion before choices or boxes are made. These conservative exclusions reduce common confusions; they cannot guarantee perception for every colour vision. Shape recognition uses geometry independently of colour. Thick dark outlines surround every shape.
+
+The displayed SVG viewports measure 88 px, or 52 px for small shapes (ratio 1.69). Prompts show an outline and/or colour swatch; size prompts include a relative-size silhouette. All choices carry accessible bilingual labels and SVG `data-shape`, `data-color`, `data-size`. French names agree with the noun (including feminine étoile and generic forme); English adjectives precede nouns. An error shakes the touched piece without sound. After two errors the correct choice pulses and the requested name is spoken again. A solved question locks until the separate arrow is pressed.
+
+Sorting uses one captured primary pointer, cancels on lost capture and limits `touch-action: none` to its zone. The piece follows the finger; nearest-box distance up to 24 px snaps to the box. An incorrect placement retains the piece at its original position and counts an error; a release outside all boxes simply returns. Keyboard users select a piece then its colour box. Sorted pieces retain their grid spaces and cannot be placed twice. The read-only `window.__kid.state()` snapshot includes `shapes`, the current question and target rectangles.
+
+### Shapes test oracle and review
+
+Authored without executing unit tests or browsers:
+
+- `tests/formes.test.ts`: a literal ten-level table and literal forbidden-pair list; 300 seeds per level check reproducibility, unique answers, mode-specific distractors, adjacent differences, no position triples, broad position distribution and rare cycles. Sorting checks exactly one box per piece. State tests check pure errors, two-error hints, duplicate-credit guards, wrong-box returns, complete rounds, the exact seven-entry reward table, unlocks and preserved best scores. Literal SVG command signatures and starting geometry distinguish all eight shapes, with finite SVG and complete FR/EN labels. Language examples check gender and adjective order. Storage tests cover migration, filtering and independent records.
+- `tests/e2e/formes.spec.ts`: one full series per mode with deliberate errors, hints, progress after reload and shared console guard. The independent DOM oracle matches SVG attributes to the pictogram prompt before checking the observation hook. Literal French and English dictionaries check spoken instructions, agreement and ear replay throughout every mode. All ten levels check rendered SVG size and ratio, detached snapshots and horizontal overflow at narrow and wide breakpoints.
+- `tests/e2e/formes-doigt.spec.ts`: mobile touch only, five complete modes, seeded ±10 px touch offsets, 10–16-step noisy drags, double taps, a wrong box and unchanged scroll offsets. It requires completion and no page overflow. Sorting browser tests also release 20 px outside a box to check snap assistance.
+- `captures.spec.ts`: optional mobile `formes-question.png` and `formes-trier.png`; the orchestrator generates and visually reviews these artifacts. No captures were generated during authoring.
+
+Mutations to try: raise the hint threshold to three errors; remove the same-colour distractor in level six; accept every sorting box. Respectively the state/hint, 300-seed distractor, and sorting return/browser tests must fail.

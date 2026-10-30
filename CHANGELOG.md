@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0
+
+- Add CaliRoux's shapes: ten levels recognizing eight shapes, eight colours, combinations and sizes, then sorting into two or three colour boxes.
+- Add seeded pure questions, conservative colour exclusions, spoken French agreement and English adjective order, outlined SVG prompts, two-error hints and gentle touch dragging with snap assistance.
+- Reuse counting's reward and unlocking functions without changing either existing game's rules. Keep separate shape records with safe migration.
+- Add independent seeded, state, geometry, language and persistence tests, complete-mode browser and noisy-finger suites, and two optional captures. Tests await orchestrator execution.
+- Update generic catalogue and home assertions for three playable games; counting and memory tests are unchanged.
+
 ## 0.2.0
 
 - Add Lumi's cards: six progressive memory levels, an optional picture–shadow level, sixteen distinct procedural SVG silhouettes and bilingual spoken card names.
