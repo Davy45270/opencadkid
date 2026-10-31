@@ -19,7 +19,10 @@ export function bindDrums(app: HTMLElement, initial: Session, locale: Locale, so
     };
     const light = (d: number): void => {
         const button = app.querySelector<HTMLElement>(`[data-drum="${d}"]`)!;
-        clearTimeout(lights.get(d)); button.dataset.lit = 'true';
+        clearTimeout(lights.get(d));
+        // Alternate the illuminated face: repeated beats remain distinct without motion.
+        button.dataset.flash = button.dataset.flash === 'bright' ? 'soft' : 'bright';
+        button.dataset.lit = 'true';
         drumNote(sound, notes[d]!);
         const timer = setTimeout(() => { button.dataset.lit = 'false'; }, 230);
         lights.set(d, timer);
@@ -45,7 +48,7 @@ export function bindDrums(app: HTMLElement, initial: Session, locale: Locale, so
             const drum = Number(button.dataset.drum), result = hit(state, drum, performance.now());
             if (result.state === state) return;
             state = result.state; update(state); light(drum);
-            app.querySelectorAll<HTMLElement>('[data-beat]').forEach(el => { el.dataset.played = String(Number(el.dataset.beat) < state.cursor); });
+            app.querySelector('.tambours-beats')!.innerHTML = Array.from({ length: state.length }, (_, i) => `<i data-beat="${i}" data-played="${i < state.cursor}"></i>`).join('');
             app.querySelectorAll<HTMLElement>('[data-drum]').forEach(el => { el.dataset.hint = String(state.hint && sequence(state)[state.cursor] === Number(el.dataset.drum)); });
             if (result.replay) { app.querySelector('#feedback')!.textContent = text(locale, 'tryAgain'); playback(); }
             else if (state.solved) {

@@ -18,14 +18,14 @@ export const test = base.extend<{ consoleGuard: boolean }>({
     }, { auto: true }]
 });
 export { expect };
-export interface MediaLog { speech: string[]; rates: number[]; oscillators: number }
+export interface MediaLog { speech: string[]; rates: number[]; oscillators: number; frequencies: number[]; stops: number[] }
 export const media = (page: Page): Promise<MediaLog> => page.evaluate(() => (window as unknown as { __media: MediaLog }).__media);
 export async function clearSpeech(page: Page): Promise<void> {
     await page.evaluate(() => { (window as unknown as { __media: MediaLog }).__media.speech = []; });
 }
 export async function prepare(page: Page, level = 1, options: { voice?: boolean; sound?: boolean } = {}): Promise<void> {
     await page.addInitScript(({ level, voice, sound }) => {
-        const log = { speech: [] as string[], rates: [] as number[], oscillators: 0 };
+        const log = { speech: [] as string[], rates: [] as number[], oscillators: 0, frequencies: [] as number[], stops: [] as number[] };
         if (Object.hasOwn(window, '__media')) return;
         Object.defineProperty(window, '__media', { value: log });
         class Utterance {
@@ -41,7 +41,7 @@ export async function prepare(page: Page, level = 1, options: { voice?: boolean;
         class FakeAudioContext {
             currentTime = 0; destination = {};
             resume() { return Promise.resolve(); } suspend() { return Promise.resolve(); }
-            createOscillator() { return { frequency: { value: 0 }, type: 'sine', connect() {}, start() { log.oscillators++; }, stop() {} }; }
+            createOscillator() { const frequency = { value: 0 }; return { frequency, type: 'sine', connect() {}, start() { log.oscillators++; log.frequencies.push(frequency.value); }, stop(t: number) { log.stops.push(t); } }; }
             createGain() { return { gain: { setValueAtTime() {}, linearRampToValueAtTime() {}, exponentialRampToValueAtTime() {} }, connect() {} }; }
         }
         Object.defineProperty(window, 'AudioContext', { value: FakeAudioContext, configurable: true });

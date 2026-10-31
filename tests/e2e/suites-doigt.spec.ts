@@ -55,7 +55,9 @@ for (const level of [1, 7, 9, 10]) test(`suites ${level}: noisy mobile finger, d
         const choice = await patternAnswer(page);
         if (question === 0) {
             const wrong = (choice + 1) % rects.length;
-            await tap(page, `[data-pattern-choice="${wrong}"]`); await page.waitForTimeout(205); await tap(page, `[data-pattern-choice="${wrong}"]`);
+            // Distinct wrong cards are distinct gestures, even inside the double-tap window.
+            await tap(page, `[data-pattern-choice="${wrong}"]`);
+            await tap(page, `[data-pattern-choice="${(choice + 2) % rects.length}"]`);
             expect((await patternState(page)).suites.errors).toBe(2); expect(await page.locator('.suites-base').count()).toBeGreaterThan(0);
             if (level === 9) {
                 const before = await patternState(page);

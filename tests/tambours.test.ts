@@ -18,11 +18,11 @@ it('eight independently specified levels and invalid inputs', () => {
     expect(generateRound(1, 0, 2)).toHaveLength(2);
 });
 for (let level = 1; level <= 8; level++) it(`level ${level}: deterministic distinct sequences over 300 seeds`, () => {
-    const [mode, drums, , max] = table[level - 1]!;
+    const [mode, drums, min, max] = table[level - 1]!;
     for (let seed = 0; seed < 300; seed++) {
         const round = generateRound(level, seed);
         expect(round).toEqual(generateRound(level, seed)); expect(round).toHaveLength(5);
-        const signatures: string[] = [];
+        const signatures: string[] = [], prefixes: string[] = [];
         for (const q of round) {
             expect(q.mode).toBe(mode); expect(q.sequence).toHaveLength(Number(max));
             expect(q.sequence.every(d => Number.isInteger(d) && d >= 0 && d < Number(drums))).toBe(true);
@@ -31,9 +31,11 @@ for (let level = 1; level <= 8; level++) it(`level ${level}: deterministic disti
             else {
                 for (let i = 2; i < q.sequence.length; i++) expect(q.sequence[i] === q.sequence[i - 1] && q.sequence[i] === q.sequence[i - 2]).toBe(false);
                 signatures.push(q.sequence.join(','));
+                prefixes.push(q.sequence.slice(0, Number(min)).join(','));
             }
         }
         expect(new Set(signatures).size).toBe(5);
+        if (mode !== 'rythme') expect(new Set(prefixes).size).toBe(5);
     }
 });
 function solve(s: Session): Session {
@@ -109,17 +111,17 @@ it('optional records migrate, filter, round-trip and preserve other games', () =
     raw = JSON.stringify({ version: 1, locale: 'fr', voice: true, sound: true, records: {} }); expect(readSave(port).tamboursRecords).toEqual({});
 });
 it('synthesis sends six distinct pentatonic frequencies to a quiet fake AudioContext', () => {
-    const frequencies: number[] = [], peaks: number[] = [];
+    const frequencies: number[] = [], peaks: number[] = [], stops: number[] = [];
     class FakeAudioContext {
         currentTime = 0; destination = {};
         resume(): Promise<void> { return Promise.resolve(); }
-        createOscillator() { const frequency = { value: 0 }; return { frequency, type: '', connect() {}, start() { frequencies.push(frequency.value); }, stop() {} }; }
+        createOscillator() { const frequency = { value: 0 }; return { frequency, type: '', connect() {}, start() { frequencies.push(frequency.value); }, stop(t: number) { stops.push(t); } }; }
         createGain() { return { connect() {}, gain: { setValueAtTime() {}, linearRampToValueAtTime(value: number) { peaks.push(value); }, exponentialRampToValueAtTime() {} } }; }
     }
     vi.stubGlobal('AudioContext', FakeAudioContext); unlockSound();
     for (const frequency of notes) drumNote(true, frequency);
     expect(frequencies).toEqual([261.63, 293.66, 329.63, 392, 440, 523.25]); expect(new Set(frequencies).size).toBe(6);
-    expect(peaks.every(p => p <= .06)).toBe(true);
+    expect(peaks.every(p => p <= .06)).toBe(true); expect(stops).toEqual(Array(6).fill(.26));
     drumNote(false, 261.63); expect(frequencies).toHaveLength(6);
 });
 it('beat activation accepts rapid and secondary pointerdown, rejects compatibility click', () => {
@@ -133,4 +135,14 @@ it('beat activation accepts rapid and secondary pointerdown, rejects compatibili
     expect(calls).toBe(3); button.onclick?.(Object.assign(new Event('click'), { detail: 1 })); expect(calls).toBe(3);
     button.onclick?.(Object.assign(new Event('click'), { detail: 0 })); expect(calls).toBe(4);
     expect(activationEvents().filter(e => e.target === 'tambours-test' && e.reason === 'musical-beat')).toHaveLength(3);
+});
+
+it('a backwards timestamp is ignored in every mode without altering progress', () => {
+    for (const level of [1, 5, 8]) {
+        const initial = start(level, 12);
+        const s = hit(initial, sequence(initial)[0]!, 1000).state;
+        expect(s.cursor).toBe(1);
+        expect(hit(s, level === 8 ? 2 : sequence(s)[1]!, 999)).toEqual({ state: s, correct: false, replay: false });
+        expect(hit(s, 0, 999).state).toBe(s);
+    }
 });

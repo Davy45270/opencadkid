@@ -120,3 +120,5 @@ button:active{transform:translateY(3px);box-shadow:0 1px 0 #c7d5b7,inset 0 2px 4
 
 @media (min-width: 360px) { .tambours-arc button:nth-child(3n + 2) { translate: 0 -12px; } }
 @media (min-width: 360px) and (max-width: 599px) { .tambours-arc { row-gap: 24px; } }
+
+.tambours-arc [data-lit="true"][data-flash="bright"] { filter: brightness(1.65) drop-shadow(0 0 12px #d5aa39); }
