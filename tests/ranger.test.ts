@@ -2,12 +2,14 @@ import { afterEach, expect, it, vi } from 'vitest';
 import { advance, catalog, complete, generateRound, isUnlocked, levels, place, start, stars, type ObjectItem, type Question } from '../src/engines/ranger';
 import { objectSvg, labels, pic } from '../src/games/ranger/items';
 import { gameView, instruction, levelView } from '../src/games/ranger/view';
-import { bindAction, resetActivations } from '../src/shell/activation';
-import { placementKey } from '../src/games/ranger/interaction';
-import { patternActivationKey } from '../src/games/suites/interaction';
+import { resetActivations } from '../src/shell/activation';
+import { bindObjects } from '../src/games/ranger/interaction';
+import { bindPatternChoices } from '../src/games/suites/interaction';
 import * as suites from '../src/engines/suites';
 import { fresh, readSave, writeSave } from '../src/shell/storage';
 import { validSvg } from './svg-oracles';
+import silhouettes from './ranger-drawings.json';
+import { expectedInstruction } from './ranger-oracles';
 /** Independent predicate: never imports belongs or consumes an engine answer. */
 function oracle(q: Question, o: ObjectItem, bin: string): boolean {
     switch (q.rule) {
@@ -108,7 +110,7 @@ it('bilingual rules, hints and finite valid procedural illustrations', () => {
         }
     }
 });
-it('isolated records migrate, filter, round-trip and erase', () => {
+it('isolated records migrate, filter and round-trip', () => {
     let raw = JSON.stringify({ ...fresh(), records: { 1: 3 }, rangerRecords: { 1: 2, 8: 3, 9: 2, 2: 0, 3: 1.5, 4: '3' } });
     const port = { getItem: () => raw, setItem: (_: string, value: string) => { raw = value; } };
     const save = readSave(port); expect(save.rangerRecords).toEqual({ 1: 2, 8: 3 }); expect(save.records).toEqual({ 1: 3 });
@@ -116,30 +118,138 @@ it('isolated records migrate, filter, round-trip and erase', () => {
     raw = JSON.stringify({ version: 1, locale: 'fr', voice: true, sound: true, records: { 1: 2 } });
     expect(readSave(port).rangerRecords).toEqual({}); expect(fresh().rangerRecords).toEqual({});
 });
-class Button extends EventTarget {
+/** Minimal in-memory DOM: real controllers own all listeners and activation keys. */
+class TestElement extends EventTarget {
+    dataset: Record<string, string> = {};
+    style = { transform: '' };
+    classList = { add: vi.fn(), remove: vi.fn() };
+    attributes = new Map<string, string>();
+    isConnected = true;
     onclick: ((event: Event & { detail: number }) => void) | null = null;
-    getBoundingClientRect(): { x: number; y: number; width: number; height: number } { return { x: 0, y: 0, width: 100, height: 100 }; }
-    tap(): void {
-        for (const type of ['pointerdown', 'pointerup', 'click']) {
-            const event = Object.assign(new Event(type), { pointerId: 1, pointerType: 'touch', isPrimary: true, clientX: 50, clientY: 50, detail: 1 });
-            this.dispatchEvent(event); if (type === 'click') this.onclick?.(event);
-        }
+    animate = vi.fn();
+    focus = vi.fn();
+    private capture: number | undefined;
+    constructor(data: Record<string, string> = {}, private x = 0, private y = 0) { super(); this.dataset = data; }
+    setAttribute(key: string, value: string): void { this.attributes.set(key, value); }
+    setPointerCapture(id: number): void { this.capture = id; }
+    hasPointerCapture(id: number): boolean { return this.capture === id; }
+    releasePointerCapture(): void { this.capture = undefined; }
+    getBoundingClientRect(): DOMRect { return { x: this.x, y: this.y, left: this.x, top: this.y, right: this.x + 100, bottom: this.y + 100, width: 100, height: 100, toJSON: () => ({}) }; }
+    send(type: string, overrides = {}): void {
+        const event = Object.assign(new Event(type, { cancelable: true }), { pointerId: 1, pointerType: 'touch', isPrimary: true, button: 0, clientX: this.x + 50, clientY: this.y + 50, detail: 1 }, overrides);
+        this.dispatchEvent(event); if (type === 'click') this.onclick?.(event);
+    }
+    tap(): void { for (const type of ['pointerdown', 'pointerup', 'click']) this.send(type); }
+    get element(): HTMLElement { return this as unknown as HTMLElement; }
+}
+class TestRoot extends TestElement {
+    constructor(readonly objects: TestElement[], readonly bins: TestElement[] = [], readonly choices: TestElement[] = []) { super(); }
+    querySelectorAll(selector: string): TestElement[] {
+        if (selector.startsWith('[data-bin]')) return this.bins;
+        if (selector.startsWith('[data-pattern-choice]')) return this.choices;
+        if (selector.startsWith('[data-object]')) return this.objects;
+        return [];
+    }
+    querySelector(selector: string): TestElement | null {
+        if (selector.startsWith('.suites-active')) return this.bins[0] ?? null;
+        return this.objects.find(el => selector.includes(`"${el.dataset.object!}"`)) ?? null;
     }
 }
-afterEach(() => vi.useRealTimers());
-it('suites: selection A → slot 1 → selection B → slot 2 at zero milliseconds places twice', () => {
-    vi.useFakeTimers({ toFake: ['performance'] }); resetActivations();
-    let s = suites.start(9, 17), selected: number | undefined;
-    const q = s.questions[0]!, buttons = [new Button(), new Button()];
-    buttons.forEach(button => bindAction(button as unknown as HTMLElement, () => { s = suites.answer(s, selected!).state; selected = undefined; }, () => patternActivationKey(s, selected!)));
-    selected = q.answers[0]!; buttons[0]!.tap(); selected = q.answers[1]!; buttons[1]!.tap();
-    expect(s.placed).toEqual(q.answers); expect(s.solved).toBe(true); expect(s.index).toBe(0);
+function testDocument(): void {
+    vi.stubGlobal('document', Object.assign(new EventTarget(), { hidden: false }));
+    vi.stubGlobal('matchMedia', () => ({ matches: false }));
+    resetActivations();
+}
+afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); });
+it('suites: real controller places A then B at zero milliseconds', () => {
+    testDocument(); vi.useFakeTimers({ toFake: ['performance'] });
+    let s = suites.start(9, 17);
+    const q = s.questions[0]!;
+    expect(q.mode).toBe('deux-suivants');
+    const choices = q.answers.map(choice => new TestElement({ patternChoice: String(choice) }));
+    const root = new TestRoot([], [new TestElement({}, 200, 200)], choices);
+    const dispose = bindPatternChoices(root.element, s, choice => { s = suites.answer(s, choice).state; });
+    const time = performance.now();
+    for (const choice of choices) choice.tap();
+    expect(performance.now()).toBe(time);
+    expect(s.placed).toEqual(q.answers); expect(s.solved).toBe(true); expect(s.index).toBe(0); dispose();
 });
-it('ranger: two distinct objects in the same bin at zero milliseconds both place', () => {
-    vi.useFakeTimers({ toFake: ['performance'] }); resetActivations();
+function rangerFixture() {
+    testDocument();
     let s = start(1, 19), selected: string | undefined;
-    const q = s.questions[0]!, bin = q.bins[0]!, objects = q.objects.filter(o => oracle(q, o, bin)), button = new Button();
-    bindAction(button as unknown as HTMLElement, () => { s = place(s, selected!, bin).state; selected = undefined; }, () => placementKey('ranger', s.level, s.index, bin, selected));
-    selected = objects[0]!.id; button.tap(); selected = objects[1]!.id; button.tap();
-    expect(s.placed).toEqual(objects.map(o => o.id));
+    const q = s.questions[0]!;
+    const objects = q.objects.map(o => new TestElement({ object: o.id }));
+    const bins = q.bins.map(bin => new TestElement({ bin }, 200, 200));
+    const root = new TestRoot(objects, bins);
+    const respond = vi.fn((id: string, bin: string) => { s = place(s, id, bin).state; });
+    const dispose = bindObjects(root.element, s, () => selected, id => { selected = id; }, respond);
+    return { q, objects, bins, root, respond, dispose, state: () => s, selected: () => selected };
+}
+it('ranger: real controller places two objects in the same bin at zero milliseconds', () => {
+    const f = rangerFixture(); vi.useFakeTimers({ toFake: ['performance'] });
+    const bin = f.q.bins[0]!, pair = f.q.objects.filter(o => oracle(f.q, o, bin));
+    const time = performance.now();
+    for (const o of pair) { f.objects.find(el => el.dataset.object === o.id)!.tap(); f.bins[0]!.tap(); }
+    expect(performance.now()).toBe(time); expect(f.state().placed).toEqual(pair.map(o => o.id)); expect(f.respond).toHaveBeenCalledTimes(2); f.dispose();
+});
+for (const ending of ['pointercancel', 'lostpointercapture']) it(`ranger: ${ending} preserves the displayed selection and its bin action`, () => {
+    const f = rangerFixture(), a = f.objects[0]!, b = f.objects[1]!;
+    a.tap(); const before = structuredClone(f.state());
+    b.send('pointerdown'); b.send('pointermove', { clientX: 80 }); b.send(ending); b.send('pointerup'); b.send('click');
+    expect(f.state()).toEqual(before); expect(f.selected()).toBe(a.dataset.object);
+    expect(a.attributes.get('aria-pressed')).toBe('true'); expect(b.attributes.get('aria-pressed')).toBe('false');
+    expect(b.style.transform).toBe('');
+    const bin = f.q.bins.findIndex(bin => oracle(f.q, f.q.objects[0]!, bin)); f.bins[bin]!.tap();
+    expect(f.state().placed).toEqual([a.dataset.object]); expect(f.respond).toHaveBeenCalledTimes(1); f.dispose();
+});
+for (const reduced of [false, true]) it(`ranger: wrong drop returns gently with reduced motion ${reduced}`, () => {
+    const f = rangerFixture(); vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: reduced })));
+    const wrong = 0, index = f.q.objects.findIndex(o => !oracle(f.q, o, f.q.bins[wrong]!)), a = f.objects[index]!;
+    a.send('pointerdown'); a.send('pointermove', { clientX: 250, clientY: 250 }); a.send('pointerup', { clientX: 250, clientY: 250 });
+    expect(f.respond).toHaveBeenCalledWith(a.dataset.object, f.q.bins[wrong]);
+    expect(f.state().errors).toBe(1); expect(f.state().placed).toEqual([]); expect(a.style.transform).toBe('');
+    expect(matchMedia).toHaveBeenCalledWith('(prefers-reduced-motion: reduce)');
+    if (reduced) expect(a.animate).not.toHaveBeenCalled();
+    else expect(a.animate).toHaveBeenCalledExactlyOnceWith([{ transform: 'translate(200px, 200px)' }, { transform: 'translate(0, 0)' }], { duration: 260, easing: 'ease-out' });
+    f.dispose();
+});
+
+it('drawn silhouettes identify every kind and actual paint follows its colour', () => {
+    // Fixed reference geometry, independent of accessible names and data attributes.
+    expect(Object.keys(silhouettes).sort()).toEqual([...new Set(catalog.map(o => o.kind))].sort());
+    const palette = { rouge: '#df6c66', vert: '#81b16b', jaune: '#edc350' };
+    for (const o of catalog) {
+        const drawing = objectSvg(o, 'fr').replace(/ style="[^"]*"/g, '');
+        expect(drawing).toContain(`<g fill="${palette[o.color]}" stroke="#58443b" stroke-width="2" stroke-linejoin="round">${silhouettes[o.kind as keyof typeof silhouettes]}</g>`);
+        expect(drawing).toContain(`<stop offset=".48" stop-color="${palette[o.color]}"/>`);
+    }
+});
+it('size pictograms show a smaller small circle and a larger large circle', () => {
+    expect(pic('petit')).toContain('<circle cx="32" cy="32" r="14"');
+    expect(pic('grand')).toContain('<circle cx="32" cy="32" r="28"');
+    expect(pic('rond')).toContain('<circle cx="32" cy="32" r="27"');
+    expect(pic('carre')).toContain('<rect x="5" y="5" width="54" height="54"');
+    expect(pic('long')).toContain('<rect x="20" y="3" width="24" height="58"');
+    for (const [category, kind] of [['fruit', 'pomme'], ['jouet', 'ballon'], ['vetement', 'pull'], ['animal', 'chat'], ['cuisine', 'spatule']] as const) {
+        expect(pic(category).replace(/ style="[^"]*"/g, '')).toContain(silhouettes[kind]);
+    }
+});
+it('every rule has an independent complete French and English instruction', () => {
+    for (const locale of ['fr', 'en'] as const) for (let level = 1; level <= 8; level++) for (const q of generateRound(level, 19)) {
+        const expected = expectedInstruction(q, locale);
+        expect(instruction(q, locale)).toBe(expected);
+    }
+});
+it('presentation shuffles combinations and puts the intruder in every position', () => {
+    const combinations = new Set<string>(), intruderPositions = new Set<number>();
+    for (let seed = 0; seed < 100; seed++) {
+        for (const q of generateRound(7, seed)) combinations.add(q.objects.map(o => `${Number(o.category === q.category)}${Number(o.color === q.color)}`).join(','));
+        for (const q of generateRound(8, seed)) intruderPositions.add(q.objects.findIndex(o => o.category !== q.category));
+    }
+    for (let level = 1; level <= 6; level++) {
+        const rounds = Array.from({ length: 40 }, (_, seed) => generateRound(level, seed)).flat();
+        expect(rounds.some(q => q.objects.some((o, i) => i > 0 && q.rule !== 'two' && q.rule !== 'intrus' && o[q.rule] === q.objects[i - 1]![q.rule]))).toBe(true);
+    }
+    expect(combinations.size).toBeGreaterThan(1);
+    expect([...intruderPositions].sort()).toEqual([0, 1, 2, 3]);
 });

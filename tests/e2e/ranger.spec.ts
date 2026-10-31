@@ -1,9 +1,12 @@
-import { test, expect, media, clearSpeech } from './helpers';
+import { test, expect, media, clearSpeech, passGate } from './helpers';
+import { expectedInstruction } from '../ranger-oracles';
 import { binFor, prepareRanger, rangerDom, rangerState, solveSorting } from './ranger-helpers';
 for (let level = 1; level <= 8; level++) test(`ranger ${level}: independent rule oracle, voice, gentle error, hint, complete and reload`, async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 }); await prepareRanger(page, level);
     for (let index = 0; index < 6; index++) {
-        const prompt = await page.locator('.instruction p').innerText(); expect((await media(page)).speech).toContain(prompt);
+        const question = (await rangerState(page)).ranger.questions[index]!;
+        const prompt = expectedInstruction(question, 'fr');
+        await expect(page.locator('.instruction p')).toHaveText(prompt); expect((await media(page)).speech).toContain(prompt);
         await clearSpeech(page); await page.locator('#listen').click(); expect((await media(page)).speech).toContain(prompt);
         const dom = await rangerDom(page), hook = await rangerState(page);
         expect(hook.index).toBe(index); expect(hook.ranger.questions[index]!.objects.map(o => o.id)).toEqual(dom.objects.map(o => o.id));
@@ -65,4 +68,28 @@ for (const [level, filename] of [[1, 'ranger-couleur.png'], [4, 'ranger-categori
     test.skip(process.env.CAPTURES !== '1' || !isMobile, 'Optional mobile captures for orchestrator review');
     await page.setViewportSize({ width: 390, height: 844 }); await page.emulateMedia({ reducedMotion: 'reduce' }); await prepareRanger(page, level);
     await page.screenshot({ path: `docs/captures/${filename}` });
+});
+
+test('each English rule is displayed and spoken with the independent language oracle', async ({ page }) => {
+    for (let level = 1; level <= 8; level++) {
+        await prepareRanger(page, level, 'en');
+        const q = (await rangerState(page)).ranger.questions[0]!, prompt = expectedInstruction(q, 'en');
+        await expect(page.locator('.instruction p')).toHaveText(prompt);
+        expect((await media(page)).speech).toContain(prompt);
+        await clearSpeech(page); await page.locator('#listen').click();
+        expect((await media(page)).speech).toEqual([prompt]);
+    }
+});
+test('parental erase cancels or confirms existing Ranger records and persists after reload', async ({ page }) => {
+    await prepareRanger(page, 8);
+    await page.locator('#back').click(); await page.locator('#parents').click(); await passGate(page);
+    const records = () => page.evaluate(() => (JSON.parse(localStorage.getItem('opencadkid.v1')!) as { rangerRecords: Record<string, number> }).rangerRecords);
+    const before = await records(); expect(Object.keys(before)).toHaveLength(7);
+    await page.locator('#erase').click(); await page.locator('#no').click(); expect(await records()).toEqual(before);
+    await page.locator('#erase').click(); await page.locator('#yes').click(); expect(await records()).toEqual({});
+    await page.reload(); expect(await records()).toEqual({});
+    await page.locator('[data-game="ranger"]').click();
+    await expect(page.locator('[data-level="1"]')).toBeEnabled();
+    await expect(page.locator('[data-level="2"]')).toBeDisabled();
+    await expect(page.locator('.level-grid')).not.toContainText('★');
 });

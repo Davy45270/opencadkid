@@ -53,11 +53,11 @@ export function bindObjects(root: HTMLElement, state: Session, selected: () => s
             }
         });
         for (const type of ['pointercancel', 'lostpointercapture'] as const) element.addEventListener(type, event => {
-            if (drag?.pointer === event.pointerId) { recordActivation(key, type, false, 'cancelled'); clear(); select(undefined); }
+            if (drag?.pointer === event.pointerId) { recordActivation(key, type, false, 'cancelled'); clear(); }
         });
         element.onclick = event => { if (event.detail === 0) { recordActivation(key, 'click', true, 'keyboard'); choose(id); } else recordActivation(key, 'click', false, 'compatibility-click'); };
     }
-    const visibility = (): void => { if (document.hidden) { clear(); select(undefined); } };
+    const visibility = (): void => { if (document.hidden) { clear(); select(undefined); root.querySelectorAll<HTMLElement>('[data-object]').forEach(el => el.setAttribute('aria-pressed', 'false')); } };
     document.addEventListener('visibilitychange', visibility);
     return () => { clear(); document.removeEventListener('visibilitychange', visibility); };
 }
