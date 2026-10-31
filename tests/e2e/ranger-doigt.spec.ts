@@ -1,4 +1,4 @@
-import { expectReturned } from './motion-helpers';
+import { captureReturnOrigin, expectReturned } from './motion-helpers';
 import type { BrowserContext, Page } from '@playwright/test';
 import { test, expect, expectTouch, touchFrame } from './helpers';
 import { binFor, prepareRanger, rangerDom, rangerState } from './ranger-helpers';
@@ -37,7 +37,7 @@ for (const level of [1, 2, 3, 4, 5, 6, 7, 8]) test(`ranger ${level}: noisy finge
             const first = dom.objects[0]!, correct = binFor(dom, first), wrong = dom.bins.find(b => b !== correct)!;
             const before = (await rangerState(page)).ranger;
             for (const outcome of ['cancel', 'outside'] as const) { await drag(page, context, first.id, correct, outcome); expect((await rangerState(page)).ranger).toEqual(before); }
-            const original = (await page.locator(`[data-object="${first.id}"]`).boundingBox())!;
+            const original = await captureReturnOrigin(page.locator(`[data-object="${first.id}"]`));
             await drag(page, context, first.id, wrong, 'wrong');
             await expectTouch(page, 'Wrong drop returns and counts one error', async () => (await rangerState(page)).ranger.errors === 1);
             await expectReturned(page.locator(`[data-object="${first.id}"]`), original);

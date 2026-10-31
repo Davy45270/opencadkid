@@ -1,4 +1,4 @@
-import { expectMotionFinished, expectReturned } from './motion-helpers';
+import { captureReturnOrigin, expectMotionFinished, expectReturned } from './motion-helpers';
 import type { Locator, Page } from '@playwright/test';
 import { expect, prepare } from './helpers';
 export interface ShapeProbe { game: string; selection: number | null; index: number; shapes: { errors: number; solved: boolean; finished: boolean; firstTry: number; placed: number[] }; question: { answer: number } }
@@ -25,11 +25,12 @@ export async function shapeAnswer(page: Page): Promise<number> {
     return result;
 }
 export async function dragShape(page: Page, from: Locator, to: Locator, outside = false): Promise<void> {
+    const returnOrigin = await captureReturnOrigin(from);
     const a = (await from.boundingBox())!, b = (await to.boundingBox())!;
     await page.mouse.move(a.x + a.width / 2, a.y + a.height / 2); await page.mouse.down();
     await page.mouse.move(b.x + b.width / 2, outside ? b.y + b.height + 20 : b.y + b.height / 2, { steps: 12 }); await page.mouse.up();
     await expectMotionFinished(from);
-    if (!await from.isDisabled()) await expectReturned(from, a);
+    if (!await from.isDisabled()) await expectReturned(from, returnOrigin);
 }
 export async function solveShapes(page: Page): Promise<void> {
     for (let i = (await shapeState(page)).index; i < 6; i++) {

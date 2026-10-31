@@ -1,4 +1,4 @@
-import { expectReturned } from './motion-helpers';
+import { captureReturnOrigin, expectReturned } from './motion-helpers';
 import { test, expect, expectTouch, state, touchFrame } from './helpers';
 import { prepareShapes, shapeAnswer, shapeState } from './formes-helpers';
 import { makeRng } from '../../src/engines/rng';
@@ -22,6 +22,7 @@ for (const level of [3, 5, 6, 8, 10]) test(`level ${level}: noisy touch complete
     const cdp = await context.newCDPSession(page);
     const drag = async (piece: number, box: string): Promise<void> => {
         const before = (await shapeState(page)).shapes;
+        const returnOrigin = await captureReturnOrigin(page.locator(`[data-piece="${piece}"]`));
         const a = (await page.locator(`[data-piece="${piece}"]`).boundingBox())!, b = (await page.locator(box).boundingBox())!;
         const x = a.x + a.width / 2 + noise(), y = a.y + a.height / 2 + noise(), tx = b.x + b.width / 2, ty = b.y + b.height / 2;
         await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ id: 1, x, y }] });
@@ -32,7 +33,7 @@ for (const level of [3, 5, 6, 8, 10]) test(`level ${level}: noisy touch complete
         }
         await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
         await expect.poll(async () => { const after = (await shapeState(page)).shapes; return after.placed.includes(piece) || after.errors === before.errors + 1; }).toBe(true);
-        if (!(await shapeState(page)).shapes.placed.includes(piece)) await expectReturned(page.locator(`[data-piece="${piece}"]`), a);
+        if (!(await shapeState(page)).shapes.placed.includes(piece)) await expectReturned(page.locator(`[data-piece="${piece}"]`), returnOrigin);
     };
     for (let i = 0; i < 6; i++) {
         if (level === 10) {

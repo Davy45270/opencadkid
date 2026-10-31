@@ -2,6 +2,9 @@
 
 ## 1.0.1
 
+- Reserve two explicit text lines for game instructions, encouragements and feedback, and space for the studio stamp; wrap text without clipping. Keep sorting pieces at their grid origin during touch activation.
+- Measure gentle returns relative to the original parent after finite motion, with a bounded half-pixel tolerance and no residual transform. Add target, instruction and feedback geometry regressions after an error and a hint in all five drag games, using both default and wider fallback typography. Browser execution awaits CI.
+
 - Wait for finite gesture feedback before recording pattern positions, then poll for strict state equality after cancellation. Replace fixed gentle-return delays with bounded animation and exact geometry checks in shape, sound and sorting regressions; verify that no drag transform remains.
 
 - During a memory mismatch, a hidden-card touch closes both cards and opens its target immediately; touching either visible card only closes the pair. Preserve move counts and accidental-double-touch protection.

@@ -1,7 +1,7 @@
 import type { BrowserContext, Page } from '@playwright/test';
 import { test, expect, expectTouch, touchFrame } from './helpers';
 import { patternAnswer, patternState, prepareSuites } from './suites-helpers';
-import { expectMotionFinished, expectReturned } from './motion-helpers';
+import { captureReturnOrigin, expectMotionFinished, expectReturned } from './motion-helpers';
 let noiseSeed = 1;
 function noise(): number { noiseSeed = Math.imul(noiseSeed, 1664525) + 1013904223 | 0; return (noiseSeed >>> 0) / 4294967296 * 20 - 10; }
 async function point(page: Page, selector: string): Promise<{ x: number; y: number }> {
@@ -14,6 +14,7 @@ async function drag(page: Page, context: BrowserContext, choice: number, outcome
     const selector = `[data-pattern-choice="${choice}"]`;
     const begin = await point(page, selector), target = await point(page, '.suites-empty.suites-active');
     const end = outcome === 'outside' ? { x: 10, y: 10 } : target;
+    const returnOrigin = await captureReturnOrigin(page.locator(selector));
     const original = (await page.locator(selector).boundingBox())!;
     await page.locator(selector).evaluate(el => el.addEventListener('pointerdown', event => {
         (el as HTMLElement).dataset.testPointer = String((event as PointerEvent).pointerId);
@@ -46,7 +47,7 @@ async function drag(page: Page, context: BrowserContext, choice: number, outcome
         await expect(page.locator(selector)).not.toHaveClass(/dragging/);
         await expectNoDragging(page);
         expect(await page.locator(selector).evaluate(el => (el as HTMLElement).style.transform)).toBe('');
-        if (outcome !== 'drop') await expectReturned(page.locator(selector), original);
+        if (outcome !== 'drop') await expectReturned(page.locator(selector), returnOrigin);
     } finally { await cdp.detach(); }
 }
 for (const level of [1, 7, 9, 10]) test(`suites ${level}: noisy mobile finger, double touch, ordered drag, no scroll`, async ({ page, context, isMobile }) => {

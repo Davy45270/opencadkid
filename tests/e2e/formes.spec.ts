@@ -1,4 +1,4 @@
-import { expectReturned } from './motion-helpers';
+import { captureReturnOrigin, expectReturned } from './motion-helpers';
 import { shapeSvg } from '../../src/games/formes/shapes';
 import type { Piece } from '../../src/engines/formes';
 import { expectedFills, luminance, hue } from '../formes-oracles';
@@ -162,6 +162,7 @@ test('wrong box animates a gradual return to the original position', async ({ pa
     await page.emulateMedia({ reducedMotion: 'no-preference' });
     await prepareShapes(page, 10);
     const piece = page.locator('[data-piece="0"]'), origin = (await piece.boundingBox())!;
+    const returnOrigin = await captureReturnOrigin(piece);
     const color = await piece.locator('svg').getAttribute('data-color');
     const box = (await page.locator(`[data-box]:not([data-color="${color!}"])`).first().boundingBox())!;
     await page.evaluate(() => {
@@ -196,7 +197,7 @@ test('wrong box animates a gradual return to the original position', async ({ pa
     expect(distances[0]!).toBeGreaterThan(24);
     expect(distances[1]!).toBeGreaterThan(1); expect(distances[1]!).toBeLessThan(distances[0]!);
     expect(distances[2]!).toBeLessThan(1);
-    await expectReturned(piece, origin);
+    await expectReturned(piece, returnOrigin);
     expect((await shapeState(page)).shapes.placed).toEqual([]);
     await expect(piece).toBeEnabled();
 });
