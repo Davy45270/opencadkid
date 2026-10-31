@@ -119,7 +119,17 @@ it('isolated records migrate, filter and round-trip', () => {
     expect(readSave(port).rangerRecords).toEqual({}); expect(fresh().rangerRecords).toEqual({});
 });
 /** Minimal in-memory DOM: real controllers own all listeners and activation keys. */
+class TestDocument extends EventTarget {
+    hidden = false;
+    private sequence = 0;
+    readonly frames = new Map<number, FrameRequestCallback>();
+    readonly defaultView = {
+        requestAnimationFrame: (callback: FrameRequestCallback): number => { const id = ++this.sequence; this.frames.set(id, callback); return id; },
+        cancelAnimationFrame: (id: number): void => { this.frames.delete(id); }
+    };
+}
 class TestElement extends EventTarget {
+    readonly ownerDocument = document as unknown as TestDocument;
     dataset: Record<string, string> = {};
     style = { transform: '' };
     classList = { add: vi.fn(), remove: vi.fn() };
@@ -136,8 +146,12 @@ class TestElement extends EventTarget {
     releasePointerCapture(): void { this.capture = undefined; }
     getBoundingClientRect(): DOMRect { return { x: this.x, y: this.y, left: this.x, top: this.y, right: this.x + 100, bottom: this.y + 100, width: 100, height: 100, toJSON: () => ({}) }; }
     send(type: string, overrides = {}): void {
-        const event = Object.assign(new Event(type, { cancelable: true }), { pointerId: 1, pointerType: 'touch', isPrimary: true, button: 0, clientX: this.x + 50, clientY: this.y + 50, detail: 1 }, overrides);
+        const event = Object.assign(new Event(type, { bubbles: true, cancelable: true }), { pointerId: 1, pointerType: 'touch', isPrimary: true, button: 0, clientX: this.x + 50, clientY: this.y + 50, detail: 1 }, overrides);
+        // EventTarget has no DOM ancestry: forward document capture before the
+        // target, and document bubble after the target's normal drop handler.
+        if (type === 'pointercancel' || type === 'lostpointercapture') this.ownerDocument.dispatchEvent(event);
         this.dispatchEvent(event); if (type === 'click') this.onclick?.(event);
+        if (type === 'pointerup') this.ownerDocument.dispatchEvent(event);
     }
     tap(): void { for (const type of ['pointerdown', 'pointerup', 'click']) this.send(type); }
     get element(): HTMLElement { return this as unknown as HTMLElement; }
@@ -156,7 +170,7 @@ class TestRoot extends TestElement {
     }
 }
 function testDocument(): void {
-    vi.stubGlobal('document', Object.assign(new EventTarget(), { hidden: false }));
+    vi.stubGlobal('document', new TestDocument());
     vi.stubGlobal('matchMedia', () => ({ matches: false }));
     resetActivations();
 }

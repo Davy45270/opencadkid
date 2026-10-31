@@ -1,10 +1,14 @@
 /** A gesture owns its original node and capture target until every end path clears it. */
 export interface DragHandle { pointer: number; element: HTMLElement; capture?: HTMLElement }
-export function bindDragEnd(document: Document, current: () => DragHandle | undefined, reset: () => void, cancelled?: (reason: string) => void): { watch: () => void; finish: () => void; dispose: () => void } {
-    const window = document.defaultView!;
+export function bindDragEnd(ownerDocument: Document | undefined, current: () => DragHandle | undefined, reset: () => void, cancelled?: (reason: string) => void): { watch: () => void; finish: () => void; dispose: () => void } {
+    const document = ownerDocument ?? (globalThis as { document?: Document }).document;
+    if (!document) throw new Error('Drag gestures require a document');
+    const window = document.defaultView ?? globalThis;
+    // Detached documents and lightweight hosts may have no animation scheduler.
+    const canWatch = typeof window.requestAnimationFrame === 'function' && typeof window.cancelAnimationFrame === 'function';
     let frame: number | undefined;
     const finish = (): void => {
-        if (frame !== undefined) window.cancelAnimationFrame(frame);
+        if (frame !== undefined && canWatch) window.cancelAnimationFrame(frame);
         frame = undefined;
         const drag = current();
         // Forget ownership before releasing capture: lostpointercapture may reenter.
@@ -33,7 +37,7 @@ export function bindDragEnd(document: Document, current: () => DragHandle | unde
         }
         frame = window.requestAnimationFrame(check);
     };
-    const watch = (): void => { if (frame === undefined && current()) frame = window.requestAnimationFrame(check); };
+    const watch = (): void => { if (canWatch && frame === undefined && current()) frame = window.requestAnimationFrame(check); };
     // Release bubbles after normal drop handlers; cancellation needs no drop.
     // Document scope also catches endings outside the original owner.
     for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) document.addEventListener(type, end, type !== 'pointerup');

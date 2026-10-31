@@ -113,3 +113,30 @@ it('suites keeps one owner across cards and cannot resurrect a cancelled drag on
     for (const card of cards) { expect(card.classList.has('dragging')).toBe(false); expect(card.style.transform).toBe(''); }
     expect(respond).not.toHaveBeenCalled(); dispose(); expect(document.frames.size).toBe(0);
 });
+
+for (const missingOwner of [false, true]) it(`uses the global scheduler when the document has no view, missing owner ${missingOwner}`, () => {
+    const document = Object.assign(new EventTarget(), { hidden: false, defaultView: null });
+    const scheduler = new TestDocument();
+    vi.stubGlobal('document', document);
+    vi.stubGlobal('requestAnimationFrame', scheduler.defaultView.requestAnimationFrame);
+    vi.stubGlobal('cancelAnimationFrame', scheduler.defaultView.cancelAnimationFrame);
+    const piece = new TestElement(document as unknown as TestDocument);
+    let drag: DragHandle | undefined = { pointer: 1, element: piece.element };
+    piece.setPointerCapture(1); piece.style.transform = 'translate(10px, 20px)'; piece.classList.add('dragging');
+    const ending = bindDragEnd(missingOwner ? undefined : document as unknown as Document, () => drag, () => { drag = undefined; });
+    ending.watch(); expect(scheduler.frames.size).toBe(1);
+    send(document, 'pointercancel');
+    expect(drag).toBeUndefined(); expect(piece.style.transform).toBe('');
+    expect(piece.classList.has('dragging')).toBe(false); expect(piece.hasPointerCapture(1)).toBe(false);
+    expect(scheduler.frames.size).toBe(0); ending.dispose();
+});
+it('keeps event cleanup available when neither document nor globals provide animation frames', () => {
+    const document = Object.assign(new EventTarget(), { hidden: false, defaultView: null });
+    vi.stubGlobal('requestAnimationFrame', undefined); vi.stubGlobal('cancelAnimationFrame', undefined);
+    const piece = new TestElement(document as unknown as TestDocument);
+    let drag: DragHandle | undefined = { pointer: 1, element: piece.element };
+    piece.setPointerCapture(1);
+    const ending = bindDragEnd(document as unknown as Document, () => drag, () => { drag = undefined; });
+    ending.watch(); send(document, 'lostpointercapture');
+    expect(drag).toBeUndefined(); expect(piece.hasPointerCapture(1)).toBe(false); ending.dispose();
+});
