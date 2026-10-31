@@ -93,3 +93,30 @@ button:active{transform:translateY(3px);box-shadow:0 1px 0 #c7d5b7,inset 0 2px 4
 @media(prefers-reduced-motion:reduce){.ranger-hint{animation:none}}
 .ranger-bins:has(>button:nth-child(3)){display:grid;grid-template-columns:repeat(3,minmax(96px,1fr));gap:8px;width:calc(100% + 16px);margin-left:-8px}.ranger-bins:has(>button:nth-child(3)) .ranger-bin{width:100%}
 @media(max-width:360px){.ranger-instruction #guide{width:80px;height:80px}.ranger-instruction p{font-size:.9rem}.ranger-instruction{gap:8px}}
+
+/* Tutu's instruments retain their connected nodes during every beat. */
+#app[data-theme="tambours"] { background: #f1f5e5; }
+.tambours-zone { max-width: 600px; margin: 16px auto; }
+.tambours-arc { display: grid; grid-template-columns: repeat(2, 100px); justify-content: center; gap: 14px 10px; padding: 18px 0; }
+.tambours-arc button { width: 100px; height: 112px; min-width: 100px; padding: 0; border: 0; background: transparent; box-shadow: none; touch-action: none; }
+.tambours-arc button:nth-child(3n + 2) { translate: none; }
+.tambours-arc svg { width: 100px; height: 100px; display: block; }
+.tambours-arc [data-lit="true"] { filter: brightness(1.25) drop-shadow(0 0 8px #d5aa39); animation: drum-bounce .18s ease-out; }
+.tambours-arc [data-hint="true"] { outline: 4px solid #b38a39; border-radius: 24px; animation: drum-glow 1s ease-in-out infinite alternate; }
+.tambours-beats { display: flex; justify-content: center; gap: 10px; }
+.tambours-beats i { width: 16px; height: 16px; border: 2px solid #638265; border-radius: 50%; }
+.tambours-beats [data-played="true"] { background: #638265; }
+#drums-cue svg { width: 54px; height: 54px; }
+@keyframes drum-bounce { 50% { transform: translateY(-7px); } }
+@keyframes drum-glow { to { filter: brightness(1.2) drop-shadow(0 0 5px #d5aa39); } }
+@media (min-width: 600px) { .tambours-arc { grid-template-columns: repeat(3, 112px); gap: 20px; } .tambours-arc button { width: 112px; height: 124px; } .tambours-arc svg { width: 112px; height: 112px; } }
+@media (prefers-reduced-motion: reduce) { .tambours-arc [data-lit], .tambours-arc [data-hint] { animation: none; transform: none; } }
+
+#app[data-theme="tambours"] #continue[hidden] { display: none; }
+.tambours-arc button:active { transform: none; }
+.tambours-arc [data-lit="true"][data-hint="true"] { filter: brightness(1.25) drop-shadow(0 0 8px #d5aa39); }
+
+@media (min-width: 360px) and (max-width: 599px) { .tambours-arc { grid-template-columns: repeat(3, 100px); } }
+
+@media (min-width: 360px) { .tambours-arc button:nth-child(3n + 2) { translate: 0 -12px; } }
+@media (min-width: 360px) and (max-width: 599px) { .tambours-arc { row-gap: 24px; } }

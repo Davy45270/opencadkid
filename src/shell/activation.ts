@@ -64,3 +64,18 @@ export function bindAction(element: HTMLElement, action: () => void, key: Activa
         recordActivation(currentKey(), event.type, true, event.detail === 0 ? 'keyboard' : 'mouse'); binding.action();
     };
 }
+
+/** Musical exception: every pointerdown (including secondary fingers) is a beat.
+ * Keep the connected node between beats; suppress only generated clicks. */
+export function bindBeat(element: HTMLElement, action: () => void, key: string): void {
+    element.addEventListener('pointerdown', event => {
+        if (event.button !== 0 || distanceToZone({ x: event.clientX, y: event.clientY }, element.getBoundingClientRect()) !== 0) return;
+        event.preventDefault();
+        recordActivation(key, event.type, true, 'musical-beat'); action();
+    });
+    element.onclick = event => {
+        const keyboard = event.detail === 0;
+        recordActivation(key, event.type, keyboard, keyboard ? 'keyboard' : 'compatibility-click');
+        if (keyboard) action();
+    };
+}

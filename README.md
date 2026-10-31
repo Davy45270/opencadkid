@@ -8,13 +8,13 @@ Play online, without installation, offline once opened.
 
 Gentle educational games for children aged **4–8**, designed for fingers and phones. Boubou the panda, CaliRoux the red panda, Pestouille the dragon, Tutu the monkey and Lumi the unicorn guide each discovery. All artwork is generated in SVG from code.
 
-**Available: Boubou’s baskets, Lumi’s cards, CaliRoux’s shapes, Tutu’s sounds, Pestouille’s puzzle, Pestouille’s path, Lumi’s patterns and CaliRoux’s tidy-up.**
+**Available: Boubou’s baskets, Lumi’s cards, CaliRoux’s shapes, Tutu’s sounds, Pestouille’s puzzle, Pestouille’s path, Lumi’s patterns, CaliRoux’s tidy-up and Tutu’s drums.**
 
 Boubou's baskets — count, fill and compare across eight levels — and **Lumi's cards**, a gentle memory game with 2, 3, 4, 6, 8 and 10 pairs, plus a picture-to-shadow level. Lumi offers a two-second preview on the first three levels and a glowing hint after repeated misses. Sixteen procedural shapes remain distinguishable without colour; the largest board fits a 390×844 phone without scrolling. French comes first; English is included. English is selected automatically only when the device language starts with `en`. Adults can change and save the language.
 
 **CaliRoux's shapes** is also available: ten levels of shapes, colours, combinations, sizes and finger sorting into two or three colour boxes. Eight outlined SVG shapes and eight named colours accompany spoken prompts; close colour pairs never share a question. Two errors make the answer glow and repeat its name.
 
-Planned: Tutu's drums and Boubou's workshop. These two games are described in [GAME_SPEC.md](GAME_SPEC.md); they are not playable yet. Learning to tell time is available in the sister application TicTac, through an adult-gated home card.
+Planned: Boubou's workshop, described in [GAME_SPEC.md](GAME_SPEC.md). Learning to tell time is available in the sister application TicTac, through an adult-gated home card.
 
 No reading is required to play: spoken instructions accompany pictograms, objects and dot constellations. The first touch enables browser audio. Voice availability depends on the device's speech service; install a local French or English voice for spoken play offline. The ear button repeats an instruction. A silent device still shows the visual prompts.
 
@@ -67,3 +67,5 @@ Pure engines live in `src/engines/`; they receive seeds and never access the DOM
 The public game registry contains playable games only. Follow [GAME_SPEC.md](GAME_SPEC.md) when adding a game. GitHub Actions checks the app, then deploys a successful main-branch CI build to Pages. All action versions are pinned.
 
 MIT © 2026 David Sevin. See [LICENSE](LICENSE). Report vulnerabilities as described in [SECURITY.md](SECURITY.md).
+
+**Tutu’s drums** adds eight levels of rhythm and listening: repeat sequences of two to six beats on four, five or six instruments, imitate short/long intervals, then compose eight beats for Tutu to replay. Each instrument has a distinct shape and pentatonic note. Quiet WebAudio tones can be disabled in parent settings; lights keep every demonstration playable without audio. Mistakes replay more slowly, two mistakes pulse the next drum and gently shorten repeated sequences within the level bounds. Timing tolerance is ±35%. Every finger plays on contact, including simultaneous fingers and intentional rapid double taps. Reduced motion keeps lights without bouncing. Best stars and unlocks are saved independently. Authored tests await orchestrator execution; optional captures are `tambours-ecoute.png` and `tambours-a-toi.png`.

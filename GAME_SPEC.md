@@ -1,10 +1,10 @@
-# Opencadkid — game specification 0.9.0
+# Opencadkid — game specification 0.10.0
 
 Audience: ages 4–8, primarily touch phones. French first, English included. No reading is required in child play. Spoken instructions, procedural SVG pictograms, object illustrations and dot patterns convey the task. No timer, lives, punishment, advertising, purchase, account, analytics or external runtime resource. The first home gesture unlocks browser audio. Reduced motion removes shakes, bounces and decorative particles. Local speech voices are preferred; speech availability offline depends on installed device voices.
 
 ## Catalogue
 
-`compter`, `paires`, `formes`, `sons`, `puzzle`, `chemin`, `suites` and `ranger` are implemented and present in the playable registry. Other catalogue entries remain planned.
+`compter`, `paires`, `formes`, `sons`, `puzzle`, `chemin`, `suites`, `ranger` and `tambours` are implemented and present in the playable registry. Other catalogue entries remain planned.
 
 | ID | Français | English | Guide | Skill and intended rules |
 | --- | --- | --- | --- | --- |
@@ -515,3 +515,47 @@ No Vitest, Playwright or browser is run during authoring. Screenshots are genera
 1. Replace the two-criterion AND with OR in `belongs`: the independent seeded membership tests and DOM browser oracle must fail.
 2. Change the per-object hint threshold from two to three: the state and two-error browser tests must fail.
 3. Remove the selected object from `placementKey`: the zero-delay same-bin test and rapid mobile pair must fail.
+
+
+## Rhythm: Tutu’s drums (0.10.0)
+
+`tambours` is the ninth playable game. Tutu uses the existing `singe` character identifier. A pale jungle stays at the edges. Four, five then six shaded drums have separate shapes (circle, triangle, square, star, diamond, heart), colours and notes. Notes are C4, D4, E4, G4, A4 and C5 (261.63, 293.66, 329.63, 392, 440, 523.25 Hz): a pentatonic scale with its octave. Recognition never depends on colour alone.
+
+| Level | Mode | Drums | Initial/minimum length | Maximum length |
+| --- | --- | --- | --- | --- |
+| 1 | repeter | 4 | 2 | 3 |
+| 2 | repeter | 4 | 2 | 4 |
+| 3 | repeter | 5 | 3 | 5 |
+| 4 | repeter | 6 | 3 | 6 |
+| 5 | rythme | 4 | 3 | 3 |
+| 6 | rythme | 5 | 4 | 4 |
+| 7 | rythme | 6 | 6 | 6 |
+| 8 | libre | 6 | 8 | 8 |
+
+The pure engine uses shared Mulberry32; it never reads a clock. `generateRound(level, seed, count = 5)` produces distinct sequences, with deterministic prefixes even when count changes. Count must be an integer 1–16. Repetition and generated composition examples forbid three identical drums in succession; rhythm intentionally uses one drum throughout, with identity determined by that drum and its interval pattern. User compositions may repeat any drum freely. Repetition prefixes are distinct even at the minimum playable length.
+
+The interface supplies millisecond timestamps to `hit(state, drum, t)`. In repetition, each success increases the next question’s length by one up to the level maximum. Every second error decreases the current length by one down to the level minimum. An error resets the cursor, keeps the question open and increases the interval tempo by ×1.3, bounded at 1600 ms from a 650 ms base. Every replay retains the generated sequence prefix. Two errors highlight and pulse the next expected drum; the hint follows each successful beat.
+
+Rhythm has three, four or six strikes, hence two, three or five measured intervals. Each interval is one base interval (short) or two (long). The first strike anchors the child's clock; there is no deadline to begin. Subsequent strikes must use the demonstrated drum and land within **±35% inclusive** of the expected interval at the current replay tempo. This deliberately wide tolerance suits young children. Synthetic tests accept ±34% and the ±35% boundary and reject ±36%; a tiny numerical epsilon only compensates floating point rounding. Early/late strikes invite another slower demonstration, with no visible clock or failure screen.
+
+In free mode every valid strike is accepted, including consecutive identical drums. After eight strikes Tutu replays those drums and their measured spacing (playback intervals clamped to 100–2000 ms), then offers Continue. No errors are possible and every completed free session earns three stars. All modes have five questions. Repetition and rhythm use the common first-try star thresholds: 0–2 clean questions earn one star, 3–4 two, and 5 three. Every completion unlocks the next level. `tamboursRecords` preserves best stars, migrates absent saves, filters levels 1–8 and clears with the shared erase control.
+
+### Musical touch exception and media
+
+**This game intentionally has no same-target double-tap debounce.** `activation.ts` exports `bindBeat`, distinct from release-based `bindAction`: each primary or secondary `pointerdown` immediately plays one beat. Two simultaneous fingers count as two strikes in dispatch order, and two rapid contacts count twice. The shared coordinate helper checks containment in CSS viewport pixels. Generated pointer compatibility clicks are suppressed; a keyboard click (`detail=0`) still plays. Connected drum nodes survive each hit. Only drums use `touch-action: none`; shell controls retain the usual activation behavior. Every accepted beat is visible in `events()` as `musical-beat`.
+
+Targets measure at least 100×112 CSS px; the 100×100 SVGs paint at least 88 px in either axis. Instruments form a shallow three-column arc over two rows, with two columns below 360 px. `data-drum`, `data-note`, `data-shape` and `data-lit` describe each instrument; `data-phase` distinguishes listening, playing and solved, while `data-tempo` records the actual interval. Tutu illuminates and bounces each struck drum for 230 ms, then shows a hand pictogram and speaks “À toi !” / “Your turn!”. Reduced motion removes bouncing and hint motion, retaining illumination and the static hint outline. Synthesized sine notes peak at gain .055 and stop within .26 seconds; no audio files or dependencies are used. Parent sound controls, unavailable devices and local voice behavior follow the shell. Hiding cancels playback and suspends sound; returning restarts the demonstration and clears a partial timing anchor. Navigation cancels all owned timers. A detached `window.__kid.state().tambours` snapshot exposes state without mutation methods.
+
+### Drum test oracles and review
+
+Authored without running Vitest, Playwright or a browser:
+
+- `tests/tambours.test.ts`: independent eight-level table, determinism and sequence rules for 300 seeds per level; pure hit transitions, invalid inputs, slowed/bounded tempo, two-error hint, length growth/shrinkage, synthetic timing boundaries, every mode’s completion and rewards, best-score preservation, unlocks, bilingual SVG validity, save migration/filtering and a fake AudioContext’s exact frequencies and quiet gain. Event sequences test immediate primary/secondary beats, compatibility-click rejection and keyboard access.
+- `tests/e2e/tambours.spec.ts`: a MutationObserver records actual `data-lit` pulses during demonstrations under `page.clock`; those observed drums and intervals are the independent answer oracle. Repetition/rhythm sessions check slower replay, hints, local voice, muted play, stars and reload/unlocks. Free mode checks eight-beat replay and three stars. Drawn SVG extents, targets, reduced motion, detached snapshots and page overflow are measured at widths 320–1280. The shared fixture rejects console/page errors. Optional mobile captures produce `tambours-ecoute.png` and `tambours-a-toi.png`; the orchestrator must generate and inspect them.
+- `tests/e2e/tambours-doigt.spec.ts`: seeded ±10 px mobile touches solve a full light-observed session with unchanged scroll. Two rapid same-drum taps count twice; a real simultaneous two-finger contact counts twice before release. The shared failure fixture attaches `events()`.
+
+Three mutations to try:
+
+1. Replace `.35` with `.33` in rhythm acceptance: synthetic ±34% acceptance must fail.
+2. Remove the `Math.min(MAX_TEMPO, ...)` slowdown cap: repeated-error state assertions must fail.
+3. Route drum contacts through the normal release/debounce binder: immediate-pointer, rapid-tap and simultaneous-finger assertions must fail.

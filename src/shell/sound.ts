@@ -18,3 +18,17 @@ export function chime(enabled: boolean): void {
         }
     } catch { /* A disabled audio device never blocks playing. */ }
 }
+
+/** One quiet sine voice, stopped after its short envelope. */
+export function drumNote(enabled: boolean, frequency: number): void {
+    if (!enabled || !context) return;
+    try {
+        const now = context.currentTime, oscillator = context.createOscillator(), gain = context.createGain();
+        oscillator.type = 'sine'; oscillator.frequency.value = frequency;
+        gain.gain.setValueAtTime(0, now);
+        gain.gain.linearRampToValueAtTime(.055, now + .012);
+        gain.gain.exponentialRampToValueAtTime(.001, now + .24);
+        oscillator.connect(gain); gain.connect(context.destination);
+        oscillator.start(now); oscillator.stop(now + .26);
+    } catch { /* Light remains available without an audio device. */ }
+}

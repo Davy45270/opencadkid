@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.10.0
+
+- Add Tutu’s drums: eight seeded levels of repetition, generous short/long rhythm imitation and free eight-beat composition with playback.
+- Give six shaded instruments distinct shapes and quiet pentatonic WebAudio notes; lights keep play available with sound muted or unavailable. Respect reduced motion and background cancellation.
+- Add an explicit shared activation exception for musical pointerdown, rapid beats and simultaneous fingers. Reuse viewport coordinates and bounded event history.
+- Slow demonstrations after mistakes, hint after two errors, adapt sequence length and preserve independent best stars and unlocks.
+- Author 300-seed engine tests, synthetic rhythm boundary tests, fake audio/speech tests, DOM light oracles, noisy touch, responsive painted-size checks and optional captures. Test suites and captures await orchestrator execution.
+
 ## 0.9.0
 
 - Add CaliRoux’s tidy-up: eight seeded levels for colour, shape, size, category, three bins, two criteria and a unique odd one out, with 180 bilingual everyday object variants.

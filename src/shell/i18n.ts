@@ -1,6 +1,7 @@
 export type Locale = 'fr' | 'en';
 export const messages = {
     fr: {
+        drumsListen: "Regarde et écoute Tutu.", drumsTurn: "À toi ! Rejoue les frappes.", drumsFree: "Compose huit frappes, Tutu les rejoue !",
         patternsNext: "Qu’est-ce qui vient après ?", patternsHole: "Qu’est-ce qui manque ?", patternsTwo: "À toi de continuer ! Place les deux suivants.",
         pathInstruction: "Trace le chemin de Pestouille jusqu’à l’arrivée.", pathHelp: "Montre le chemin", pathMedal: "Toutes les étoiles du chemin !",
         puzzleInstruction: "Glisse les pièces pour refaire l’image.", puzzleModel: "Voir le modèle", puzzlePiece: "Pièce", puzzleHint: "Cette pièce va ici !",
@@ -17,6 +18,7 @@ export const messages = {
         apple: 'pommes', pear: 'poires', berry: 'fraises', carrot: 'carottes', star: 'étoiles', fish: 'poissons', flower: 'fleurs', basket: 'Panier', reserve: 'Réserve', skill: 'Compter, remplir, comparer'
     },
     en: {
+        drumsListen: "Watch and listen to Tutu.", drumsTurn: "Your turn! Play the beats again.", drumsFree: "Make eight beats, Tutu plays them back!",
         patternsNext: "What comes next?", patternsHole: "What is missing?", patternsTwo: "Your turn to continue! Place the next two.",
         pathInstruction: "Trace Pestouille’s path to the finish.", pathHelp: "Show the path", pathMedal: "Every path star collected!",
         puzzleInstruction: "Slide the pieces to rebuild the picture.", puzzleModel: "Show the picture", puzzlePiece: "Piece", puzzleHint: "This piece goes here!",
