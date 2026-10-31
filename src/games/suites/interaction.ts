@@ -1,13 +1,14 @@
 import type { Session } from '../../engines/suites';
 import { acceptActivation, bindAction, recordActivation } from '../../shell/activation';
 import { dragPosition, withinDropZone } from '../../shell/coordinates';
+export function patternActivationKey(state: Session, choice: number): string { return `suites:${state.level}:${state.index}:choice-${choice}`; }
 /** Release commits once. Capture and gesture state belong to the current DOM,
  * so navigation, cancellation and backgrounding can never place an old piece. */
 export function bindPatternChoices(root: HTMLElement, state: Session, respond: (choice: number) => void): () => void {
     const q = state.questions[state.index]!;
     const clearGestures: (() => void)[] = [];
     for (const element of root.querySelectorAll<HTMLButtonElement>('[data-pattern-choice]:not(:disabled)')) {
-        const choice = Number(element.dataset.patternChoice), key = `suites:${state.level}:${state.index}:choice-${choice}`;
+        const choice = Number(element.dataset.patternChoice), key = patternActivationKey(state, choice);
         if (q.mode !== 'deux-suivants') { bindAction(element, () => respond(choice), key); continue; }
         let drag: { pointer: number; x: number; y: number; moved: boolean; rect: DOMRect } | undefined;
         const clear = (): void => {

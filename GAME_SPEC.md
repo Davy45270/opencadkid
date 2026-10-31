@@ -1,10 +1,10 @@
-# Opencadkid — game specification 0.8.0
+# Opencadkid — game specification 0.9.0
 
 Audience: ages 4–8, primarily touch phones. French first, English included. No reading is required in child play. Spoken instructions, procedural SVG pictograms, object illustrations and dot patterns convey the task. No timer, lives, punishment, advertising, purchase, account, analytics or external runtime resource. The first home gesture unlocks browser audio. Reduced motion removes shakes, bounces and decorative particles. Local speech voices are preferred; speech availability offline depends on installed device voices.
 
 ## Catalogue
 
-`compter`, `paires`, `formes`, `sons`, `puzzle`, `chemin` and `suites` are implemented and present in the playable registry. Other catalogue entries remain planned.
+`compter`, `paires`, `formes`, `sons`, `puzzle`, `chemin`, `suites` and `ranger` are implemented and present in the playable registry. Other catalogue entries remain planned.
 
 | ID | Français | English | Guide | Skill and intended rules |
 | --- | --- | --- | --- | --- |
@@ -15,7 +15,7 @@ Audience: ages 4–8, primarily touch phones. French first, English included. No
 | puzzle | Le puzzle de Pestouille | Pestouille's puzzle | Pestouille | Rebuild six illustrated scenes with 2–12 pieces and soft snap assistance. |
 | chemin | Le chemin de Pestouille | Pestouille's path | Pestouille | Trace a maze with a finger; guide gently at walls, never reset progress as punishment. |
 | suites | Les suites de Lumi | Lumi's patterns | Lumi | Extend AB, ABC, AAB and related illustrated sequences by selecting the next object. |
-| ranger | Le rangement de CaliRoux | CaliRoux's sorting | CaliRoux | Sort illustrated objects by spoken colour, shape, size or category. |
+| ranger | Le rangement de CaliRoux | CaliRoux’s tidy-up | CaliRoux | Sort illustrated objects by spoken colour, shape, size or category. |
 | tambours | Les tambours de Tutu | Tutu's drums | Tutu | Listen to and repeat short rhythms with taps; replay freely, no penalty for timing. |
 | atelier | L'atelier de Boubou | Boubou's workshop | Boubou | Fill drawing regions with colour and draw freely; creation rather than scoring. |
 
@@ -478,3 +478,40 @@ without sleeping, and mobile touch sequences for both sounds and shapes. Each
 observed touch polls `window.__kid` for selection or placement; a separate burst
 sends all four touches without intervening waits or assertions. Noisy finger
 specs use state polling after release rather than fixed machine-speed delays.
+
+## Sorting: CaliRoux’s tidy-up (0.9.0)
+
+`ranger` is the eighth playable game. CaliRoux uses the existing `pandaroux` character identifier. A pale bedroom stays at the edges. The pure engine owns a catalogue of 180 distinct object variants: thirty everyday drawings, three colours and two sizes, with simplified shape, disjoint category and FR/EN names. Apples and pears are fruit; balls, blocks and jigsaws are toys; jumpers and socks are clothes; cats and dogs are animals; plates, spatulas and napkins are kitchen tools. No borderline food classification is used. Colours on toy animals are illustrative.
+
+| Level | Rule | Bins | Objects per question |
+| --- | --- | --- | --- |
+| 1 | Colour | Two drawn colours | 4 |
+| 2 | Simplified shape | Two of round, square, long | 4 |
+| 3 | Size | Small, large | 4 |
+| 4 | Category | Two of fruit, toys, clothes, animals, kitchen tools | 4 |
+| 5 | Colour | Three drawn colours | 6 |
+| 6 | Category | Three categories | 6 |
+| 7 | Two criteria | Yes / no for the illustrated category AND colour | 4 |
+| 8 | Find the odd one out | Touch the unique object outside the shown category | 4 |
+
+`generateRound(level, seed, count = 4)` returns a reproducible series with the shared Mulberry32 RNG. The shell uses six questions for the common first-try reward table. Rule parameters, object identities, presentation order and bin order are drawn. Every presented object belongs to exactly one bin; every bin is occupied. Non-colour sorting uses a shared colour across bins. Two-criterion rounds include all four combinations of matching/nonmatching colour and matching/nonmatching category, so neither criterion alone suffices. In odd-one-out rounds three objects share a category, one differs, and all share a colour. The engine validates unique membership and occupied bins before returning a question; the tests reproduce the predicate independently.
+
+`place(state, objectId, bin)` is pure. Success adds the identifier once; an error leaves it in reserve and increments total and per-object errors. Two misses on that same object pulse its correct bin and repeat the whole spoken rule. For the odd one out, the unique intruder pulses. Invalid identifiers, invalid bins, already placed objects and solved questions cannot alter state. No negative sound is played. Wrong drags animate back in 260 ms; reduced motion returns immediately. Only Continue advances. The common six-question star boundaries apply: 0–2 clean questions give one star, 3–4 give two, 5–6 give three. Completion always unlocks the next level and preserves best stars in independent `rangerRecords`; missing records migrate safely and parental erasure clears them.
+
+Objects have 88 px targets and 64/80 px SVG viewports; actual painted longest extent is at least 56 px. Small and large drawings keep visibly different dimensions. Bins are at least 96 px wide and high, each with a colour patch, shape silhouette, small/large disc, category drawing or yes/no icon. The instruction combines spoken FR/EN text and the same pictograms. Touch an object then a bin, or drag it. The shared `activation.ts` owns deduplication and event history; `coordinates.ts` owns drag conversion, nearest-zone distance and inclusive 24 px snapping. Every bin activation key includes the selected object, so two distinct objects can reach the same bin at zero elapsed time. Pattern keys already include their selected choice, allowing A then B immediately while suppressing a repeated A; sound and shape sorting retain their existing selection-aware keys. One primary pointer owns a gesture; cancellation, lost capture, backgrounding and navigation dispose it. Compatibility clicks cannot place twice. Keyboard activation selects objects and then bins without scrolling.
+
+The DOM exposes `data-object`, `data-color`, `data-shape`, `data-size`, `data-category`, `data-bin`, `data-rule`, `data-rule-color` and `data-rule-category`. `window.__kid.state().ranger` is a detached snapshot; `events()` remains the shared read-only activation history. Neither exposes mutation.
+
+### Sorting validation authored for the orchestrator
+
+- `tests/ranger.test.ts`: catalogue integrity, independent literal eight-level table and 300 seeds per level; deterministic four-question series, unique identities, exactly one bin per object, nonempty bins, shared colours across bins, both criteria necessary, and exactly one intruder. Pure-state tests cover return, per-object hints, immutable inputs, invalid/duplicate/solved guards, full six-question completion, all reward boundaries, unlocking and best-score preservation. Bilingual rules, SVG well-formedness and finite coordinates, attribute rendering and isolated save migration/filtering/erasure are checked. Fake performance time stays at zero for A → first pattern slot → B → second pattern slot and for two objects entering the same sorting bin.
+- `tests/e2e/ranger.spec.ts`: one full session at each level using only DOM attributes as the answer oracle, rule voice and replay with fake speech/WebAudio, gentle errors without oscillators, two-error hint, completion and persisted unlocks after reload, English names, disabled audio, detached snapshots and zero console errors. Across 320, 360, 390, 414, 768 and 1280 px, all levels measure actual SVG paint via geometry and screen transforms, targets, viewport containment and page overflow. Optional mobile captures write `ranger-couleur.png` and `ranger-categorie.png` under `docs/captures/` when `CAPTURES=1`.
+- `tests/e2e/ranger-doigt.spec.ts`: full sessions for all eight levels with seeded noisy real touch, fourteen-step noisy drags with painted displacement checks, cancellation and outside drops, soft return, release 18 px below the correct bin, two distinct objects in one bin without waits, exact single-placement increments, unchanged page scroll and no overflow. The shared fixture attaches `events()` on failure.
+
+No Vitest, Playwright or browser is run during authoring. Screenshots are generated and visually reviewed by the orchestrator.
+
+### Sorting mutations to try
+
+1. Replace the two-criterion AND with OR in `belongs`: the independent seeded membership tests and DOM browser oracle must fail.
+2. Change the per-object hint threshold from two to three: the state and two-error browser tests must fail.
+3. Remove the selected object from `placementKey`: the zero-delay same-bin test and rapid mobile pair must fail.

@@ -1,3 +1,7 @@
+import * as ranger from '../engines/ranger';
+import * as rangerView from '../games/ranger/view';
+import { bindObjects } from '../games/ranger/interaction';
+import { labels as rangerLabels } from '../games/ranger/items';
 import * as suites from '../engines/suites';
 import * as suitesView from '../games/suites/view';
 import { bindPatternChoices } from '../games/suites/interaction';
@@ -32,6 +36,9 @@ const storage = browserStorage();
 let save = readSave(storage, detectLocale(navigator.language));
 let screen: 'home' | 'levels' | 'game' | 'parents' | 'gate' = 'home';
 let session: Session | undefined;
+let rangerSession: ranger.Session | undefined;
+let rangerSelected: string | undefined;
+let disposeRanger: (() => void) | undefined;
 let suitesSession: suites.Session | undefined;
 let cheminSession: chemin.Maze | undefined;
 let cheminHelp = false;
@@ -52,13 +59,13 @@ let seedCounter = 0;
 let timers: ReturnType<typeof setTimeout>[] = [];
 function seed(): number { const buffer = new Uint32Array(1); try { crypto.getRandomValues(buffer); return buffer[0]!; } catch { return ++seedCounter * 7919; } }
 function persist(): void { writeSave(storage, save); }
-function cancel(): void { disposePatternChoices?.(); disposePatternChoices = undefined; timers.forEach(clearTimeout); timers = []; stopSpeech(); }
+function cancel(): void { disposeRanger?.(); disposeRanger = undefined; disposePatternChoices?.(); disposePatternChoices = undefined; timers.forEach(clearTimeout); timers = []; stopSpeech(); }
 function speak(parts: string[], rate = 0.82): void { say(parts, save.locale, save.voice, undefined, rate); }
 function actionKey(element: HTMLElement): string {
     const target = element.id || Object.entries(element.dataset).map(([key, value]) => `${key}-${value ?? ''}`).join(':');
-    const selection = element.matches('[data-sound-box]') ? `:piece-${soundSelected ?? 'none'}`
+    const selection = element.matches('[data-bin]') ? `:piece-${rangerSelected ?? 'none'}` : element.matches('[data-sound-box]') ? `:piece-${soundSelected ?? 'none'}`
         : element.matches('[data-box]') ? `:piece-${selectedPiece ?? 'none'}` : '';
-    return `${screen}:${activeGame}:${suitesSession?.index ?? soundsSession?.index ?? shapesSession?.index ?? session?.index ?? 0}:${target}${selection}`;
+    return `${screen}:${activeGame}:${rangerSession?.index ?? suitesSession?.index ?? soundsSession?.index ?? shapesSession?.index ?? session?.index ?? 0}:${target}${selection}`;
 }
 function bind(selector: string, fn: (element: HTMLElement) => void, keyFor = actionKey): void {
     app.querySelectorAll<HTMLElement>(selector).forEach(el => {
@@ -77,8 +84,10 @@ function render(): void {
         bind('#parents', () => gate('parents'));
         bind('#tictac', () => gate('tictac'));
     } else if (screen === 'levels') {
-        app.innerHTML = activeGame === 'suites' ? suitesView.levelView(save) : activeGame === 'chemin' ? cheminView.levelView(save) : activeGame === 'puzzle' ? puzzleView.levelView(save) : activeGame === 'sons' ? soundsView.levelView(save) : activeGame === 'formes' ? shapesView.levelView(save) : activeGame === 'paires' ? memoryView.levelView(save) : levelView(save);
-        bind('[data-level]', el => { const level = Number(el.dataset.level); if (activeGame === 'suites' ? suites.isUnlocked(level, save.suitesRecords) : activeGame === 'chemin' ? chemin.isUnlocked(level, save.cheminRecords) : activeGame === 'puzzle' ? puzzle.isUnlocked(level, save.puzzleRecords) : activeGame === 'sons' ? sounds.isUnlocked(level, save.sonsRecords) : activeGame === 'formes' ? shapes.isUnlocked(level, save.formesRecords) : activeGame === 'paires' ? memory.isUnlocked(level, save.pairesRecords) : isUnlocked(level, save.records)) begin(level); });
+        app.innerHTML = activeGame === 'ranger' ? rangerView.levelView(save) : activeGame === 'suites' ? suitesView.levelView(save) : activeGame === 'chemin' ? cheminView.levelView(save) : activeGame === 'puzzle' ? puzzleView.levelView(save) : activeGame === 'sons' ? soundsView.levelView(save) : activeGame === 'formes' ? shapesView.levelView(save) : activeGame === 'paires' ? memoryView.levelView(save) : levelView(save);
+        bind('[data-level]', el => { const level = Number(el.dataset.level); if (activeGame === 'ranger' ? ranger.isUnlocked(level, save.rangerRecords) : activeGame === 'suites' ? suites.isUnlocked(level, save.suitesRecords) : activeGame === 'chemin' ? chemin.isUnlocked(level, save.cheminRecords) : activeGame === 'puzzle' ? puzzle.isUnlocked(level, save.puzzleRecords) : activeGame === 'sons' ? sounds.isUnlocked(level, save.sonsRecords) : activeGame === 'formes' ? shapes.isUnlocked(level, save.formesRecords) : activeGame === 'paires' ? memory.isUnlocked(level, save.pairesRecords) : isUnlocked(level, save.records)) begin(level); });
+    } else if (screen === 'game' && activeGame === 'ranger' && rangerSession) {
+        renderRanger();
     } else if (screen === 'game' && activeGame === 'suites' && suitesSession) {
         renderSuites();
     } else if (screen === 'game' && activeGame === 'chemin' && cheminSession) {
@@ -105,10 +114,15 @@ function render(): void {
         bind('#next', () => { if (session!.level < levels.length) begin(session!.level + 1); });
     }
     if (screen === 'game' || screen === 'levels') app.insertAdjacentHTML('afterbegin', backdrop(activeGame));
-    bind('#back', () => { screen = 'home'; suitesSession = undefined; cheminSession = undefined; cheminDrag = undefined; puzzleSession = undefined; puzzleDrag = undefined; soundsSession = undefined; soundDrag = undefined; session = undefined; memorySession = undefined; shapesSession = undefined; render(); });
+    bind('#back', () => { screen = 'home'; rangerSession = undefined; rangerSelected = undefined; suitesSession = undefined; cheminSession = undefined; cheminDrag = undefined; puzzleSession = undefined; puzzleDrag = undefined; soundsSession = undefined; soundDrag = undefined; session = undefined; memorySession = undefined; shapesSession = undefined; render(); });
 }
 function begin(level: number): void {
     resetActivations();
+    rangerSession = undefined; rangerSelected = undefined;
+    if (activeGame === 'ranger') {
+        session = undefined; memorySession = undefined; shapesSession = undefined; soundsSession = undefined; puzzleSession = undefined; cheminSession = undefined; suitesSession = undefined;
+        rangerSession = ranger.start(level, seed()); screen = 'game'; render(); speak([rangerView.instruction(rangerSession.questions[0]!, save.locale)]); return;
+    }
     suitesSession = undefined;
     if (activeGame === 'suites') {
         session = undefined; memorySession = undefined; shapesSession = undefined; soundsSession = undefined; puzzleSession = undefined; cheminSession = undefined;
@@ -131,6 +145,26 @@ function begin(level: number): void {
     if (activeGame === 'formes') { session = undefined; memorySession = undefined; shapesSession = shapes.start(level, seed()); screen = 'game'; hint = false; render(); speak([shapesView.instruction(shapesSession.questions[0]!, save.locale)]); return; }
     if (activeGame === 'paires') { app.replaceChildren(); session = undefined; memorySession = memory.newBoard(level, seed()); screen = 'game'; render(); speak([memoryView.instruction(memorySession, save.locale)]); return; }
     memorySession = undefined; session = start(level, seed()); screen = 'game'; hint = false; expression = 'joie'; render(); speak([instruction(session.questions[0]!, save.locale, true)]); }
+function renderRanger(): void {
+    const state = rangerSession!;
+    app.innerHTML = rangerView.gameView(state, save.locale);
+    disposeRanger = bindObjects(app, state, () => rangerSelected, id => { rangerSelected = id; const o = ranger.catalog.find(o => o.id === id); if (o) speak([`${o.names[save.locale]}, ${rangerLabels[save.locale][o.color]!}, ${rangerLabels[save.locale][o.size]!}`]); }, (id, bin) => {
+        if (!rangerSession || document.hidden) return;
+        const result = ranger.place(rangerSession, id, bin);
+        if (result.state === rangerSession) return;
+        rangerSession = result.state; render();
+        if (result.correct) { chime(save.sound); speak([text(save.locale, 'bravo')]); }
+        else speak([text(save.locale, 'tryAgain'), ...(result.hint ? [rangerView.instruction(rangerSession.questions[rangerSession.index]!, save.locale)] : [])]);
+    });
+    bind('#listen', () => speak([state.finished ? text(save.locale, 'finished') : rangerView.instruction(state.questions[state.index]!, save.locale)]));
+    bind('#continue', () => {
+        rangerSelected = undefined; rangerSession = ranger.advance(rangerSession!);
+        if (rangerSession.finished) { save.rangerRecords = ranger.complete(save.rangerRecords, rangerSession); persist(); chime(save.sound); }
+        render(); speak([rangerSession.finished ? text(save.locale, 'finished') : rangerView.instruction(rangerSession.questions[rangerSession.index]!, save.locale)]);
+    });
+    bind('#again', () => begin(state.level));
+    bind('#next', () => { if (state.level < ranger.levels.length) begin(state.level + 1); });
+}
 function renderSuites(): void {
     const state = suitesSession!;
     app.innerHTML = suitesView.gameView(state, save.locale, hint);
@@ -608,9 +642,9 @@ document.addEventListener('visibilitychange', () => {
     else if (screen === 'game' && activeGame === 'puzzle') { if (puzzleHiddenAt !== undefined) puzzleIdleStart += performance.now() - puzzleHiddenAt; puzzleHiddenAt = undefined; render(); }
  if (document.hidden) { cancel(); stopSound(); } else { if (save.sound) unlockSound(); if (screen === 'game' && activeGame === 'paires') render(); } });
 Object.defineProperty(window, '__kid', { configurable: false, writable: false, value: Object.freeze({ events: activationEvents, state: () => {
-    const targets = [...app.querySelectorAll<HTMLElement>('button, select, input')].filter(el => !el.hasAttribute('disabled')).map(el => { const r = el.getBoundingClientRect(); return { id: el.id || (el.dataset.patternChoice !== undefined ? `pattern-choice-${el.dataset.patternChoice}` : el.dataset.answer !== undefined ? `answer-${el.dataset.answer}` : el.dataset.level ? `level-${el.dataset.level}` : el.dataset.card !== undefined ? `card-${el.dataset.card}` : el.hasAttribute('data-reserve') ? `reserve-${el.dataset.reserve}` : el.hasAttribute('data-basket') ? `basket-${el.dataset.basket}` : el.dataset.soundPiece !== undefined ? `sound-piece-${el.dataset.soundPiece}` : el.dataset.soundBox !== undefined ? `sound-box-${el.dataset.soundBox}` : el.dataset.piece !== undefined ? `piece-${el.dataset.piece}` : el.dataset.box !== undefined ? `box-${el.dataset.box}` : el.dataset.game || ''), x: r.x, y: r.y, width: r.width, height: r.height }; });
+    const targets = [...app.querySelectorAll<HTMLElement>('button, select, input')].filter(el => !el.hasAttribute('disabled')).map(el => { const r = el.getBoundingClientRect(); return { id: el.id || (el.dataset.object !== undefined ? `object-${el.dataset.object}` : el.dataset.bin !== undefined ? `bin-${el.dataset.bin}` : el.dataset.patternChoice !== undefined ? `pattern-choice-${el.dataset.patternChoice}` : el.dataset.answer !== undefined ? `answer-${el.dataset.answer}` : el.dataset.level ? `level-${el.dataset.level}` : el.dataset.card !== undefined ? `card-${el.dataset.card}` : el.hasAttribute('data-reserve') ? `reserve-${el.dataset.reserve}` : el.hasAttribute('data-basket') ? `basket-${el.dataset.basket}` : el.dataset.soundPiece !== undefined ? `sound-piece-${el.dataset.soundPiece}` : el.dataset.soundBox !== undefined ? `sound-box-${el.dataset.soundBox}` : el.dataset.piece !== undefined ? `piece-${el.dataset.piece}` : el.dataset.box !== undefined ? `box-${el.dataset.box}` : el.dataset.game || ''), x: r.x, y: r.y, width: r.width, height: r.height }; });
     const rect = (selector: string): { x: number; y: number; width: number; height: number } | null => { const r = app.querySelector(selector)?.getBoundingClientRect(); return r ? { x: r.x, y: r.y, width: r.width, height: r.height } : null; };
-    return structuredClone({ suites: suitesSession ?? null, chemin: cheminSession ?? null, puzzle: puzzleSession ? { ...puzzleSession, zone: rect('.puzzle-zone'), boardScreen: rect('[data-puzzle-board]') } : null, screen, game: suitesSession || cheminSession || puzzleSession || session || memorySession || shapesSession || soundsSession || screen === 'levels' ? activeGame : null, level: suitesSession?.level ?? cheminSession?.level ?? puzzleSession?.level ?? soundsSession?.level ?? shapesSession?.level ?? memorySession?.level ?? session?.level ?? null, index: suitesSession?.index ?? soundsSession?.index ?? shapesSession?.index ?? session?.index ?? 0, selection: soundSelected ?? selectedPiece ?? null, question: suitesSession?.questions[suitesSession.index] ?? soundsSession?.questions[soundsSession.index] ?? shapesSession?.questions[shapesSession.index] ?? session?.questions[session.index] ?? null, sons: soundsSession ?? null, shapes: shapesSession ?? null, basket: session?.basket ?? 0, board: memorySession ? { ...memorySession, cards: memorySession.cards.map((card, i) => {
+    return structuredClone({ ranger: rangerSession ?? null, suites: suitesSession ?? null, chemin: cheminSession ?? null, puzzle: puzzleSession ? { ...puzzleSession, zone: rect('.puzzle-zone'), boardScreen: rect('[data-puzzle-board]') } : null, screen, game: rangerSession || suitesSession || cheminSession || puzzleSession || session || memorySession || shapesSession || soundsSession || screen === 'levels' ? activeGame : null, level: rangerSession?.level ?? suitesSession?.level ?? cheminSession?.level ?? puzzleSession?.level ?? soundsSession?.level ?? shapesSession?.level ?? memorySession?.level ?? session?.level ?? null, index: rangerSession?.index ?? suitesSession?.index ?? soundsSession?.index ?? shapesSession?.index ?? session?.index ?? 0, selection: rangerSelected ?? soundSelected ?? selectedPiece ?? null, question: rangerSession?.questions[rangerSession.index] ?? suitesSession?.questions[suitesSession.index] ?? soundsSession?.questions[soundsSession.index] ?? shapesSession?.questions[shapesSession.index] ?? session?.questions[session.index] ?? null, sons: soundsSession ?? null, shapes: shapesSession ?? null, basket: session?.basket ?? 0, board: memorySession ? { ...memorySession, cards: memorySession.cards.map((card, i) => {
         const r = app.querySelector(`[data-card="${i}"]`)?.getBoundingClientRect();
         return { ...card, visible: memorySession!.preview || card.found || memorySession!.visible.includes(i), rect: r ? { x: r.x, y: r.y, width: r.width, height: r.height } : null };
     }) } : null, targets });

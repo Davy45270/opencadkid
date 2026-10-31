@@ -8,13 +8,13 @@ Play online, without installation, offline once opened.
 
 Gentle educational games for children aged **4–8**, designed for fingers and phones. Boubou the panda, CaliRoux the red panda, Pestouille the dragon, Tutu the monkey and Lumi the unicorn guide each discovery. All artwork is generated in SVG from code.
 
-**Available: Boubou’s baskets, Lumi’s cards, CaliRoux’s shapes, Tutu’s sounds, Pestouille’s puzzle, Pestouille’s path and Lumi’s patterns.**
+**Available: Boubou’s baskets, Lumi’s cards, CaliRoux’s shapes, Tutu’s sounds, Pestouille’s puzzle, Pestouille’s path, Lumi’s patterns and CaliRoux’s tidy-up.**
 
 Boubou's baskets — count, fill and compare across eight levels — and **Lumi's cards**, a gentle memory game with 2, 3, 4, 6, 8 and 10 pairs, plus a picture-to-shadow level. Lumi offers a two-second preview on the first three levels and a glowing hint after repeated misses. Sixteen procedural shapes remain distinguishable without colour; the largest board fits a 390×844 phone without scrolling. French comes first; English is included. English is selected automatically only when the device language starts with `en`. Adults can change and save the language.
 
 **CaliRoux's shapes** is also available: ten levels of shapes, colours, combinations, sizes and finger sorting into two or three colour boxes. Eight outlined SVG shapes and eight named colours accompany spoken prompts; close colour pairs never share a question. Two errors make the answer glow and repeat its name.
 
-Planned: CaliRoux's sorting, Tutu's drums and Boubou's workshop. These three games are described in [GAME_SPEC.md](GAME_SPEC.md); they are not playable yet. Learning to tell time is available in the sister application TicTac, through an adult-gated home card.
+Planned: Tutu's drums and Boubou's workshop. These two games are described in [GAME_SPEC.md](GAME_SPEC.md); they are not playable yet. Learning to tell time is available in the sister application TicTac, through an adult-gated home card.
 
 No reading is required to play: spoken instructions accompany pictograms, objects and dot constellations. The first touch enables browser audio. Voice availability depends on the device's speech service; install a local French or English voice for spoken play offline. The ear button repeats an instruction. A silent device still shows the visual prompts.
 
@@ -31,6 +31,8 @@ Open the online game once while connected. Use your browser's **Install app** or
 **Pestouille’s path** offers eight perfect mazes, from 3×3 to 9×7. Trace with a finger to reach a drawn nest, bamboo or rainbow. Walls stop the line gently; retracing erases one step. Lift and resume anywhere on your line. The bulb shows the next three cells, freely. From level four, optional stars reward exploration with a medal when all are collected. Finishing always gives three stars and unlocks the next maze; best stars and medals stay saved separately. Arrow keys move one cell. Cells measure at least 40 px on a 390×844 phone. No timer or mistake counter.
 
 **Lumi’s patterns** offers ten levels: extend AB, AAB, ABB, ABC, AABB and ABCD motifs, fill a middle gap, place the next two objects in order by touch or drag, then grow dot groups by one. Beads, flowers and outlined shapes always differ beyond colour. Two errors outline the base motif and Lumi names it aloud. Every completed six-question round earns stars and unlocks the next level; best stars are saved separately. Illustrations measure 48 px and choices at least 72 px. On a 390×844 phone the sequence fits two rows without scrolling. Reduced motion removes the gentle empty-slot pulse.
+
+**CaliRoux’s tidy-up** adds eight levels of sorting: colour, simplified shape, small/large, category, three bins, two combined clues and a unique odd one out. Thirty everyday drawings in 180 colour/size variants have bilingual spoken names. Touch an object then its bin, or drag with a gentle 24 px snap. Two misses on the same object pulse the right bin and repeat the rule; wrong objects return softly without a negative sound. Non-colour rules cannot be solved by colour alone. Bins measure at least 96 px, object targets 88 px and actual painted extent at least 56 px. A pale bedroom accompanies separate best stars and unlocks. Optional captures: `ranger-couleur.png` and `ranger-categorie.png`. The independent unit and browser tests are authored for orchestrator execution; screenshots still require generation and visual review.
 
 ## Screenshots
 

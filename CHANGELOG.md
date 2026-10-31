@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.9.0
+
+- Add CaliRoux’s tidy-up: eight seeded levels for colour, shape, size, category, three bins, two criteria and a unique odd one out, with 180 bilingual everyday object variants.
+- Validate disjoint sorting and occupied bins; prevent colour-only shortcuts and require both clues for combined rules. Count hints per object, return wrong drops softly and reuse common stars, unlocks, local voice and isolated save records.
+- Reuse shared touch activation and coordinate helpers, inclusive 24 px snapping, selected-object bin keys, read-only snapshots and event history. Verify selection-aware double-continuation pattern activation keys at zero elapsed time.
+- Add independent 300-seed engine oracles, zero-delay activation regressions, per-rule browser sessions, noisy mobile gestures, actual painted-size and responsive overflow checks, plus two optional captures.
+- Version 0.9.0. Tests and captures await orchestrator execution; no test runner or browser was launched during authoring.
+
 ## 0.8.0
 
 - Add Lumi’s patterns: ten seeded levels covering AB, AAB, ABB, ABC, AABB, ABCD, middle gaps, two ordered continuations and growing dot groups.
