@@ -2,6 +2,8 @@ import { test, expect, expectTouch } from './helpers';
 import { memoryState, prepareMemory, solveMemory } from './paires-helpers';
 import { makeRng } from '../../src/engines/rng';
 test('twenty cards, noisy fingers, double touch and rapid mismatch touches finish without scrolling', async ({ page }) => {
+    await page.clock.install({ time: new Date('2026-01-01T00:00:00Z') });
+    await page.clock.pauseAt(new Date('2026-01-01T00:00:01Z'));
     await prepareMemory(page, 6);
     if (page.viewportSize()!.width >= 390 && page.viewportSize()!.height >= 800)
         expect((await page.locator('#guide').boundingBox())!.height).toBeGreaterThanOrEqual(96);
@@ -32,8 +34,14 @@ test('twenty cards, noisy fingers, double touch and rapid mismatch touches finis
     const third = initial.cards.findIndex((_, i) => i !== 0 && i !== wrong);
     await tap(third); await tap(third, 'ignored');
     const after = (await memoryState(page)).board;
-    expect(after.moves).toBe(1); expect(after.mismatch).toBe(false); expect(after.visible.length).toBeLessThanOrEqual(1);
-    await solveMemory(page, tap); expect((await memoryState(page)).board.finished).toBe(true);
+    expect(after.moves).toBe(1); expect(after.mismatch).toBe(false); expect(after.visible).toEqual([]);
+    await solveMemory(page, async index => {
+        // Rapid/double touches above deliberately share the same logical turn.
+        // Advance the controlled clock past their debounce before intentional play.
+        await page.clock.runFor(350);
+        await expect.poll(async () => (await memoryState(page)).board.mismatch).toBe(false);
+        await tap(index);
+    }); expect((await memoryState(page)).board.finished).toBe(true);
     expect(await page.evaluate(() => ({ x: scrollX, y: scrollY }))).toEqual(scroll);
     expect(await page.evaluate(() => document.documentElement.scrollHeight <= innerHeight)).toBe(true);
 });

@@ -2,6 +2,8 @@ import { expect, it } from 'vitest';
 import { addStroke, appendGallery, clear, deserialize, drawings, fill, HISTORY, MAX_BYTES, MAX_POINTS, palette, parseGallery, pointCount, redo, sample, serialize, SHEET, simplify, start, strokeTolerance, undo, type Point } from '../src/engines/atelier';
 import { eraseGallery, readGallery, writeGallery } from '../src/games/atelier/storage';
 import { gameView, labels, sheet, underpaint } from '../src/games/atelier/view';
+import { atelierGesture } from './fixtures/atelier-gesture';
+import { screenToZone } from '../src/shell/coordinates';
 
 it('ten independent polygon drawings have unique closed finite zones at least 44 real pixels on the phone sheet', () => {
     expect(drawings.map(d=>d.id)).toEqual(['boubou','caliroux','pestouille','tutu','lumi','maison','arbre','poisson','fusee','papillon']);
@@ -55,6 +57,25 @@ it('noisy long strokes retain their endpoints and shape within 2px with at most 
     for(let i=0;i<=100;i++) sampled=sample(sampled,{x:i/10,y:10});
     for(let i=1;i<sampled.length;i++) expect(Math.hypot(sampled[i]!.x-sampled[i-1]!.x,sampled[i]!.y-sampled[i-1]!.y)).toBeGreaterThanOrEqual(2);
     expect(sample(sampled,{x:NaN,y:10})).toEqual(sampled);
+});
+it('the exact mobile gesture reproduces premature release at point 220, not clipping or simplification', () => {
+    const rect={x:0,y:0,width:300,height:281.25}, scale=rect.width/SHEET.width;
+    const original=atelierGesture(rect).map(p=>screenToZone(p,rect,SHEET));
+    expect(original).toHaveLength(300);
+    for(const p of original) {
+        expect(p.x).toBeGreaterThan(0);expect(p.x).toBeLessThan(SHEET.width);
+        expect(p.y).toBeGreaterThan(0);expect(p.y).toBeLessThan(SHEET.height);
+    }
+    // The old CDP touchEnd released id 1 at sample 220. Its next move starts
+    // a secondary pointer while id 2 is still down, so the remaining points vanish.
+    const truncated=addStroke(start('boubou','draw'),original.slice(0,221),scale).art.strokes[0]!.points;
+    const errors=original.map(p=>distance(p,truncated)*scale);
+    expect(errors.findIndex(error=>error>2)).toBe(222);
+    expect(errors[222]).toBeCloseTo(2.3149951490205,12);
+    const retained=addStroke(start('boubou','draw'),original,scale).art.strokes[0]!.points;
+    for(const p of original) expect(distance(p,retained)*scale).toBeLessThanOrEqual(2);
+    for(const [p,q] of [[original[0]!,retained[0]!],[original.at(-1)!,retained.at(-1)!]])
+        expect(Math.hypot(p!.x-q!.x,p!.y-q!.y)).toBeLessThanOrEqual(.36);
 });
 for(const scale of [.8,1,1.5,2]) {
     it(`300 noisy finger points stay within 2 screen pixels at scale ${scale}`, () => {

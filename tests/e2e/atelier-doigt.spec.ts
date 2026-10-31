@@ -1,5 +1,6 @@
 import { test, expect, expectTouch, touchFrame } from './helpers';
 import { prepareStudio, studioState, zoneCenter } from './atelier-helpers';
+import { atelierGesture } from '../fixtures/atelier-gesture';
 test('two immediate distinct zones and immediate recolouring each commit once with no page scroll',async({page,isMobile})=>{
     test.skip(!isMobile,'Mobile touch only');await prepareStudio(page);
     const scroll=await page.evaluate(()=>[scrollX,scrollY]),a=await zoneCenter(page,'head'),b=await zoneCenter(page,'body');
@@ -12,14 +13,18 @@ test('two immediate distinct zones and immediate recolouring each commit once wi
 test('300 noisy finger points keep a single captured stroke; a second finger is ignored and the page stays still',async({page,context,isMobile})=>{
     test.skip(!isMobile,'Mobile touch only');await prepareStudio(page);await page.locator('[data-tool="draw"]').tap();
     const scroll=await page.evaluate(()=>[scrollX,scrollY]),r=(await page.locator('.atelier-sheet').boundingBox())!,cdp=await context.newCDPSession(page);
-    let seed=29;const noise=():number=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/2**32*2-1;};
-    const input:{id:number;x:number;y:number}[]=[];
-    const point=(i:number):{id:number;x:number;y:number}=>{const p={id:1,x:r.x+25+i*(r.width-50)/299+noise(),y:r.y+r.height/2+35*Math.sin(i/30)+noise()};input.push(p);return p;};
+    const input=atelierGesture(r),secondary={id:2,x:r.x+r.width-25,y:r.y+25};
     try {
-        await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[point(0)]});await touchFrame(page);
+        await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[input[0]!]});await touchFrame(page);
         for(let i=1;i<300;i++) {
-            const touches=[point(i)];if(i>=80&&i<220) touches.push({id:2,x:r.x+r.width-25,y:r.y+25});
-            await cdp.send('Input.dispatchTouchEvent',{type:i===80?'touchStart':i===220?'touchEnd':'touchMove',touchPoints:touches});await touchFrame(page);
+            // CDP touchEnd lists the contacts to release, not those to retain.
+            if(i===220) await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[secondary]});
+            const touches=[input[i]!];if(i>=80&&i<220) touches.push(secondary);
+            await cdp.send('Input.dispatchTouchEvent',{type:i===80?'touchStart':'touchMove',touchPoints:touches});await touchFrame(page);
+            if(i===220) {
+                const s=await studioState(page);
+                expect(s.strokeCount).toBe(0);expect(s.undoSize).toBe(1);
+            }
         }
         await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await touchFrame(page);
         await expectTouch(page,'One primary finger produces one retained stroke',async()=>{const s=await studioState(page);return s.strokeCount===1&&s.pointCount>5&&s.pointCount<=4000&&s.undoSize===2;});
