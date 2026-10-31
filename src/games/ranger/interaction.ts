@@ -1,3 +1,4 @@
+import { bindDragEnd } from '../../shell/drag';
 import type { Session } from '../../engines/ranger';
 import { acceptActivation, bindAction, recordActivation } from '../../shell/activation';
 import { distanceToZone, dragPosition, withinDropZone } from '../../shell/coordinates';
@@ -7,12 +8,10 @@ export function bindObjects(root: HTMLElement, state: Session, selected: () => s
     const q = state.questions[state.index];
     if (!q || state.finished) return () => {};
     let drag: { element: HTMLElement; pointer: number; x: number; y: number; moved: boolean; rect: DOMRect } | undefined;
-    const clear = (): void => {
-        const d = drag; drag = undefined;
-        if (!d) return;
-        d.element.style.transform = ''; d.element.classList.remove('dragging');
-        if (d.element.hasPointerCapture(d.pointer)) d.element.releasePointerCapture(d.pointer);
-    };
+    const ending = bindDragEnd(root.ownerDocument, () => drag, () => { drag = undefined; }, reason => {
+        if (drag) recordActivation(placementKey('ranger', state.level, state.index, 'object', drag.element.dataset.object), reason, false, 'cancelled');
+    });
+    const clear = ending.finish;
     const choose = (id: string): void => {
         if (document.hidden) return;
         if (q.rule === 'intrus') respond(id, 'intrus');
@@ -27,17 +26,17 @@ export function bindObjects(root: HTMLElement, state: Session, selected: () => s
             if (!event.isPrimary || event.button !== 0 || drag || document.hidden) return;
             event.preventDefault(); element.focus({ preventScroll: true });
             drag = { element, pointer: event.pointerId, x: event.clientX, y: event.clientY, moved: false, rect: root.getBoundingClientRect() };
-            element.setPointerCapture(event.pointerId);
+            element.setPointerCapture(event.pointerId); ending.watch();
         });
         element.addEventListener('pointermove', event => {
-            if (!drag || drag.pointer !== event.pointerId) return;
+            if (!drag || drag.element !== element || drag.pointer !== event.pointerId) return;
             if (Math.hypot(event.clientX - drag.x, event.clientY - drag.y) >= 12) drag.moved = true;
             if (!drag.moved) return;
             const p = dragPosition({ x: event.clientX, y: event.clientY }, drag, { x: 0, y: 0 }, drag.rect, drag.rect);
             element.style.transform = `translate(${p.x}px, ${p.y}px)`; element.classList.add('dragging');
         });
         element.addEventListener('pointerup', event => {
-            if (!drag || drag.pointer !== event.pointerId) return;
+            if (!drag || drag.element !== element || drag.pointer !== event.pointerId) return;
             const d = drag, point = { x: event.clientX, y: event.clientY };
             const moved = d.moved || Math.hypot(point.x - d.x, point.y - d.y) >= 12;
             const bins = [...root.querySelectorAll<HTMLElement>('[data-bin]')].map(el => ({ el, rect: el.getBoundingClientRect() })).sort((a, b) => distanceToZone(point, a.rect) - distanceToZone(point, b.rect));
@@ -52,12 +51,9 @@ export function bindObjects(root: HTMLElement, state: Session, selected: () => s
                 if (!matchMedia('(prefers-reduced-motion: reduce)').matches) root.querySelector<HTMLElement>(`[data-object="${id}"]:not(:disabled)`)?.animate([{ transform: `translate(${point.x - d.x}px, ${point.y - d.y}px)` }, { transform: 'translate(0, 0)' }], { duration: 260, easing: 'ease-out' });
             }
         });
-        for (const type of ['pointercancel', 'lostpointercapture'] as const) element.addEventListener(type, event => {
-            if (drag?.pointer === event.pointerId) { recordActivation(key, type, false, 'cancelled'); clear(); }
-        });
         element.onclick = event => { if (event.detail === 0) { recordActivation(key, 'click', true, 'keyboard'); choose(id); } else recordActivation(key, 'click', false, 'compatibility-click'); };
     }
     const visibility = (): void => { if (document.hidden) { clear(); select(undefined); root.querySelectorAll<HTMLElement>('[data-object]').forEach(el => el.setAttribute('aria-pressed', 'false')); } };
     document.addEventListener('visibilitychange', visibility);
-    return () => { clear(); document.removeEventListener('visibilitychange', visibility); };
+    return () => { ending.dispose(); document.removeEventListener('visibilitychange', visibility); };
 }

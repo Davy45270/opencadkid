@@ -7,7 +7,8 @@ async function point(page: Page, selector: string): Promise<{ x: number; y: numb
     const r = await page.locator(selector).boundingBox(); expect(r).not.toBeNull();
     return { x: r!.x + r!.width / 2 + noise(), y: r!.y + r!.height / 2 + noise() };
 }
-async function tap(page: Page, selector: string): Promise<void> { const p = await point(page, selector); await page.touchscreen.tap(p.x, p.y); }
+async function expectNoDragging(page: Page): Promise<void> { await expect(page.locator('.dragging')).toHaveCount(0); }
+async function tap(page: Page, selector: string): Promise<void> { const p = await point(page, selector); await page.touchscreen.tap(p.x, p.y); await expectNoDragging(page); }
 async function drag(page: Page, context: BrowserContext, choice: number, outcome: 'drop' | 'cancel' | 'outside' | 'lost' = 'drop'): Promise<void> {
     const selector = `[data-pattern-choice="${choice}"]`;
     const begin = await point(page, selector), target = await point(page, '.suites-empty.suites-active');
@@ -37,10 +38,12 @@ async function drag(page: Page, context: BrowserContext, choice: number, outcome
             await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ id: 1, ...end }] });
             await touchFrame(page);
             await expect(page.locator(selector)).not.toHaveClass(/dragging/);
+            await expectNoDragging(page);
             expect(await page.locator(selector).evaluate(el => (el as HTMLElement).style.transform)).toBe('');
         }
         await cdp.send('Input.dispatchTouchEvent', { type: outcome === 'cancel' ? 'touchCancel' : 'touchEnd', touchPoints: [] }); await touchFrame(page);
         await expect(page.locator(selector)).not.toHaveClass(/dragging/);
+        await expectNoDragging(page);
         expect(await page.locator(selector).evaluate(el => (el as HTMLElement).style.transform)).toBe('');
     } finally { await cdp.detach(); }
 }

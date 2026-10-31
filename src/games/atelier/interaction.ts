@@ -1,3 +1,4 @@
+import { bindDragEnd } from '../../shell/drag';
 import { addStroke, appendGallery, change, clear, deserialize, drawings, fill, palette, pointCount, redo, sample, SHEET, start, undo, type Point, type State } from '../../engines/atelier';
 import { acceptActivation, bindAction, recordActivation } from '../../shell/activation';
 import { screenToZone } from '../../shell/coordinates';
@@ -11,7 +12,10 @@ export function snapshot(studio: Studio): object { const s=studio.state; return 
 export function mount(root: HTMLElement, studio: Studio, locale: Locale, storage: StoragePort | undefined, speak: (parts:string[])=>void, home: ()=>void): ()=>void {
     const t=labels[locale];
     let pointer: number | undefined, points: Point[]=[], preview: Point[]=[], disposed=false, savedRevision=-1;
-    const abort=new AbortController();
+    let paperOwner: HTMLElement | undefined;
+    const ending=bindDragEnd(root.ownerDocument,()=>pointer===undefined || !paperOwner ? undefined : {pointer,element:paperOwner},()=>{pointer=undefined;paperOwner=undefined;},reason=>{
+        if(pointer!==undefined) {recordActivation('atelier:stroke',reason,true,'preserve-partial-stroke');finish();}
+    });
     const state=(): State=>studio.state;
     const set=(s:State): void=>{ if(s!==studio.state) { studio.state=s; studio.revision++; } };
     const draw=(): void=>{
@@ -30,10 +34,8 @@ export function mount(root: HTMLElement, studio: Studio, locale: Locale, storage
     };
     function finish(): void {
         if(pointer===undefined) return;
-        const held=pointer; pointer=undefined;
+        ending.finish();
         set(addStroke(state(),points)); points=[]; preview=[];
-        const paper=root.querySelector<HTMLElement>('.atelier-sheet');
-        if(paper?.hasPointerCapture(held)) paper.releasePointerCapture(held);
         if(!disposed) paint();
     }
     function bindSheet(): void {
@@ -71,11 +73,10 @@ export function mount(root: HTMLElement, studio: Studio, locale: Locale, storage
             if(state().art.mode!=='draw') return;
             if(pointer!==undefined || !event.isPrimary || event.button!==0) {recordActivation('atelier:stroke',event.type,false,'secondary-pointer');return;}
             if(!acceptActivation(`atelier:stroke:${studio.revision}`,event.type,false)) return;
-            event.preventDefault(); pointer=event.pointerId; points=[]; preview=[]; paper.setPointerCapture(event.pointerId); extend(event);
+            event.preventDefault(); paperOwner=paper; pointer=event.pointerId; points=[]; preview=[]; paper.setPointerCapture(event.pointerId); ending.watch(); extend(event);
         });
         paper.addEventListener('pointermove',event=>{if(pointer===event.pointerId) {event.preventDefault();extend(event);} });
         paper.addEventListener('pointerup',event=>{if(pointer===event.pointerId) {extend(event);finish();} });
-        for(const name of ['pointercancel','lostpointercapture'] as const) paper.addEventListener(name,event=>{if(pointer===event.pointerId) {recordActivation('atelier:stroke',name,true,'preserve-partial-stroke');finish();} });
         root.querySelectorAll<HTMLElement>('[data-color]').forEach(el=>bindAction(el,()=>choose(el.dataset.color as State['color']),()=>`atelier:color:${el.dataset.color!}:${studio.revision}`));
         root.querySelectorAll<HTMLElement>('[data-width]').forEach(el=>bindAction(el,()=>{finish();set({...state(),width:Number(el.dataset.width) as State['width']});root.querySelectorAll<HTMLElement>('[data-width]').forEach(b=>b.setAttribute('aria-pressed',String(b===el)));speak([Number(el.dataset.width)===4?t.small:Number(el.dataset.width)===9?t.medium:t.large]);},()=>`atelier:width:${el.dataset.width!}:${studio.revision}`));
         root.querySelectorAll<HTMLElement>('button[data-tool]').forEach(el=>bindAction(el,()=>{
@@ -102,7 +103,6 @@ export function mount(root: HTMLElement, studio: Studio, locale: Locale, storage
         bindAction(root.querySelector<HTMLElement>('#listen')!,()=>speak([t.instruction]),'atelier:listen');
         // Home is owned by the shared router; it rebinds this connected control after mount.
     }
-    document.addEventListener('visibilitychange',()=>{if(document.hidden) finish();},{signal:abort.signal});
     draw();
-    return ()=>{disposed=true;finish();abort.abort();};
+    return ()=>{disposed=true;finish();ending.dispose();};
 }

@@ -1,3 +1,4 @@
+import { bindDragEnd } from './drag';
 import { start as atelierStart } from '../engines/atelier';
 import { mount as mountAtelier, snapshot as atelierSnapshot, type Studio } from '../games/atelier/interaction';
 import { labels as atelierLabels } from '../games/atelier/view';
@@ -70,7 +71,7 @@ let seedCounter = 0;
 let timers: ReturnType<typeof setTimeout>[] = [];
 function seed(): number { const buffer = new Uint32Array(1); try { crypto.getRandomValues(buffer); return buffer[0]!; } catch { return ++seedCounter * 7919; } }
 function persist(): void { writeSave(storage, save); }
-function cancel(): void { disposeAtelier?.(); disposeAtelier = undefined; disposeDrums?.(); disposeDrums = undefined; disposeRanger?.(); disposeRanger = undefined; disposePatternChoices?.(); disposePatternChoices = undefined; timers.forEach(clearTimeout); timers = []; stopSpeech(); }
+function cancel(): void { endRouterDrags(); disposeAtelier?.(); disposeAtelier = undefined; disposeDrums?.(); disposeDrums = undefined; disposeRanger?.(); disposeRanger = undefined; disposePatternChoices?.(); disposePatternChoices = undefined; timers.forEach(clearTimeout); timers = []; stopSpeech(); }
 function speak(parts: string[], rate = 0.82): void { say(parts, save.locale, save.voice, undefined, rate); }
 function actionKey(element: HTMLElement): string {
     const target = element.id || Object.entries(element.dataset).map(([key, value]) => `${key}-${value ?? ''}`).join(':');
@@ -129,9 +130,10 @@ function render(): void {
         bind('#next', () => { if (session!.level < levels.length) begin(session!.level + 1); });
     }
     if (screen === 'game' || screen === 'levels') app.insertAdjacentHTML('afterbegin', backdrop(activeGame));
-    bind('#back', () => { screen = 'home'; tamboursSession = undefined; rangerSession = undefined; rangerSelected = undefined; suitesSession = undefined; cheminSession = undefined; cheminDrag = undefined; puzzleSession = undefined; puzzleDrag = undefined; soundsSession = undefined; soundDrag = undefined; session = undefined; memorySession = undefined; shapesSession = undefined; render(); });
+    bind('#back', () => { endRouterDrags(); screen = 'home'; tamboursSession = undefined; rangerSession = undefined; rangerSelected = undefined; suitesSession = undefined; cheminSession = undefined; cheminDrag = undefined; puzzleSession = undefined; puzzleDrag = undefined; soundsSession = undefined; soundDrag = undefined; session = undefined; memorySession = undefined; shapesSession = undefined; render(); });
 }
 function begin(level: number): void {
+    endRouterDrags();
     resetActivations();
     tamboursSession = undefined;
     if (activeGame === 'tambours') {
@@ -250,7 +252,7 @@ function updateChemin(next: chemin.Maze): void {
     if (next === cheminSession) return;
     cheminSession = next;
     if (next.finished) {
-        cheminDrag = undefined;
+        cheminEnding.finish();
         save.cheminRecords = chemin.complete(save.cheminRecords, next);
         if (chemin.medal(next)) save.cheminMedals = { ...save.cheminMedals, [next.level]: true };
         persist(); chime(save.sound); render(); speak([text(save.locale, 'finished')]);
@@ -265,7 +267,7 @@ app.addEventListener('pointerdown', event => {
     if (cell === null || !cheminSession.trace.includes(cell)) return;
     event.preventDefault(); app.querySelector<HTMLElement>('.chemin-zone')!.focus({ preventScroll: true });
     cheminDrag = { pointer: event.pointerId, point, anchor: cell };
-    recordActivation(`chemin-cell-${cell}`, event.type, true, 'trace-grab'); app.setPointerCapture(event.pointerId);
+    recordActivation(`chemin-cell-${cell}`, event.type, true, 'trace-grab'); app.setPointerCapture(event.pointerId); cheminEnding.watch();
 });
 function moveChemin(event: PointerEvent): void {
     const drag = cheminDrag;
@@ -289,11 +291,7 @@ function moveChemin(event: PointerEvent): void {
 app.addEventListener('pointermove', moveChemin);
 app.addEventListener('pointerup', event => {
     if (cheminDrag?.pointer !== event.pointerId) return;
-    moveChemin(event); recordActivation('chemin-trace', event.type, true, 'primary-gesture'); cheminDrag = undefined;
-    if (app.hasPointerCapture(event.pointerId)) app.releasePointerCapture(event.pointerId);
-});
-for (const name of ['pointercancel', 'lostpointercapture'] as const) app.addEventListener(name, event => {
-    if (cheminDrag?.pointer === event.pointerId) cheminDrag = undefined;
+    moveChemin(event); recordActivation('chemin-trace', event.type, true, 'primary-gesture'); cheminEnding.finish();
 });
 app.addEventListener('keydown', event => {
     if (!(event.target as Element).closest('.chemin-zone') || !cheminSession || cheminDrag) return;
@@ -309,13 +307,12 @@ function puzzleDragCoordinates(d: NonNullable<typeof puzzleDrag>, event: Pointer
 }
 function cancelPuzzleDrag(): void {
     if (!puzzleDrag) return;
-    const d = puzzleDrag; puzzleDrag = undefined;
+    const d = puzzleDrag; puzzleEnding.finish();
     const r = d.element.getBoundingClientRect(), zone = puzzleZone()!;
     const p = screenToZone({ x: r.x + r.width / 2, y: r.y + r.height / 2 }, zone, { width: 320, height: 550 });
     const frame = puzzle.pieceFrame(puzzleSession!.pieces[d.piece]!);
     const piece = puzzleSession!.pieces[d.piece]!;
     puzzleDrop(d.piece, p.x - frame.x - frame.width / 2 + piece.column * piece.width + piece.width / 2, p.y - frame.y - frame.height / 2 + piece.row * piece.height + piece.height / 2);
-    if (app.hasPointerCapture(d.pointer)) app.releasePointerCapture(d.pointer);
 }
 function puzzleZone(): DOMRect | undefined { return app.querySelector('.puzzle-zone')?.getBoundingClientRect(); }
 function puzzlePosition(element: HTMLElement, p: puzzle.Piece, x: number, y: number): void {
@@ -372,7 +369,7 @@ app.addEventListener('pointerdown', event => {
     event.preventDefault(); element.focus({ preventScroll: true });
     puzzleDrag = { pointer: event.pointerId, piece, startX: event.clientX, startY: event.clientY, x: p.x, y: p.y, element };
     recordActivation(`puzzle-piece-${piece}`, event.type, true, 'drag-grab');
-    element.style.zIndex = '4'; app.setPointerCapture(event.pointerId);
+    element.style.zIndex = '4'; app.setPointerCapture(event.pointerId); puzzleEnding.watch();
 });
 app.addEventListener('pointermove', event => {
     if (puzzleDrag?.pointer !== event.pointerId || !puzzleSession) return;
@@ -381,14 +378,9 @@ app.addEventListener('pointermove', event => {
 });
 app.addEventListener('pointerup', event => {
     if (puzzleDrag?.pointer !== event.pointerId) return;
-    const d = puzzleDrag, r = puzzleZone()!; puzzleDrag = undefined;
-    if (app.hasPointerCapture(event.pointerId)) app.releasePointerCapture(event.pointerId);
+    const d = puzzleDrag, r = puzzleZone()!; puzzleEnding.finish();
     recordActivation(`puzzle-piece-${d.piece}`, event.type, true, 'primary-drag');
     puzzleDrop(d.piece, ...puzzleDragCoordinates(d, event, r));
-});
-for (const name of ['pointercancel', 'lostpointercapture']) app.addEventListener(name, event => {
-    if (!puzzleDrag || (event as PointerEvent).pointerId !== puzzleDrag.pointer) return;
-    cancelPuzzleDrag();
 });
 app.addEventListener('keydown', event => {
     const el = (event.target as Element).closest<HTMLElement>('.puzzle-piece');
@@ -452,7 +444,7 @@ app.addEventListener('pointerdown', event => {
     const piece = Number(element.dataset.soundPiece);
     soundSelected = undefined;
     soundDrag = { id: event.pointerId, piece, x: event.clientX, y: event.clientY, element };
-    app.setPointerCapture(event.pointerId);
+    app.setPointerCapture(event.pointerId); soundEnding.watch();
     speak(soundsView.spoken(soundsSession.questions[soundsSession.index]!, save.locale, false, piece));
 });
 app.addEventListener('pointermove', event => {
@@ -462,9 +454,7 @@ app.addEventListener('pointermove', event => {
 });
 app.addEventListener('pointerup', event => {
     if (!soundDrag || soundDrag.id !== event.pointerId) return;
-    const drag = soundDrag; soundDrag = undefined;
-    if (app.hasPointerCapture(event.pointerId)) app.releasePointerCapture(event.pointerId);
-    drag.element.style.transform = ''; drag.element.classList.remove('dragging');
+    const drag = soundDrag; soundEnding.finish();
     if (Math.hypot(event.clientX - drag.x, event.clientY - drag.y) < 12) { soundSelected = drag.piece; return; }
     const boxes = [...app.querySelectorAll<HTMLElement>('[data-sound-box]')].map(el => {
         const r = el.getBoundingClientRect();
@@ -477,11 +467,6 @@ app.addEventListener('pointerup', event => {
             { transform: `translate(${event.clientX - drag.x}px, ${event.clientY - drag.y}px)` }, { transform: 'translate(0, 0)' }
         ], { duration: 260, easing: 'ease-out' });
     }
-});
-for (const name of ['pointercancel', 'lostpointercapture']) app.addEventListener(name, event => {
-    if (soundDrag?.id !== (event as PointerEvent).pointerId) return;
-    soundDrag.element.style.transform = ''; soundDrag.element.classList.remove('dragging'); soundDrag = undefined;
-    if (name === 'pointercancel') soundSelected = undefined;
 });
 
 function renderShapes(): void {
@@ -518,7 +503,7 @@ app.addEventListener('pointerdown', event => {
     if (!element || !event.isPrimary || shapeDrag || !shapesSession || shapesSession.solved) return;
     selectedPiece = undefined;
     shapeDrag = { id: event.pointerId, piece: Number(element.dataset.piece), x: event.clientX, y: event.clientY, element };
-    app.setPointerCapture(event.pointerId);
+    app.setPointerCapture(event.pointerId); shapeEnding.watch();
 });
 app.addEventListener('pointermove', event => {
     if (shapeDrag?.id !== event.pointerId) return;
@@ -527,9 +512,7 @@ app.addEventListener('pointermove', event => {
 });
 app.addEventListener('pointerup', event => {
     if (!shapeDrag || shapeDrag.id !== event.pointerId) return;
-    const drag = shapeDrag; shapeDrag = undefined;
-    if (app.hasPointerCapture(event.pointerId)) app.releasePointerCapture(event.pointerId);
-    drag.element.style.transform = ''; drag.element.classList.remove('dragging');
+    const drag = shapeDrag; shapeEnding.finish();
     if (Math.hypot(event.clientX - drag.x, event.clientY - drag.y) < 12) { selectedPiece = drag.piece; recordActivation(`shape-piece-${drag.piece}`, event.type, true, 'selection'); return; }
     const boxes = [...app.querySelectorAll<HTMLElement>('[data-box]')].map(el => {
         const r = el.getBoundingClientRect();
@@ -545,10 +528,6 @@ app.addEventListener('pointerup', event => {
             ], { duration: 260, easing: 'ease-out' });
         }
     }
-});
-for (const eventName of ['pointercancel', 'lostpointercapture']) app.addEventListener(eventName, event => {
-    if (shapeDrag?.id !== (event as PointerEvent).pointerId) return;
-    shapeDrag.element.style.transform = ''; shapeDrag.element.classList.remove('dragging'); shapeDrag = undefined;
 });
 function renderMemory(): void {
     const state = memorySession!;
@@ -655,29 +634,35 @@ app.addEventListener('pointerdown', event => {
     if (gesture || !event.isPrimary || !session || session.solved) return;
     const token = (event.target as Element).closest<HTMLElement>('.token'); if (!token) return;
     gesture = { id: event.pointerId, x: event.clientX, y: event.clientY, area: token.hasAttribute('data-reserve') ? 'reserve' : 'basket', moved: false, key: actionKey(token) };
-    app.setPointerCapture(event.pointerId);
+    app.setPointerCapture(event.pointerId); compterEnding.watch();
 });
 app.addEventListener('pointermove', event => { if (gesture?.id === event.pointerId && Math.hypot(event.clientX - gesture.x, event.clientY - gesture.y) > 12) gesture.moved = true; });
 app.addEventListener('pointerup', event => {
     if (!gesture || gesture.id !== event.pointerId) return;
-    const g = gesture; gesture = undefined;
-    if (app.hasPointerCapture(event.pointerId)) app.releasePointerCapture(event.pointerId);
+    const g = gesture; compterEnding.finish();
     const zone = app.querySelector(g.area === 'reserve' ? '#basket' : '#reserve')?.getBoundingClientRect();
     if (g.moved && (!zone || distanceToZone({ x: event.clientX, y: event.clientY }, zone) !== 0)) return;
     if (!acceptActivation(g.key, event.type, event.pointerType === 'touch' && !g.moved)) return;
     if (session) { session = moveObject(session, g.area === 'reserve' ? 1 : -1); render(); if (hint) showHint(); }
 });
-for (const name of ['pointercancel', 'lostpointercapture']) app.addEventListener(name, event => { if (gesture?.id === (event as PointerEvent).pointerId) gesture = undefined; });
 app.addEventListener('keydown', event => {
     const token = (event.target as Element).closest('.token');
     if (token && (event.key === 'Enter' || event.key === ' ') && session) { event.preventDefault(); session = moveObject(session, token.hasAttribute('data-reserve') ? 1 : -1); render(); if (hint) showHint(); }
 });
+const cheminEnding = bindDragEnd(document, () => cheminDrag && { ...cheminDrag, element: app }, () => { cheminDrag = undefined; });
+const puzzleEnding = bindDragEnd(document, () => puzzleDrag && { ...puzzleDrag, capture: app }, () => { puzzleDrag = undefined; }, () => cancelPuzzleDrag());
+const soundEnding = bindDragEnd(document, () => soundDrag && { ...soundDrag, pointer: soundDrag.id, capture: app }, () => { soundDrag = undefined; }, () => { soundSelected = undefined; });
+const shapeEnding = bindDragEnd(document, () => shapeDrag && { ...shapeDrag, pointer: shapeDrag.id, capture: app }, () => { shapeDrag = undefined; }, () => { selectedPiece = undefined; });
+const compterEnding = bindDragEnd(document, () => gesture && { pointer: gesture.id, element: app }, () => { gesture = undefined; });
+function endRouterDrags(): void {
+    for (const ending of [cheminEnding, puzzleEnding, soundEnding, shapeEnding, compterEnding]) ending.finish();
+}
 document.addEventListener('pointerdown', () => { unlockSpeech(); if (save.sound) unlockSound(); }, { once: true, capture: true });
 let puzzleHiddenAt: number | undefined;
 document.addEventListener('visibilitychange', () => {
-    if (document.hidden) { cheminDrag = undefined; puzzleHiddenAt = performance.now(); cancelPuzzleDrag(); }
+    if (document.hidden) { cheminEnding.finish(); puzzleHiddenAt = performance.now(); cancelPuzzleDrag(); }
     else if (screen === 'game' && activeGame === 'puzzle') { if (puzzleHiddenAt !== undefined) puzzleIdleStart += performance.now() - puzzleHiddenAt; puzzleHiddenAt = undefined; render(); }
- if (document.hidden) { cancel(); stopSound(); } else { if (save.sound) unlockSound(); if (screen === 'game' && (activeGame === 'paires' || activeGame === 'atelier')) render(); if (screen === 'game' && activeGame === 'tambours' && tamboursSession) { tamboursSession = { ...tamboursSession, cursor: tamboursSession.solved || tambours.levels[tamboursSession.level - 1]!.mode === 'libre' ? tamboursSession.cursor : 0, last: null }; render(); } } });
+ if (document.hidden) { cancel(); stopSound(); } else { if (save.sound) unlockSound(); if (screen === 'game' && (activeGame === 'paires' || activeGame === 'atelier' || activeGame === 'suites' || activeGame === 'ranger')) render(); if (screen === 'game' && activeGame === 'tambours' && tamboursSession) { tamboursSession = { ...tamboursSession, cursor: tamboursSession.solved || tambours.levels[tamboursSession.level - 1]!.mode === 'libre' ? tamboursSession.cursor : 0, last: null }; render(); } } });
 Object.defineProperty(window, '__kid', { configurable: false, writable: false, value: Object.freeze({ events: activationEvents, state: () => {
     const targets = [...app.querySelectorAll<HTMLElement>('button, select, input')].filter(el => !el.hasAttribute('disabled')).map(el => { const r = el.getBoundingClientRect(); return { id: el.id || (el.dataset.drum !== undefined ? `drum-${el.dataset.drum}` : el.dataset.object !== undefined ? `object-${el.dataset.object}` : el.dataset.bin !== undefined ? `bin-${el.dataset.bin}` : el.dataset.patternChoice !== undefined ? `pattern-choice-${el.dataset.patternChoice}` : el.dataset.answer !== undefined ? `answer-${el.dataset.answer}` : el.dataset.level ? `level-${el.dataset.level}` : el.dataset.card !== undefined ? `card-${el.dataset.card}` : el.hasAttribute('data-reserve') ? `reserve-${el.dataset.reserve}` : el.hasAttribute('data-basket') ? `basket-${el.dataset.basket}` : el.dataset.soundPiece !== undefined ? `sound-piece-${el.dataset.soundPiece}` : el.dataset.soundBox !== undefined ? `sound-box-${el.dataset.soundBox}` : el.dataset.piece !== undefined ? `piece-${el.dataset.piece}` : el.dataset.box !== undefined ? `box-${el.dataset.box}` : el.dataset.game || ''), x: r.x, y: r.y, width: r.width, height: r.height }; });
     const rect = (selector: string): { x: number; y: number; width: number; height: number } | null => { const r = app.querySelector(selector)?.getBoundingClientRect(); return r ? { x: r.x, y: r.y, width: r.width, height: r.height } : null; };
