@@ -1,3 +1,4 @@
+import { expectReturned } from './motion-helpers';
 import { test, expect, expectTouch, state, touchFrame } from './helpers';
 import { prepareShapes, shapeAnswer, shapeState } from './formes-helpers';
 import { makeRng } from '../../src/engines/rng';
@@ -31,6 +32,7 @@ for (const level of [3, 5, 6, 8, 10]) test(`level ${level}: noisy touch complete
         }
         await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
         await expect.poll(async () => { const after = (await shapeState(page)).shapes; return after.placed.includes(piece) || after.errors === before.errors + 1; }).toBe(true);
+        if (!(await shapeState(page)).shapes.placed.includes(piece)) await expectReturned(page.locator(`[data-piece="${piece}"]`), a);
     };
     for (let i = 0; i < 6; i++) {
         if (level === 10) {

@@ -1,3 +1,4 @@
+import { expectMotionFinished, expectReturned } from './motion-helpers';
 import type { Page } from '@playwright/test';
 import { expect, prepare } from './helpers';
 export interface SoundsProbe { game: string; selection: number | null; index: number; question: { answer: number }; sons: { errors: number; solved: boolean; finished: boolean; firstTry: number; placed: number[] }; targets: { width: number; height: number }[] }
@@ -36,7 +37,9 @@ export async function dragSound(page: Page, piece: number, correct = true): Prom
     const box = correct ? to : page.locator('[data-sound-box]').filter({ hasNot: page.locator(`[data-letter="${initial!}"]`) });
     const a = (await from.boundingBox())!, b = (await box.boundingBox())!;
     await page.mouse.move(a.x + a.width / 2, a.y + a.height / 2); await page.mouse.down();
-    await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2, { steps: 12 }); await page.mouse.up(); await page.waitForTimeout(300);
+    await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2, { steps: 12 }); await page.mouse.up();
+    await expectMotionFinished(from);
+    if (!await from.isDisabled()) await expectReturned(from, a);
 }
 export async function solveSoundQuestion(page: Page): Promise<void> {
     if (await page.locator('[data-sound-piece]').count()) for (let i = 0; i < 3; i++) await dragSound(page, i);

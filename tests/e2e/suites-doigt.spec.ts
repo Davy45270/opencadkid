@@ -1,6 +1,7 @@
 import type { BrowserContext, Page } from '@playwright/test';
 import { test, expect, expectTouch, touchFrame } from './helpers';
 import { patternAnswer, patternState, prepareSuites } from './suites-helpers';
+import { expectMotionFinished, expectReturned } from './motion-helpers';
 let noiseSeed = 1;
 function noise(): number { noiseSeed = Math.imul(noiseSeed, 1664525) + 1013904223 | 0; return (noiseSeed >>> 0) / 4294967296 * 20 - 10; }
 async function point(page: Page, selector: string): Promise<{ x: number; y: number }> {
@@ -45,6 +46,7 @@ async function drag(page: Page, context: BrowserContext, choice: number, outcome
         await expect(page.locator(selector)).not.toHaveClass(/dragging/);
         await expectNoDragging(page);
         expect(await page.locator(selector).evaluate(el => (el as HTMLElement).style.transform)).toBe('');
+        if (outcome !== 'drop') await expectReturned(page.locator(selector), original);
     } finally { await cdp.detach(); }
 }
 for (const level of [1, 7, 9, 10]) test(`suites ${level}: noisy mobile finger, double touch, ordered drag, no scroll`, async ({ page, context, isMobile }) => {
@@ -63,10 +65,13 @@ for (const level of [1, 7, 9, 10]) test(`suites ${level}: noisy mobile finger, d
             await tap(page, `[data-pattern-choice="${(choice + 2) % rects.length}"]`);
             expect((await patternState(page)).suites.errors).toBe(2); expect(await page.locator('.suites-base').count()).toBeGreaterThan(0);
             if (level === 9) {
+                // The preceding wrong answer wiggles a choice; never freeze that transient geometry.
+                await expectMotionFinished(page.locator('[data-pattern-choice]'));
                 const before = await patternState(page);
                 for (const outcome of ['cancel', 'outside', 'lost'] as const) {
                     await drag(page, context, choice, outcome);
-                    expect(await patternState(page)).toEqual(before);
+                    await expectMotionFinished(page.locator('[data-pattern-choice]'));
+                    await expect.poll(() => patternState(page), { timeout: 1000 }).toEqual(before);
                 }
             }
             await tap(page, `[data-pattern-choice="${choice}"]`); await tap(page, `[data-pattern-choice="${choice}"]`);

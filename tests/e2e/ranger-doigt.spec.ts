@@ -1,3 +1,4 @@
+import { expectReturned } from './motion-helpers';
 import type { BrowserContext, Page } from '@playwright/test';
 import { test, expect, expectTouch, touchFrame } from './helpers';
 import { binFor, prepareRanger, rangerDom, rangerState } from './ranger-helpers';
@@ -39,9 +40,7 @@ for (const level of [1, 2, 3, 4, 5, 6, 7, 8]) test(`ranger ${level}: noisy finge
             const original = (await page.locator(`[data-object="${first.id}"]`).boundingBox())!;
             await drag(page, context, first.id, wrong, 'wrong');
             await expectTouch(page, 'Wrong drop returns and counts one error', async () => (await rangerState(page)).ranger.errors === 1);
-            await page.waitForTimeout(300);
-            const returned = (await page.locator(`[data-object="${first.id}"]`).boundingBox())!;
-            expect(Math.abs(original.x - returned.x)).toBeLessThan(1); expect(Math.abs(original.y - returned.y)).toBeLessThan(1);
+            await expectReturned(page.locator(`[data-object="${first.id}"]`), original);
             await drag(page, context, first.id, correct, 'near');
             await expectTouch(page, 'Drop 18px below the bin snaps once', async () => (await rangerState(page)).ranger.placed.includes(first.id));
             dom = await rangerDom(page);

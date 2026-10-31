@@ -1,3 +1,4 @@
+import { expectReturned } from './motion-helpers';
 import { test, expect, expectTouch, state, touchFrame } from './helpers';
 import { prepareSounds, soundAnswer, soundsState } from './sons-helpers';
 import { makeRng } from '../../src/engines/rng';
@@ -32,6 +33,7 @@ for (const level of [4, 6, 8, 10]) test(`level ${level}: mobile noisy finger, do
             await touchFrame(page);
         }
         await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] }); await expect.poll(async () => { const after = (await soundsState(page)).sons; return correct ? after.placed.includes(piece) : after.errors === before.errors + 1; }).toBe(true);
+        if (!(await soundsState(page)).sons.placed.includes(piece)) await expectReturned(page.locator(`[data-sound-piece="${piece}"]`), a);
     };
     for (let i = 0; i < 6; i++) {
         if (level === 10) {

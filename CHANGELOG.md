@@ -2,6 +2,8 @@
 
 ## 1.0.1
 
+- Wait for finite gesture feedback before recording pattern positions, then poll for strict state equality after cancellation. Replace fixed gentle-return delays with bounded animation and exact geometry checks in shape, sound and sorting regressions; verify that no drag transform remains.
+
 - During a memory mismatch, a hidden-card touch closes both cards and opens its target immediately; touching either visible card only closes the pair. Preserve move counts and accidental-double-touch protection.
 - Redraw all ten colouring sheets with rounded contours, smiling faces, recognisable guide features and large colourable object details, with 8–20 closed regions per sheet.
 - Add handwritten memory transition oracles, controlled-clock touch regressions, guide-feature identifiers and geometric smile/eyebrow checks. Preserve existing geometry, colouring and history checks. Test suites and visual capture review await orchestrator execution.
