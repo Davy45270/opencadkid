@@ -1,4 +1,4 @@
-import { addStroke, appendGallery, change, clear, deserialize, drawings, fill, palette, pointCount, redo, sample, SHEET, simplify, start, undo, type Point, type State } from '../../engines/atelier';
+import { addStroke, appendGallery, change, clear, deserialize, drawings, fill, palette, pointCount, redo, sample, SHEET, start, undo, type Point, type State } from '../../engines/atelier';
 import { acceptActivation, bindAction, recordActivation } from '../../shell/activation';
 import { screenToZone } from '../../shell/coordinates';
 import type { Locale } from '../../shell/i18n';
@@ -10,7 +10,7 @@ export interface Studio { state: State; revision: number }
 export function snapshot(studio: Studio): object { const s=studio.state; return { ...s.art, tool:s.art.mode, color:s.color, width:s.width, strokeCount:s.art.strokes.length+(s.art.flattened ?? 0), pointCount:pointCount(s.art), undoSize:s.past.length, redoSize:s.future.length }; }
 export function mount(root: HTMLElement, studio: Studio, locale: Locale, storage: StoragePort | undefined, speak: (parts:string[])=>void, home: ()=>void): ()=>void {
     const t=labels[locale];
-    let pointer: number | undefined, points: Point[]=[], disposed=false, savedRevision=-1;
+    let pointer: number | undefined, points: Point[]=[], preview: Point[]=[], disposed=false, savedRevision=-1;
     const abort=new AbortController();
     const state=(): State=>studio.state;
     const set=(s:State): void=>{ if(s!==studio.state) { studio.state=s; studio.revision++; } };
@@ -21,7 +21,7 @@ export function mount(root: HTMLElement, studio: Studio, locale: Locale, storage
         for(const key of ['undo','redo']) root.querySelector<HTMLButtonElement>(`[data-tool="${key}"]`)!.disabled=key==='undo' ? !state().past.length : !state().future.length;
         root.querySelector('#atelier-status')!.textContent='';
     };
-    const paint=(): void=>{ root.querySelector('.atelier-sheet')!.innerHTML=sheet(state().art); bindSheet(); controls(); };
+    const paint=(): void=>{ root.querySelector('.atelier-sheet')!.innerHTML=sheet(state().art,locale); bindSheet(); controls(); };
     const choose=(color:State['color']): void=>{
         set({...state(),color});
         root.querySelectorAll<HTMLElement>('[data-color]').forEach(el=>el.setAttribute('aria-pressed',String(el.dataset.color===color)));
@@ -31,7 +31,7 @@ export function mount(root: HTMLElement, studio: Studio, locale: Locale, storage
     function finish(): void {
         if(pointer===undefined) return;
         const held=pointer; pointer=undefined;
-        set(addStroke(state(),points)); points=[];
+        set(addStroke(state(),points)); points=[]; preview=[];
         const paper=root.querySelector<HTMLElement>('.atelier-sheet');
         if(paper?.hasPointerCapture(held)) paper.releasePointerCapture(held);
         if(!disposed) paint();
@@ -59,16 +59,19 @@ export function mount(root: HTMLElement, studio: Studio, locale: Locale, storage
         const position=(event:PointerEvent): Point=>screenToZone({x:event.clientX,y:event.clientY},paper.getBoundingClientRect(),SHEET);
         const extend=(event:PointerEvent): void=>{
             const batch=typeof event.getCoalescedEvents==='function' ? event.getCoalescedEvents() : [];
-            for(const e of batch.length ? batch : [event]) points=sample(points,position(e));
-            if(points.length>8000) points=simplify(points,1);
+            // Keep the original gesture for a single simplification at commit time.
+            // Sampling is only a live-preview optimisation: its error must not accumulate.
+            for(const e of batch.length ? batch : [event]) {
+                const p=position(e); points.push(p); preview=sample(preview,p);
+            }
             const live=root.querySelector('#atelier-live')!;
-            live.setAttribute('d',strokePath(points)); live.setAttribute('stroke',state().color); live.setAttribute('stroke-width',String(state().width));
+            live.setAttribute('d',strokePath(preview)); live.setAttribute('stroke',state().color); live.setAttribute('stroke-width',String(state().width));
         };
         paper.addEventListener('pointerdown',event=>{
             if(state().art.mode!=='draw') return;
             if(pointer!==undefined || !event.isPrimary || event.button!==0) {recordActivation('atelier:stroke',event.type,false,'secondary-pointer');return;}
             if(!acceptActivation(`atelier:stroke:${studio.revision}`,event.type,false)) return;
-            event.preventDefault(); pointer=event.pointerId; points=[]; paper.setPointerCapture(event.pointerId); extend(event);
+            event.preventDefault(); pointer=event.pointerId; points=[]; preview=[]; paper.setPointerCapture(event.pointerId); extend(event);
         });
         paper.addEventListener('pointermove',event=>{if(pointer===event.pointerId) {event.preventDefault();extend(event);} });
         paper.addEventListener('pointerup',event=>{if(pointer===event.pointerId) {extend(event);finish();} });
@@ -83,7 +86,7 @@ export function mount(root: HTMLElement, studio: Studio, locale: Locale, storage
             if(tool==='clear') {modal(`<p>${t.confirm}</p><button id="atelier-yes">${t.yes}</button>`);bindAction(root.querySelector<HTMLElement>('#atelier-yes')!,()=>{set(clear(state()));draw();},()=>`atelier:clear:${studio.revision}`);}
             if(tool==='gallery') {
                 const gallery=readGallery(storage);
-                modal(`<h2>${t.gallery}</h2>${gallery.length ? `<div class="atelier-gallery">${gallery.map((raw,i)=>`<button data-art="${i}" aria-label="${t.picture} ${i+1}">${thumbnail(deserialize(raw)!)}</button>`).join('')}</div>` : `<p>${t.empty}</p>`}`);
+                modal(`<h2>${t.gallery}</h2>${gallery.length ? `<div class="atelier-gallery">${gallery.map((raw,i)=>`<button data-art="${i}" aria-label="${t.picture} ${i+1}">${thumbnail(deserialize(raw)!,locale)}</button>`).join('')}</div>` : `<p>${t.empty}</p>`}`);
                 root.querySelectorAll<HTMLElement>('[data-art]').forEach(b=>bindAction(b,()=>{const art=deserialize(gallery[Number(b.dataset.art)]!);if(art) {set({...start(art.drawing,art.mode),art});draw();}},()=>`atelier:load:${b.dataset.art!}:${studio.revision}`));
             }
             if(tool==='done') {

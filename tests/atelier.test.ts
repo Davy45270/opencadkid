@@ -1,7 +1,7 @@
 import { expect, it } from 'vitest';
 import { addStroke, appendGallery, clear, deserialize, drawings, fill, HISTORY, MAX_BYTES, palette, parseGallery, pointCount, redo, sample, serialize, SHEET, simplify, start, undo, type Point } from '../src/engines/atelier';
 import { eraseGallery, readGallery, writeGallery } from '../src/games/atelier/storage';
-import { gameView, labels } from '../src/games/atelier/view';
+import { gameView, labels, sheet, underpaint } from '../src/games/atelier/view';
 
 it('ten independent polygon drawings have unique closed finite zones at least 44 real pixels on the phone sheet', () => {
     expect(drawings.map(d=>d.id)).toEqual(['boubou','caliroux','pestouille','tutu','lumi','maison','arbre','poisson','fusee','papillon']);
@@ -111,4 +111,76 @@ it('twelve colours plus white eraser have complete FR/EN spoken names and creati
     expect(palette.map(c=>c[2])).toEqual(['red','orange','yellow','light green','green','turquoise','light blue','blue','purple','pink','brown','grey','eraser']);
     expect(Object.keys(labels.fr)).toEqual(Object.keys(labels.en));
     for(const locale of ['fr','en'] as const) {const html=gameView(start(),locale);expect(html).not.toMatch(/stars|★|☆/);expect(html.match(/data-color=/g)).toHaveLength(12);expect(html).toContain(labels[locale].done);}
+});
+
+it('sampling accepts exactly two units and rejects shorter moves without mutating input', () => {
+    const initial=[{x:20,y:20}];
+    expect(sample(initial,{x:21.5,y:20})).toEqual(initial);
+    expect(sample(initial,{x:22,y:20})).toEqual([...initial,{x:22,y:20}]);
+    expect(sample(initial,{x:22.5,y:20})).toEqual([...initial,{x:22.5,y:20}]);
+    expect(initial).toEqual([{x:20,y:20}]);
+});
+it('SVG strokes render every selected colour and all three actual brush widths', () => {
+    for(const color of palette.map(c=>c[0])) for(const width of [4,9,18] as const) {
+        const s=addStroke({...start('fusee','draw'),color,width},[{x:20,y:30},{x:80,y:50}]);
+        expect(sheet(s.art,'en')).toContain(`data-stroke="0" d="M20 30L80 50" fill="none" stroke="${color}" stroke-width="${width}"`);
+    }
+});
+it('sheet and zone accessible names follow the selected locale for every drawing', () => {
+    for(const d of drawings) for(const locale of ['fr','en'] as const) {
+        const html=gameView(start(d.id),locale);
+        expect(html).toContain(`aria-label="${d.names[locale]}" class="atelier-paper"`);
+        for(const z of d.zones) expect(html).toContain(`aria-label="${d.names[locale]} ${z.id}"`);
+    }
+});
+it('corrupt raster characters, lengths and inconsistent flattened counters are rejected', () => {
+    const base=JSON.parse(serialize(start('boubou','draw').art)) as Record<string,unknown>;
+    const r='d'.repeat(24000);
+    expect(deserialize(JSON.stringify({...base,r,f:1}))).not.toBeNull();
+    for(const patch of [
+        {r:'e'+r.slice(1),f:1},{r:'z'+r.slice(1),f:1},{r:'!'+r.slice(1),f:1},
+        {r:r.slice(1),f:1},{r:r+'d',f:1},{r:42,f:1},
+        {r},{r,f:0},{r,f:-1},{r,f:1.5},{r,f:'1'},{r,f:Number.MAX_SAFE_INTEGER+1},{f:1}
+    ]) expect(deserialize(JSON.stringify({...base,...patch}))).toBeNull();
+});
+it('flattened polylines render the exact coloured grid and stay within 2px of the vector ink', () => {
+    const points=[{x:30,y:40},{x:90,y:110},{x:160,y:50},{x:270,y:210}];
+    const base=start('boubou','draw');
+    base.art.strokes=[{color:'#727ed1',width:9,points},
+        {color:'#ee737a',width:4,points:Array.from({length:3996},()=>({x:310,y:290}))}];
+    const s=addStroke(base,[{x:10,y:10}]);
+    expect(s.art.flattened).toBe(1);
+    const expected=new Set<number>();
+    for(let y=0;y<150;y++) for(let x=0;x<160;x++) {
+        const centre={x:x*2+1,y:y*2+1};
+        if(distance(centre,points)<=4.5) expected.add(y*160+x);
+    }
+    const actual=new Set<number>();
+    const html=underpaint(s.art);
+    expect(html).toMatch(/^<path d="[^"]+" fill="#727ed1"\/>$/);
+    for(const m of html.matchAll(/M(\d+) (\d+)h(\d+)v2H(\d+)Z/g)) {
+        const x=Number(m[1]),y=Number(m[2]),width=Number(m[3]);
+        expect(Number(m[4])).toBe(x);
+        for(let dx=0;dx<width;dx+=2) actual.add(y/2*160+(x+dx)/2);
+    }
+    expect(actual).toEqual(expected);
+    // Both directions: painted cell corners to vector ink, and vector ink to painted cells.
+    for(const i of actual) for(const dx of [0,2]) for(const dy of [0,2]) {
+        expect(Math.max(0,distance({x:i%160*2+dx,y:Math.floor(i/160)*2+dy},points)-4.5)).toBeLessThanOrEqual(2);
+    }
+    for(let j=1;j<points.length;j++) {
+        const a=points[j-1]!,b=points[j]!;
+        for(let step=0;step<=100;step++) {
+            const x=a.x+(b.x-a.x)*step/100,y=a.y+(b.y-a.y)*step/100;
+            const gap=Math.min(...[...actual].map(i=>Math.hypot(Math.max(i%160*2-x,0,x-(i%160*2+2)),Math.max(Math.floor(i/160)*2-y,0,y-(Math.floor(i/160)*2+2)))));
+            expect(gap).toBeLessThanOrEqual(2);
+        }
+    }
+    expect(sheet(s.art,'en')).toContain(html);
+});
+it('underpaint renders all palette colours including white and skips transparent cells', () => {
+    const art={...start('boubou','draw').art,underpaint:'0123456789abcd'+'d'.repeat(24000-14),flattened:1};
+    const html=underpaint(art);
+    expect(html.match(/<path /g)).toHaveLength(13);
+    for(const [i,c] of palette.entries()) expect(html).toContain(`<path d="M${i*2} 0h2v2H${i*2}Z" fill="${c[0]}"/>`);
 });

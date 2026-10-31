@@ -10,13 +10,17 @@ test('DOM zone oracle fills the whole drawing, recolours, undoes, redoes and kee
     const expected:Record<string,string>={};
     for(const [i,id] of ids.entries()) {
         const color=colors[i%colors.length]!;await page.locator(`[data-color="${color}"]`).click();await page.locator(`[data-zone="${id}"]`).click();
+        await expect(page.locator(`[data-zone="${id}"]`)).toHaveAttribute('fill',color);
         await expect(page.locator(`[data-zone="${id}"]`)).toHaveAttribute('data-fill',color);expected[id]=color;
     }
     expect((await studioState(page)).zones).toEqual(expected);
     await page.locator('[data-color="#727ed1"]').click();await page.locator(`[data-zone="${ids[0]!}"]`).click();
+    await expect(page.locator(`[data-zone="${ids[0]!}"]`)).toHaveAttribute('fill','#727ed1');
     await expect(page.locator(`[data-zone="${ids[0]!}"]`)).toHaveAttribute('data-fill','#727ed1');
     await page.locator('[data-tool="undo"]').click();await expect(page.locator(`[data-zone="${ids[0]!}"]`)).toHaveAttribute('data-fill',expected[ids[0]!]!);
-    await page.locator('[data-tool="redo"]').click();await expect(page.locator(`[data-zone="${ids[0]!}"]`)).toHaveAttribute('data-fill','#727ed1');expected[ids[0]!]='#727ed1';
+    await expect(page.locator(`[data-zone="${ids[0]!}"]`)).toHaveAttribute('fill',expected[ids[0]!]!);
+    await page.locator('[data-tool="redo"]').click();await expect(page.locator(`[data-zone="${ids[0]!}"]`)).toHaveAttribute('fill','#727ed1');
+    await expect(page.locator(`[data-zone="${ids[0]!}"]`)).toHaveAttribute('data-fill','#727ed1');expected[ids[0]!]='#727ed1';
     await page.locator('[data-tool="done"]').click();await expect(page.locator('.atelier-stamp')).toBeVisible();await expect(page.locator('.stars')).toHaveCount(0);
     await page.locator('[data-tool="gallery"]').click();await expect(page.locator('[data-art]')).toHaveCount(1);await page.locator('#atelier-close').click();
     expect(requests).toEqual([]);page.removeAllListeners('request');
@@ -37,6 +41,9 @@ test('spoken bilingual colours, brush sizes, eraser, gentle clear and parental g
     await page.locator('#erase-gallery').click();await page.locator('#gallery-no').click();expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('opencadkid.atelier.v1')!) as unknown[])).toHaveLength(1);
     await page.locator('#erase-gallery').click();await page.locator('#gallery-yes').click();expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('opencadkid.atelier.v1')!) as unknown[])).toEqual([]);
     await page.locator('#language').selectOption('en');await page.locator('#close').click();await page.locator('[data-game="atelier"]').click();await clearSpeech(page);await page.locator('[data-color="#ab83cc"]').click();expect((await media(page)).speech).toContain('purple');
+    await page.locator('#atelier-picture').selectOption('fusee');
+    await expect(page.locator('.atelier-paper')).toHaveAttribute('aria-label','Rocket');
+    await expect(page.locator('[data-zone="nose"]')).toHaveAttribute('aria-label','Rocket nose');
     await page.locator('[data-tool="draw"]').click();await page.locator('[data-width="18"]').click();expect((await studioState(page)).width).toBe(18);expect((await media(page)).speech).toContain('Large brush');
     await page.locator('[data-tool="gallery"]').click();await expect(page.locator('[data-art]')).toHaveCount(0);
     await page.reload();await page.locator('[data-game="atelier"]').click();await page.locator('[data-tool="gallery"]').click();await expect(page.locator('[data-art]')).toHaveCount(0);
