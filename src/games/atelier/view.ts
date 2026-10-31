@@ -1,0 +1,33 @@
+import { characterSvg } from '../../characters/svg';
+import { drawings, palette, SHEET, RASTER_WIDTH, RASTER_HEIGHT, type Artwork, type State } from '../../engines/atelier';
+import { icon, svg } from '../../ui/svg';
+import { volume } from '../../ui/illustration';
+import type { Locale } from '../../shell/i18n';
+export const labels = {
+    fr: { title:"L’atelier de Boubou", instruction:'Choisis une couleur. Colorie ou dessine comme tu veux.', color:'Colorier', draw:'Dessiner', undo:'Annuler', redo:'Refaire', erase:'Gomme', clear:'Nouvelle feuille', confirm:'On efface cette feuille ? Tu pourras annuler.', yes:'Oui', no:'Garder', gallery:'Mes créations', done:"J’ai fini", bravo:'Bravo !', saved:'Dans ta galerie, sur ce téléphone.', unsaved:'La galerie est pleine sur ce téléphone. Ta feuille reste ici.', empty:'Ta galerie attend tes dessins.', close:'Fermer', picture:'Dessin', small:'Petit pinceau', medium:'Pinceau moyen', large:'Gros pinceau', parentsErase:'Effacer la galerie', parentsConfirm:'Effacer toutes les créations de cet atelier ?', home:'Accueil', listen:'Écouter' },
+    en: { title:"Boubou’s studio", instruction:'Choose a colour. Colour or draw any way you like.', color:'Colour', draw:'Draw', undo:'Undo', redo:'Redo', erase:'Eraser', clear:'New sheet', confirm:'Clear this sheet? You can undo it.', yes:'Yes', no:'Keep it', gallery:'My creations', done:"I’m done", bravo:'Well done!', saved:'In your gallery, on this phone.', unsaved:'This phone cannot save the gallery. Your sheet is still here.', empty:'Your gallery is waiting for your drawings.', close:'Close', picture:'Picture', small:'Small brush', medium:'Medium brush', large:'Large brush', parentsErase:'Erase gallery', parentsConfirm:'Erase every studio creation?', home:'Home', listen:'Listen' }
+} as const;
+export const pot = svg(volume('<path d="M13 26h38l-5 29H18Z" fill="#ed9fc7" stroke="#58443b" stroke-width="3"/><ellipse cx="32" cy="26" rx="19" ry="7" fill="#72b8ed" stroke="#58443b" stroke-width="3"/><path d="M29 9l19 29" stroke="#b78c70" stroke-width="7" stroke-linecap="round"/>'));
+export const brush = svg(volume('<path d="M24 39L47 8l9 8l-24 30Z" fill="#b78c70" stroke="#58443b" stroke-width="3"/><path d="M24 36q-18 0 -14 19q20 5 25 -12Z" fill="#72b8ed" stroke="#58443b" stroke-width="3"/>'));
+export const pictogram = pot;
+export function underpaint(art: Artwork): string {
+    if(!art.underpaint) return '';
+    const paths=Array.from({length:13},()=> '');
+    for(let y=0;y<RASTER_HEIGHT;y++) for(let x=0;x<RASTER_WIDTH;) {
+        const c=art.underpaint[y*RASTER_WIDTH+x]!,start=x;while(x<RASTER_WIDTH && art.underpaint[y*RASTER_WIDTH+x]===c) x++;
+        if(c!=='d') paths[parseInt(c,16)]=(paths[parseInt(c,16)] ?? '')+`M${start*2} ${y*2}h${(x-start)*2}v2H${start*2}Z`;
+    }
+    return paths.map((d,i)=>d ? `<path d="${d}" fill="${palette[i]![0]}"/>` : '').join('');
+}
+export function sheet(art: Artwork): string {
+    const d=drawings.find(d=>d.id===art.drawing)!;
+    const zones=art.mode==='color' ? d.zones.map(z=>`<path data-zone="${z.id}" data-fill="${art.zones[z.id] ?? '#ffffff'}" d="${z.path}" fill="${art.zones[z.id] ?? '#ffffff'}" stroke="#58443b" stroke-width="2" stroke-linejoin="round" tabindex="0" role="button" aria-label="${d.names.fr} ${z.id}"/>`).join('')+`<g class="atelier-ink">${d.ink}</g>` : '';
+    const strokes=art.mode==='draw' ? art.strokes.map((s,i)=>`<path data-stroke="${i}" d="${strokePath(s.points)}" fill="none" stroke="${s.color}" stroke-width="${s.width}" stroke-linecap="round" stroke-linejoin="round"/>`).join('') : '';
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${SHEET.width} ${SHEET.height}" aria-label="${d.names.fr}" class="atelier-paper">${zones}<g class="atelier-strokes">${art.mode==='draw'?underpaint(art):''}${strokes}</g><path id="atelier-live" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+}
+export function thumbnail(art: Artwork): string { return sheet(art).replace(/\s(?:id|data-zone|data-fill|tabindex|role|aria-label)="[^"]*"/g,''); }
+export function strokePath(points: readonly {x:number;y:number}[]): string { return points.map((p,i)=>`${i?'L':'M'}${p.x} ${p.y}`).join('')+(points.length===1 ? 'l.01 0' : ''); }
+export function gameView(state: State, locale: Locale): string {
+    const t=labels[locale];
+    return `<section class="atelier"><header class="play-header"><button id="back" class="round" aria-label="${t.home}">${icon('home')}</button><h1>${t.title}</h1><button id="listen" class="round" aria-label="${t.listen}">${icon('ear')}</button></header><div class="atelier-guide">${characterSvg('panda')}<p>${t.instruction}</p></div><div class="atelier-tabs" role="tablist"><button role="tab" data-tool="color" aria-label="${t.color}" aria-selected="${state.art.mode==='color'}">${pot}</button><button role="tab" data-tool="draw" aria-label="${t.draw}" aria-selected="${state.art.mode==='draw'}">${brush}</button><label class="atelier-selector"><span>${t.picture}</span><select id="atelier-picture" aria-label="${t.picture}">${drawings.map(d=>`<option value="${d.id}" ${d.id===state.art.drawing?'selected':''}>${d.names[locale]}</option>`).join('')}</select></label></div><div class="atelier-sheet" data-tool="${state.art.mode}">${sheet(state.art)}</div><div class="atelier-palette" aria-label="${t.color}">${palette.slice(0,12).map(c=>`<button data-color="${c[0]}" aria-label="${c[locale==='fr'?1:2]}" aria-pressed="${c[0]===state.color}" style="--paint:${c[0]}"><span></span></button>`).join('')}</div><div class="atelier-tools"><button data-tool="undo" aria-label="${t.undo}" ${state.past.length?'':'disabled'}>↶</button><button data-tool="redo" aria-label="${t.redo}" ${state.future.length?'':'disabled'}>↷</button><button data-tool="eraser" aria-label="${t.erase}" aria-pressed="${state.color==='#ffffff'}">${svg('<path d="M10 40L34 12L55 30L34 54H25Z" fill="#ffffff" stroke="#58443b" stroke-width="3"/><path d="M10 40l15 14h9l10 -11l-20 -19Z" fill="#ed9fc7"/>')}</button>${([4,9,18] as const).map((w,i)=>`<button data-width="${w}" aria-label="${[t.small,t.medium,t.large][i]}" aria-pressed="${state.width===w}">${svg(`<circle cx="32" cy="32" r="${w/2+2}" fill="#58443b"/>`)}</button>`).join('')}<button data-tool="clear" aria-label="${t.clear}">${icon('replay')}</button><button data-tool="gallery" aria-label="${t.gallery}">${svg('<rect x="9" y="11" width="46" height="42" rx="5" fill="#fff4d9" stroke="#58443b" stroke-width="3"/><path d="M12 48l15 -20l12 13l8 -9l7 16" fill="#8fbd9c"/>')}</button><button data-tool="done" aria-label="${t.done}">${icon('check')}<span>${t.done}</span></button></div><p id="atelier-status" role="status"></p><div id="atelier-dialog"></div></section>`;
+}

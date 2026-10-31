@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.0
+
+- Complete the ten-game catalogue with Boubou’s studio: ten procedural colouring drawings and calm free finger drawing, twelve bilingual spoken colours, white eraser and three brush sizes.
+- Add forty undo/redo steps, confirmed clearing, bounded simplified geometry and versioned compact local artwork serialization.
+- Add a twelve-work local gallery, Boubou’s voluntary completion stamp without stars, tolerant corruption handling, storage-failure feedback and confirmed parental gallery erasure. No artwork leaves the phone.
+- Reuse shared activation, viewport coordinate conversion, primary pointer capture, local speech, read-only observations and event diagnostics.
+- Author independent engine, gallery, language, responsive geometry, immediate-touch and 300-point two-finger browser regressions; optional studio and refreshed catalogue captures await orchestrator execution. No test runner or browser was launched during authoring.
+
 ## 0.10.0
 
 - Add Tutu’s drums: eight seeded levels of repetition, generous short/long rhythm imitation and free eight-beat composition with playback.

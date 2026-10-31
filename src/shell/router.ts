@@ -1,3 +1,7 @@
+import { start as atelierStart } from '../engines/atelier';
+import { mount as mountAtelier, snapshot as atelierSnapshot, type Studio } from '../games/atelier/interaction';
+import { labels as atelierLabels } from '../games/atelier/view';
+import { eraseGallery } from '../games/atelier/storage';
 import * as tambours from '../engines/tambours';
 import * as tamboursView from '../games/tambours/view';
 import { bindDrums } from '../games/tambours/interaction';
@@ -38,6 +42,8 @@ const app = document.querySelector<HTMLElement>('#app')!;
 const storage = browserStorage();
 let save = readSave(storage, detectLocale(navigator.language));
 let screen: 'home' | 'levels' | 'game' | 'parents' | 'gate' = 'home';
+let atelierStudio: Studio | undefined;
+let disposeAtelier: (() => void) | undefined;
 let session: Session | undefined;
 let tamboursSession: tambours.Session | undefined;
 let disposeDrums: (() => void) | undefined;
@@ -64,7 +70,7 @@ let seedCounter = 0;
 let timers: ReturnType<typeof setTimeout>[] = [];
 function seed(): number { const buffer = new Uint32Array(1); try { crypto.getRandomValues(buffer); return buffer[0]!; } catch { return ++seedCounter * 7919; } }
 function persist(): void { writeSave(storage, save); }
-function cancel(): void { disposeDrums?.(); disposeDrums = undefined; disposeRanger?.(); disposeRanger = undefined; disposePatternChoices?.(); disposePatternChoices = undefined; timers.forEach(clearTimeout); timers = []; stopSpeech(); }
+function cancel(): void { disposeAtelier?.(); disposeAtelier = undefined; disposeDrums?.(); disposeDrums = undefined; disposeRanger?.(); disposeRanger = undefined; disposePatternChoices?.(); disposePatternChoices = undefined; timers.forEach(clearTimeout); timers = []; stopSpeech(); }
 function speak(parts: string[], rate = 0.82): void { say(parts, save.locale, save.voice, undefined, rate); }
 function actionKey(element: HTMLElement): string {
     const target = element.id || Object.entries(element.dataset).map(([key, value]) => `${key}-${value ?? ''}`).join(':');
@@ -85,12 +91,14 @@ function render(): void {
     app.dataset.theme = screen === 'game' || screen === 'levels' ? activeGame : screen;
     if (screen === 'home') {
         app.innerHTML = home(save);
-        bind('[data-game]', el => { activeGame = el.dataset.game!; screen = 'levels'; render(); speak([games.find(g => g.id === activeGame)!.names[save.locale], text(save.locale, 'levels')]); });
+        bind('[data-game]', el => { activeGame = el.dataset.game!; if (activeGame === 'atelier') { atelierStudio = { state: atelierStart(), revision: 0 }; screen = 'game'; render(); speak([atelierLabels[save.locale].instruction]); return; } screen = 'levels'; render(); speak([games.find(g => g.id === activeGame)!.names[save.locale], text(save.locale, 'levels')]); });
         bind('#parents', () => gate('parents'));
         bind('#tictac', () => gate('tictac'));
     } else if (screen === 'levels') {
         app.innerHTML = activeGame === 'tambours' ? tamboursView.levelView(save) : activeGame === 'ranger' ? rangerView.levelView(save) : activeGame === 'suites' ? suitesView.levelView(save) : activeGame === 'chemin' ? cheminView.levelView(save) : activeGame === 'puzzle' ? puzzleView.levelView(save) : activeGame === 'sons' ? soundsView.levelView(save) : activeGame === 'formes' ? shapesView.levelView(save) : activeGame === 'paires' ? memoryView.levelView(save) : levelView(save);
         bind('[data-level]', el => { const level = Number(el.dataset.level); if (activeGame === 'tambours' ? tambours.isUnlocked(level, save.tamboursRecords) : activeGame === 'ranger' ? ranger.isUnlocked(level, save.rangerRecords) : activeGame === 'suites' ? suites.isUnlocked(level, save.suitesRecords) : activeGame === 'chemin' ? chemin.isUnlocked(level, save.cheminRecords) : activeGame === 'puzzle' ? puzzle.isUnlocked(level, save.puzzleRecords) : activeGame === 'sons' ? sounds.isUnlocked(level, save.sonsRecords) : activeGame === 'formes' ? shapes.isUnlocked(level, save.formesRecords) : activeGame === 'paires' ? memory.isUnlocked(level, save.pairesRecords) : isUnlocked(level, save.records)) begin(level); });
+    } else if (screen === 'game' && activeGame === 'atelier' && atelierStudio) {
+        disposeAtelier = mountAtelier(app, atelierStudio, save.locale, storage, speak, () => { screen = 'home'; render(); });
     } else if (screen === 'game' && activeGame === 'tambours' && tamboursSession) {
         renderTambours();
     } else if (screen === 'game' && activeGame === 'ranger' && rangerSession) {
@@ -626,9 +634,14 @@ function gate(destination: 'parents' | 'tictac'): void {
 }
 function settings(): void {
     cancel(); screen = 'parents';
-    app.innerHTML = `<section class="parent-panel"><h1>${text(save.locale, 'parents')}</h1><label>${text(save.locale, 'language')}<select id="language"><option value="fr" ${save.locale === 'fr' ? 'selected' : ''}>Français</option><option value="en" ${save.locale === 'en' ? 'selected' : ''}>English</option></select></label><label>${text(save.locale, 'voice')}<input id="voice" type="checkbox" ${save.voice ? 'checked' : ''}></label><label>${text(save.locale, 'sound')}<input id="sound" type="checkbox" ${save.sound ? 'checked' : ''}></label><button id="erase">${text(save.locale, 'erase')}</button><div id="confirmation"></div><button id="close">${icon('close')}<span>${text(save.locale, 'close')}</span></button></section>`;
+    app.innerHTML = `<section class="parent-panel"><h1>${text(save.locale, 'parents')}</h1><label>${text(save.locale, 'language')}<select id="language"><option value="fr" ${save.locale === 'fr' ? 'selected' : ''}>Français</option><option value="en" ${save.locale === 'en' ? 'selected' : ''}>English</option></select></label><label>${text(save.locale, 'voice')}<input id="voice" type="checkbox" ${save.voice ? 'checked' : ''}></label><label>${text(save.locale, 'sound')}<input id="sound" type="checkbox" ${save.sound ? 'checked' : ''}></label><button id="erase">${text(save.locale, 'erase')}</button><div id="confirmation"></div><button id="erase-gallery">${atelierLabels[save.locale].parentsErase}</button><div id="gallery-confirmation"></div><button id="close">${icon('close')}<span>${text(save.locale, 'close')}</span></button></section>`;
     app.querySelector('#language')!.addEventListener('change', event => { save.locale = (event.target as HTMLSelectElement).value === 'en' ? 'en' : 'fr'; persist(); applyLocale(save.locale); settings(); });
     for (const key of ['voice', 'sound'] as const) app.querySelector(`#${key}`)!.addEventListener('change', event => { save[key] = (event.target as HTMLInputElement).checked; persist(); if (key === 'voice') stopSpeech(); else if (!save.sound) stopSound(); else unlockSound(); });
+    bind('#erase-gallery', () => {
+        app.querySelector('#gallery-confirmation')!.innerHTML = `<p>${atelierLabels[save.locale].parentsConfirm}</p><button id="gallery-yes">${text(save.locale, 'yes')}</button><button id="gallery-no">${text(save.locale, 'no')}</button>`;
+        bind('#gallery-yes', () => { if (eraseGallery(storage)) { atelierStudio = undefined; settings(); } else app.querySelector('#gallery-confirmation')!.textContent = atelierLabels[save.locale].unsaved; });
+        bind('#gallery-no', settings);
+    });
     bind('#erase', () => {
         app.querySelector('#confirmation')!.innerHTML = `<p>${text(save.locale, 'confirm')}</p><button id="yes">${text(save.locale, 'yes')}</button><button id="no">${text(save.locale, 'no')}</button>`;
         bind('#yes', () => { save = { ...fresh(save.locale), voice: save.voice, sound: save.sound }; persist(); settings(); }); bind('#no', settings);
@@ -664,11 +677,11 @@ let puzzleHiddenAt: number | undefined;
 document.addEventListener('visibilitychange', () => {
     if (document.hidden) { cheminDrag = undefined; puzzleHiddenAt = performance.now(); cancelPuzzleDrag(); }
     else if (screen === 'game' && activeGame === 'puzzle') { if (puzzleHiddenAt !== undefined) puzzleIdleStart += performance.now() - puzzleHiddenAt; puzzleHiddenAt = undefined; render(); }
- if (document.hidden) { cancel(); stopSound(); } else { if (save.sound) unlockSound(); if (screen === 'game' && activeGame === 'paires') render(); if (screen === 'game' && activeGame === 'tambours' && tamboursSession) { tamboursSession = { ...tamboursSession, cursor: tamboursSession.solved || tambours.levels[tamboursSession.level - 1]!.mode === 'libre' ? tamboursSession.cursor : 0, last: null }; render(); } } });
+ if (document.hidden) { cancel(); stopSound(); } else { if (save.sound) unlockSound(); if (screen === 'game' && (activeGame === 'paires' || activeGame === 'atelier')) render(); if (screen === 'game' && activeGame === 'tambours' && tamboursSession) { tamboursSession = { ...tamboursSession, cursor: tamboursSession.solved || tambours.levels[tamboursSession.level - 1]!.mode === 'libre' ? tamboursSession.cursor : 0, last: null }; render(); } } });
 Object.defineProperty(window, '__kid', { configurable: false, writable: false, value: Object.freeze({ events: activationEvents, state: () => {
     const targets = [...app.querySelectorAll<HTMLElement>('button, select, input')].filter(el => !el.hasAttribute('disabled')).map(el => { const r = el.getBoundingClientRect(); return { id: el.id || (el.dataset.drum !== undefined ? `drum-${el.dataset.drum}` : el.dataset.object !== undefined ? `object-${el.dataset.object}` : el.dataset.bin !== undefined ? `bin-${el.dataset.bin}` : el.dataset.patternChoice !== undefined ? `pattern-choice-${el.dataset.patternChoice}` : el.dataset.answer !== undefined ? `answer-${el.dataset.answer}` : el.dataset.level ? `level-${el.dataset.level}` : el.dataset.card !== undefined ? `card-${el.dataset.card}` : el.hasAttribute('data-reserve') ? `reserve-${el.dataset.reserve}` : el.hasAttribute('data-basket') ? `basket-${el.dataset.basket}` : el.dataset.soundPiece !== undefined ? `sound-piece-${el.dataset.soundPiece}` : el.dataset.soundBox !== undefined ? `sound-box-${el.dataset.soundBox}` : el.dataset.piece !== undefined ? `piece-${el.dataset.piece}` : el.dataset.box !== undefined ? `box-${el.dataset.box}` : el.dataset.game || ''), x: r.x, y: r.y, width: r.width, height: r.height }; });
     const rect = (selector: string): { x: number; y: number; width: number; height: number } | null => { const r = app.querySelector(selector)?.getBoundingClientRect(); return r ? { x: r.x, y: r.y, width: r.width, height: r.height } : null; };
-    return structuredClone({ tambours: tamboursSession ?? null, ranger: rangerSession ?? null, suites: suitesSession ?? null, chemin: cheminSession ?? null, puzzle: puzzleSession ? { ...puzzleSession, zone: rect('.puzzle-zone'), boardScreen: rect('[data-puzzle-board]') } : null, screen, game: tamboursSession || rangerSession || suitesSession || cheminSession || puzzleSession || session || memorySession || shapesSession || soundsSession || screen === 'levels' ? activeGame : null, level: tamboursSession?.level ?? rangerSession?.level ?? suitesSession?.level ?? cheminSession?.level ?? puzzleSession?.level ?? soundsSession?.level ?? shapesSession?.level ?? memorySession?.level ?? session?.level ?? null, index: tamboursSession?.index ?? rangerSession?.index ?? suitesSession?.index ?? soundsSession?.index ?? shapesSession?.index ?? session?.index ?? 0, selection: rangerSelected ?? soundSelected ?? selectedPiece ?? null, question: rangerSession?.questions[rangerSession.index] ?? suitesSession?.questions[suitesSession.index] ?? soundsSession?.questions[soundsSession.index] ?? shapesSession?.questions[shapesSession.index] ?? session?.questions[session.index] ?? null, sons: soundsSession ?? null, shapes: shapesSession ?? null, basket: session?.basket ?? 0, board: memorySession ? { ...memorySession, cards: memorySession.cards.map((card, i) => {
+    return structuredClone({ atelier: screen === 'game' && activeGame === 'atelier' && atelierStudio ? atelierSnapshot(atelierStudio) : null, tambours: tamboursSession ?? null, ranger: rangerSession ?? null, suites: suitesSession ?? null, chemin: cheminSession ?? null, puzzle: puzzleSession ? { ...puzzleSession, zone: rect('.puzzle-zone'), boardScreen: rect('[data-puzzle-board]') } : null, screen, game: screen === 'game' && activeGame === 'atelier' || tamboursSession || rangerSession || suitesSession || cheminSession || puzzleSession || session || memorySession || shapesSession || soundsSession || screen === 'levels' ? activeGame : null, level: tamboursSession?.level ?? rangerSession?.level ?? suitesSession?.level ?? cheminSession?.level ?? puzzleSession?.level ?? soundsSession?.level ?? shapesSession?.level ?? memorySession?.level ?? session?.level ?? null, index: tamboursSession?.index ?? rangerSession?.index ?? suitesSession?.index ?? soundsSession?.index ?? shapesSession?.index ?? session?.index ?? 0, selection: rangerSelected ?? soundSelected ?? selectedPiece ?? null, question: rangerSession?.questions[rangerSession.index] ?? suitesSession?.questions[suitesSession.index] ?? soundsSession?.questions[soundsSession.index] ?? shapesSession?.questions[shapesSession.index] ?? session?.questions[session.index] ?? null, sons: soundsSession ?? null, shapes: shapesSession ?? null, basket: session?.basket ?? 0, board: memorySession ? { ...memorySession, cards: memorySession.cards.map((card, i) => {
         const r = app.querySelector(`[data-card="${i}"]`)?.getBoundingClientRect();
         return { ...card, visible: memorySession!.preview || card.found || memorySession!.visible.includes(i), rect: r ? { x: r.x, y: r.y, width: r.width, height: r.height } : null };
     }) } : null, targets });

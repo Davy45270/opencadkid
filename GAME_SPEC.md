@@ -1,10 +1,10 @@
-# Opencadkid — game specification 0.10.0
+# Opencadkid — game specification 1.0.0
 
 Audience: ages 4–8, primarily touch phones. French first, English included. No reading is required in child play. Spoken instructions, procedural SVG pictograms, object illustrations and dot patterns convey the task. No timer, lives, punishment, advertising, purchase, account, analytics or external runtime resource. The first home gesture unlocks browser audio. Reduced motion removes shakes, bounces and decorative particles. Local speech voices are preferred; speech availability offline depends on installed device voices.
 
 ## Catalogue
 
-`compter`, `paires`, `formes`, `sons`, `puzzle`, `chemin`, `suites`, `ranger` and `tambours` are implemented and present in the playable registry. Other catalogue entries remain planned.
+`compter`, `paires`, `formes`, `sons`, `puzzle`, `chemin`, `suites`, `ranger`, `tambours` and `atelier` are implemented and present in the playable registry. The ten-game catalogue is complete.
 
 | ID | Français | English | Guide | Skill and intended rules |
 | --- | --- | --- | --- | --- |
@@ -17,7 +17,7 @@ Audience: ages 4–8, primarily touch phones. French first, English included. No
 | suites | Les suites de Lumi | Lumi's patterns | Lumi | Extend AB, ABC, AAB and related illustrated sequences by selecting the next object. |
 | ranger | Le rangement de CaliRoux | CaliRoux’s tidy-up | CaliRoux | Sort illustrated objects by spoken colour, shape, size or category. |
 | tambours | Les tambours de Tutu | Tutu's drums | Tutu | Listen to and repeat short rhythms with taps; replay freely, no penalty for timing. |
-| atelier | L'atelier de Boubou | Boubou's workshop | Boubou | Fill drawing regions with colour and draw freely; creation rather than scoring. |
+| atelier | L'atelier de Boubou | Boubou's studio | Boubou | Fill drawing regions with colour and draw freely; creation rather than scoring. |
 
 Learning the time belongs to TicTac. Its home card opens the sister app only after the adult gate. No other future-game cards appear.
 
@@ -561,3 +561,29 @@ Three mutations to try:
 3. Route drum contacts through the normal release/debounce binder: immediate-pointer, rapid-tap and simultaneous-finger assertions must fail.
 
 Tambours regression coverage also checks minimal sequence prefixes, backwards timestamps, adapted marker counts, moving hints, varied free replay intervals with both clamps, partial rhythm reset on Listen and visibility changes, detached light timer cancellation, and exact frequencies and stop times after real mobile touches. Painted light filters must differ on consecutive same-drum strikes with and without reduced motion.
+
+
+## Studio: Boubou’s studio — 1.0.0
+
+The tenth and final game opens directly with Boubou, without levels, questions, stars, success or failure. Children choose colouring or free drawing through a paint-pot or brush tab. Ten code-generated polygon drawings depict the five guides, a house, tree, fish, rocket and butterfly. Distinct closed region identifiers accompany actual SVG paths. The 320×300 sheet renders 300 px wide on a 390×844 phone; each region spans at least 44 real pixels on both axes. Small facial details are decorative ink, never tiny touch targets. Quiet peripheral paint marks decorate the studio.
+
+Twelve colours have explicit French and English spoken names. White is the eraser; free brushes are 4, 9 and 18 sheet units. Selected colours have a thick ink ring and white inner border. Palette and tool targets are at least 48 px. Colouring binds the shared activation helper to stable connected regions. Keys include revision, zone and colour, so immediately colouring different zones or recolouring the same one remains possible. Free drawing captures only the primary pointer, converts viewport coordinates with `screenToZone`, samples points at a minimum distance of 2 sheet units and simplifies polylines. Only the sheet prevents touch panning. Cancellation and backgrounding preserve the partial stroke, release ownership and stop shared speech/audio.
+
+Pure engine state contains region colours, brush strokes and forty bounded undo/redo snapshots; a new edit clears redo. Clearing the sheet first opens a gentle confirmation and remains undoable. Switching sheets is undoable. Colouring and free-drawing content are retained independently while changing tabs. Ramer–Douglas–Peucker uses an iterative stack, retains endpoints and simplifies a noisy trace to within 1 unit. When the global 4,000-point vector budget is exceeded, the oldest strokes are flattened into a fixed 160×150 local colour grid, with 2-unit cells and at most √2 units of boundary quantization error. This preserves isolated marks and interrupted strokes without connecting unrelated gestures or dropping any drawing. Undo retains the previous vector/grid snapshot. Geometry is never uploaded.
+
+Gallery format version 1 stores palette indices, positional region colours and half-unit base-36 point coordinates. The optional underpainting uses 24,000 palette-index characters; even that layer plus 4,000 vector marks remains below 60 KiB. The serialized work is limited to 60 KiB. Readers reject unknown versions, invalid modes, drawings, colours, widths, geometry and excess point counts. A damaged work is skipped independently. The separate `opencadkid.atelier.v1` local key retains the latest twelve creations; the thirteenth evicts the oldest. “I’m done” adds Boubou’s stamp and saves once per revision; there is no reward score. Storage failures keep the sheet playable and report that saving failed. The adult panel has a dedicated gallery erase with a second confirmation, separate from existing star records.
+
+`window.__kid.state().atelier` is a detached snapshot containing zones, mode/tool, colour, width, strokes, stroke/point counts and undo/redo sizes. The shared `events()` records zone activations, stroke starts and ignored secondary pointers.
+
+### Studio verification for the orchestrator
+
+- `tests/atelier.test.ts`: independent list of ten drawings; actual polygon vertices establish closed, unique, finite zones and phone dimensions. Pure filling, immediate recolouring and independent neighbours; thirty exact undo/redo steps and history bounds; minimum sampling distance, 12,001-point noisy trace with an independent point-to-segment error oracle ≤2 px, total point budget and underpainting across sixty strokes; compact round trips for both modes and 4,000 isolated marks, corruption/version rejection, 60 KiB limit; gallery eviction, isolated corruption, blocked storage and parental erase; explicit bilingual colour-name oracle and absence of stars.
+- `tests/e2e/atelier.spec.ts`: DOM regions are the fill oracle, with recolouring, undo/redo, gallery save/load after reload, detached observation, zero runtime requests during creation, shared console guard, bilingual speech via shared fake media, brush widths, eraser, cancelled/confirmed clear and parental erasure. All ten drawings measure actual SVG geometry and targets at 320–1280 px without horizontal overflow.
+- `tests/e2e/atelier-doigt.spec.ts`: immediate real touch releases on two regions and immediate recolouring; 300 noisy CDP touch positions, captured primary finger, ignored second finger, unchanged page offsets and retained stroke through undo/redo. The shared fixture attaches `events()` on failure.
+- Optional mobile captures: `atelier-coloriage.png`, `atelier-dessin.png`, refreshed `accueil-catalogue.png` showing ten games and TicTac. Screenshots require orchestrator generation and visual review. No browser or test runner is launched during authoring.
+
+### Studio mutations to try
+
+1. Remove colour/revision from region activation keys: the immediate touch recolouring regression must fail.
+2. Remove the primary-pointer/owner guard: the two-finger test must detect an extra stroke or a spur in its painted bounds.
+3. Change gallery retention from `.slice(-12)` to `.slice(-13)`: the independent thirteen-work eviction test must fail.

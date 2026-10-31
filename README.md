@@ -8,17 +8,17 @@ Play online, without installation, offline once opened.
 
 Gentle educational games for children aged **4–8**, designed for fingers and phones. Boubou the panda, CaliRoux the red panda, Pestouille the dragon, Tutu the monkey and Lumi the unicorn guide each discovery. All artwork is generated in SVG from code.
 
-**Available: Boubou’s baskets, Lumi’s cards, CaliRoux’s shapes, Tutu’s sounds, Pestouille’s puzzle, Pestouille’s path, Lumi’s patterns, CaliRoux’s tidy-up and Tutu’s drums.**
+**10 games available: Boubou’s baskets, Lumi’s cards, CaliRoux’s shapes, Tutu’s sounds, Pestouille’s puzzle, Pestouille’s path, Lumi’s patterns, CaliRoux’s tidy-up, Tutu’s drums and Boubou’s studio.**
 
 Boubou's baskets — count, fill and compare across eight levels — and **Lumi's cards**, a gentle memory game with 2, 3, 4, 6, 8 and 10 pairs, plus a picture-to-shadow level. Lumi offers a two-second preview on the first three levels and a glowing hint after repeated misses. Sixteen procedural shapes remain distinguishable without colour; the largest board fits a 390×844 phone without scrolling. French comes first; English is included. English is selected automatically only when the device language starts with `en`. Adults can change and save the language.
 
 **CaliRoux's shapes** is also available: ten levels of shapes, colours, combinations, sizes and finger sorting into two or three colour boxes. Eight outlined SVG shapes and eight named colours accompany spoken prompts; close colour pairs never share a question. Two errors make the answer glow and repeat its name.
 
-Planned: Boubou's workshop, described in [GAME_SPEC.md](GAME_SPEC.md). Learning to tell time is available in the sister application TicTac, through an adult-gated home card.
+The complete catalogue is described in [GAME_SPEC.md](GAME_SPEC.md). Learning to tell time is available in the sister application TicTac, through an adult-gated home card.
 
 No reading is required to play: spoken instructions accompany pictograms, objects and dot constellations. The first touch enables browser audio. Voice availability depends on the device's speech service; install a local French or English voice for spoken play offline. The ear button repeats an instruction. A silent device still shows the visual prompts.
 
-There are no timers, lives, punitive failures, ads, purchases, accounts or analytics. Mistakes invite another try; two mistakes trigger a counting hint. Finishing always earns stars and unlocks the next level. Each game keeps its own best stars and unlocks; older counting saves remain valid. Progress and preferences stay in local browser storage. The app makes no external runtime requests. An adult's written challenge protects settings and the external TicTac link. This is a light parental gate, not an identity or security check.
+There are no timers, lives, punitive failures, ads, purchases, accounts or analytics. Mistakes invite another try; two mistakes trigger a counting hint. Finishing a guided game always earns stars and unlocks the next level. The studio has no score or imposed goal. Each game keeps its own best stars and unlocks; older counting saves remain valid. Progress and preferences stay in local browser storage. The app makes no external runtime requests. An adult's written challenge protects settings and the external TicTac link. This is a light parental gate, not an identity or security check.
 
 ## Install and play offline
 
@@ -33,6 +33,8 @@ Open the online game once while connected. Use your browser's **Install app** or
 **Lumi’s patterns** offers ten levels: extend AB, AAB, ABB, ABC, AABB and ABCD motifs, fill a middle gap, place the next two objects in order by touch or drag, then grow dot groups by one. Beads, flowers and outlined shapes always differ beyond colour. Two errors outline the base motif and Lumi names it aloud. Every completed six-question round earns stars and unlocks the next level; best stars are saved separately. Illustrations measure 48 px and choices at least 72 px. On a 390×844 phone the sequence fits two rows without scrolling. Reduced motion removes the gentle empty-slot pulse.
 
 **CaliRoux’s tidy-up** adds eight levels of sorting: colour, simplified shape, small/large, category, three bins, two combined clues and a unique odd one out. Thirty everyday drawings in 180 colour/size variants have bilingual spoken names. Touch an object then its bin, or drag with a gentle 24 px snap. Two misses on the same object pulse the right bin and repeat the rule; wrong objects return softly without a negative sound. Non-colour rules cannot be solved by colour alone. Bins measure at least 96 px, object targets 88 px and actual painted extent at least 56 px. A pale bedroom accompanies separate best stars and unlocks. Optional captures: `ranger-couleur.png` and `ranger-categorie.png`. The independent unit and browser tests are authored for orchestrator execution; screenshots still require generation and visual review.
+
+**Boubou’s studio**: colour ten procedural drawings (the five guides, a house, a tree, a fish, a rocket and a butterfly), or draw freely with one finger. Twelve named colours, a white eraser, three brush sizes and forty undo/redo steps support calm exploration. Touch “I’m done” for Boubou’s stamp and a local gallery of at most twelve creations. No artwork is uploaded. Parents can erase the gallery after confirmation. Gallery persistence depends on available browser storage; an unavailable store leaves the current sheet playable. Optional captures `atelier-coloriage.png`, `atelier-dessin.png` and the refreshed `accueil-catalogue.png` await orchestrator generation and visual review.
 
 ## Screenshots
 
