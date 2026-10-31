@@ -18,7 +18,7 @@ test('twenty cards, noisy fingers, double touch and rapid mismatch touches finis
         await expectTouch(page, `carte ${index}, coup ${before.moves}`, async () => {
             const after = (await memoryState(page)).board;
             if (expected === 'ignored') return after.moves === before.moves && JSON.stringify(after.visible) === JSON.stringify(before.visible);
-            if (before.mismatch) return !after.mismatch && after.visible.length === 0;
+            if (before.mismatch) return !after.mismatch && JSON.stringify(after.visible) === JSON.stringify(before.visible.includes(index) ? [] : [index]);
             return after.cards[index]!.found || after.visible.includes(index) || after.finished;
         });
         expect(await page.evaluate(() => ({ x: scrollX, y: scrollY }))).toEqual(scroll);
@@ -31,10 +31,17 @@ test('twenty cards, noisy fingers, double touch and rapid mismatch touches finis
     await tap(0); await tap(0); expect((await memoryState(page)).board.visible).toEqual([0]); expect((await memoryState(page)).board.moves).toBe(0);
     const wrong = initial.cards.findIndex(c => c.motif !== initial.cards[0]!.motif);
     await tap(wrong); expect((await memoryState(page)).board.mismatch).toBe(true);
+    await tap(0); // A visible mismatch card only closes the pair.
+    expect((await memoryState(page)).board.visible).toEqual([]);
+    await page.clock.runFor(350);
+    await tap(0); await tap(wrong);
     const third = initial.cards.findIndex((_, i) => i !== 0 && i !== wrong);
     await tap(third); await tap(third, 'ignored');
     const after = (await memoryState(page)).board;
-    expect(after.moves).toBe(1); expect(after.mismatch).toBe(false); expect(after.visible).toEqual([]);
+    expect(after.moves).toBe(2); expect(after.mismatch).toBe(false); expect(after.visible).toEqual([third]);
+    // A cancelled mismatch timer must not close the newly opened card.
+    await page.clock.runFor(900);
+    await expect.poll(async () => (await memoryState(page)).board.visible).toEqual([third]);
     await solveMemory(page, async index => {
         // Rapid/double touches above deliberately share the same logical turn.
         // Advance the controlled clock past their debounce before intentional play.

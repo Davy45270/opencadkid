@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.1
+
+- During a memory mismatch, a hidden-card touch closes both cards and opens its target immediately; touching either visible card only closes the pair. Preserve move counts and accidental-double-touch protection.
+- Redraw all ten colouring sheets with rounded contours, smiling faces, recognisable guide features and large colourable object details, with 8–20 closed regions per sheet.
+- Add handwritten memory transition oracles, controlled-clock touch regressions, guide-feature identifiers and geometric smile/eyebrow checks. Preserve existing geometry, colouring and history checks. Test suites and visual capture review await orchestrator execution.
+
 ## 1.0.0
 
 - Complete the ten-game catalogue with Boubou’s studio: ten procedural colouring drawings and calm free finger drawing, twelve bilingual spoken colours, white eraser and three brush sizes.

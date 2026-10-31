@@ -10,14 +10,17 @@ it('ten independent polygon drawings have unique closed finite zones at least 44
     for(const d of drawings) {
         expect(new Set(d.zones.map(z=>z.id)).size).toBe(d.zones.length);
         expect(new Set(d.zones.map(z=>z.path)).size).toBe(d.zones.length);
-        expect(d.zones.length).toBeGreaterThanOrEqual(3);
+        expect(d.zones.length).toBeGreaterThanOrEqual(8);
+        expect(d.zones.length).toBeLessThanOrEqual(20);
         for(const z of d.zones) {
             expect(z.path).toMatch(/^M(?:[\d .ML-]+)Z$/); expect(z.path).not.toMatch(/NaN|Infinity|undefined/);
             // Independent bounds from actual authored path vertices, not engine metadata.
             const pairs=[...z.path.matchAll(/[ML]([\d.]+) ([\d.]+)/g)].map(m=>[Number(m[1]),Number(m[2])]);
             const xs=pairs.map(p=>p[0]!), ys=pairs.map(p=>p[1]!);
-            expect((Math.max(...xs)-Math.min(...xs))*300/320).toBeGreaterThanOrEqual(44);
-            expect((Math.max(...ys)-Math.min(...ys))*300/320).toBeGreaterThanOrEqual(44);
+            for (const width of [288, 300]) {
+                expect((Math.max(...xs)-Math.min(...xs))*width/320).toBeGreaterThanOrEqual(44);
+                expect((Math.max(...ys)-Math.min(...ys))*width/320).toBeGreaterThanOrEqual(44);
+            }
             expect(Math.min(...xs)).toBeGreaterThanOrEqual(0);expect(Math.max(...xs)).toBeLessThanOrEqual(320);
             expect(Math.min(...ys)).toBeGreaterThanOrEqual(0);expect(Math.max(...ys)).toBeLessThanOrEqual(300);
         }
@@ -231,4 +234,44 @@ it('underpaint renders all palette colours including white and skips transparent
     const html=underpaint(art);
     expect(html.match(/<path /g)).toHaveLength(13);
     for(const [i,c] of palette.entries()) expect(html).toContain(`<path d="M${i*2} 0h2v2H${i*2}Z" fill="${c[0]}"/>`);
+});
+
+
+it('guide colouring silhouettes retain their independently named distinguishing features', () => {
+    const features = {
+        boubou: ['left-ear', 'right-ear', 'left-eye-patch', 'right-eye-patch', 'bamboo-leaves', 'basket'],
+        caliroux: ['left-ear', 'right-ear', 'left-cheek', 'right-cheek', 'striped-tail'],
+        pestouille: ['left-horn', 'right-horn', 'left-wing', 'right-wing', 'dragon-tail', 'book-left', 'book-right'],
+        tutu: ['left-ear', 'right-ear', 'face-mask', 'tutu', 'curled-tail', 'flower'],
+        lumi: ['left-ear', 'right-ear', 'horn', 'mane', 'flowing-tail', 'chest-star']
+    };
+    for (const [id, expected] of Object.entries(features)) {
+        const d = drawings.find(d => d.id === id)!;
+        for (const feature of ['head', 'body', 'left-foot', 'right-foot', ...expected]) expect(d.zones.map(z => z.id)).toContain(feature);
+    }
+});
+it('all authored mouths curve into smiles and guide faces cannot contain converging angry eyebrows', () => {
+    for (const d of drawings) {
+        expect(d.ink).not.toMatch(/eyebrow|brow/i);
+        const mouths = [...d.ink.matchAll(/data-feature="mouth" d="M([\d.]+) ([\d.]+)Q([\d.]+) ([\d.]+) ([\d.]+) ([\d.]+)"/g)];
+        expect(mouths.length).toBe(d.id === 'maison' || d.id === 'arbre' || d.id === 'fusee' ? 0 : 1);
+        for (const m of mouths) {
+            const [x1,y1,cx,cy,x2,y2] = m.slice(1).map(Number) as [number,number,number,number,number,number];
+            expect(x1).toBeLessThan(cx); expect(cx).toBeLessThan(x2);
+            expect(y1).toBe(y2); expect(cy).toBeGreaterThan(y1);
+        }
+        if (['boubou','caliroux','pestouille','tutu','lumi'].includes(d.id)) {
+            const face = /<g data-face="smiling">(.*?)<\/g>/.exec(d.ink)![1]!;
+            expect([...face.matchAll(/data-feature="([^"]+)"/g)].map(m => m[1])).toEqual(['eyes', 'mouth', 'nose']);
+            // Exact eye oracle admits only two vertical, separated marks, no diagonal brow strokes.
+            expect(face).toContain('data-feature="eyes" d="M123 107v8M197 107v8"');
+            expect(face.match(/<path /g)).toHaveLength(3);
+            const outsideFace = d.ink.replace(/<g data-face="smiling">.*?<\/g>/, '');
+            for (const path of outsideFace.matchAll(/ d="([^"]+)"/g)) {
+                const points = [...path[1]!.matchAll(/[MLQ]([\d.]+) ([\d.]+)/g)];
+                // No decorative stroke can add a brow in either eye's forehead band.
+                for (const point of points) expect(Number(point[1]) >= 100 && Number(point[1]) <= 220 && Number(point[2]) >= 85 && Number(point[2]) <= 106).toBe(false);
+            }
+        }
+    }
 });

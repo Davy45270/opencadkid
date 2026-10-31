@@ -39,14 +39,14 @@ it('each of the eight introductory motifs occupies every position 8–17% of 200
         expect((position.get(motif) ?? 0) / 2000).toBeLessThanOrEqual(.17);
     }
 });
-it('preview and invalid/visible/found/third cards cannot be flipped, mismatch settles purely', () => {
+it('preview and invalid/visible/found cards cannot be flipped, mismatch settles purely', () => {
     const preview = newBoard(1, 2); expect(flip(preview, 0)).toBe(preview);
     const initial = play(), original = structuredClone(initial);
     for (const index of [-1, 99, .5, NaN]) expect(flip(initial, index)).toBe(initial);
     const one = flip(initial, 0); expect(one.visible).toEqual([0]); expect(flip(one, 0)).toBe(one);
     const wrong = initial.cards.findIndex(c => c.motif !== initial.cards[0]!.motif);
     const two = flip(one, wrong); expect(two.mismatch).toBe(true); expect(two.moves).toBe(1);
-    expect(two.visible).toEqual([0, wrong]); expect(flip(two, pair(initial, 0))).toBe(two);
+    expect(two.visible).toEqual([0, wrong]); expect(flip(two, pair(initial, 0)).visible).toEqual([pair(initial, 0)]);
     const closed = settle(two); expect(closed.visible).toEqual([]); expect(closed.mismatch).toBe(false); expect(closed.seen[0]).toBe(true);
     expect(two.visible).toHaveLength(2); expect(initial).toEqual(original); expect(settle(closed)).toBe(closed);
     const matched = flip(flip(closed, 0), pair(closed, 0));
@@ -173,4 +173,27 @@ it('each named silhouette has its fixed geometric signature and accessible ident
         if (shadow) expect(rendered).toContain('fill="#354e41"');
         else expect(rendered).not.toContain('fill="#354e41"');
     }
+});
+
+
+it('touching a mismatch closes it and opens only a hidden target: handwritten transition oracle', () => {
+    const base: Board = {
+        level: 3, columns: 4, rows: 2, preview: false,
+        cards: ['apple', 'banana', 'apple', 'banana', 'cat', 'cat', 'fish', 'fish'].map(motif => ({ motif: motif as Board['cards'][number]['motif'], shadow: false, found: false })),
+        visible: [], seen: Array.from({ length: 8 }, () => false), misses: Array.from({ length: 8 }, () => 0), moves: 0, mismatch: false, hint: [], finished: false
+    };
+    const mismatch = flip(flip(base, 0), 1), original = structuredClone(mismatch);
+    for (const [target, visible] of [[0, []], [1, []], [2, [2]], [4, [4]]] as const) {
+        const next = flip(mismatch, target);
+        expect(next).toEqual({ ...original, visible: [...visible], mismatch: false });
+        expect(settle(next)).toBe(next); // A stale settlement cannot close a new selection.
+    }
+    for (const target of [-1, 8, .5, NaN]) expect(flip(mismatch, target)).toBe(mismatch);
+    const withFound = { ...mismatch, cards: mismatch.cards.map((c, i) => ({ ...c, found: i >= 6 })) };
+    expect(flip(withFound, 6)).toBe(withFound);
+    const nextPair = flip(flip(mismatch, 2), 0);
+    expect(nextPair.visible).toEqual([]); expect(nextPair.moves).toBe(2);
+    expect(nextPair.cards.map(c => c.found)).toEqual([true, false, true, false, false, false, false, false]);
+    expect(nextPair.seen).toEqual([true, true, true, false, false, false, false, false]);
+    expect(mismatch).toEqual(original);
 });

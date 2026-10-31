@@ -546,8 +546,6 @@ function renderMemory(): void {
     } else app.replaceChildren(next.content);
     bind('[data-card]', el => {
         if (!memorySession || memorySession.preview || memorySession.finished) return;
-        // A touch during a mismatch only closes it. It cannot also open a third card.
-        if (memorySession.mismatch) { memorySession = memory.settle(memorySession); render(); return; }
         const index = Number(el.dataset.card), previous = memorySession;
         memorySession = memory.flip(previous, index);
         if (memorySession === previous) return;
@@ -555,6 +553,7 @@ function renderMemory(): void {
         if (memorySession.finished) { save.pairesRecords = memory.complete(save.pairesRecords, memorySession); persist(); }
         render();
         if (matched) chime(save.sound);
+        if (!matched && !memorySession.visible.includes(index)) return;
         speak([motifNames[save.locale][memorySession.cards[index]!.motif], ...(matched ? [text(save.locale, memorySession.finished ? 'finished' : 'bravo')] : memorySession.hint.length && !previous.hint.length ? [text(save.locale, 'memoryHint')] : [])]);
     }, el => `${actionKey(el)}:turn-${memorySession!.moves}`);
     bind('#listen', () => speak([memoryView.instruction(memorySession!, save.locale)]));

@@ -29,7 +29,9 @@ export function newBoard(level: number, seed: number): Board {
 export function endPreview(state: Board): Board { return state.preview ? { ...state, preview: false } : state; }
 export function flip(state: Board, index: number): Board {
     const card = state.cards[index];
-    if (!Number.isInteger(index) || !card || card.found || state.preview || state.finished || state.mismatch || state.visible.includes(index)) return state;
+    if (!Number.isInteger(index) || !card || card.found || state.preview || state.finished) return state;
+    if (state.mismatch) return state.visible.includes(index) ? settle(state) : flip(settle(state), index);
+    if (state.visible.includes(index)) return state;
     const visible = [...state.visible, index], seen = [...state.seen];
     if (visible.length === 1) return { ...state, visible };
     for (const i of visible) seen[i] = true;
