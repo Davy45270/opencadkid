@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest';
-import { addStroke, appendGallery, clear, deserialize, drawings, fill, HISTORY, MAX_BYTES, palette, parseGallery, pointCount, redo, sample, serialize, SHEET, simplify, start, undo, type Point } from '../src/engines/atelier';
+import { addStroke, appendGallery, clear, deserialize, drawings, fill, HISTORY, MAX_BYTES, MAX_POINTS, palette, parseGallery, pointCount, redo, sample, serialize, SHEET, simplify, start, strokeTolerance, undo, type Point } from '../src/engines/atelier';
 import { eraseGallery, readGallery, writeGallery } from '../src/games/atelier/storage';
 import { gameView, labels, sheet, underpaint } from '../src/games/atelier/view';
 
@@ -56,6 +56,33 @@ it('noisy long strokes retain their endpoints and shape within 2px with at most 
     for(let i=1;i<sampled.length;i++) expect(Math.hypot(sampled[i]!.x-sampled[i-1]!.x,sampled[i]!.y-sampled[i-1]!.y)).toBeGreaterThanOrEqual(2);
     expect(sample(sampled,{x:NaN,y:10})).toEqual(sampled);
 });
+for(const scale of [.8,1,1.5,2]) {
+    it(`300 noisy finger points stay within 2 screen pixels at scale ${scale}`, () => {
+        let seed=29;
+        const noise=(): number=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/2**32*2-1;};
+        // Generate noise in screen pixels, then convert the gesture to sheet units.
+        const original=Array.from({length:300},(_,i)=>({
+            x:25/scale+i*(SHEET.width-50/scale)/299+noise()/scale,
+            y:SHEET.height/2+(35*Math.sin(i/30)+noise())/scale
+        }));
+        let preview: Point[]=[];
+        for(const p of original) preview=sample(preview,p,strokeTolerance(scale));
+        const state=addStroke(start('boubou','draw'),original,scale);
+        expect(state.art.strokes).toHaveLength(1);
+        expect(state.art.flattened).toBeUndefined();
+        expect(pointCount(state.art)).toBeLessThanOrEqual(MAX_POINTS);
+        const retained=state.art.strokes[0]!.points;
+        for(const line of [preview,retained]) {
+            expect(line.length).toBeGreaterThan(5);
+            expect(line.length).toBeLessThanOrEqual(MAX_POINTS);
+            for(const p of original) expect(distance(p,line)*scale).toBeLessThanOrEqual(2);
+        }
+        for(const [p,q] of [[original[0]!,retained[0]!],[original.at(-1)!,retained.at(-1)!]]) {
+            expect(Math.hypot(p!.x-q!.x,p!.y-q!.y)*scale).toBeLessThanOrEqual(2);
+        }
+        expect(deserialize(serialize(state.art))).toEqual(state.art);
+    });
+}
 it('the total budget flattens earlier strokes within 2px instead of discarding any marks', () => {
     let s=start('boubou','draw');
     for(let n=0;n<60;n++) {

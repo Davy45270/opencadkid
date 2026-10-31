@@ -37,11 +37,15 @@ export function simplify(points: readonly Point[], tolerance = 1): Point[] {
     }
     return [...keep].sort((a,b)=>a-b).map(i=>({ ...points[i]! }));
 }
-export function sample(points: readonly Point[], p: Point): Point[] {
+/** Reserve half-unit coordinate rounding inside a 1.5 CSS-pixel error budget. */
+export function strokeTolerance(scale: number): number {
+    return Math.max(0, 1.5 / scale - Math.SQRT2 / 4);
+}
+export function sample(points: readonly Point[], p: Point, step = 2): Point[] {
     if (!Number.isFinite(p.x) || !Number.isFinite(p.y)) return [...points];
     const next={x:Math.round(Math.max(0,Math.min(SHEET.width,p.x))*2)/2,y:Math.round(Math.max(0,Math.min(SHEET.height,p.y))*2)/2};
     const last=points.at(-1);
-    return last && Math.hypot(last.x-next.x,last.y-next.y)<2 ? [...points] : [...points,next];
+    return last && Math.hypot(last.x-next.x,last.y-next.y)<step ? [...points] : [...points,next];
 }
 /** When vector detail reaches the budget, flatten oldest strokes to a 2-unit
  * colour grid. Marks remain visible (including isolated dots); no stroke is dropped.
@@ -59,10 +63,10 @@ function flatten(base: string | undefined, stroke: Stroke): string {
     else for(let i=1;i<stroke.points.length;i++) mark(stroke.points[i-1]!,stroke.points[i]!);
     return cells.join('');
 }
-export function addStroke(state: State, points: readonly Point[]): State {
+export function addStroke(state: State, points: readonly Point[], scale = 1): State {
     const clean=points.filter(p=>Number.isFinite(p.x) && Number.isFinite(p.y)).map(p=>({x:Math.round(Math.max(0,Math.min(SHEET.width,p.x))*2)/2,y:Math.round(Math.max(0,Math.min(SHEET.height,p.y))*2)/2}));
     if (!clean.length) return state;
-    const strokes=[...state.art.strokes,{color:state.color,width:state.width,points:simplify(clean)}];
+    const strokes=[...state.art.strokes,{color:state.color,width:state.width,points:simplify(clean,strokeTolerance(scale))}];
     let total=strokes.reduce((n,s)=>n+s.points.length,0), underpaint=state.art.underpaint, flattened=state.art.flattened ?? 0;
     while(total>MAX_POINTS) {const oldest=strokes.shift()!;underpaint=flatten(underpaint,oldest);flattened++;total-=oldest.points.length;}
     const art: Artwork={...state.art,strokes};

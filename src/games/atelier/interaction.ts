@@ -1,5 +1,5 @@
 import { bindDragEnd } from '../../shell/drag';
-import { addStroke, appendGallery, change, clear, deserialize, drawings, fill, palette, pointCount, redo, sample, SHEET, start, undo, type Point, type State } from '../../engines/atelier';
+import { addStroke, appendGallery, change, clear, deserialize, drawings, fill, palette, pointCount, redo, sample, strokeTolerance, SHEET, start, undo, type Point, type State } from '../../engines/atelier';
 import { acceptActivation, bindAction, recordActivation } from '../../shell/activation';
 import { screenToZone } from '../../shell/coordinates';
 import type { Locale } from '../../shell/i18n';
@@ -11,7 +11,7 @@ export interface Studio { state: State; revision: number }
 export function snapshot(studio: Studio): object { const s=studio.state; return { ...s.art, tool:s.art.mode, color:s.color, width:s.width, strokeCount:s.art.strokes.length+(s.art.flattened ?? 0), pointCount:pointCount(s.art), undoSize:s.past.length, redoSize:s.future.length }; }
 export function mount(root: HTMLElement, studio: Studio, locale: Locale, storage: StoragePort | undefined, speak: (parts:string[])=>void, home: ()=>void): ()=>void {
     const t=labels[locale];
-    let pointer: number | undefined, points: Point[]=[], preview: Point[]=[], disposed=false, savedRevision=-1;
+    let pointer: number | undefined, points: Point[]=[], preview: Point[]=[], disposed=false, savedRevision=-1, strokeScale=1;
     let paperOwner: HTMLElement | undefined;
     const ending=bindDragEnd(root.ownerDocument,()=>pointer===undefined || !paperOwner ? undefined : {pointer,element:paperOwner},()=>{pointer=undefined;paperOwner=undefined;},reason=>{
         if(pointer!==undefined) {recordActivation('atelier:stroke',reason,true,'preserve-partial-stroke');finish();}
@@ -35,7 +35,7 @@ export function mount(root: HTMLElement, studio: Studio, locale: Locale, storage
     function finish(): void {
         if(pointer===undefined) return;
         ending.finish();
-        set(addStroke(state(),points)); points=[]; preview=[];
+        set(addStroke(state(),points,strokeScale)); points=[]; preview=[];
         if(!disposed) paint();
     }
     function bindSheet(): void {
@@ -64,7 +64,7 @@ export function mount(root: HTMLElement, studio: Studio, locale: Locale, storage
             // Keep the original gesture for a single simplification at commit time.
             // Sampling is only a live-preview optimisation: its error must not accumulate.
             for(const e of batch.length ? batch : [event]) {
-                const p=position(e); points.push(p); preview=sample(preview,p);
+                const p=position(e); points.push(p); preview=sample(preview,p,strokeTolerance(strokeScale));
             }
             const live=root.querySelector('#atelier-live')!;
             live.setAttribute('d',strokePath(preview)); live.setAttribute('stroke',state().color); live.setAttribute('stroke-width',String(state().width));
@@ -73,6 +73,9 @@ export function mount(root: HTMLElement, studio: Studio, locale: Locale, storage
             if(state().art.mode!=='draw') return;
             if(pointer!==undefined || !event.isPrimary || event.button!==0) {recordActivation('atelier:stroke',event.type,false,'secondary-pointer');return;}
             if(!acceptActivation(`atelier:stroke:${studio.revision}`,event.type,false)) return;
+            // Use the SVG's actual screen scale, including CSS transforms and viewport scaling.
+            const matrix=paper.querySelector<SVGSVGElement>('.atelier-paper')!.getScreenCTM()!;
+            strokeScale=Math.max(Math.hypot(matrix.a,matrix.b),Math.hypot(matrix.c,matrix.d));
             event.preventDefault(); paperOwner=paper; pointer=event.pointerId; points=[]; preview=[]; paper.setPointerCapture(event.pointerId); ending.watch(); extend(event);
         });
         paper.addEventListener('pointermove',event=>{if(pointer===event.pointerId) {event.preventDefault();extend(event);} });
