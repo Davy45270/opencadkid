@@ -44,11 +44,13 @@ Phone screenshots (390×844).
 
 | | |
 |---|---|
-| <img src="docs/captures/accueil-fr.png" alt="Home (French)" width="240"><br>Home (French) | <img src="docs/captures/accueil-en.png" alt="Home (English)" width="240"><br>Home (English) |
+| <img src="docs/captures/accueil-catalogue.png" alt="All ten games" width="240"><br>All ten games | <img src="docs/captures/accueil-fr.png" alt="Home (French)" width="240"><br>Home (French) |
 | <img src="docs/captures/compter-combien.png" alt="Boubou's baskets: how many?" width="240"><br>Boubou's baskets: how many? | <img src="docs/captures/compter-remplir.png" alt="Boubou's baskets: fill the basket" width="240"><br>Boubou's baskets: fill the basket |
 | <img src="docs/captures/paires-plateau.png" alt="Lumi's cards" width="240"><br>Lumi's cards | <img src="docs/captures/formes-trier.png" alt="CaliRoux's shapes: sort by colour" width="240"><br>CaliRoux's shapes: sort by colour |
 | <img src="docs/captures/sons-image-lettre.png" alt="Tutu's sounds" width="240"><br>Tutu's sounds | <img src="docs/captures/puzzle-chateau.png" alt="Pestouille's puzzle" width="240"><br>Pestouille's puzzle |
-| <img src="docs/captures/chemin-prairie.png" alt="Pestouille's path" width="240"><br>Pestouille's path | <img src="docs/captures/compter-etoiles.png" alt="End of a series: always rewarded" width="240"><br>End of a series: always rewarded |
+| <img src="docs/captures/chemin-prairie.png" alt="Pestouille's path" width="240"><br>Pestouille's path | <img src="docs/captures/suites-question.png" alt="Lumi's patterns" width="240"><br>Lumi's patterns |
+| <img src="docs/captures/ranger-couleur.png" alt="CaliRoux's tidy-up" width="240"><br>CaliRoux's tidy-up | <img src="docs/captures/tambours-ecoute.png" alt="Tutu's drums" width="240"><br>Tutu's drums |
+| <img src="docs/captures/atelier-coloriage.png" alt="Boubou's studio" width="240"><br>Boubou's studio | <img src="docs/captures/compter-etoiles.png" alt="End of a series: always rewarded" width="240"><br>End of a series: always rewarded |
 
 ## Develop
 

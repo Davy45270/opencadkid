@@ -44,11 +44,13 @@ Captures sur téléphone (390×844).
 
 | | |
 |---|---|
-| <img src="docs/captures/accueil-fr.png" alt="Accueil (français)" width="240"><br>Accueil (français) | <img src="docs/captures/accueil-en.png" alt="Accueil (anglais)" width="240"><br>Accueil (anglais) |
+| <img src="docs/captures/accueil-catalogue.png" alt="Les dix jeux" width="240"><br>Les dix jeux | <img src="docs/captures/accueil-fr.png" alt="Accueil" width="240"><br>Accueil |
 | <img src="docs/captures/compter-combien.png" alt="Les paniers de Boubou : combien ?" width="240"><br>Les paniers de Boubou : combien ? | <img src="docs/captures/compter-remplir.png" alt="Les paniers de Boubou : remplir le panier" width="240"><br>Les paniers de Boubou : remplir le panier |
 | <img src="docs/captures/paires-plateau.png" alt="Les cartes de Lumi" width="240"><br>Les cartes de Lumi | <img src="docs/captures/formes-trier.png" alt="Les formes de CaliRoux : trier par couleur" width="240"><br>Les formes de CaliRoux : trier par couleur |
 | <img src="docs/captures/sons-image-lettre.png" alt="Les sons de Tutu" width="240"><br>Les sons de Tutu | <img src="docs/captures/puzzle-chateau.png" alt="Le puzzle de Pestouille" width="240"><br>Le puzzle de Pestouille |
-| <img src="docs/captures/chemin-prairie.png" alt="Le chemin de Pestouille" width="240"><br>Le chemin de Pestouille | <img src="docs/captures/compter-etoiles.png" alt="Fin de série : toujours récompensée" width="240"><br>Fin de série : toujours récompensée |
+| <img src="docs/captures/chemin-prairie.png" alt="Le chemin de Pestouille" width="240"><br>Le chemin de Pestouille | <img src="docs/captures/suites-question.png" alt="Les suites de Lumi" width="240"><br>Les suites de Lumi |
+| <img src="docs/captures/ranger-couleur.png" alt="Le rangement de CaliRoux" width="240"><br>Le rangement de CaliRoux | <img src="docs/captures/tambours-ecoute.png" alt="Les tambours de Tutu" width="240"><br>Les tambours de Tutu |
+| <img src="docs/captures/atelier-coloriage.png" alt="L'atelier de Boubou" width="240"><br>L'atelier de Boubou | <img src="docs/captures/compter-etoiles.png" alt="Fin de série : toujours récompensée" width="240"><br>Fin de série : toujours récompensée |
 
 ## Développer
 
