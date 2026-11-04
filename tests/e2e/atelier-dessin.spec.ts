@@ -48,7 +48,7 @@ test('the brush draws over the coloured model, which stays visible under the str
     await expect(page.locator('[data-stroke="0"]')).toHaveCount(1);
     await page.locator('#atelier-picture').selectOption('feuille');
     expect(await studioState(page)).toMatchObject({ drawing: 'feuille', tool: 'draw', zones: {}, strokeCount: 0 });
-    await expect(page.locator('[data-tool="draw"]')).toHaveAttribute('aria-selected', 'true');
+    await expect(page.locator('.atelier-tabs [data-tool="draw"]')).toHaveAttribute('aria-selected', 'true');
 });
 
 test('the animated model moves while keeping exactly the child’s colours, and stops on the next tap', async ({ page }) => {
@@ -58,7 +58,7 @@ test('the animated model moves while keeping exactly the child’s colours, and 
     const zones = ['left-top', 'right-top', 'body', 'fond'];
     for (const [i, zone] of zones.entries()) {
         await page.locator(`[data-color="${colours[i]!}"]`).click();
-        if (zone === 'fond') { const c = await corner(page); await page.mouse.click(c.x, c.y); } else await page.locator(`[data-zone="${zone}"]`).click();
+        if (zone === 'fond') { const c = await corner(page); await page.mouse.click(c.x, c.y); } else await page.locator(`[data-zone="${zone}"]`).dispatchEvent('click'); // the wing spots cover the wings' centres
     }
     await page.locator('[data-tool="play"]').click();
     await expect(page.locator('[data-tool="play"]')).toHaveAttribute('aria-pressed', 'true');
@@ -92,7 +92,7 @@ test('the picture is saved as a PNG file on this device, with no network request
     await page.locator('[data-tool="export"]').click();
     const file = await download;
     expect(file.suggestedFilename()).toMatch(/^opencadkid-boubou-\d{4}-\d{2}-\d{2}-\d{2}-\d{2}\.png$/);
-    const bytes = fs.readFileSync((await file.path())!);
+    const bytes = fs.readFileSync(await file.path());
     expect([...bytes.subarray(0, 8)]).toEqual([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
     // IHDR: 960 × 900 pixels.
     expect(bytes.readUInt32BE(16)).toBe(960); expect(bytes.readUInt32BE(20)).toBe(900);
