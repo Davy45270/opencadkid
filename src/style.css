@@ -151,3 +151,4 @@ button:active{transform:translateY(3px);box-shadow:0 1px 0 #c7d5b7,inset 0 2px 4
 .gouter-reward{text-align:center}.gouter-reward .stars{font-size:3rem}.gouter-reward .finish-actions button{margin:6px 0}
 .gouter .level-grid span{min-height:1.2em}
 @media(prefers-reduced-motion:reduce){.gouter-zone [data-star]{transition:none}}
+.app-version{text-align:center;font-size:.8rem;color:#6d7e62;margin:8px 0 0}

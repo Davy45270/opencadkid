@@ -19,3 +19,8 @@ test('TicTac requires the correct written answer before any external navigation'
     await expect.poll(() => requests).toEqual(['https://davy45270.github.io/tictac/']);
     expect(await page.evaluate(() => (window as unknown as { __links: string[] }).__links)).toEqual(['noopener noreferrer']);
 });
+test('the parents panel shows the released version', async ({ page }) => {
+    const { version } = JSON.parse((await import('node:fs')).readFileSync('package.json', 'utf8')) as { version: string };
+    await page.goto('/'); await page.locator('#parents').click(); await passGate(page);
+    await expect(page.locator('.app-version')).toHaveText(`Opencadkid ${version}`);
+});
