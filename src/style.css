@@ -36,13 +36,12 @@ button{background-image:linear-gradient(155deg,#ffffff60,#ffffff00 55%,#b3a48510
 button:active{transform:translateY(3px);box-shadow:0 1px 0 #c7d5b7,inset 0 2px 4px #66775318}
 .token,.puzzle-piece{background-image:none}
 .token:active{box-shadow:none}
-.game-card{border-color:#c4d6ac;background-image:radial-gradient(ellipse at 30% 0,#fffdf6b3,transparent 75%),linear-gradient(160deg,#f1f6e5,#e4edcf);box-shadow:0 4px 0 #bacba5,0 8px 16px #52664812,inset 0 2px 0 #ffffffbd;animation:arrive .45s ease backwards}
+.game-card{border-color:#c4d6ac;background-image:radial-gradient(ellipse at 30% 0,#fffdf6b3,transparent 75%),linear-gradient(160deg,#f1f6e5,#e4edcf);box-shadow:0 4px 0 #bacba5,0 8px 16px #52664812,inset 0 2px 0 #ffffffbd}
 .game-card[data-game=paires]{background-image:linear-gradient(155deg,#faf6ff,#eae2f5);border-color:#d5c6e4}
 .game-card[data-game=formes]{background-image:linear-gradient(155deg,#fff7e8,#f4e3ca);border-color:#dcc7a4}
 .game-card[data-game=sons]{background-image:linear-gradient(155deg,#fff3f5,#f3dfe5);border-color:#e0c4cd}
 .game-card[data-game=puzzle]{background-image:linear-gradient(155deg,#fff4eb,#f2dfce);border-color:#dbc5b1}
 .game-card[data-game=chemin]{background-image:linear-gradient(155deg,#f0f8f4,#dcece0);border-color:#bdd3c2}
-.game-card:nth-child(2){animation-delay:.04s}.game-card:nth-child(3){animation-delay:.08s}.game-card:nth-child(4){animation-delay:.12s}.game-card:nth-child(5){animation-delay:.16s}.game-card:nth-child(6){animation-delay:.2s}
 .landscape{border:1px solid #b6d6c1;box-shadow:inset 0 2px 8px #507c5712,0 4px 0 #d5e3c8}
 .cast>svg:first-child .character-arm{transform-origin:73px 129px;animation:guide-wave 1.4s ease-in-out .4s 2}
 .eyebrow{color:#536549}.memory-encouragement{color:#72527c}
@@ -53,9 +52,8 @@ button:active{transform:translateY(3px);box-shadow:0 1px 0 #c7d5b7,inset 0 2px 4
 .answers button,.shape-choice,.sound-choice{background-color:#fffaf0;border-color:#c6d3b7}
 .memory-card{background-image:linear-gradient(145deg,#fffaff80,#ffffff00);min-width:72px;min-height:72px}
 .basket{background-image:radial-gradient(ellipse at 35% 12%,#fff0d8a0,transparent 75%);box-shadow:inset 0 3px 5px #97744912}
-@keyframes arrive{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
 @keyframes guide-wave{0%,100%{transform:rotate(0)}30%,70%{transform:rotate(25deg)}50%{transform:rotate(8deg)}}
-@media(prefers-reduced-motion:reduce){.game-card,.cast>svg:first-child .character-arm{animation:none}button{transition:none}}
+@media(prefers-reduced-motion:reduce){.cast>svg:first-child .character-arm{animation:none}button{transition:none}}
 .memory-grid{gap:clamp(0px,calc((100vw - 320px)*.15),10px)}
 .stars{color:#885c17}
 .level-grid span{color:#79551e}
