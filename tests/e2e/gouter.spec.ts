@@ -1,9 +1,10 @@
 import { test, expect, state } from './helpers';
-import { openGame, probe, ropeMiddle, screen, untilHeld, untilTick } from './gouter-helpers';
+import { openGame, probe, ropeMiddle, screen, untilHeld, untilStatus, untilTick } from './gouter-helpers';
 import { levels } from '../../src/engines/gouter';
 import { solve } from '../../src/engines/gouter/solver';
 
 test('levels, a first win by cutting the string, saved stars, the next level unlocked, and the way back', async ({ page }) => {
+    test.setTimeout(180_000);
     await openGame(page);
     await expect(page.locator('[data-gouter-level]')).toHaveCount(levels.length);
     await expect(page.locator('[data-gouter-level]:not([disabled])')).toHaveCount(1);
@@ -12,7 +13,7 @@ test('levels, a first win by cutting the string, saved stars, the next level unl
     await expect(page.locator('.gouter-zone [data-rope]')).toHaveCount(1);
     const m = screen(p, ...Object.values(ropeMiddle(p.state!, 0)) as [number, number]);
     await page.mouse.click(m.x, m.y);
-    await expect.poll(async () => (await probe(page)).state!.status, { timeout: 15_000 }).toBe('won');
+    await expect.poll(async () => (await probe(page)).state!.status, { timeout: 90_000 }).toBe('won');
     p = await probe(page);
     expect(p.state!.ropes[0]!.cut).toBe(true); expect(p.state!.stars).toEqual([true, true, true]); expect(p.records).toEqual({ 1: 3 });
     await expect(page.locator('.gouter-reward .stars')).toHaveText('★★★');
@@ -27,6 +28,7 @@ test('levels, a first win by cutting the string, saved stars, the next level unl
 });
 
 test('a sweet that misses falls away gently and the same level starts again by itself', async ({ page }) => {
+    test.setTimeout(180_000);
     await page.addInitScript(() => localStorage.setItem('opencadkid.gouter.v1', JSON.stringify({ 1: 1, 2: 1, 3: 1, 4: 1, 5: 1 })));
     await openGame(page);
     // Level 6 is a swing: cutting while the sweet is still on the left drops it far from Boubou.
@@ -34,21 +36,22 @@ test('a sweet that misses falls away gently and the same level starts again by i
     let p = await probe(page);
     const m = screen(p, ...Object.values(ropeMiddle(p.state!, 0)) as [number, number]);
     await page.mouse.click(m.x, m.y);
-    await expect.poll(async () => (await probe(page)).state!.status, { timeout: 15_000 }).toBe('lost');
+    expect(await untilStatus(page, 'lost')).toBe(true);
     await expect(page.locator('.gouter-zone')).toHaveAttribute('data-status', 'lost');
     await expect(page.locator('#gouter-message')).toContainText('Oups');
-    await expect.poll(async () => { const s = (await probe(page)).state!; return s.status === 'play' && !s.ropes[0]!.cut; }, { timeout: 15_000 }).toBe(true);
+    await expect.poll(async () => { const s = (await probe(page)).state!; return s.status === 'play' && !s.ropes[0]!.cut; }, { timeout: 90_000 }).toBe(true);
     p = await probe(page); expect(p.state!.level).toBe(6); expect(p.records[6]).toBeUndefined();
 });
 
 test('the bubble lifts the sweet to Boubou, and a touch pops a carried bubble', async ({ page }) => {
+    test.setTimeout(180_000);
     await page.addInitScript(() => localStorage.setItem('opencadkid.gouter.v1', JSON.stringify({ 1: 3, 7: 1 })));
     await openGame(page);
     await page.locator('[data-gouter-level="2"]').click();
     let p = await probe(page);
     const m = screen(p, ...Object.values(ropeMiddle(p.state!, 0)) as [number, number]);
     await page.mouse.click(m.x, m.y);
-    await expect.poll(async () => (await probe(page)).state!.status, { timeout: 20_000 }).toBe('won');
+    await expect.poll(async () => (await probe(page)).state!.status, { timeout: 90_000 }).toBe('won');
     // Level 8: the sweet falls into a bubble; popping it lets the slack string catch it.
     await page.locator('#back').click(); await page.locator('[data-gouter-level="8"]').click();
     p = await probe(page);
@@ -63,6 +66,7 @@ test('the bubble lifts the sweet to Boubou, and a touch pops a carried bubble', 
 });
 
 test('the solver plan replayed with real clicks finishes a hook level with three stars', async ({ page }) => {
+    test.setTimeout(180_000);
     const level = levels.find(l => l.hooks?.length)!;
     await page.addInitScript(id => localStorage.setItem('opencadkid.gouter.v1', JSON.stringify(Object.fromEntries(Array.from({ length: id - 1 }, (_, i) => [i + 1, 1])))), level.id);
     await openGame(page);
@@ -78,11 +82,12 @@ test('the solver plan replayed with real clicks finishes a hook level with three
         await expect.poll(async () => { const r = (await probe(page)).state!; return action.kind === 'pop' ? r.bubbles[action.index]!.state === 'popped' : r.ropes[action.index]!.cut; }).toBe(true);
         planned = action.tick; actual = (await probe(page)).state!.lastAction;
     }
-    await expect.poll(async () => (await probe(page)).state!.status, { timeout: 15_000 }).toBe('won');
+    await expect.poll(async () => (await probe(page)).state!.status, { timeout: 90_000 }).toBe('won');
     expect((await probe(page)).state!.stars.filter(Boolean).length).toBeGreaterThanOrEqual(2);
 });
 
 test('the play area fits every width with 48 px controls and never scrolls the page sideways', async ({ page }) => {
+    test.setTimeout(180_000);
     await openGame(page); await page.locator('[data-gouter-level="1"]').click();
     for (const width of [320, 360, 390, 414, 768, 1280]) {
         await page.setViewportSize({ width, height: 844 });

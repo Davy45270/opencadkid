@@ -32,3 +32,13 @@ export function untilHeld(page: Page, bubble: number): Promise<boolean> {
         check();
     }), bubble);
 }
+/** Waits inside the page, frame by frame, for a game status: a short-lived one cannot slip between two polls. */
+export function untilStatus(page: Page, status: State['status']): Promise<boolean> {
+    return page.evaluate(wanted => new Promise<boolean>(resolve => {
+        const check = (): void => {
+            const g = (window as unknown as { __kid: { state(): { gouter: Probe } } }).__kid.state().gouter;
+            if (!g.state) resolve(false); else if (g.state.status === wanted) resolve(true); else requestAnimationFrame(check);
+        };
+        check();
+    }), status);
+}

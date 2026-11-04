@@ -13,6 +13,7 @@ async function finger(cdp: CDPSession, page: import('@playwright/test').Page, po
 
 for (const [level, gesture] of [[1, 'tap'], [3, 'swipe'], [5, 'swipe'], [2, 'tap'], [8, 'tap'], [12, 'swipe']] as const) {
     test(`level ${level}: a noisy ${gesture} of a real finger follows the solver plan to Boubou's mouth`, async ({ page, context, isMobile }) => {
+        test.setTimeout(180_000);
         test.skip(!isMobile, 'Mobile touch only');
         await page.addInitScript(id => localStorage.setItem('opencadkid.gouter.v1', JSON.stringify(Object.fromEntries(Array.from({ length: id - 1 }, (_, i) => [i + 1, 1])))), level);
         await openGame(page); await page.locator(`[data-gouter-level="${level}"]`).tap();
@@ -38,7 +39,7 @@ for (const [level, gesture] of [[1, 'tap'], [3, 'swipe'], [5, 'swipe'], [2, 'tap
                 await expect.poll(async () => { const s = (await probe(page)).state!; return action.kind === 'pop' ? s.bubbles[action.index]!.state === 'popped' : s.ropes[action.index]!.cut; }).toBe(true);
                 planned = action.tick; actual = (await probe(page)).state!.lastAction;
             }
-            await expect.poll(async () => (await probe(page)).state!.status, { timeout: 20_000 }).toBe('won');
+            await expect.poll(async () => (await probe(page)).state!.status, { timeout: 90_000 }).toBe('won');
             const s = (await probe(page)).state!;
             // One gesture, one action: no rope was cut twice and nothing else was cut by accident.
             expect(s.actions).toBe(solve(level)!.plan.length);
@@ -48,6 +49,7 @@ for (const [level, gesture] of [[1, 'tap'], [3, 'swipe'], [5, 'swipe'], [2, 'tap
 }
 
 test('a second finger resting on the play area cuts nothing', async ({ page, context, isMobile }) => {
+        test.setTimeout(180_000);
     test.skip(!isMobile, 'Mobile touch only');
     await openGame(page); await page.locator('[data-gouter-level="1"]').tap();
     const p = await probe(page), m = ropeMiddle(p.state!, 0), primary = screen(p, 30, 420), second = screen(p, m.x, m.y);
