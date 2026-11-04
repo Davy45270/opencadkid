@@ -59,6 +59,7 @@ it('a tap cuts the closest rope within reach, a swipe cuts every rope it crosses
     expect(tapTarget(s, { x: mid.x + CUT_REACH + 30, y: mid.y })?.index).not.toBe(0);
     expect(tapTarget(s, { x: 2, y: 438 })).toBeNull(); expect(tap(s, { x: 2, y: 438 })).toBe(s);
     expect(tap(s, mid).ropes[0]!.cut).toBe(true);
+    expect(tapTarget(s, { x: s.treat.x + 4, y: s.treat.y - 3 })).toBeNull(); expect(tap(s, mid).lastAction).toBe(0); expect(s.lastAction).toBe(-1);
     expect(swipeTargets(s, { x: 20, y: 100 }, { x: 300, y: 100 })).toEqual([0, 1, 2]);
     expect(swipeTargets(s, { x: 20, y: 60 }, { x: 300, y: 60 })).toEqual([2]);
     expect(swipeTargets(s, { x: 20, y: 430 }, { x: 300, y: 430 })).toEqual([]);

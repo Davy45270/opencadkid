@@ -1,5 +1,5 @@
 import { test, expect, touchFrame } from './helpers';
-import { openGame, probe, ropeMiddle, screen, untilTick } from './gouter-helpers';
+import { openGame, probe, ropeMiddle, screen, untilHeld, untilTick } from './gouter-helpers';
 import { solve } from '../../src/engines/gouter/solver';
 import type { CDPSession } from '@playwright/test';
 
@@ -19,8 +19,11 @@ for (const [level, gesture] of [[1, 'tap'], [3, 'swipe'], [5, 'swipe'], [2, 'tap
         const random = noise(level * 7919), cdp = await context.newCDPSession(page);
         const scroll = await page.evaluate(() => [scrollX, scrollY]);
         try {
+            // Like a child watching the sweet, each action follows the previous one by the plan's interval.
+            let planned = 0, actual = 0;
             for (const action of solve(level)!.plan) {
-                await untilTick(page, action.tick - 2);
+                await untilTick(page, actual + action.tick - planned - 2);
+                if (action.kind === 'pop') await untilHeld(page, action.index);
                 const p = await probe(page); expect(p.state!.status).toBe('play');
                 const at = action.kind === 'pop' ? p.state!.treat : ropeMiddle(p.state!, action.index);
                 const centre = screen(p, at.x, at.y), jitter = (): number => random() * 6;
@@ -33,6 +36,7 @@ for (const [level, gesture] of [[1, 'tap'], [3, 'swipe'], [5, 'swipe'], [2, 'tap
                     await finger(cdp, page, points);
                 }
                 await expect.poll(async () => { const s = (await probe(page)).state!; return action.kind === 'pop' ? s.bubbles[action.index]!.state === 'popped' : s.ropes[action.index]!.cut; }).toBe(true);
+                planned = action.tick; actual = (await probe(page)).state!.lastAction;
             }
             await expect.poll(async () => (await probe(page)).state!.status, { timeout: 20_000 }).toBe('won');
             const s = (await probe(page)).state!;

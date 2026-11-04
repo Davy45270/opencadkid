@@ -22,3 +22,13 @@ export function untilTick(page: Page, tick: number): Promise<number> {
 export function ropeMiddle(s: State, rope: number): { x: number; y: number } {
     const r = s.ropes[rope]!; return { x: (r.x + s.treat.x) / 2, y: (r.y + s.treat.y) / 2 };
 }
+/** Waits inside the page until a bubble carries the sweet (or the level ends). */
+export function untilHeld(page: Page, bubble: number): Promise<boolean> {
+    return page.evaluate(index => new Promise<boolean>(resolve => {
+        const check = (): void => {
+            const g = (window as unknown as { __kid: { state(): { gouter: Probe } } }).__kid.state().gouter;
+            if (!g.state || g.state.status !== 'play') resolve(false); else if (g.state.bubbles[index]?.state === 'held') resolve(true); else requestAnimationFrame(check);
+        };
+        check();
+    }), bubble);
+}

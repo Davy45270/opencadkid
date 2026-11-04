@@ -26,6 +26,8 @@ export interface State {
     treat: { x: number; y: number; px: number; py: number };
     ropes: Rope[]; hooks: Hook[]; bubbles: Bubble[];
     stars: boolean[]; starPoints: readonly Point[]; mouth: Point; status: Status; actions: number;
+    /** Tick of the latest cut or pop, -1 before any action. */
+    lastAction: number;
 }
 export type Records = Partial<Record<number, number>>;
 
@@ -38,7 +40,7 @@ export function start(id: number | LevelDef): State {
         ropes: def.ropes.map(r => ({ x: r.x, y: r.y, length: r.length ?? Math.hypot(r.x - def.treat.x, r.y - def.treat.y), cut: false, hook: null })),
         hooks: (def.hooks ?? []).map(h => ({ ...h, used: false })),
         bubbles: (def.bubbles ?? []).map(b => ({ ...b, state: 'free' as const })),
-        stars: def.stars.map(() => false), starPoints: def.stars, mouth: { ...def.mouth }, status: 'play', actions: 0
+        stars: def.stars.map(() => false), starPoints: def.stars, mouth: { ...def.mouth }, status: 'play', actions: 0, lastAction: -1
     };
 }
 export function clone(s: State): State {
@@ -73,12 +75,12 @@ export function advance(state: State, frames = 1): State { const s = clone(state
 export function cut(state: State, rope: number): State {
     const r = state.ropes[rope];
     if (state.status !== 'play' || !r || r.cut) return state;
-    const s = clone(state); s.ropes[rope]!.cut = true; s.actions++; return s;
+    const s = clone(state); s.ropes[rope]!.cut = true; s.actions++; s.lastAction = s.tick; return s;
 }
 export function pop(state: State, bubble: number): State {
     const b = state.bubbles[bubble];
     if (state.status !== 'play' || !b || b.state === 'popped') return state;
-    const s = clone(state); s.bubbles[bubble]!.state = 'popped'; s.actions++; return s;
+    const s = clone(state); s.bubbles[bubble]!.state = 'popped'; s.actions++; s.lastAction = s.tick; return s;
 }
 function segmentDistance(p: Point, a: Point, b: Point): number {
     const dx = b.x - a.x, dy = b.y - a.y, t = Math.max(0, Math.min(1, ((p.x - a.x) * dx + (p.y - a.y) * dy) / (dx * dx + dy * dy || 1)));
@@ -93,6 +95,8 @@ export function tapTarget(s: State, p: Point): { kind: 'bubble' | 'rope'; index:
     const bubble = s.bubbles.findIndex(b => b.state !== 'popped' && distance(p, b) <= BUBBLE_RADIUS + 14);
     if (bubble >= 0) return { kind: 'bubble', index: bubble };
     let best = -1, bestDistance = CUT_REACH;
+    // Touching the sweet itself never cuts the strings tied to it: only the string, away from the sweet.
+    if (distance(p, s.treat) <= TREAT_RADIUS + 8) return null;
     for (const [i, r] of s.ropes.entries()) { if (r.cut) continue; const d = segmentDistance(p, r, s.treat); if (d <= bestDistance) { best = i; bestDistance = d; } }
     return best >= 0 ? { kind: 'rope', index: best } : null;
 }

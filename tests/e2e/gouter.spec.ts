@@ -1,5 +1,5 @@
 import { test, expect, state } from './helpers';
-import { openGame, probe, ropeMiddle, screen, untilTick } from './gouter-helpers';
+import { openGame, probe, ropeMiddle, screen, untilHeld, untilTick } from './gouter-helpers';
 import { levels } from '../../src/engines/gouter';
 import { solve } from '../../src/engines/gouter/solver';
 
@@ -54,7 +54,7 @@ test('the bubble lifts the sweet to Boubou, and a touch pops a carried bubble', 
     p = await probe(page);
     const first = screen(p, ...Object.values(ropeMiddle(p.state!, 0)) as [number, number]);
     await page.mouse.click(first.x, first.y);
-    await expect.poll(async () => (await probe(page)).state!.bubbles[0]!.state, { timeout: 10_000 }).toBe('held');
+    await untilHeld(page, 0);
     p = await probe(page);
     const bubble = screen(p, p.state!.treat.x, p.state!.treat.y);
     await page.mouse.click(bubble.x, bubble.y);
@@ -67,13 +67,16 @@ test('the solver plan replayed with real clicks finishes a hook level with three
     await page.addInitScript(id => localStorage.setItem('opencadkid.gouter.v1', JSON.stringify(Object.fromEntries(Array.from({ length: id - 1 }, (_, i) => [i + 1, 1])))), level.id);
     await openGame(page);
     await page.locator(`[data-gouter-level="${level.id}"]`).click();
+    let planned = 0, actual = 0;
     for (const action of solve(level.id)!.plan) {
-        const reached = await untilTick(page, action.tick - 2);
+        const reached = await untilTick(page, actual + action.tick - planned - 2);
         expect(reached).toBeGreaterThanOrEqual(0);
+        if (action.kind === 'pop') await untilHeld(page, action.index);
         const p = await probe(page);
         const at = action.kind === 'pop' ? p.state!.treat : ropeMiddle(p.state!, action.index);
         const s = screen(p, at.x, at.y); await page.mouse.click(s.x, s.y);
         await expect.poll(async () => { const r = (await probe(page)).state!; return action.kind === 'pop' ? r.bubbles[action.index]!.state === 'popped' : r.ropes[action.index]!.cut; }).toBe(true);
+        planned = action.tick; actual = (await probe(page)).state!.lastAction;
     }
     await expect.poll(async () => (await probe(page)).state!.status, { timeout: 15_000 }).toBe('won');
     expect((await probe(page)).state!.stars.filter(Boolean).length).toBeGreaterThanOrEqual(2);
