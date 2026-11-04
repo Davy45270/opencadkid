@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.0
+
+- Parents’ space: a new “My other games” entry lists the author’s three other games (Opencade, TicTac, Petit Astronome), each with its icon and one sentence. Like every way out of the app, it sits behind the adult question; a tap opens the game in the same tab.
+- The list and its icons ship with the app, so it still shows offline; nothing is requested from the network.
+
 ## 1.1.0
 
 - Add **Boubou’s snack**, an eleventh game for ages 4–8: a sweet hangs from strings, and cutting them with a finger lets it fall into Boubou’s mouth. A tap cuts the closest string, a swipe every string it crosses; touching the sweet itself cuts nothing. Bubbles lift the sweet until they are popped, hooks catch it when it passes within reach, and slack strings catch it on the way down.

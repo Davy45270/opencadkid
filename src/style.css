@@ -152,3 +152,4 @@ button:active{transform:translateY(3px);box-shadow:0 1px 0 #c7d5b7,inset 0 2px 4
 .gouter .level-grid span{min-height:1.2em}
 @media(prefers-reduced-motion:reduce){.gouter-zone [data-star]{transition:none}}
 .app-version{text-align:center;font-size:.8rem;color:#6d7e62;margin:8px 0 0}
+.other-games{list-style:none;margin:0;padding:0;display:grid;gap:12px}.other-game{display:flex;align-items:center;gap:14px;min-height:88px;padding:12px;border:2px solid #d1dfbf;border-radius:22px;background:#eef3dd;box-shadow:0 4px 0 #c7d5b7;color:#354e41;text-decoration:none}.other-game:active{box-shadow:0 1px 0 #c7d5b7;transform:translateY(2px)}.other-game:focus-visible{outline:4px solid #8d68a0;outline-offset:3px}.other-game img{flex:none;width:64px;height:64px;border-radius:18px}.other-game>span{display:grid;gap:2px;min-width:0}.other-game strong{font-size:1.15rem}.other-game span span{font-size:.9rem;line-height:1.3;color:#5c6f52}.other-games-panel h1{margin-top:0}

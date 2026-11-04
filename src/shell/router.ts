@@ -33,6 +33,7 @@ import { names as motifNames } from '../games/paires/motifs';
 import { home } from '../ui/home';
 import { levelView, gameView, instruction } from '../games/compter/view';
 import { icon } from '../ui/svg';
+import { otherGamesList } from '../ui/other-games';
 import { games } from '../registry';
 import { applyLocale, detectLocale, text } from './i18n';
 import { browserStorage, readSave, writeSave, fresh } from './storage';
@@ -618,9 +619,10 @@ function gate(destination: 'parents' | 'tictac'): void {
 }
 function settings(): void {
     cancel(); screen = 'parents';
-    app.innerHTML = `<section class="parent-panel"><h1>${text(save.locale, 'parents')}</h1><label>${text(save.locale, 'language')}<select id="language"><option value="fr" ${save.locale === 'fr' ? 'selected' : ''}>Français</option><option value="en" ${save.locale === 'en' ? 'selected' : ''}>English</option></select></label><label>${text(save.locale, 'voice')}<input id="voice" type="checkbox" ${save.voice ? 'checked' : ''}></label><label>${text(save.locale, 'sound')}<input id="sound" type="checkbox" ${save.sound ? 'checked' : ''}></label><button id="erase">${text(save.locale, 'erase')}</button><div id="confirmation"></div><button id="erase-gallery">${atelierLabels[save.locale].parentsErase}</button><div id="gallery-confirmation"></div><button id="close">${icon('close')}<span>${text(save.locale, 'close')}</span></button><p class="app-version">Opencadkid ${__APP_VERSION__}</p></section>`;
+    app.innerHTML = `<section class="parent-panel"><h1>${text(save.locale, 'parents')}</h1><label>${text(save.locale, 'language')}<select id="language"><option value="fr" ${save.locale === 'fr' ? 'selected' : ''}>Français</option><option value="en" ${save.locale === 'en' ? 'selected' : ''}>English</option></select></label><label>${text(save.locale, 'voice')}<input id="voice" type="checkbox" ${save.voice ? 'checked' : ''}></label><label>${text(save.locale, 'sound')}<input id="sound" type="checkbox" ${save.sound ? 'checked' : ''}></label><button id="erase">${text(save.locale, 'erase')}</button><div id="confirmation"></div><button id="erase-gallery">${atelierLabels[save.locale].parentsErase}</button><div id="gallery-confirmation"></div><button id="other-games">${text(save.locale, 'otherGames')}</button><button id="close">${icon('close')}<span>${text(save.locale, 'close')}</span></button><p class="app-version">Opencadkid ${__APP_VERSION__}</p></section>`;
     app.querySelector('#language')!.addEventListener('change', event => { save.locale = (event.target as HTMLSelectElement).value === 'en' ? 'en' : 'fr'; persist(); applyLocale(save.locale); settings(); });
     for (const key of ['voice', 'sound'] as const) app.querySelector(`#${key}`)!.addEventListener('change', event => { save[key] = (event.target as HTMLInputElement).checked; persist(); if (key === 'voice') stopSpeech(); else if (!save.sound) stopSound(); else unlockSound(); });
+    bind('#other-games', otherGamesPanel);
     bind('#erase-gallery', () => {
         app.querySelector('#gallery-confirmation')!.innerHTML = `<p>${atelierLabels[save.locale].parentsConfirm}</p><button id="gallery-yes">${text(save.locale, 'yes')}</button><button id="gallery-no">${text(save.locale, 'no')}</button>`;
         bind('#gallery-yes', () => { if (eraseGallery(storage)) { atelierStudio = undefined; settings(); } else app.querySelector('#gallery-confirmation')!.textContent = atelierLabels[save.locale].unsaved; });
@@ -630,6 +632,13 @@ function settings(): void {
         app.querySelector('#confirmation')!.innerHTML = `<p>${text(save.locale, 'confirm')}</p><button id="yes">${text(save.locale, 'yes')}</button><button id="no">${text(save.locale, 'no')}</button>`;
         bind('#yes', () => { save = { ...fresh(save.locale), voice: save.voice, sound: save.sound }; persist(); settings(); }); bind('#no', settings);
     });
+    bind('#close', () => { screen = 'home'; render(); });
+}
+function otherGamesPanel(): void {
+    cancel(); screen = 'parents';
+    app.innerHTML = `<section class="parent-panel other-games-panel"><h1 tabindex="-1">${text(save.locale, 'otherGames')}</h1>${otherGamesList(save.locale)}<button id="settings">${icon('gear')}<span>${text(save.locale, 'parents')}</span></button><button id="close">${icon('close')}<span>${text(save.locale, 'close')}</span></button></section>`;
+    app.querySelector<HTMLElement>('h1')?.focus();
+    bind('#settings', settings);
     bind('#close', () => { screen = 'home'; render(); });
 }
 // One primary pointer owns the gesture. DOM updates only after release.

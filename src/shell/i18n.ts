@@ -14,7 +14,7 @@ export const messages = {
         more: 'Où y en a-t-il le plus ?', less: 'Où y en a-t-il le moins ?',
         check: 'Valider', voice: 'Voix', sound: 'Sons', language: 'Langue', erase: 'Effacer la progression',
         confirm: 'Effacer toutes les étoiles ?', yes: 'Oui', no: 'Non', close: 'Fermer',
-        adult: 'Pour les adultes', clock: 'Jouer avec TicTac', locked: 'Termine la pastille précédente',
+        adult: 'Pour les adultes', otherGames: 'Mes autres jeux', clock: 'Jouer avec TicTac', locked: 'Termine la pastille précédente',
         apple: 'pommes', pear: 'poires', berry: 'fraises', carrot: 'carottes', star: 'étoiles', fish: 'poissons', flower: 'fleurs', basket: 'Panier', reserve: 'Réserve', skill: 'Compter, remplir, comparer'
     },
     en: {
@@ -31,7 +31,7 @@ export const messages = {
         more: 'Which basket has more?', less: 'Which basket has fewer?',
         check: 'Check', voice: 'Voice', sound: 'Sounds', language: 'Language', erase: 'Erase progress',
         confirm: 'Erase all the stars?', yes: 'Yes', no: 'No', close: 'Close',
-        adult: 'For adults', clock: 'Play with TicTac', locked: 'Finish the previous dot',
+        adult: 'For adults', otherGames: 'My other games', clock: 'Play with TicTac', locked: 'Finish the previous dot',
         apple: 'apples', pear: 'pears', berry: 'strawberries', carrot: 'carrots', star: 'stars', fish: 'fish', flower: 'flowers', basket: 'Basket', reserve: 'Reserve', skill: 'Count, fill, compare'
     }
 } as const;
