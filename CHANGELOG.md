@@ -1,5 +1,10 @@
 # Changelog
 
+## Non publié
+
+- Parents’ space: a “Donner mon avis” link, behind the adult question like every way out of the app, opens the game's public feedback forms in a new tab (`rel="noopener"`). Nothing is sent from the app, and no tracker is involved.
+- Two short French feedback forms (“Quelque chose ne marche pas”, “J'ai une idée”) and a `CONTRIBUTING.md` explaining how to report.
+
 ## 1.2.0
 
 - Parents’ space: a new “My other games” entry lists the author’s three other games (Opencade, TicTac, Petit Astronome), each with its icon and one sentence. Like every way out of the app, it sits behind the adult question; a tap opens the game in the same tab.

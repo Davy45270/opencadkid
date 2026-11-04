@@ -34,6 +34,7 @@ import { home } from '../ui/home';
 import { levelView, gameView, instruction } from '../games/compter/view';
 import { icon } from '../ui/svg';
 import { otherGamesList } from '../ui/other-games';
+import { feedbackLinkHtml } from '../ui/feedback';
 import { games } from '../registry';
 import { applyLocale, detectLocale, text } from './i18n';
 import { browserStorage, readSave, writeSave, fresh } from './storage';
@@ -619,7 +620,7 @@ function gate(destination: 'parents' | 'tictac'): void {
 }
 function settings(): void {
     cancel(); screen = 'parents';
-    app.innerHTML = `<section class="parent-panel"><h1>${text(save.locale, 'parents')}</h1><label>${text(save.locale, 'language')}<select id="language"><option value="fr" ${save.locale === 'fr' ? 'selected' : ''}>Français</option><option value="en" ${save.locale === 'en' ? 'selected' : ''}>English</option></select></label><label>${text(save.locale, 'voice')}<input id="voice" type="checkbox" ${save.voice ? 'checked' : ''}></label><label>${text(save.locale, 'sound')}<input id="sound" type="checkbox" ${save.sound ? 'checked' : ''}></label><button id="erase">${text(save.locale, 'erase')}</button><div id="confirmation"></div><button id="erase-gallery">${atelierLabels[save.locale].parentsErase}</button><div id="gallery-confirmation"></div><button id="other-games">${text(save.locale, 'otherGames')}</button><button id="close">${icon('close')}<span>${text(save.locale, 'close')}</span></button><p class="app-version">Opencadkid ${__APP_VERSION__}</p></section>`;
+    app.innerHTML = `<section class="parent-panel"><h1>${text(save.locale, 'parents')}</h1><label>${text(save.locale, 'language')}<select id="language"><option value="fr" ${save.locale === 'fr' ? 'selected' : ''}>Français</option><option value="en" ${save.locale === 'en' ? 'selected' : ''}>English</option></select></label><label>${text(save.locale, 'voice')}<input id="voice" type="checkbox" ${save.voice ? 'checked' : ''}></label><label>${text(save.locale, 'sound')}<input id="sound" type="checkbox" ${save.sound ? 'checked' : ''}></label><button id="erase">${text(save.locale, 'erase')}</button><div id="confirmation"></div><button id="erase-gallery">${atelierLabels[save.locale].parentsErase}</button><div id="gallery-confirmation"></div><button id="other-games">${text(save.locale, 'otherGames')}</button>${feedbackLinkHtml(save.locale)}<button id="close">${icon('close')}<span>${text(save.locale, 'close')}</span></button><p class="app-version">Opencadkid ${__APP_VERSION__}</p></section>`;
     app.querySelector('#language')!.addEventListener('change', event => { save.locale = (event.target as HTMLSelectElement).value === 'en' ? 'en' : 'fr'; persist(); applyLocale(save.locale); settings(); });
     for (const key of ['voice', 'sound'] as const) app.querySelector(`#${key}`)!.addEventListener('change', event => { save[key] = (event.target as HTMLInputElement).checked; persist(); if (key === 'voice') stopSpeech(); else if (!save.sound) stopSound(); else unlockSound(); });
     bind('#other-games', otherGamesPanel);
