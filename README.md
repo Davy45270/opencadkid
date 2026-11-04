@@ -8,7 +8,7 @@ Play online, without installation, offline once opened.
 
 Gentle educational games for children aged **4–8**, designed for fingers and phones. Boubou the panda, CaliRoux the red panda, Pestouille the dragon, Tutu the monkey and Lumi the unicorn guide each discovery. All artwork is generated in SVG from code.
 
-**10 games available: Boubou’s baskets, Lumi’s cards, CaliRoux’s shapes, Tutu’s sounds, Pestouille’s puzzle, Pestouille’s path, Lumi’s patterns, CaliRoux’s tidy-up, Tutu’s drums and Boubou’s studio.**
+**11 games available: Boubou’s baskets, Lumi’s cards, CaliRoux’s shapes, Tutu’s sounds, Pestouille’s puzzle, Pestouille’s path, Lumi’s patterns, CaliRoux’s tidy-up, Tutu’s drums, Boubou’s snack and Boubou’s studio.**
 
 Boubou's baskets — count, fill and compare across eight levels — and **Lumi's cards**, a gentle memory game with 2, 3, 4, 6, 8 and 10 pairs, plus a picture-to-shadow level. Lumi offers a two-second preview on the first three levels and a glowing hint after repeated misses. Sixteen procedural shapes remain distinguishable without colour; the largest board fits a 390×844 phone without scrolling. French comes first; English is included. English is selected automatically only when the device language starts with `en`. Adults can change and save the language.
 
@@ -36,7 +36,9 @@ Open the online game once while connected. Use your browser's **Install app** or
 
 **Tutu’s drums** adds eight levels of rhythm and listening: repeat sequences of two to six beats on four, five or six instruments, imitate short/long intervals, then compose eight beats for Tutu to replay. Each instrument has a distinct shape and pentatonic note. Quiet WebAudio tones can be disabled in parent settings; lights keep every demonstration playable without audio. Mistakes replay more slowly, two mistakes pulse the next drum and gently shorten repeated sequences within the level bounds. Timing tolerance is ±35%. Every finger plays on contact, including simultaneous fingers and intentional rapid double taps. Reduced motion keeps lights without bouncing. Best stars and unlocks are saved independently.
 
-**Boubou’s studio**: colour ten procedural drawings (the five guides, a house, a tree, a fish, a rocket and a butterfly), or draw freely with one finger. Twelve named colours, a white eraser, three brush sizes and forty undo/redo steps support calm exploration. Touch “I’m done” for Boubou’s stamp and a local gallery of at most twelve creations. No artwork is uploaded. Parents can erase the gallery after confirmation. Gallery persistence depends on available browser storage; an unavailable store leaves the current sheet playable.
+**Boubou’s snack**: a sweet hangs from strings above Boubou the panda. Cut a string with a tap, or several with one swipe, and the sweet swings, falls and, with good timing, lands in Boubou’s mouth. Bubbles lift the sweet until a touch pops them, hooks catch it when it passes close, and slack strings catch it on the way down. Sixteen levels, each checked by a solver that tries every cut at every moment: always finishable, three stars reachable, timing forgiving for small hands. A missed sweet floats away and the level starts again by itself: no lives, no timer. Stars caught on the way are the reward.
+
+**Boubou’s studio**: colour ten procedural drawings (the five guides, a house, a tree, a fish, a rocket and a butterfly) and their background, paint over them with the brush, or draw freely on a blank page. Twelve named colours, a white eraser, three brush sizes and forty undo/redo steps support calm exploration. The play button makes the model move — wings flap, a tail wags, the rocket takes off — with only the child’s colours. The sheet in progress stays on the device after leaving or reloading, and the save button stores the picture as a PNG file on the device. Touch “I’m done” for Boubou’s stamp and a local gallery of at most twelve creations. No artwork is uploaded. Parents can erase the gallery after confirmation. Gallery persistence depends on available browser storage; an unavailable store leaves the current sheet playable.
 
 ## Screenshots
 
@@ -44,13 +46,16 @@ Phone screenshots (390×844).
 
 | | |
 |---|---|
-| <img src="docs/captures/accueil-catalogue.png" alt="All ten games" width="240"><br>All ten games | <img src="docs/captures/accueil-fr.png" alt="Home (French)" width="240"><br>Home (French) |
+| <img src="docs/captures/accueil-catalogue.png" alt="All eleven games" width="240"><br>All eleven games | <img src="docs/captures/accueil-fr.png" alt="Home (French)" width="240"><br>Home (French) |
 | <img src="docs/captures/compter-combien.png" alt="Boubou's baskets: how many?" width="240"><br>Boubou's baskets: how many? | <img src="docs/captures/compter-remplir.png" alt="Boubou's baskets: fill the basket" width="240"><br>Boubou's baskets: fill the basket |
 | <img src="docs/captures/paires-plateau.png" alt="Lumi's cards" width="240"><br>Lumi's cards | <img src="docs/captures/formes-trier.png" alt="CaliRoux's shapes: sort by colour" width="240"><br>CaliRoux's shapes: sort by colour |
 | <img src="docs/captures/sons-image-lettre.png" alt="Tutu's sounds" width="240"><br>Tutu's sounds | <img src="docs/captures/puzzle-chateau.png" alt="Pestouille's puzzle" width="240"><br>Pestouille's puzzle |
 | <img src="docs/captures/chemin-prairie.png" alt="Pestouille's path" width="240"><br>Pestouille's path | <img src="docs/captures/suites-question.png" alt="Lumi's patterns" width="240"><br>Lumi's patterns |
 | <img src="docs/captures/ranger-couleur.png" alt="CaliRoux's tidy-up" width="240"><br>CaliRoux's tidy-up | <img src="docs/captures/tambours-ecoute.png" alt="Tutu's drums" width="240"><br>Tutu's drums |
 | <img src="docs/captures/atelier-coloriage.png" alt="Boubou's studio" width="240"><br>Boubou's studio | <img src="docs/captures/compter-etoiles.png" alt="End of a series: always rewarded" width="240"><br>End of a series: always rewarded |
+| <img src="docs/captures/gouter-premier.png" alt="Boubou's snack: first level" width="240"><br>Boubou's snack: cut the string | <img src="docs/captures/gouter-crochet.png" alt="Boubou's snack: a hook" width="240"><br>A hook catches the sweet |
+| <img src="docs/captures/gouter-final.png" alt="Boubou's snack: string, hook and bubble" width="240"><br>String, hook and bubble | <img src="docs/captures/gouter-miam.png" alt="Boubou's snack: yum" width="240"><br>Yum! Three stars |
+| <img src="docs/captures/atelier-fond-pinceau.png" alt="Studio: background and brush over the model" width="240"><br>Studio: background and brush over the model | <img src="docs/captures/atelier-anime.png" alt="Studio: the coloured model moves" width="240"><br>Studio: the coloured model moves |
 
 ## Develop
 

@@ -4,7 +4,7 @@ Audience: ages 4–8, primarily touch phones. French first, English included. No
 
 ## Catalogue
 
-`compter`, `paires`, `formes`, `sons`, `puzzle`, `chemin`, `suites`, `ranger`, `tambours` and `atelier` are implemented and present in the playable registry. The ten-game catalogue is complete.
+`compter`, `paires`, `formes`, `sons`, `puzzle`, `chemin`, `suites`, `ranger`, `tambours`, `gouter` and `atelier` are implemented and present in the playable registry.
 
 | ID | Français | English | Guide | Skill and intended rules |
 | --- | --- | --- | --- | --- |
@@ -17,7 +17,8 @@ Audience: ages 4–8, primarily touch phones. French first, English included. No
 | suites | Les suites de Lumi | Lumi's patterns | Lumi | Extend AB, ABC, AAB and related illustrated sequences by selecting the next object. |
 | ranger | Le rangement de CaliRoux | CaliRoux’s tidy-up | CaliRoux | Sort illustrated objects by spoken colour, shape, size or category. |
 | tambours | Les tambours de Tutu | Tutu's drums | Tutu | Listen to and repeat short rhythms with taps; replay freely, no penalty for timing. |
-| atelier | L'atelier de Boubou | Boubou's studio | Boubou | Fill drawing regions with colour and draw freely; creation rather than scoring. |
+| gouter | Le goûter de Boubou | Boubou's snack | Boubou | Cut strings so a hanging sweet falls into Boubou's mouth; bubbles, hooks and slack strings; sixteen solver-checked levels. |
+| atelier | L'atelier de Boubou | Boubou's studio | Boubou | Colour drawing regions and the background, paint over the model or on a blank page, play the model's animation; creation rather than scoring. |
 
 Learning the time belongs to TicTac. Its home card opens the sister app only after the adult gate. No other future-game cards appear.
 
@@ -587,3 +588,18 @@ Gallery format version 1 stores palette indices, positional region colours and h
 1. Remove colour/revision from region activation keys: the immediate touch recolouring regression must fail.
 2. Remove the primary-pointer/owner guard: the two-finger test must detect an extra stroke or a spur in its painted bounds.
 3. Change gallery retention from `.slice(-12)` to `.slice(-13)`: the independent thirteen-work eviction test must fail.
+
+## Snack: Boubou’s snack (1.1.0)
+
+- Field of 320 × 440 units, fixed 60 Hz Verlet steps on a single sweet (radius 13). Ropes are maximum-distance constraints from a peg, slack below their length. Hooks add a rope when the sweet comes within their reach. A bubble catches a free sweet and lifts it until it is popped. The sweet reaching Boubou's mouth (radius 32) wins; leaving the field loses and restarts the same level after 70 steps.
+- Input: a tap cuts the closest uncut rope within 24 units, never when the tap lands on the sweet; a tap on a bubble carrying the sweet pops it; a swipe cuts every rope its path crosses. Only the primary finger acts.
+- Sixteen authored levels (`src/engines/gouter/levels.ts`). The solver (`src/engines/gouter/solver.ts`) explores every cut and pop on a six-step grid over ten seconds, merging equivalent situations. Tests require for every level: a win, three stars reachable, no win without an action, and a reference plan whose actions can each shift by at least eight steps.
+- Rewards: one star per collected star, at least one for a finished level. Best results are stored under `opencadkid.gouter.v1`; finishing a level unlocks the next.
+
+## Studio additions (1.1.0)
+
+- The background is the zone `fond`. In colour mode it is the bottom tappable layer; in brush mode zones and background are drawn but inert, strokes paint above them and the drawing's lines stay on top.
+- `feuille` is a blank page with no zones; choosing it opens the brush. Choosing any model starts fresh paper in colour mode (undoable).
+- Version 2 serialization adds the background colour. Version 1 works are converted to what was visible: draw-mode works move to the blank page, colour-mode works keep their zones only.
+- The sheet in progress is kept under `opencadkid.atelier.draft.v1` and restored when the studio opens. The save button renders the sheet to a 960 × 900 PNG file locally.
+- Each model has a fixed SMIL animation (`src/engines/atelier/motion.ts`): whole-figure motion plus moving parts with their own lines. Only the child's colours vary; reduced motion removes the animation elements.

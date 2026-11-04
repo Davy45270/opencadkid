@@ -6,6 +6,8 @@ import { advance, cut, pop, start, type LevelDef, type State } from './index.ts'
 export interface Action { tick: number; kind: 'cut' | 'pop'; index: number }
 export interface Solution { stars: number; plan: Action[]; tolerance: number; plans: number }
 export const GRID = 6, HORIZON = 600;
+/** A young child needs time between two gestures: plans never chain actions closer than this (0.4 s). */
+export const CHILD_GAP = 24;
 
 export function play(level: number | LevelDef, plan: readonly Action[], horizon = HORIZON): State {
     let s = start(level);
@@ -35,10 +37,10 @@ export function solve(level: number | LevelDef, grid = GRID, horizon = HORIZON, 
         while (s.status === 'play' && s.tick < horizon) {
             // States that agree to the unit (position) and half unit per tick (velocity) behave the same:
             // explore each such situation once, whatever path led to it.
-            const key = `${Math.round(s.treat.x)},${Math.round(s.treat.y)},${Math.round((s.treat.x - s.treat.px) * 2)},${Math.round((s.treat.y - s.treat.py) * 2)},${s.ropes.map(r => r.cut ? 0 : 1).join('')},${s.hooks.map(h => h.used ? 1 : 0).join('')},${s.bubbles.map(b => b.state[0]).join('')},${s.stars.map(Number).join('')},${plan.length}`;
+            const key = `${Math.round(s.treat.x)},${Math.round(s.treat.y)},${Math.round((s.treat.x - s.treat.px) * 2)},${Math.round((s.treat.y - s.treat.py) * 2)},${s.ropes.map(r => r.cut ? 0 : 1).join('')},${s.hooks.map(h => h.used ? 1 : 0).join('')},${s.bubbles.map(b => b.state[0]).join('')},${s.stars.map(Number).join('')},${plan.length},${plan.length ? Math.max(0, CHILD_GAP - (s.tick - plan.at(-1)!.tick)) : 0}`;
             if (seen.has(key)) return;
             seen.add(key);
-            if (plan.length < maxActions) {
+            if (plan.length < maxActions && (!plan.length || s.tick - plan.at(-1)!.tick >= CHILD_GAP)) {
                 for (const [i, r] of s.ropes.entries()) if (!r.cut) explore(cut(s, i), [...plan, { tick: s.tick, kind: 'cut', index: i }]);
                 for (const [i, b] of s.bubbles.entries()) if (b.state === 'held') explore(pop(s, i), [...plan, { tick: s.tick, kind: 'pop', index: i }]);
             }

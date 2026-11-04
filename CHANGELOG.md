@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.1.0
+
+- Add **Boubou’s snack**, an eleventh game for ages 4–8: a sweet hangs from strings, and cutting them with a finger lets it fall into Boubou’s mouth. A tap cuts the closest string, a swipe every string it crosses; touching the sweet itself cuts nothing. Bubbles lift the sweet until they are popped, hooks catch it when it passes within reach, and slack strings catch it on the way down.
+- Sixteen levels, each proven by an exhaustive solver over every cut and pop on a fixed time grid: finishable, three stars reachable, nothing happens without the child, and the reference plan tolerates timing errors. Deterministic fixed-step physics; a missed sweet floats away and the level starts again by itself, with no lives and no timer. Best stars are kept on the device and unlock the next level.
+- Boubou’s studio: the paper behind each model takes a colour like any zone; the brush now paints over the coloured model, whose lines stay on top; a blank page joins the ten models and opens with the brush; a new model starts on fresh paper.
+- Boubou’s studio: the sheet in progress is kept on the device and comes back after leaving the studio or reloading the page; the picture can be saved as a PNG file on the device, with no network.
+- Boubou’s studio: every model has a pre-authored animation (wings that flap, a tail that wags, a rocket that takes off, a door that opens…) in which only the child’s colours change. Reduced motion shows it still.
+- Saved works move to a second format; works saved by earlier versions keep exactly what the child saw.
+- Home: the game cards no longer fade out and back in each time the home screen appears, which looked like flickering on a light screen; the small guides on the cards stay still while the landscape cast keeps its gentle motion.
+
 ## 1.0.1
 
 - Reserve two explicit text lines for game instructions, encouragements and feedback, and space for the studio stamp; wrap text without clipping. Keep sorting pieces at their grid origin during touch activation.
