@@ -16,6 +16,16 @@ const panel = (id: string, x: number, y: number, w: number, h: number): Zone => 
 const line = (d: string, feature = 'detail'): string => `<path data-feature="${feature}" d="${d}" fill="none" stroke="#58443b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`;
 // Faces have no eyebrows. Every mouth is a single upward-open smile, separate from details.
 const face = (x = 160, y = 115): string => `<g data-face="smiling">${line(`M${x-37} ${y-8}v8M${x+37} ${y-8}v8`,'eyes')}${line(`M${x-15} ${y+23}Q${x} ${y+39} ${x+15} ${y+23}`,'mouth')}${line(`M${x-4} ${y+10}Q${x} ${y+14} ${x+4} ${y+10}`,'nose')}</g>`;
+/** Detail lines that move with an animated part (see motion.ts); the static sheet draws them like any other line. */
+export const partInk = {
+    caliTail: 'M246 199Q270 218 297 204M235 223Q263 244 294 232M235 250Q255 263 279 263',
+    leftWing: 'M21 126L80 160L49 151', rightWing: 'M299 126L240 160L271 151',
+    flower: 'M274 42Q255 60 279 72Q297 55 274 42', tutuTail: 'M249 213Q280 193 283 228Q281 249 264 239',
+    mane: 'M55 86Q82 102 63 132Q43 157 72 172', lumiTail: 'M247 216Q279 204 284 239',
+    sideFin: 'M183 145L211 158', fishTail: 'M254 150L286 123M254 157L286 183',
+    flame: 'M147 257L160 280L174 257', ring: 'M20 53Q40 68 65 45', leafVein: 'M31 255L69 219'
+} as const;
+export const inkLine = (d: string): string => line(d);
 const drawing = (id: string, fr: string, en: string, zones: Zone[], ink = ''): Drawing => ({ id, names: { fr, en }, zones, ink });
 const head = (): Zone => contour('head',[75,105],[[[70,54],[118,57]],[[160,38],[202,57]],[[250,54],[245,105]],[[260,174],[160,177]],[[60,174],[75,105]]]);
 const body = (): Zone => contour('body',[108,177],[[[160,161],[212,177]],[[239,237],[205,262]],[[160,278],[115,262]],[[81,237],[108,177]]]);
@@ -34,7 +44,7 @@ export const drawings: readonly Drawing[] = [
         tail('striped-tail'),...pointedEars(),...feet(),body(),head(),
         contour('left-cheek',[76,109],[[[97,91],[130,130]],[[145,160],[104,162]],[[70,151],[76,109]]]),
         contour('right-cheek',[244,109],[[[223,91],[190,130]],[[175,160],[216,162]],[[250,151],[244,109]]])
-    ],face()+line('M246 199Q270 218 297 204M235 223Q263 244 294 232M235 250Q255 263 279 263M70 47L88 67M250 47L232 67')),
+    ],face()+line(partInk.caliTail)+line('M70 47L88 67M250 47L232 67')),
     drawing('pestouille','Pestouille','Pestouille',[
         contour('left-wing',[92,183],[[[34,191],[10,113]],[[40,132],[34,83]],[[87,95],[105,150]],[[113,176],[92,183]]]),
         contour('right-wing',[228,183],[[[286,191],[310,113]],[[280,132],[286,83]],[[233,95],[215,150]],[[207,176],[228,183]]]),
@@ -42,20 +52,20 @@ export const drawings: readonly Drawing[] = [
         contour('left-horn',[88,79],[[[52,43],[83,9]],[[78,41],[136,67]],[[119,88],[88,79]]]),
         contour('right-horn',[232,79],[[[268,43],[237,9]],[[242,41],[184,67]],[[201,88],[232,79]]]),head(),
         panel('book-left',102,209,57,60),panel('book-right',161,209,57,60)
-    ],face()+line('M21 126L80 160L49 151M299 126L240 160L271 151M111 225L147 232M111 242L147 249M173 232L207 225M173 249L207 242')),
+    ],face()+line(partInk.leftWing)+line(partInk.rightWing)+line('M111 225L147 232M111 242L147 249M173 232L207 225M173 249L207 242')),
     drawing('tutu','Tutu','Tutu',[
         tail('curled-tail'),...roundEars(),...feet(),body(),head(),
         contour('face-mask',[95,96],[[[98,59],[160,87]],[[222,59],[225,110]],[[229,165],[160,169]],[[90,165],[95,96]]]),
         contour('tutu',[106,216],[[[160,236],[214,216]],[[232,240],[249,265]],[[221,286],[192,274]],[[162,297],[132,276]],[[100,292],[71,265]],[[87,237],[106,216]]]),
         oval('flower',249,30,55,55)
-    ],face()+line('M111 239L99 266M141 245L136 278M179 245L190 276M209 239L225 268M274 42Q255 60 279 72Q297 55 274 42M249 213Q280 193 283 228Q281 249 264 239')),
+    ],face()+line('M111 239L99 266M141 245L136 278M179 245L190 276M209 239L225 268')+line(partInk.flower)+line(partInk.tutuTail)),
     drawing('lumi','Lumi','Lumi',[
         tail('flowing-tail'),...pointedEars(),...feet(),body(),
         contour('head',[95,64],[[[149,39],[190,72]],[[210,92],[211,114]],[[259,125],[248,157]],[[231,186],[190,174]],[[155,170],[132,149]],[[81,126],[95,64]]]),
         contour('mane',[79,61],[[[18,71],[48,120]],[[10,157],[59,192]],[[112,185],[96,147]],[[66,119],[103,89]],[[118,65],[79,61]]]),
         contour('horn',[137,64],[[[143,29],[162,7]],[[182,31],[187,64]],[[162,80],[137,64]]]),
         contour('chest-star',[160,187],[[[175,207],[191,211]],[[181,228],[185,249]],[[160,244],[135,249]],[[139,228],[129,211]],[[145,207],[160,187]]])
-    ],face()+line('M55 86Q82 102 63 132Q43 157 72 172M247 216Q279 204 284 239M147 40L177 48M112 264L127 264M192 264L210 264')),
+    ],face()+line(partInk.mane)+line(partInk.lumiTail)+line('M147 40L177 48M112 264L127 264M192 264L210 264')),
     drawing('maison','Maison','House',[
         panel('wall',55,125,210,160),
         panel('chimney',221,31,49,75),
@@ -68,7 +78,7 @@ export const drawings: readonly Drawing[] = [
         oval('crown-left',30,75,100,108),oval('crown-right',190,75,100,108),oval('crown-top',106,12,108,108),
         oval('apple-left',64,119,49,49),oval('apple-top',135,58,49,49),oval('apple-right',207,119,49,49),
         contour('fallen-leaf',[22,265],[[[21,205],[80,210]],[[80,267],[22,265]]])
-    ],line('M155 218Q172 200 163 183M155 248L166 261M31 255L69 219M85 128q0 -9 9 -12M156 67q0 -9 9 -12M228 128q0 -9 9 -12')),
+    ],line('M155 218Q172 200 163 183M155 248L166 261')+line(partInk.leafVein)+line('M85 128q0 -9 9 -12M156 67q0 -9 9 -12M228 128q0 -9 9 -12')),
     drawing('poisson','Poisson','Fish',[
         contour('tail',[228,151],[[[271,100],[303,100]],[[289,151],[303,208]],[[271,208],[228,151]]]),
         contour('top-fin',[103,95],[[[135,22],[188,56]],[[208,80],[204,107]],[[147,115],[103,95]]]),
@@ -76,7 +86,7 @@ export const drawings: readonly Drawing[] = [
         contour('body',[32,151],[[[49,79],[136,83]],[[216,79],[248,151]],[[216,229],[136,226]],[[49,229],[32,151]]]),
         contour('gill',[118,87],[[[158,148],[118,223]],[[170,234],[183,199]],[[210,149],[180,101]],[[154,78],[118,87]]]),
         oval('side-fin',166,130,58,54),oval('bubble-top',16,15,49,49),oval('bubble-bottom',21,241,49,49)
-    ],line('M68 128v8')+line('M58 164Q73 180 88 164','mouth')+line('M183 145L211 158M254 150L286 123M254 157L286 183')),
+    ],line('M68 128v8')+line('M58 164Q73 180 88 164','mouth')+line(partInk.sideFin)+line(partInk.fishTail)),
     drawing('fusee','Fusée','Rocket',[
         contour('left-fin',[105,166],[[[45,184],[35,258]],[[76,254],[112,221]],[[119,190],[105,166]]]),
         contour('right-fin',[215,166],[[[275,184],[285,258]],[[244,254],[208,221]],[[201,190],[215,166]]]),
@@ -85,7 +95,7 @@ export const drawings: readonly Drawing[] = [
         contour('nose',[105,91],[[[116,44],[160,10]],[[204,44],[215,91]],[[160,108],[105,91]]]),
         oval('window',132,118,56,56),panel('hatch',133,187,54,51),
         oval('planet',15,22,52,52),oval('moon',253,51,51,51)
-    ],line('M144 132L173 151M150 202H171M143 216H177M147 257L160 280L174 257M20 53Q40 68 65 45')),
+    ],line('M144 132L173 151M150 202H171M143 216H177')+line(partInk.flame)+line(partInk.ring)),
     drawing('papillon','Papillon','Butterfly',[
         contour('left-top',[132,147],[[[16,150],[17,56]],[[24,2],[88,35]],[[128,63],[132,147]]]),
         contour('right-top',[188,147],[[[304,150],[303,56]],[[296,2],[232,35]],[[192,63],[188,147]]]),
@@ -95,4 +105,6 @@ export const drawings: readonly Drawing[] = [
         oval('body',135,110,50,151),oval('head',135,58,50,53)
     ],line('M146 60Q117 13 107 43M174 60Q203 13 213 43M148 80v2M172 80v2')+line('M150 92Q160 104 170 92','mouth')+line('M147 150H173M143 177H177M143 204H177'))
 ];
+/** A blank page: only the background can be filled; the brush draws freely. */
+export const blank: Drawing = drawing('feuille','Page blanche','Blank page',[]);
 export const SHEET = { width: 320, height: 300 } as const;

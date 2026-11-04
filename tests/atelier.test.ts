@@ -1,7 +1,9 @@
 import { expect, it } from 'vitest';
-import { addStroke, appendGallery, clear, deserialize, drawings, fill, HISTORY, MAX_BYTES, MAX_POINTS, palette, parseGallery, pointCount, redo, sample, serialize, SHEET, simplify, start, strokeTolerance, undo, type Point } from '../src/engines/atelier';
-import { eraseGallery, readGallery, writeGallery } from '../src/games/atelier/storage';
-import { gameView, labels, sheet, underpaint } from '../src/games/atelier/view';
+import { addStroke, appendGallery, BACKGROUND, choose, clear, deserialize, drawings, fill, HISTORY, MAX_BYTES, MAX_POINTS, palette, parseGallery, pointCount, redo, sample, serialize, SHEET, simplify, start, strokeTolerance, undo, type Point } from '../src/engines/atelier';
+import { DRAFT_KEY, eraseGallery, readDraft, readGallery, writeDraft, writeGallery } from '../src/games/atelier/storage';
+import { shows } from '../src/engines/atelier/motion';
+import { sheets } from '../src/engines/atelier';
+import { animatedSheet, gameView, labels, sheet, thumbnail, underpaint } from '../src/games/atelier/view';
 import { atelierGesture } from './fixtures/atelier-gesture';
 import { screenToZone } from '../src/shell/coordinates';
 
@@ -124,11 +126,11 @@ it('the total budget flattens earlier strokes within 2px instead of discarding a
 it('versioned compact serialization round trips both modes and a worst-case 4000-point artwork within 60 KiB', () => {
     for(const mode of ['color','draw'] as const) {
         const s=fill(start('lumi',mode),'head');const raw=serialize(s.art);
-        expect(JSON.parse(raw) as object).toMatchObject({v:1});expect(deserialize(raw)).toEqual(s.art);
+        expect(JSON.parse(raw) as object).toMatchObject({v:2});expect(deserialize(raw)).toEqual(s.art);
     }
     const art={...start().art,mode:'draw' as const,strokes:Array.from({length:4000},(_,i)=>({color:palette[i%12]![0],width:18 as const,points:[{x:i%320,y:i%300}]}))};
     const raw=serialize(art);expect(new TextEncoder().encode(raw).length).toBeLessThanOrEqual(60*1024);expect(MAX_BYTES).toBe(60*1024);expect(deserialize(raw)).toEqual(art);
-    for(const bad of ['', '{', 'null', raw.replace('"v":1','"v":2'),raw.replace('"m":"draw"','"m":"bad"'),raw.replace('"d":"boubou"','"d":"unknown"'),'x'.repeat(MAX_BYTES+1),JSON.stringify({v:1,d:'boubou',m:'draw',z:[-1,-1,-1,-1,-1,-1],s:'00zzzz'})]) expect(deserialize(bad)).toBeNull();
+    for(const bad of ['', '{', 'null', raw.replace('"v":2','"v":3'),raw.replace('"m":"draw"','"m":"bad"'),raw.replace('"d":"boubou"','"d":"unknown"'),'x'.repeat(MAX_BYTES+1),JSON.stringify({v:1,d:'boubou',m:'draw',z:[-1,-1,-1,-1,-1,-1],s:'00zzzz'})]) expect(deserialize(bad)).toBeNull();
     const a=addStroke(start(),[{x:20.5,y:30},{x:60,y:80.5}]);expect(deserialize(serialize(a.art))).toEqual(a.art);
 });
 it('4001 differently coloured isolated marks keep every mark, the vector bound and the complete byte bound', () => {
@@ -274,4 +276,76 @@ it('all authored mouths curve into smiles and guide faces cannot contain converg
             }
         }
     }
+});
+
+it('the background is a zone: it fills, recolours, undoes, survives the round trip and is tappable only in colour mode', () => {
+    const a=fill(start('boubou'),BACKGROUND), b=fill({...a,color:palette[6][0]},BACKGROUND);
+    expect(a.art.zones).toEqual({[BACKGROUND]:'#ee737a'});expect(b.art.zones[BACKGROUND]).toBe('#72b8ed');expect(undo(b).art).toEqual(a.art);
+    expect(deserialize(serialize(b.art))).toEqual(b.art);
+    expect(sheet(b.art,'fr')).toContain(`<rect data-zone="${BACKGROUND}" data-fill="#72b8ed" width="320" height="300" fill="#72b8ed"`);
+    expect(sheet({...b.art,mode:'draw'},'fr')).not.toContain('data-zone=');
+    expect(sheet({...b.art,mode:'draw'},'fr')).toContain('class="atelier-ground" width="320" height="300" fill="#72b8ed"');
+    for(const bad of [13,-2,1.5,'1']) expect(deserialize(serialize(b.art).replace('"b":6',`"b":${JSON.stringify(bad)}`))).toBeNull();
+});
+it('the brush paints over the coloured model: zones, strokes and lines all render, lines on top', () => {
+    let s=fill(start('papillon'),'body');s=addStroke({...s,art:{...s.art,mode:'draw'}},[{x:150,y:150},{x:170,y:170}]);
+    for(const art of [s.art,{...s.art,mode:'color' as const}]) {
+        const html=sheet(art,'fr');
+        expect(html).toMatch(/fill="#ee737a"/);expect(html).toContain('data-stroke="0" d="M150 150L170 170"');
+        expect(html.indexOf('atelier-strokes')).toBeGreaterThan(html.lastIndexOf('d="M'+drawings.find(d=>d.id==='papillon')!.zones.at(-1)!.path.slice(1)));
+        expect(html.indexOf('atelier-ink')).toBeGreaterThan(html.indexOf('atelier-strokes'));
+    }
+    expect(sheet(s.art,'fr').match(/data-paint=/g)).toHaveLength(drawings.find(d=>d.id==='papillon')!.zones.length);
+});
+it('a blank page and a new picture start on fresh paper; picking the blank page switches to the brush', () => {
+    expect(sheets.map(d=>d.id)).toEqual([...drawings.map(d=>d.id),'feuille']);
+    let s=fill(start('maison'),'roof');s=addStroke({...s,art:{...s.art,mode:'draw'}},[{x:10,y:10},{x:60,y:60}]);
+    const blank=choose(s,'feuille');expect(blank.art).toEqual({drawing:'feuille',mode:'draw',zones:{},strokes:[]});expect(undo(blank).art).toEqual(s.art);
+    expect(choose(s,'maison')).toBe(s);expect(choose(s,'unknown')).toBe(s);
+    expect(choose(start('maison'),'arbre').art.mode).toBe('color');expect(choose(blank,'arbre').art.mode).toBe('color');
+    const painted=fill({...blank,art:{...blank.art,mode:'color'}},BACKGROUND);expect(painted.art.zones).toEqual({[BACKGROUND]:'#ee737a'});
+    expect(deserialize(serialize(painted.art))).toEqual(painted.art);
+});
+it('version 1 works keep exactly what the child saw: drawings move to the blank page, colourings keep their zones', () => {
+    const d=drawings.find(d=>d.id==='lumi')!, z=d.zones.map((_,i)=>i===0 ? 4 : -1);
+    const drawn=deserialize(JSON.stringify({v:1,d:'lumi',m:'draw',z,s:'70'+'0a0a'+'1414'}))!;
+    expect(drawn).toEqual({drawing:'feuille',mode:'draw',zones:{},strokes:[{color:'#727ed1',width:4,points:[{x:5,y:5},{x:20,y:20}]}]});
+    const coloured=deserialize(JSON.stringify({v:1,d:'lumi',m:'color',z,s:'70'+'0a0a'+'1414'}))!;
+    expect(coloured).toEqual({drawing:'lumi',mode:'color',zones:{[d.zones[0]!.id]:'#58ad87'},strokes:[]});
+    expect(deserialize(JSON.stringify({v:1,d:'feuille',m:'draw',z:[],s:''}))).toBeNull();
+});
+it('the sheet in progress is kept on the device and restored, and broken or blocked storage starts a fresh sheet', () => {
+    let raw: string | null=null;const storage={getItem:(key:string)=>key===DRAFT_KEY ? raw : null,setItem:(_key:string,value:string)=>{raw=value;}};
+    expect(readDraft(storage)).toEqual(start());
+    const s=fill(fill(start('fusee'),'nose'),BACKGROUND);expect(writeDraft(storage,s.art)).toBe(true);
+    expect(readDraft(storage).art).toEqual(s.art);expect(readDraft(storage).past).toEqual([]);
+    raw='{';expect(readDraft(storage)).toEqual(start());
+    const blocked={getItem:()=>{throw Error('blocked');},setItem:()=>{throw Error('blocked');}};
+    expect(readDraft(blocked)).toEqual(start());expect(writeDraft(blocked,s.art)).toBe(false);expect(writeDraft(undefined,s.art)).toBe(false);
+});
+it('every model has a pre-authored animation in which only the child\'s colours differ', () => {
+    expect(Object.keys(shows).sort()).toEqual(sheets.map(d=>d.id).sort());
+    const neutral=(html:string)=>html.replace(/#(?:ee737a|72b8ed|f6d76d|ab83cc)/g,'#C');
+    for(const d of sheets) {
+        for(const part of shows[d.id]!.parts) {
+            for(const zone of part.zones) expect(d.zones.map(z=>z.id)).toContain(zone);
+            for(const line of part.ink) expect(d.ink).toContain(` d="${line}"`);
+        }
+        let a=start(d.id), b={...a,color:palette[6][0]} as typeof a;
+        for(const z of [...d.zones.map(z=>z.id),BACKGROUND]) {a=fill({...a,color:palette[0][0]},z);b=fill({...b,color:palette[d.zones.length%2 ? 8 : 2][0]},z);}
+        a=addStroke({...a,color:palette[6][0]},[{x:40,y:40},{x:90,y:70}]);b=addStroke({...b,color:palette[0][0]},[{x:40,y:40},{x:90,y:70}]);
+        const ha=animatedSheet(a.art,'fr'), hb=animatedSheet(b.art,'en');
+        expect(ha).toContain('<animateTransform');expect(ha).not.toContain('data-zone=');
+        expect(neutral(ha.replace(/aria-label="[^"]*"/,''))).toBe(neutral(hb.replace(/aria-label="[^"]*"/,'')));
+        // Every zone shape is drawn exactly once, with the child's colour; every line of the static ink survives.
+        for(const z of d.zones) {expect(ha.split(`d="${z.path}"`)).toHaveLength(2);expect(ha).toContain(`data-paint="${z.id}" d="${z.path}" fill="#ee737a"`);}
+        const lines=(html:string)=>[...html.matchAll(/ d="(M[^"]+)" fill="none" stroke="#58443b" stroke-width="3"/g)].map(m=>m[1]).sort();
+        expect(lines(ha)).toEqual(lines(sheet(a.art,'fr')));
+    }
+});
+it('thumbnails and saved pictures carry the background, the zones and the brush marks without interactive attributes', () => {
+    let s=fill(fill(start('arbre'),'trunk'),BACKGROUND);s=addStroke({...s,art:{...s.art,mode:'draw'}},[{x:5,y:5},{x:50,y:50}]);
+    const html=thumbnail(s.art,'fr');
+    expect(html).toContain('fill="#ee737a"');expect(html).toContain('data-stroke="0"');
+    expect(html).not.toMatch(/data-zone=|tabindex=|role=| id=/);
 });

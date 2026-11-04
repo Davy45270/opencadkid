@@ -1,23 +1,24 @@
 import { bindDragEnd } from '../../shell/drag';
-import { addStroke, appendGallery, change, clear, deserialize, drawings, fill, palette, pointCount, redo, sample, strokeTolerance, SHEET, start, undo, type Point, type State } from '../../engines/atelier';
+import { addStroke, appendGallery, change, choose as chooseSheet, clear, deserialize, fill, palette, pointCount, redo, sample, strokeTolerance, SHEET, start, undo, type Point, type State } from '../../engines/atelier';
 import { acceptActivation, bindAction, recordActivation } from '../../shell/activation';
 import { screenToZone } from '../../shell/coordinates';
 import type { Locale } from '../../shell/i18n';
 import type { StoragePort } from '../../shell/storage';
 import { characterSvg } from '../../characters/svg';
-import { gameView, labels, sheet, strokePath, thumbnail } from './view';
-import { readGallery, writeGallery } from './storage';
+import { animatedSheet, gameView, labels, sheet, strokePath, thumbnail } from './view';
+import { readGallery, writeDraft, writeGallery } from './storage';
+import { exportPicture } from './export';
 export interface Studio { state: State; revision: number }
 export function snapshot(studio: Studio): object { const s=studio.state; return { ...s.art, tool:s.art.mode, color:s.color, width:s.width, strokeCount:s.art.strokes.length+(s.art.flattened ?? 0), pointCount:pointCount(s.art), undoSize:s.past.length, redoSize:s.future.length }; }
 export function mount(root: HTMLElement, studio: Studio, locale: Locale, storage: StoragePort | undefined, speak: (parts:string[])=>void, home: ()=>void): ()=>void {
     const t=labels[locale];
-    let pointer: number | undefined, points: Point[]=[], preview: Point[]=[], disposed=false, savedRevision=-1, strokeScale=1;
+    let pointer: number | undefined, points: Point[]=[], preview: Point[]=[], disposed=false, savedRevision=-1, strokeScale=1, playing=false;
     let paperOwner: HTMLElement | undefined;
     const ending=bindDragEnd(root.ownerDocument,()=>pointer===undefined || !paperOwner ? undefined : {pointer,element:paperOwner},()=>{pointer=undefined;paperOwner=undefined;},reason=>{
         if(pointer!==undefined) {recordActivation('atelier:stroke',reason,true,'preserve-partial-stroke');finish();}
     });
     const state=(): State=>studio.state;
-    const set=(s:State): void=>{ if(s!==studio.state) { studio.state=s; studio.revision++; } };
+    const set=(s:State): void=>{ if(s!==studio.state) { const moved=s.art!==studio.state.art; studio.state=s; studio.revision++; if(moved) writeDraft(storage,s.art); } };
     const draw=(): void=>{
         root.innerHTML=gameView(state(),locale); bind();
     };
@@ -25,8 +26,16 @@ export function mount(root: HTMLElement, studio: Studio, locale: Locale, storage
         for(const key of ['undo','redo']) root.querySelector<HTMLButtonElement>(`[data-tool="${key}"]`)!.disabled=key==='undo' ? !state().past.length : !state().future.length;
         root.querySelector('#atelier-status')!.textContent='';
     };
-    const paint=(): void=>{ root.querySelector('.atelier-sheet')!.innerHTML=sheet(state().art,locale); bindSheet(); controls(); };
+    const paint=(): void=>{ playing=false; root.querySelector('[data-tool="play"]')?.setAttribute('aria-pressed','false'); root.querySelector('.atelier-sheet')!.innerHTML=sheet(state().art,locale); bindSheet(); controls(); };
+    const motionAllowed=(): boolean=>typeof matchMedia!=='function' || !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const play=(): void=>{
+        if(playing) {paint();return;}
+        playing=true; root.querySelector('[data-tool="play"]')!.setAttribute('aria-pressed','true');
+        // Reduced motion: the picture is shown as it will move, without the movement.
+        const html=animatedSheet(state().art,locale); root.querySelector('.atelier-sheet')!.innerHTML=motionAllowed() ? html : html.replace(/<animate(?:Transform)?\b[^>]*\/>/g,'');
+    };
     const choose=(color:State['color']): void=>{
+        if(playing) paint();
         set({...state(),color});
         root.querySelectorAll<HTMLElement>('[data-color]').forEach(el=>el.setAttribute('aria-pressed',String(el.dataset.color===color)));
         root.querySelector('[data-tool="eraser"]')!.setAttribute('aria-pressed',String(color==='#ffffff'));
@@ -70,6 +79,7 @@ export function mount(root: HTMLElement, studio: Studio, locale: Locale, storage
             live.setAttribute('d',strokePath(preview)); live.setAttribute('stroke',state().color); live.setAttribute('stroke-width',String(state().width));
         };
         paper.addEventListener('pointerdown',event=>{
+            if(playing) {event.preventDefault();recordActivation('atelier:stroke',event.type,false,'stops-animation');paint();return;}
             if(state().art.mode!=='draw') return;
             if(pointer!==undefined || !event.isPrimary || event.button!==0) {recordActivation('atelier:stroke',event.type,false,'secondary-pointer');return;}
             if(!acceptActivation(`atelier:stroke:${studio.revision}`,event.type,false)) return;
@@ -84,7 +94,10 @@ export function mount(root: HTMLElement, studio: Studio, locale: Locale, storage
         root.querySelectorAll<HTMLElement>('[data-width]').forEach(el=>bindAction(el,()=>{finish();set({...state(),width:Number(el.dataset.width) as State['width']});root.querySelectorAll<HTMLElement>('[data-width]').forEach(b=>b.setAttribute('aria-pressed',String(b===el)));speak([Number(el.dataset.width)===4?t.small:Number(el.dataset.width)===9?t.medium:t.large]);},()=>`atelier:width:${el.dataset.width!}:${studio.revision}`));
         root.querySelectorAll<HTMLElement>('button[data-tool]').forEach(el=>bindAction(el,()=>{
             finish(); const tool=el.dataset.tool;
+            if(tool==='play') {play();return;}
+            if(playing) paint();
             if(tool==='color' || tool==='draw') {set(change(state(),{...state().art,mode:tool}));draw();}
+            if(tool==='export') {const status=root.querySelector('#atelier-status')!;void exportPicture(state().art,locale).then(ok=>{if(!disposed && ok) status.textContent=t.savedImage;});}
             if(tool==='undo' || tool==='redo') {set(tool==='undo'?undo(state()):redo(state()));draw();}
             if(tool==='eraser') choose('#ffffff');
             if(tool==='clear') {modal(`<p>${t.confirm}</p><button id="atelier-yes">${t.yes}</button>`);bindAction(root.querySelector<HTMLElement>('#atelier-yes')!,()=>{set(clear(state()));draw();},()=>`atelier:clear:${studio.revision}`);}
@@ -101,7 +114,7 @@ export function mount(root: HTMLElement, studio: Studio, locale: Locale, storage
         },()=>`atelier:${el.dataset.tool!}:${studio.revision}`));
         root.querySelector<HTMLSelectElement>('#atelier-picture')!.onchange=event=>{
             finish(); const id=(event.target as HTMLSelectElement).value;
-            if(drawings.some(d=>d.id===id)) {set(change(state(),{...state().art,drawing:id,zones:{}}));paint();}
+            const next=chooseSheet(state(),id); if(next!==state()) {set(next);draw();}
         };
         bindAction(root.querySelector<HTMLElement>('#listen')!,()=>speak([t.instruction]),'atelier:listen');
         // Home is owned by the shared router; it rebinds this connected control after mount.

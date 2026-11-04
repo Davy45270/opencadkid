@@ -1,8 +1,7 @@
 import { bindDragEnd } from './drag';
-import { start as atelierStart } from '../engines/atelier';
 import { mount as mountAtelier, snapshot as atelierSnapshot, type Studio } from '../games/atelier/interaction';
 import { labels as atelierLabels } from '../games/atelier/view';
-import { eraseGallery } from '../games/atelier/storage';
+import { eraseGallery, readDraft } from '../games/atelier/storage';
 import * as tambours from '../engines/tambours';
 import * as tamboursView from '../games/tambours/view';
 import { bindDrums } from '../games/tambours/interaction';
@@ -92,7 +91,7 @@ function render(): void {
     app.dataset.theme = screen === 'game' || screen === 'levels' ? activeGame : screen;
     if (screen === 'home') {
         app.innerHTML = home(save);
-        bind('[data-game]', el => { activeGame = el.dataset.game!; if (activeGame === 'atelier') { atelierStudio = { state: atelierStart(), revision: 0 }; screen = 'game'; render(); speak([atelierLabels[save.locale].instruction]); return; } screen = 'levels'; render(); speak([games.find(g => g.id === activeGame)!.names[save.locale], text(save.locale, 'levels')]); });
+        bind('[data-game]', el => { activeGame = el.dataset.game!; if (activeGame === 'atelier') { atelierStudio = { state: readDraft(storage), revision: 0 }; screen = 'game'; render(); speak([atelierLabels[save.locale].instruction]); return; } screen = 'levels'; render(); speak([games.find(g => g.id === activeGame)!.names[save.locale], text(save.locale, 'levels')]); });
         bind('#parents', () => gate('parents'));
         bind('#tictac', () => gate('tictac'));
     } else if (screen === 'levels') {

@@ -4,7 +4,7 @@ test('DOM zone oracle fills the whole drawing, recolours, undoes, redoes and kee
     await prepareStudio(page);
     await page.evaluate(async()=>{await navigator.serviceWorker.ready;});
     const requests:string[]=[];page.on('request',request=>requests.push(request.url()));
-    const ids=await page.locator('.atelier-sheet [data-zone]').evaluateAll(zones=>zones.map(z=>z.getAttribute('data-zone')!));
+    const ids=await page.locator('.atelier-sheet [data-zone]:not([data-zone="fond"])').evaluateAll(zones=>zones.map(z=>z.getAttribute('data-zone')!));
     expect(new Set(ids).size).toBe(ids.length);expect(ids.length).toBeGreaterThanOrEqual(3);
     const colors=['#ee737a','#f4a269','#f6d76d','#acd26e','#58ad87','#62c9c5'];
     const expected:Record<string,string>={};
@@ -48,9 +48,9 @@ test('spoken bilingual colours, brush sizes, eraser, gentle clear and parental g
     await page.locator('[data-tool="gallery"]').click();await expect(page.locator('[data-art]')).toHaveCount(0);
     await page.reload();await page.locator('[data-game="atelier"]').click();await page.locator('[data-tool="gallery"]').click();await expect(page.locator('[data-art]')).toHaveCount(0);
 });
-test('all ten drawings: actual SVG bounds, 48px palette and controls, selected ring and no overflow at 320–1280',async({page})=>{
+test('all ten drawings and the blank page: actual SVG bounds, 48px palette and controls, selected ring and no overflow at 320–1280',async({page})=>{
     await prepareStudio(page);
-    const options=await page.locator('#atelier-picture option').evaluateAll(els=>els.map(el=>(el as HTMLOptionElement).value));expect(options).toHaveLength(10);
+    const options=await page.locator('#atelier-picture option').evaluateAll(els=>els.map(el=>(el as HTMLOptionElement).value));expect(options).toHaveLength(11);expect(options.at(-1)).toBe('feuille');
     for(const width of [320,360,390,414,768,1280]) {
         await page.setViewportSize({width,height:844});
         for(const r of (await state(page)).targets) {expect(r.width).toBeGreaterThanOrEqual(48);expect(r.height).toBeGreaterThanOrEqual(48);}
