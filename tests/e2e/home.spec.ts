@@ -1,11 +1,12 @@
 import { test, expect, state, passGate } from './helpers';
+import { games } from '../../src/registry';
 test('home, large targets, responsive widths, local requests and both languages', async ({ page }) => {
     const external: string[] = [];
     page.on('request', request => { if (new URL(request.url()).origin !== 'http://127.0.0.1:4173') external.push(request.url()); });
     await page.goto('/');
     await expect(page.locator('h1')).toHaveText('Opencadkid');
     await expect(page.locator('.cast > svg')).toHaveCount(5);
-    await expect(page.locator('[data-game]')).toHaveCount(10);
+    await expect(page.locator('[data-game]')).toHaveCount(games.length);
     await expect(page.locator('#tictac')).toBeVisible();
     for (const width of [320, 390, 768, 1280]) {
         await page.setViewportSize({ width, height: 900 });

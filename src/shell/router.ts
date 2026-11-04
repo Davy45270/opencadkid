@@ -2,6 +2,8 @@ import { bindDragEnd } from './drag';
 import { mount as mountAtelier, snapshot as atelierSnapshot, type Studio } from '../games/atelier/interaction';
 import { labels as atelierLabels } from '../games/atelier/view';
 import { eraseGallery, readDraft } from '../games/atelier/storage';
+import { mount as mountGouter, readRecords as readGouterRecords, snapshot as gouterSnapshot, type Session as GouterSession } from '../games/gouter/interaction';
+import { labels as gouterLabels } from '../games/gouter/view';
 import * as tambours from '../engines/tambours';
 import * as tamboursView from '../games/tambours/view';
 import { bindDrums } from '../games/tambours/interaction';
@@ -44,6 +46,8 @@ let save = readSave(storage, detectLocale(navigator.language));
 let screen: 'home' | 'levels' | 'game' | 'parents' | 'gate' = 'home';
 let atelierStudio: Studio | undefined;
 let disposeAtelier: (() => void) | undefined;
+let gouterSession: GouterSession | undefined;
+let disposeGouter: (() => void) | undefined;
 let session: Session | undefined;
 let tamboursSession: tambours.Session | undefined;
 let disposeDrums: (() => void) | undefined;
@@ -70,7 +74,7 @@ let seedCounter = 0;
 let timers: ReturnType<typeof setTimeout>[] = [];
 function seed(): number { const buffer = new Uint32Array(1); try { crypto.getRandomValues(buffer); return buffer[0]!; } catch { return ++seedCounter * 7919; } }
 function persist(): void { writeSave(storage, save); }
-function cancel(): void { endRouterDrags(); disposeAtelier?.(); disposeAtelier = undefined; disposeDrums?.(); disposeDrums = undefined; disposeRanger?.(); disposeRanger = undefined; disposePatternChoices?.(); disposePatternChoices = undefined; timers.forEach(clearTimeout); timers = []; stopSpeech(); }
+function cancel(): void { endRouterDrags(); disposeAtelier?.(); disposeAtelier = undefined; disposeGouter?.(); disposeGouter = undefined; disposeDrums?.(); disposeDrums = undefined; disposeRanger?.(); disposeRanger = undefined; disposePatternChoices?.(); disposePatternChoices = undefined; timers.forEach(clearTimeout); timers = []; stopSpeech(); }
 function speak(parts: string[], rate = 0.82): void { say(parts, save.locale, save.voice, undefined, rate); }
 function actionKey(element: HTMLElement): string {
     const target = element.id || Object.entries(element.dataset).map(([key, value]) => `${key}-${value ?? ''}`).join(':');
@@ -91,12 +95,14 @@ function render(): void {
     app.dataset.theme = screen === 'game' || screen === 'levels' ? activeGame : screen;
     if (screen === 'home') {
         app.innerHTML = home(save);
-        bind('[data-game]', el => { activeGame = el.dataset.game!; if (activeGame === 'atelier') { atelierStudio = { state: readDraft(storage), revision: 0 }; screen = 'game'; render(); speak([atelierLabels[save.locale].instruction]); return; } screen = 'levels'; render(); speak([games.find(g => g.id === activeGame)!.names[save.locale], text(save.locale, 'levels')]); });
+        bind('[data-game]', el => { activeGame = el.dataset.game!; if (activeGame === 'atelier') { atelierStudio = { state: readDraft(storage), revision: 0 }; screen = 'game'; render(); speak([atelierLabels[save.locale].instruction]); return; } if (activeGame === 'gouter') { gouterSession = { screen: 'levels', state: null, records: readGouterRecords(storage) }; screen = 'game'; render(); speak([gouterLabels[save.locale].title, gouterLabels[save.locale].levels]); return; } screen = 'levels'; render(); speak([games.find(g => g.id === activeGame)!.names[save.locale], text(save.locale, 'levels')]); });
         bind('#parents', () => gate('parents'));
         bind('#tictac', () => gate('tictac'));
     } else if (screen === 'levels') {
         app.innerHTML = activeGame === 'tambours' ? tamboursView.levelView(save) : activeGame === 'ranger' ? rangerView.levelView(save) : activeGame === 'suites' ? suitesView.levelView(save) : activeGame === 'chemin' ? cheminView.levelView(save) : activeGame === 'puzzle' ? puzzleView.levelView(save) : activeGame === 'sons' ? soundsView.levelView(save) : activeGame === 'formes' ? shapesView.levelView(save) : activeGame === 'paires' ? memoryView.levelView(save) : levelView(save);
         bind('[data-level]', el => { const level = Number(el.dataset.level); if (activeGame === 'tambours' ? tambours.isUnlocked(level, save.tamboursRecords) : activeGame === 'ranger' ? ranger.isUnlocked(level, save.rangerRecords) : activeGame === 'suites' ? suites.isUnlocked(level, save.suitesRecords) : activeGame === 'chemin' ? chemin.isUnlocked(level, save.cheminRecords) : activeGame === 'puzzle' ? puzzle.isUnlocked(level, save.puzzleRecords) : activeGame === 'sons' ? sounds.isUnlocked(level, save.sonsRecords) : activeGame === 'formes' ? shapes.isUnlocked(level, save.formesRecords) : activeGame === 'paires' ? memory.isUnlocked(level, save.pairesRecords) : isUnlocked(level, save.records)) begin(level); });
+    } else if (screen === 'game' && activeGame === 'gouter' && gouterSession) {
+        disposeGouter = mountGouter(app, gouterSession, save.locale, storage, speak, () => save.sound, () => { screen = 'home'; gouterSession = undefined; render(); });
     } else if (screen === 'game' && activeGame === 'atelier' && atelierStudio) {
         disposeAtelier = mountAtelier(app, atelierStudio, save.locale, storage, speak, () => { screen = 'home'; render(); });
     } else if (screen === 'game' && activeGame === 'tambours' && tamboursSession) {
@@ -129,7 +135,8 @@ function render(): void {
         bind('#next', () => { if (session!.level < levels.length) begin(session!.level + 1); });
     }
     if (screen === 'game' || screen === 'levels') app.insertAdjacentHTML('afterbegin', backdrop(activeGame));
-    bind('#back', () => { endRouterDrags(); screen = 'home'; tamboursSession = undefined; rangerSession = undefined; rangerSelected = undefined; suitesSession = undefined; cheminSession = undefined; cheminDrag = undefined; puzzleSession = undefined; puzzleDrag = undefined; soundsSession = undefined; soundDrag = undefined; session = undefined; memorySession = undefined; shapesSession = undefined; render(); });
+    // The snack game owns its back button: from a level it returns to its own level list.
+    if (!(screen === 'game' && activeGame === 'gouter')) bind('#back', () => { endRouterDrags(); screen = 'home'; tamboursSession = undefined; rangerSession = undefined; rangerSelected = undefined; suitesSession = undefined; cheminSession = undefined; cheminDrag = undefined; puzzleSession = undefined; puzzleDrag = undefined; soundsSession = undefined; soundDrag = undefined; session = undefined; memorySession = undefined; shapesSession = undefined; render(); });
 }
 function begin(level: number): void {
     endRouterDrags();
@@ -660,11 +667,11 @@ let puzzleHiddenAt: number | undefined;
 document.addEventListener('visibilitychange', () => {
     if (document.hidden) { cheminEnding.finish(); puzzleHiddenAt = performance.now(); cancelPuzzleDrag(); }
     else if (screen === 'game' && activeGame === 'puzzle') { if (puzzleHiddenAt !== undefined) puzzleIdleStart += performance.now() - puzzleHiddenAt; puzzleHiddenAt = undefined; render(); }
- if (document.hidden) { cancel(); stopSound(); } else { if (save.sound) unlockSound(); if (screen === 'game' && (activeGame === 'paires' || activeGame === 'atelier' || activeGame === 'suites' || activeGame === 'ranger')) render(); if (screen === 'game' && activeGame === 'tambours' && tamboursSession) { tamboursSession = { ...tamboursSession, cursor: tamboursSession.solved || tambours.levels[tamboursSession.level - 1]!.mode === 'libre' ? tamboursSession.cursor : 0, last: null }; render(); } } });
+ if (document.hidden) { cancel(); stopSound(); } else { if (save.sound) unlockSound(); if (screen === 'game' && (activeGame === 'paires' || activeGame === 'atelier' || activeGame === 'gouter' || activeGame === 'suites' || activeGame === 'ranger')) render(); if (screen === 'game' && activeGame === 'tambours' && tamboursSession) { tamboursSession = { ...tamboursSession, cursor: tamboursSession.solved || tambours.levels[tamboursSession.level - 1]!.mode === 'libre' ? tamboursSession.cursor : 0, last: null }; render(); } } });
 Object.defineProperty(window, '__kid', { configurable: false, writable: false, value: Object.freeze({ events: activationEvents, state: () => {
     const targets = [...app.querySelectorAll<HTMLElement>('button, select, input')].filter(el => !el.hasAttribute('disabled')).map(el => { const r = el.getBoundingClientRect(); return { id: el.id || (el.dataset.drum !== undefined ? `drum-${el.dataset.drum}` : el.dataset.object !== undefined ? `object-${el.dataset.object}` : el.dataset.bin !== undefined ? `bin-${el.dataset.bin}` : el.dataset.patternChoice !== undefined ? `pattern-choice-${el.dataset.patternChoice}` : el.dataset.answer !== undefined ? `answer-${el.dataset.answer}` : el.dataset.level ? `level-${el.dataset.level}` : el.dataset.card !== undefined ? `card-${el.dataset.card}` : el.hasAttribute('data-reserve') ? `reserve-${el.dataset.reserve}` : el.hasAttribute('data-basket') ? `basket-${el.dataset.basket}` : el.dataset.soundPiece !== undefined ? `sound-piece-${el.dataset.soundPiece}` : el.dataset.soundBox !== undefined ? `sound-box-${el.dataset.soundBox}` : el.dataset.piece !== undefined ? `piece-${el.dataset.piece}` : el.dataset.box !== undefined ? `box-${el.dataset.box}` : el.dataset.game || ''), x: r.x, y: r.y, width: r.width, height: r.height }; });
     const rect = (selector: string): { x: number; y: number; width: number; height: number } | null => { const r = app.querySelector(selector)?.getBoundingClientRect(); return r ? { x: r.x, y: r.y, width: r.width, height: r.height } : null; };
-    return structuredClone({ atelier: screen === 'game' && activeGame === 'atelier' && atelierStudio ? atelierSnapshot(atelierStudio) : null, tambours: tamboursSession ?? null, ranger: rangerSession ?? null, suites: suitesSession ?? null, chemin: cheminSession ?? null, puzzle: puzzleSession ? { ...puzzleSession, zone: rect('.puzzle-zone'), boardScreen: rect('[data-puzzle-board]') } : null, screen, game: screen === 'game' && activeGame === 'atelier' || tamboursSession || rangerSession || suitesSession || cheminSession || puzzleSession || session || memorySession || shapesSession || soundsSession || screen === 'levels' ? activeGame : null, level: tamboursSession?.level ?? rangerSession?.level ?? suitesSession?.level ?? cheminSession?.level ?? puzzleSession?.level ?? soundsSession?.level ?? shapesSession?.level ?? memorySession?.level ?? session?.level ?? null, index: tamboursSession?.index ?? rangerSession?.index ?? suitesSession?.index ?? soundsSession?.index ?? shapesSession?.index ?? session?.index ?? 0, selection: rangerSelected ?? soundSelected ?? selectedPiece ?? null, question: rangerSession?.questions[rangerSession.index] ?? suitesSession?.questions[suitesSession.index] ?? soundsSession?.questions[soundsSession.index] ?? shapesSession?.questions[shapesSession.index] ?? session?.questions[session.index] ?? null, sons: soundsSession ?? null, shapes: shapesSession ?? null, basket: session?.basket ?? 0, board: memorySession ? { ...memorySession, cards: memorySession.cards.map((card, i) => {
+    return structuredClone({ atelier: screen === 'game' && activeGame === 'atelier' && atelierStudio ? atelierSnapshot(atelierStudio) : null, gouter: screen === 'game' && activeGame === 'gouter' && gouterSession ? gouterSnapshot(gouterSession, app) : null, tambours: tamboursSession ?? null, ranger: rangerSession ?? null, suites: suitesSession ?? null, chemin: cheminSession ?? null, puzzle: puzzleSession ? { ...puzzleSession, zone: rect('.puzzle-zone'), boardScreen: rect('[data-puzzle-board]') } : null, screen, game: screen === 'game' && (activeGame === 'atelier' || activeGame === 'gouter') || tamboursSession || rangerSession || suitesSession || cheminSession || puzzleSession || session || memorySession || shapesSession || soundsSession || screen === 'levels' ? activeGame : null, level: tamboursSession?.level ?? rangerSession?.level ?? suitesSession?.level ?? cheminSession?.level ?? puzzleSession?.level ?? soundsSession?.level ?? shapesSession?.level ?? memorySession?.level ?? session?.level ?? null, index: tamboursSession?.index ?? rangerSession?.index ?? suitesSession?.index ?? soundsSession?.index ?? shapesSession?.index ?? session?.index ?? 0, selection: rangerSelected ?? soundSelected ?? selectedPiece ?? null, question: rangerSession?.questions[rangerSession.index] ?? suitesSession?.questions[suitesSession.index] ?? soundsSession?.questions[soundsSession.index] ?? shapesSession?.questions[shapesSession.index] ?? session?.questions[session.index] ?? null, sons: soundsSession ?? null, shapes: shapesSession ?? null, basket: session?.basket ?? 0, board: memorySession ? { ...memorySession, cards: memorySession.cards.map((card, i) => {
         const r = app.querySelector(`[data-card="${i}"]`)?.getBoundingClientRect();
         return { ...card, visible: memorySession!.preview || card.found || memorySession!.visible.includes(i), rect: r ? { x: r.x, y: r.y, width: r.width, height: r.height } : null };
     }) } : null, targets });

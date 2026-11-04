@@ -1,5 +1,6 @@
 import { test, expect, media, clearSpeech, passGate, state } from './helpers';
 import { prepareStudio, studioState } from './atelier-helpers';
+import { games } from '../../src/registry';
 test('DOM zone oracle fills the whole drawing, recolours, undoes, redoes and keeps a local gallery after reload', async ({page,context})=>{
     await prepareStudio(page);
     await page.evaluate(async()=>{await navigator.serviceWorker.ready;});
@@ -64,10 +65,10 @@ test('all ten drawings and the blank page: actual SVG bounds, 48px palette and c
     }
     const ring=await page.locator('[data-color][aria-pressed=true]').evaluate(el=>parseFloat(getComputedStyle(el).outlineWidth));expect(ring).toBeGreaterThanOrEqual(4);
 });
-test('optional mobile studio and ten-game catalogue captures',async({page,isMobile})=>{
+test('optional mobile studio and full catalogue captures',async({page,isMobile})=>{
     test.skip(process.env.CAPTURES!=='1'||!isMobile,'Optional mobile review artifacts');await prepareStudio(page);await page.setViewportSize({width:390,height:844});await page.emulateMedia({reducedMotion:'reduce'});
     for(const [i,id] of ['head','body','left-ear','right-ear','left-foot','right-foot'].entries()) {await page.locator('[data-color]').nth(i).click();await page.locator(`[data-zone="${id}"]`).click();}
     await page.screenshot({path:'docs/captures/atelier-coloriage.png'});await page.locator('[data-tool="draw"]').click();
     const r=(await page.locator('.atelier-sheet').boundingBox())!;await page.mouse.move(r.x+40,r.y+70);await page.mouse.down();for(let i=0;i<80;i++) await page.mouse.move(r.x+40+i*2.5,r.y+120+50*Math.sin(i/12));await page.mouse.up();
-    await page.screenshot({path:'docs/captures/atelier-dessin.png'});await page.locator('#back').click();await expect(page.locator('[data-game]')).toHaveCount(10);await expect(page.locator('#tictac')).toBeVisible();await page.screenshot({path:'docs/captures/accueil-catalogue.png',fullPage:true});
+    await page.screenshot({path:'docs/captures/atelier-dessin.png'});await page.locator('#back').click();await expect(page.locator('[data-game]')).toHaveCount(games.length);await expect(page.locator('#tictac')).toBeVisible();await page.screenshot({path:'docs/captures/accueil-catalogue.png',fullPage:true});
 });

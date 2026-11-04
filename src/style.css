@@ -143,3 +143,11 @@ button:active{transform:translateY(3px);box-shadow:0 1px 0 #c7d5b7,inset 0 2px 4
    until the next gesture. Its movement belongs to the drag controller. */
 .sort-zone .shape-choice:active,.sort-zone .sound-choice:active,
 .suites-drag-zone .suites-choice:active,.token:active{transform:none}
+/* Le goûter de Boubou: a tall paper stage, the whole of it a cutting surface for the finger. */
+.gouter{max-width:540px;margin:auto}.gouter .play-header h1{flex:1;text-align:center;font-size:1.2rem;margin:0}
+.gouter-instruction{display:flex;align-items:center;gap:10px;max-width:420px;margin:6px auto;min-height:76px;border-radius:24px;background:#fcf8edf5;padding:0 8px}.gouter-instruction #guide{width:68px;height:68px;flex:none}.gouter-instruction p{margin:0;font-size:.95rem;line-height:1.25}
+.gouter-zone{position:relative;width:min(100%,360px);aspect-ratio:320/440;margin:4px auto 8px;border-radius:22px;overflow:hidden;outline:2px solid #b6d6c1;box-shadow:0 4px 0 #d5e3c8;touch-action:none;user-select:none;-webkit-user-select:none}.gouter-zone *{touch-action:none}
+.gouter-zone>svg{width:100%;height:100%}.gouter-zone [data-star]{transition:opacity .25s ease}
+.gouter-reward{text-align:center}.gouter-reward .stars{font-size:3rem}.gouter-reward .finish-actions button{margin:6px 0}
+.gouter .level-grid span{min-height:1.2em}
+@media(prefers-reduced-motion:reduce){.gouter-zone [data-star]{transition:none}}

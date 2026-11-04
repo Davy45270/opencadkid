@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { publicLines } from '../scripts/public-files';
 import { it, expect } from 'vitest';
-const forbidden = [['metal', ' slug'], ['gala', 'ga'], ['wor', 'ms'], ['lemm', 'ings'], ['puzzle', ' bobble'], ['bust', '-a-move'], ['zu', 'ma'], ['bomber', 'man'], ['arka', 'noid'], ['break', 'out'], ['space', ' invaders'], ['pac', '-man'], ['tet', 'ris'], ['soko', 'ban'], ['frog', 'ger']].map(parts => parts.join(''));
+const forbidden = [['metal', ' slug'], ['gala', 'ga'], ['wor', 'ms'], ['lemm', 'ings'], ['puzzle', ' bobble'], ['bust', '-a-move'], ['zu', 'ma'], ['bomber', 'man'], ['arka', 'noid'], ['break', 'out'], ['space', ' invaders'], ['pac', '-man'], ['tet', 'ris'], ['soko', 'ban'], ['frog', 'ger'], ['cut', ' the rope'], ['om', ' nom']].map(parts => parts.join(''));
 const brand = new RegExp(`\\b(?:${forbidden.join('|')})\\b`, 'i');
 const ticket = /\b[A-Z]{2,10}-\d+\b/;
 it('public text has no commercial names or internal ticket identifiers', () => {
