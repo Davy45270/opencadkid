@@ -34,7 +34,7 @@ export const GAME_SPECS = {
     'formes': ['formes', 'formes-doigt'],
     'sons': ['sons', 'sons-doigt'],
     'puzzle': ['puzzle', 'puzzle-doigt', 'puzzle-peint'],
-    'chemin': ['chemin', 'chemin-doigt'],
+    'chemin': ['chemin', 'chemin-doigt', 'chemin-panneau'],
     'suites': ['suites', 'suites-doigt'],
     'ranger': ['ranger', 'ranger-doigt'],
     'tambours': ['tambours', 'tambours-doigt', 'tambours-regressions'],

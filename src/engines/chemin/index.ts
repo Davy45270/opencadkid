@@ -133,6 +133,11 @@ export function interpolate(state: Maze, a: Point, b: Point): Maze {
     }
     return state;
 }
+/** Direction of the solution's first step from the start: what the start sign points to. */
+export function firstStep(state: Pick<Maze, 'columns' | 'rows' | 'grid' | 'start' | 'solution'>): Direction {
+    const next = state.solution[1];
+    return state.grid[state.start]!.find(d => neighbour(state, state.start, d) === next) ?? 'E';
+}
 export function hint(state: Maze): number[] { return state.finished ? [] : route(state, state.trace.at(-1)!, state.goal).slice(1, 4); }
 export function stars(): 3 { return 3; }
 export function medal(state: Maze): boolean { return state.finished && state.bonuses.length > 0 && state.bonuses.every(c => state.collected.includes(c)); }

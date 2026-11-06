@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4.0
+
+- Pestouille’s path: a painted signpost, drawn by the author, now stands at the start of every maze, on the border next to the start square, and points the way of the first step: right on the first two levels, down or up on the later ones (turned a quarter, or mirrored for a path leaving to the left). It sits outside the board, so it never covers a square or Pestouille, and taps on it do nothing.
+- The signpost is a small WebP (17 kB) fetched only when a maze opens, never by the home or level screens; until it arrives, and offline before a first visit, a simple drawn signpost shows in its place. Once seen it stays on the device for offline play, kept out of the offline bundle like the painted puzzle scenes.
+
 ## 1.3.1
 
 - Tooling: code review now runs on oxlint with its type-aware companion `oxlint-tsgolint`, in place of ESLint and typescript-eslint, which do not accept TypeScript 7. `.oxlintrc.json` keeps the same rules as before, generated from the ESLint configuration it replaces: the type-aware checks (forgotten promises, `any` spreading, unsafe template and `+` operands…) and the engine purity rule (no `Math.random`, `Date` or DOM globals in `src/engines`). Only `no-octal` and `no-dupe-args` are gone, both already syntax errors in ES modules.

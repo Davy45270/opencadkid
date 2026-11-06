@@ -1,8 +1,9 @@
 import { expect, it } from 'vitest';
-import { centre, complete, extend, fromPoint, hint, interpolate, isUnlocked, medal, newMaze, segmentCells, stars, type Maze } from '../src/engines/chemin';
+import { readFileSync } from 'node:fs';
+import { centre, complete, extend, firstStep, fromPoint, hint, interpolate, isUnlocked, medal, newMaze, segmentCells, stars, type Maze } from '../src/engines/chemin';
 import { messages } from '../src/shell/i18n';
 import { fresh, readSave, writeSave } from '../src/shell/storage';
-import { boardSvg, gameView } from '../src/games/chemin/view';
+import { boardSvg, gameView, levelView, signUrl } from '../src/games/chemin/view';
 
 // Independent dimensions, lengths in CELLS (including both endpoints), and bonus counts.
 const oracle = [[3, 3, 3, 3, 0], [4, 3, 4, 4, 0], [5, 4, 7, 20, 0], [6, 4, 9, 24, 2], [7, 5, 11, 35, 2], [7, 6, 11, 42, 3], [8, 6, 12, 48, 3], [9, 7, 14, 63, 3]] as const;
@@ -224,4 +225,59 @@ it('level 4 seed 18 has an interior wall before the last two solution cells', ()
     let drawn = s;
     for (const step of path.slice(1, path.indexOf(cell!) + 1)) drawn = extend(drawn, step);
     expect(extend(drawn, blocked!)).toBe(drawn);
+});
+
+// Start sign: an independent oracle for the first step, read from the solution's first two cells.
+const stepOracle = (s: Maze): string => {
+    const [a, b] = s.solution as [number, number];
+    return b === a + 1 ? 'E' : b === a - 1 ? 'W' : b === a + s.columns ? 'S' : 'N';
+};
+const signOf = (html: string): string => html.match(/<div class="chemin-depart"[^>]*>.*?<\/span><\/span><\/span><\/div>/)![0];
+it('the start sign names the real first step for every level and 300 seeds', () => {
+    for (let level = 1; level <= 8; level++) for (let seed = 0; seed < 300; seed++) {
+        const s = newMaze(level, seed);
+        expect(firstStep(s)).toBe(stepOracle(s));
+        if (level <= 2) expect(firstStep(s)).toBe('E'); else expect(firstStep(s)).toBe(s.start === 0 ? 'S' : 'N');
+        const sign = signOf(gameView(s, 'fr', false));
+        expect(sign).toContain(`data-depart="${stepOracle(s)}"`);
+    }
+    const west: Maze = { level: 1, columns: 3, rows: 1, grid: [['E'], ['W', 'E'], ['W']], start: 2, goal: 0, solution: [2, 1, 0], trace: [2], bonuses: [], collected: [], finished: false };
+    expect(firstStep(west)).toBe('W');
+});
+it('the sign is drawn outside the maze, above a downward start and below an upward one, turned toward the first step', () => {
+    const seeds = (level: number, top: boolean): Maze => { for (let seed = 0; ; seed++) { const s = newMaze(level, seed); if ((s.start === 0) === top) return s; } };
+    const down = seeds(4, true), up = seeds(4, false), east = newMaze(1, 3);
+    const order = (html: string): [number, number] => [html.indexOf('<div class="chemin-depart"'), html.indexOf('<div class="chemin-zone"')];
+    const [signDown, zoneDown] = order(gameView(down, 'fr', false)); expect(signDown).toBeGreaterThan(0); expect(signDown).toBeLessThan(zoneDown);
+    const [signUp, zoneUp] = order(gameView(up, 'fr', false)); expect(signUp).toBeGreaterThan(zoneUp);
+    // Upright art 40×64 (189×300 painted) points right; a quarter turn sits upright as 64×102 inside a 102×64 box.
+    const art = (sign: string): string => sign.match(/class="chemin-panneau-art" style="([^"]*)"/)![1]!;
+    const box = (sign: string): string => sign.match(/class="chemin-panneau" style="(width:\d+px;height:\d+px)/)![1]!;
+    const eastSign = signOf(gameView(east, 'fr', false)), downSign = signOf(gameView(down, 'fr', false)), upSign = signOf(gameView(up, 'fr', false));
+    expect(box(eastSign)).toBe('width:40px;height:64px'); expect(art(eastSign)).toBe('left:0px;top:0px;width:40px;height:64px;transform:none');
+    expect(box(downSign)).toBe('width:102px;height:64px'); expect(art(downSign)).toBe('left:19px;top:-19px;width:64px;height:102px;transform:rotate(90deg)');
+    expect(box(upSign)).toBe('width:102px;height:64px'); expect(art(upSign)).toBe('left:19px;top:-19px;width:64px;height:102px;transform:rotate(-90deg)');
+    const west: Maze = { level: 1, columns: 3, rows: 1, grid: [['E'], ['W', 'E'], ['W']], start: 2, goal: 0, solution: [2, 1, 0], trace: [2], bonuses: [], collected: [], finished: false };
+    expect(art(signOf(gameView(west, 'fr', false)))).toContain('transform:scaleX(-1)');
+    for (const s of [down, up, east]) {
+        const html = gameView(s, 'fr', false), sign = signOf(html);
+        // One painting, laid over a drawn fallback, inside the sign only: never in the board, never on the level screen.
+        expect(html.split(signUrl)).toHaveLength(2); expect(html).not.toMatch(/<image /);
+        expect(sign.indexOf('data-panneau-repli')).toBeGreaterThan(0); expect(sign.indexOf('data-panneau-repli')).toBeLessThan(sign.indexOf('chemin-panneau-peint'));
+        expect(sign).toContain(`<span class="chemin-panneau-peint" style="background-image:url(${signUrl})"></span>`);
+        expect(sign).toContain('aria-hidden="true"');
+        expect(boardSvg(s, true)).not.toMatch(/<image|webp|chemin-depart/);
+        expect(gameView({ ...s, finished: true }, 'fr', false)).toContain('data-depart=');
+    }
+    expect(levelView(fresh())).not.toMatch(/<image|webp/);
+    expect(new URL(signUrl).pathname).toMatch(/\/painted\/panneau\.webp$/); expect(signUrl).not.toMatch(/^data:|["<>\s]/i);
+});
+it('the painted sign is a transparent WebP, 189×300, within 8–30 kB', () => {
+    const bytes = readFileSync('src/games/chemin/painted/panneau.webp');
+    expect(bytes.subarray(0, 4).toString('latin1')).toBe('RIFF'); expect(bytes.subarray(8, 12).toString('latin1')).toBe('WEBP');
+    expect(bytes.readUInt32LE(4) + 8).toBe(bytes.byteLength);
+    expect(bytes.subarray(12, 16).toString('latin1')).toBe('VP8X');
+    expect(bytes[20]! & 0x10).toBe(0x10); // alpha flag
+    expect(1 + bytes.readUIntLE(24, 3)).toBe(189); expect(1 + bytes.readUIntLE(27, 3)).toBe(300);
+    expect(bytes.byteLength).toBeGreaterThanOrEqual(8_000); expect(bytes.byteLength).toBeLessThanOrEqual(30_000);
 });
