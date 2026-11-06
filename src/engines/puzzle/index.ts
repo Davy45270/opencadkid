@@ -11,7 +11,11 @@ export const levels = [
     { id: 7, columns: 4, rows: 3, model: false, wavy: false },
     { id: 8, columns: 3, rows: 3, model: false, wavy: true }
 ] as const;
-export const sceneIds = ['castle', 'bamboo', 'rainbow', 'jungle', 'autumn', 'picnic'] as const;
+export const vectorSceneIds = ['castle', 'bamboo', 'rainbow', 'jungle', 'autumn', 'picnic'] as const;
+/** Painted scenes: a WebP over a vector fallback, fetched only when a puzzle shows them. */
+export const paintedSceneIds = ['zen', 'ardennes', 'volcano', 'islands', 'galaxy', 'valley'] as const;
+export const sceneIds = [...vectorSceneIds, ...paintedSceneIds] as const;
+export type PaintedScene = typeof paintedSceneIds[number];
 export type Scene = typeof sceneIds[number];
 export type Point = readonly [number, number];
 /** Canonical cubic: neighbours share this geometry, traversed in opposite directions. */

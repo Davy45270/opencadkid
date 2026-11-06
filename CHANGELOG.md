@@ -1,7 +1,9 @@
 # Changelog
 
-## Non publié
+## 1.3.0
 
+- Pestouille’s puzzle: six new painted scenes, cut from the author’s own Pistouille landscapes, join the six drawn scenes: Boubou in the zen garden, CaliRoux in the Ardennes forest, Pestouille at the fiery volcano, Tutu on the tropical islands, Lumi in the starry galaxy and CaliRoux with Tutu in the spring valley. Each guide stands in front of the painting, as in the other scenes, and every scene has French and English names.
+- Each painting is a small WebP (35–56 kB) fetched only when a puzzle shows it; until it arrives, a simple drawn version of the same landscape is shown and the puzzle plays the same. Once seen, a painting stays on the device for offline play. The installed app itself does not grow: the paintings are kept out of the offline bundle.
 - Parents’ space: a “Donner mon avis” link, behind the adult question like every way out of the app, opens the game's public feedback forms in a new tab (`rel="noopener"`). Nothing is sent from the app, and no tracker is involved.
 - Two short French feedback forms (“Quelque chose ne marche pas”, “J'ai une idée”) and a `CONTRIBUTING.md` explaining how to report.
 

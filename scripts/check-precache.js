@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { URL } from 'node:url';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
 
 // Inspect the generated manifest only after the production build.
@@ -18,3 +18,9 @@ for (const url of urls) {
     compressed += gzipSync(readFileSync(new URL(url, root)), { level: 9 }).byteLength;
 }
 assert(compressed < 400_000, `Precache exceeds 400 kB gzip: ${compressed} bytes`);
+// Painted puzzle scenes: six hashed WebP files, never precached, each within its 60 kB budget.
+const assets = readdirSync(new URL('assets/', root)).filter(name => name.endsWith('.webp'));
+assert.equal(assets.length, 6, `Expected six painted scenes, found ${assets.length}`);
+assert(!urls.some(url => url.endsWith('.webp')), 'Painted scenes must not be precached');
+for (const name of assets) assert(statSync(new URL(`assets/${name}`, root)).size <= 60_000, `Painted scene over 60 kB: ${name}`);
+assert(/assets\\\/\[\\w-\]\+\\\.webp/.test(worker), 'Missing runtime cache route for painted scenes');

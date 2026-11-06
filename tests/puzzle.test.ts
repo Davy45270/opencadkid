@@ -1,8 +1,9 @@
 import { expect, it, vi } from 'vitest';
-import { newPuzzle, drop, hint, stars, complete, isUnlocked, levels, edgePoints, sceneIds, type Piece } from '../src/engines/puzzle';
+import { newPuzzle, drop, hint, stars, complete, isUnlocked, levels, edgePoints, sceneIds, vectorSceneIds, paintedSceneIds, type Piece } from '../src/engines/puzzle';
 import { gameView } from '../src/games/puzzle/view';
 import { characterSvg } from '../src/characters/svg';
-import { sceneSvg, sceneNames } from '../src/games/puzzle/scenes';
+import { sceneSvg, sceneNames, paintedSceneUrl } from '../src/games/puzzle/scenes';
+import { readFileSync } from 'node:fs';
 import { messages } from '../src/shell/i18n';
 import { fresh, readSave, writeSave } from '../src/shell/storage';
 import { canonicalPaintIds } from './svg-oracles';
@@ -109,16 +110,61 @@ it('hint at exactly 25 seconds, cleared by placement; assistance and completion 
         expect(complete({ [level]: 3 }, state)[level]).toBe(3); expect(isUnlocked(level + 1, records)).toBe(true);
     }
 });
-it('six finite distinct procedural SVG scenes and complete native language labels', () => {
-    expect(sceneIds).toHaveLength(6); expect(new Set(sceneIds.map(sceneSvg)).size).toBe(6);
+it('six vector and six painted finite distinct SVG scenes and complete native language labels', () => {
+    expect(vectorSceneIds).toEqual(['castle', 'bamboo', 'rainbow', 'jungle', 'autumn', 'picnic']);
+    expect(paintedSceneIds).toEqual(['zen', 'ardennes', 'volcano', 'islands', 'galaxy', 'valley']);
+    expect(sceneIds).toEqual([...vectorSceneIds, ...paintedSceneIds]);
+    expect(new Set(sceneIds.map(sceneSvg)).size).toBe(12);
     for (const scene of sceneIds) {
-        const svg = sceneSvg(scene); expect(validSvg(svg)).toBe(true); expect(svg).toMatch(/^<svg xmlns=/); expect(svg).toMatch(/<\/svg>$/); expect(svg).not.toMatch(/NaN|undefined|Infinity|<image|href=/);
+        const svg = sceneSvg(scene); expect(validSvg(svg)).toBe(true); expect(svg).toMatch(/^<svg xmlns=/); expect(svg).toMatch(/<\/svg>$/); expect(svg).not.toMatch(/NaN|undefined|Infinity|<script|xlink:/);
         expect((svg.match(/<svg\b/g) ?? []).length).toBe((svg.match(/<\/svg>/g) ?? []).length);
         expect((svg.match(/<g\b/g) ?? []).length).toBe((svg.match(/<\/g>/g) ?? []).length);
         for (const locale of ['fr', 'en'] as const) expect(sceneNames[locale][scene].trim()).not.toBe('');
     }
+    for (const locale of ['fr', 'en'] as const) expect(new Set(sceneIds.map(scene => sceneNames[locale][scene])).size).toBe(12);
+    // Vector scenes stay self-contained: no image and no reference at all.
+    for (const scene of vectorSceneIds) expect(sceneSvg(scene)).not.toMatch(/<image|href=/);
+    // Painted scenes: a vector fallback first, then exactly one local WebP covering the board, then the guide on top.
+    for (const scene of paintedSceneIds) {
+        const svg = sceneSvg(scene), url = paintedSceneUrl[scene];
+        expect(url).toMatch(new RegExp(`(^|/)${scene}[^/"]*\\.webp$`)); expect(url).not.toMatch(/^(?:[a-z]+:)?\/\/|^data:|["<>\s]/i);
+        expect(svg.match(/href="[^"]*"/g)).toEqual([`href="${url}"`]);
+        expect(svg.match(/<image [^>]*\/>/g)).toEqual([`<image href="${url}" x="0" y="0" width="300" height="240" preserveAspectRatio="xMidYMid slice"/>`]);
+        const image = svg.indexOf('<image '), guide = svg.indexOf('<svg style="width:240px;height:240px" ');
+        expect(svg.slice(0, image)).toMatch(/<rect width="300" height="240" fill="#[0-9a-f]{6}"\/>/); expect(svg.slice(0, image)).toMatch(/<path /);
+        expect(guide).toBeGreaterThan(image);
+    }
     expect(Object.keys(messages.fr).sort()).toEqual(Object.keys(messages.en).sort());
     for (const locale of ['fr', 'en'] as const) for (const key of ['puzzleInstruction', 'puzzleModel', 'puzzlePiece', 'puzzleHint'] as const) expect(messages[locale][key].trim()).not.toBe('');
+});
+it('painted scene files are WebP, 5:4, sharp at 1.5× to 2× and within 25–60 kB', () => {
+    for (const scene of paintedSceneIds) {
+        const bytes = readFileSync(`src/games/puzzle/painted/${scene}.webp`);
+        expect(bytes.subarray(0, 4).toString('latin1')).toBe('RIFF'); expect(bytes.subarray(8, 12).toString('latin1')).toBe('WEBP');
+        expect(bytes.readUInt32LE(4) + 8).toBe(bytes.byteLength);
+        const chunk = bytes.subarray(12, 16).toString('latin1');
+        expect(['VP8 ', 'VP8X']).toContain(chunk);
+        if (chunk === 'VP8 ') expect([...bytes.subarray(23, 26)]).toEqual([0x9d, 0x01, 0x2a]);
+        const width = chunk === 'VP8 ' ? bytes.readUInt16LE(26) & 0x3fff : 1 + bytes.readUIntLE(24, 3);
+        const height = chunk === 'VP8 ' ? bytes.readUInt16LE(28) & 0x3fff : 1 + bytes.readUIntLE(27, 3);
+        expect(width * 4).toBe(height * 5); expect(width).toBeGreaterThanOrEqual(450); expect(width).toBeLessThanOrEqual(600);
+        expect(bytes.byteLength).toBeGreaterThanOrEqual(25_000); expect(bytes.byteLength).toBeLessThanOrEqual(60_000);
+    }
+});
+it('every scene, painted ones included, is drawn by seeded selection and painted into every piece and the model', () => {
+    const seen = new Map<string, number>();
+    for (let seed = 0; seed < 2000 && seen.size < sceneIds.length; seed++) { const scene = newPuzzle(1, seed).scene; if (!seen.has(scene)) seen.set(scene, seed); }
+    expect([...seen.keys()].sort()).toEqual([...sceneIds].sort());
+    vi.stubGlobal('matchMedia', () => ({ matches: true }));
+    try {
+        for (const scene of paintedSceneIds) {
+            const s = newPuzzle(7, [...Array(5000).keys()].find(seed => newPuzzle(7, seed).scene === scene)!);
+            expect(s.scene).toBe(scene);
+            const url = paintedSceneUrl[scene], hidden = gameView(s, 'fr', false), shown = gameView(s, 'fr', true);
+            expect(hidden.split(`<image href="${url}"`).length - 1).toBe(12); expect(shown.split(`<image href="${url}"`).length - 1).toBe(13);
+            expect(hidden).toContain(`aria-label="${sceneNames.fr[scene]}"`);
+        }
+    } finally { vi.unstubAllGlobals(); }
 });
 it('separate puzzle records migrate, filter, round-trip, preserve other games and clear', () => {
     let raw = JSON.stringify({ ...fresh(), records: { 1: 2 }, puzzleRecords: { 1: 3, 8: 2, 9: 1, 2: 0, 3: '2', 4: 1.5 } });
@@ -153,8 +199,8 @@ it('rendered classic paths have visible heads, narrow necks and complementary cu
         }
     }
 });
-it('each scene contains the requested characters, including both picnic friends', () => {
-    const subjects = { castle: ['dragon'], bamboo: ['panda'], rainbow: ['licorne'], jungle: ['singe'], autumn: ['pandaroux'], picnic: ['panda', 'dragon'] } as const;
+it('each scene contains the requested characters, including both picnic and valley friends', () => {
+    const subjects = { castle: ['dragon'], bamboo: ['panda'], rainbow: ['licorne'], jungle: ['singe'], autumn: ['pandaroux'], picnic: ['panda', 'dragon'], zen: ['panda'], ardennes: ['pandaroux'], volcano: ['dragon'], islands: ['singe'], galaxy: ['licorne'], valley: ['pandaroux', 'singe'] } as const;
     for (const scene of sceneIds) {
         const embedded = sceneSvg(scene).match(/<svg style="width:240px;height:240px" [\s\S]*?<\/svg>/g) ?? [];
         const expected = subjects[scene].map(subject => characterSvg(subject, 'joie', 'repos', 'reduce').replace('<svg ', '<svg style="width:240px;height:240px" '));

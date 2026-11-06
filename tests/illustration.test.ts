@@ -30,7 +30,8 @@ it('every guide and expression owns valid, finite paint servers in both motion m
         expect(drawList(id, 'face', expression, 'special', 0, 'reduce')).toEqual(drawList(id, 'face', expression, 'special', 800, 'reduce'));
     }
 });
-it('all six repeated puzzle scenes keep their nested character paint servers isolated', () => {
+it('all twelve repeated puzzle scenes, painted ones included, keep their nested character paint servers isolated', () => {
+    expect(sceneIds).toHaveLength(12);
     const svgs = sceneIds.flatMap(scene => [sceneSvg(scene), sceneSvg(scene)]);
     const all = svgs.flatMap(paintIds);
     expect(new Set(all).size).toBe(all.length);
