@@ -22,5 +22,11 @@ Une faille de sécurité se signale en privé, comme indiqué dans [SECURITY.md]
 Les propositions de code sont les bienvenues, en français ou en anglais. Avant d'envoyer :
 `npm run lint`, `npm test` et `npm run build` doivent passer.
 
+Les tests de navigateur (Playwright) ne se lancent jamais en entier. `node scripts/e2e-impact.js --base <commit>`
+indique ceux que la modification demande : les specs du jeu touché, ceux des jeux qui importent un module partagé
+modifié, ou un test court par jeu quand l'effet ne peut pas être déterminé. La CI applique la même sélection.
+Un nouveau fichier `tests/e2e/*.spec.ts` doit être inscrit dans un groupe de `scripts/e2e-impact.js` ;
+`npm run test:impact` échoue sinon.
+
 En contribuant, vous acceptez que votre contribution soit publiée sous la
 [licence MIT](LICENSE) du projet.

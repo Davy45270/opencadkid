@@ -1,5 +1,9 @@
 # Changelog
 
+## Non publié
+
+- CI: browser tests run only for what a change touches (the touched game's specs, the games importing a changed shared module, or one short test per game when the impact cannot be determined), never the whole suite. `scripts/e2e-impact.js` computes the selection, the same locally and in CI; `npm run test:impact` fails when a spec file belongs to no group.
+
 ## 1.3.0
 
 - Pestouille’s puzzle: six new painted scenes, cut from the author’s own Pistouille landscapes, join the six drawn scenes: Boubou in the zen garden, CaliRoux in the Ardennes forest, Pestouille at the fiery volcano, Tutu on the tropical islands, Lumi in the starry galaxy and CaliRoux with Tutu in the spring valley. Each guide stands in front of the painting, as in the other scenes, and every scene has French and English names.
