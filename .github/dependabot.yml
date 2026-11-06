@@ -5,11 +5,6 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
-    # Ignored at the ecosystem level, so it also applies to grouped updates (« outillage »):
-    # typescript-eslint 8 supports typescript >=4.8.4 <6.1.0, a major TypeScript breaks npm ci.
-    ignore:
-      - dependency-name: "typescript"
-        update-types: ["version-update:semver-major"]
     groups:
       outillage:
         dependency-type: development

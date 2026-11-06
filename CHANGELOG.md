@@ -1,7 +1,9 @@
 # Changelog
 
-## Non publié
+## 1.3.1
 
+- Tooling: code review now runs on oxlint with its type-aware companion `oxlint-tsgolint`, in place of ESLint and typescript-eslint, which do not accept TypeScript 7. `.oxlintrc.json` keeps the same rules as before, generated from the ESLint configuration it replaces: the type-aware checks (forgotten promises, `any` spreading, unsafe template and `+` operands…) and the engine purity rule (no `Math.random`, `Date` or DOM globals in `src/engines`). Only `no-octal` and `no-dupe-args` are gone, both already syntax errors in ES modules.
+- Tooling: TypeScript 7.0.2 (was 6.0.3); `npm run typecheck` is still `tsc --noEmit` and takes about a second. No code change was needed. Dependabot no longer holds back TypeScript major versions.
 - CI: browser tests run only for what a change touches (the touched game's specs, the games importing a changed shared module, or one short test per game when the impact cannot be determined), never the whole suite. `scripts/e2e-impact.js` computes the selection, the same locally and in CI; `npm run test:impact` fails when a spec file belongs to no group.
 
 ## 1.3.0

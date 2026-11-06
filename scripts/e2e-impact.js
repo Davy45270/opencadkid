@@ -77,7 +77,7 @@ const ZONES = [
 ];
 const SHARED = /^(src\/shell\/|src\/ui\/|src\/characters\/|src\/engines\/[^/]+\.ts$|src\/registry\.ts$|src\/main\.ts$|src\/style\.css$|src\/vite-env\.d\.ts$|index\.html$|pwa-manifest\.ts$|public\/)/;
 const DOCS = /(\.md$|^docs\/|^LICENSE$|^\.github\/ISSUE_TEMPLATE\/)/;
-const TOOLING = /^(package(-lock)?\.json$|playwright\.config\.|vite\.config\.|vitest\.config\.|tsconfig[^/]*$|eslint[^/]*$|\.github\/|\.nvmrc$|\.editorconfig$|\.gitignore$|scripts\/)/;
+const TOOLING = /^(package(-lock)?\.json$|playwright\.config\.|vite\.config\.|vitest\.config\.|tsconfig[^/]*$|eslint[^/]*$|\.oxlintrc\.json$|\.github\/|\.nvmrc$|\.editorconfig$|\.gitignore$|scripts\/)/;
 const SPEC_ARG = /^tests\/e2e\/[A-Za-z0-9._-]+\.spec\.ts(:\d+)?$/;
 const LEVELS = ['N0', 'N1', 'N2', 'N3'];
 
