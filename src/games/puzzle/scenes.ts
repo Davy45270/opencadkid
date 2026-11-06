@@ -2,12 +2,6 @@ import { volume } from '../../ui/illustration';
 import { characterSvg } from '../../characters/svg';
 import type { CharacterId } from '../../characters/model';
 import { paintedSceneIds, type PaintedScene, type Scene } from '../../engines/puzzle';
-import zen from './painted/zen.webp';
-import ardennes from './painted/ardennes.webp';
-import volcano from './painted/volcano.webp';
-import islands from './painted/islands.webp';
-import galaxy from './painted/galaxy.webp';
-import valley from './painted/valley.webp';
 import type { Locale } from '../../shell/i18n';
 export const sceneNames: Record<Locale, Record<Scene, string>> = {
     fr: { castle: 'Pestouille au château', bamboo: 'Boubou dans les bambous', rainbow: 'Lumi sous l’arc-en-ciel', jungle: 'Tutu dans la jungle', autumn: 'CaliRoux et les feuilles', picnic: 'Le pique-nique des amis', zen: 'Boubou au jardin zen', ardennes: 'CaliRoux dans la forêt des Ardennes', volcano: 'Pestouille au volcan ardent', islands: 'Tutu sur les îles tropicales', galaxy: 'Lumi dans la galaxie étoilée', valley: 'La vallée au printemps' },
@@ -15,7 +9,12 @@ export const sceneNames: Record<Locale, Record<Scene, string>> = {
 };
 const guide = (id: CharacterId, x: number, y: number, size: number): string => `<g transform="translate(${x} ${y}) scale(${size / 240})">${characterSvg(id, 'joie', 'repos', 'reduce').replace('<svg ', '<svg style="width:240px;height:240px" ')}</g>`;
 /** Bundled, hashed WebP URLs (600×480 or 450×360, 5:4). Not precached: the service worker keeps them once a puzzle has shown them. */
-export const paintedSceneUrl: Record<PaintedScene, string> = { zen, ardennes, volcano, islands, galaxy, valley };
+// `new URL(literal, import.meta.url)`: Vite emits each file hashed; Node-side test runners can load this module (no binary import).
+export const paintedSceneUrl: Record<PaintedScene, string> = {
+    zen: new URL('./painted/zen.webp', import.meta.url).href, ardennes: new URL('./painted/ardennes.webp', import.meta.url).href,
+    volcano: new URL('./painted/volcano.webp', import.meta.url).href, islands: new URL('./painted/islands.webp', import.meta.url).href,
+    galaxy: new URL('./painted/galaxy.webp', import.meta.url).href, valley: new URL('./painted/valley.webp', import.meta.url).href
+};
 /** Flat vector stand-in drawn under the picture: it is what the child sees until the WebP arrives, or offline before a first visit. */
 const fallback: Record<PaintedScene, string> = {
     zen: '<rect width="300" height="240" fill="#a9d8f0"/><path d="M60 120L150 20L240 120Z" fill="#8c96c4"/><path d="M122 51L150 20L178 51L164 46L150 56L136 46Z" fill="#ffffff"/><path d="M0 120H300V180H0Z" fill="#7cc6d8"/><path d="M60 128Q150 70 240 128" fill="none" stroke="#d9534a" stroke-width="10"/><path d="M0 180Q150 166 300 180V240H0Z" fill="#efe2c8"/>',

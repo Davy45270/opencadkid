@@ -127,7 +127,8 @@ it('six vector and six painted finite distinct SVG scenes and complete native la
     // Painted scenes: a vector fallback first, then exactly one local WebP covering the board, then the guide on top.
     for (const scene of paintedSceneIds) {
         const svg = sceneSvg(scene), url = paintedSceneUrl[scene];
-        expect(url).toMatch(new RegExp(`(^|/)${scene}[^/"]*\\.webp$`)); expect(url).not.toMatch(/^(?:[a-z]+:)?\/\/|^data:|["<>\s]/i);
+        // Resolved against the module: the source file here, the hashed same-origin asset in a build.
+        expect(new URL(url).pathname).toMatch(new RegExp(`/painted/${scene}\\.webp$`)); expect(url).not.toMatch(/^data:|["<>\s]/i);
         expect(svg.match(/href="[^"]*"/g)).toEqual([`href="${url}"`]);
         expect(svg.match(/<image [^>]*\/>/g)).toEqual([`<image href="${url}" x="0" y="0" width="300" height="240" preserveAspectRatio="xMidYMid slice"/>`]);
         const image = svg.indexOf('<image '), guide = svg.indexOf('<svg style="width:240px;height:240px" ');
