@@ -65,36 +65,36 @@ it('unique: no two levels share a configuration or a play fingerprint (except th
 });
 
 for (const l of levels.slice(8)) it(`level ${l.id}: ${SEEDS} seeds tile the board, fit the reserve without overlap, and rebuild`, () => {
+    // Failures are collected as text and asserted once per seed: thousands of expect() calls would dominate the run time.
     for (let seed = 0; seed < SEEDS; seed++) {
-        const s = newPuzzle(l.id, seed);
+        const s = newPuzzle(l.id, seed), bad: string[] = [];
         expect(s).toEqual(newPuzzle(l.id, seed));
         expect(s.pieces).toHaveLength(l.columns * l.rows);
         expect(s.pieces.reduce((n, p) => n + p.width * p.height, 0)).toBeCloseTo(300 * 240, 6);
-        const reserve = s.pieces.map(painted);
+        const reserve = s.pieces.map(painted), homes: Rect[] = s.pieces.map(p => ({ x: p.homeX - p.width / 2, y: p.homeY - p.height / 2, width: p.width, height: p.height }));
         for (const p of s.pieces) {
-            const home = { x: p.homeX - p.width / 2, y: p.homeY - p.height / 2, width: p.width, height: p.height };
-            expect(home.x).toBeGreaterThanOrEqual(10 - 1e-8); expect(home.x + home.width).toBeLessThanOrEqual(310 + 1e-8);
-            expect(home.y).toBeGreaterThanOrEqual(8 - 1e-8); expect(home.y + home.height).toBeLessThanOrEqual(248 + 1e-8);
+            const home = homes[p.id]!, r = reserve[p.id]!;
+            if (home.x < 10 - 1e-8 || home.x + home.width > 310 + 1e-8 || home.y < 8 - 1e-8 || home.y + home.height > 248 + 1e-8) bad.push(`home ${p.id} outside the board`);
             // A child's finger: at a 1:1 stage (390 px phone, and 320 px too) every piece paints at least 44 px each way.
-            expect(Math.min(p.width, p.height)).toBeGreaterThanOrEqual(44);
-            const r = reserve[p.id]!;
-            expect(r.x).toBeGreaterThanOrEqual(-1e-8); expect(r.x + r.width).toBeLessThanOrEqual(320 + 1e-8);
-            expect(r.y).toBeGreaterThanOrEqual(280 - 1e-8); expect(r.y + r.height).toBeLessThanOrEqual(550 + 1e-8);
-            expect(Math.hypot(p.x - p.homeX, p.y - p.homeY)).toBeGreaterThan(s.snap);
+            if (Math.min(p.width, p.height) < 44) bad.push(`piece ${p.id} under 44 px`);
+            if (r.x < -1e-8 || r.x + r.width > 320 + 1e-8 || r.y < 280 - 1e-8 || r.y + r.height > 550 + 1e-8) bad.push(`piece ${p.id} outside the reserve`);
+            if (Math.hypot(p.x - p.homeX, p.y - p.homeY) <= s.snap) bad.push(`piece ${p.id} starts on its home`);
             for (const other of s.pieces.slice(p.id + 1)) {
-                expect(overlap(home, { x: other.homeX - other.width / 2, y: other.homeY - other.height / 2, width: other.width, height: other.height })).toBe(false);
-                expect(overlap(r, reserve[other.id]!)).toBe(false);
+                if (overlap(home, homes[other.id]!)) bad.push(`homes ${p.id}/${other.id} overlap`);
+                if (overlap(r, reserve[other.id]!)) bad.push(`reserve ${p.id}/${other.id} overlap`);
             }
-            if (p.column < l.columns - 1) expect(edgePoints(p.edges[1]!)).toEqual([...edgePoints(s.pieces[p.id + 1]!.edges[3]!)].reverse());
-            if (p.row < l.rows - 1) expect(edgePoints(p.edges[2]!)).toEqual([...edgePoints(s.pieces[p.id + l.columns]!.edges[0]!)].reverse());
+            if (p.column < l.columns - 1 && JSON.stringify(edgePoints(p.edges[1]!)) !== JSON.stringify([...edgePoints(s.pieces[p.id + 1]!.edges[3]!)].reverse())) bad.push(`edge ${p.id} east`);
+            if (p.row < l.rows - 1 && JSON.stringify(edgePoints(p.edges[2]!)) !== JSON.stringify([...edgePoints(s.pieces[p.id + l.columns]!.edges[0]!)].reverse())) bad.push(`edge ${p.id} south`);
         }
-        // Rebuilt in a seeded order, each piece dropped on its home snaps and the last one finishes.
+        // Rebuilt in a seeded order, each piece dropped near its home snaps and the last one finishes.
         let play = s;
         for (const p of [...s.pieces].sort((a, b) => Math.sin(a.id * 7 + seed) - Math.sin(b.id * 7 + seed))) {
-            expect(play.finished).toBe(false); play = drop(play, p.id, p.homeX + 3, p.homeY - 3);
-            expect(play.pieces[p.id]!.placed).toBe(true);
+            if (play.finished) bad.push('finished early');
+            play = drop(play, p.id, p.homeX + 3, p.homeY - 3);
+            if (!play.pieces[p.id]!.placed) bad.push(`piece ${p.id} did not snap`);
         }
-        expect(play.finished).toBe(true);
+        if (!play.finished) bad.push('not finished');
+        expect(bad, `seed ${seed}`).toEqual([]);
     }
 });
 
