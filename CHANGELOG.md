@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.2
+
+- CaliRoux's shapes: 10 new levels, from 11 to 20. Four colours at once, an odd one out (also hidden among look-alike shapes), shape + colour + size together, six choices with two near misses of each kind, sizes that never give the answer away, sorting four pieces into three or four boxes, and a mixed review. Levels 1–10 are unchanged.
+
 ## 1.6.1
 
 - Lumi's cards: 7 new levels, from 8 to 14. Picture-and-shadow pairs on bigger boards, a 4×6 board of twelve pairs that still fits a phone without scrolling, and a new mode where both cards are shadows and only the outline tells them apart. Levels 1–7 are unchanged.
