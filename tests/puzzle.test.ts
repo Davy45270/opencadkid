@@ -48,8 +48,8 @@ const table = [[2, 1, true, false], [3, 1, true, false], [2, 2, false, false], [
 const intersects = (a: { x: number; y: number; width: number; height: number }, b: { x: number; y: number; width: number; height: number }): boolean => Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x) > 1e-8 && Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y) > 1e-8;
 const base = (p: Piece): { x: number; y: number; width: number; height: number } => ({ x: p.homeX - p.width / 2, y: p.homeY - p.height / 2, width: p.width, height: p.height });
 it('eight independent level definitions, invalid level rejection', () => {
-    expect(levels.map(l => [l.columns, l.rows, l.model, l.wavy])).toEqual(table);
-    expect(() => newPuzzle(0, 0)).toThrow(); expect(() => newPuzzle(9, 0)).toThrow();
+    expect(levels.slice(0, 8).map(l => [l.columns, l.rows, l.model, l.wavy])).toEqual(table);
+    expect(() => newPuzzle(0, 0)).toThrow(); expect(() => newPuzzle(17, 0)).toThrow();
 });
 for (const [index, [columns, rows, , wavy]] of table.entries()) it(`level ${index + 1}: exact tiling, reserve and complementary curves across 300 seeds`, () => {
     for (let seed = 0; seed < 300; seed++) {
@@ -168,9 +168,9 @@ it('every scene, painted ones included, is drawn by seeded selection and painted
     } finally { vi.unstubAllGlobals(); }
 });
 it('separate puzzle records migrate, filter, round-trip, preserve other games and clear', () => {
-    let raw = JSON.stringify({ ...fresh(), records: { 1: 2 }, puzzleRecords: { 1: 3, 8: 2, 9: 1, 2: 0, 3: '2', 4: 1.5 } });
+    let raw = JSON.stringify({ ...fresh(), records: { 1: 2 }, puzzleRecords: { 1: 3, 8: 2, 16: 1, 17: 1, 2: 0, 3: '2', 4: 1.5 } });
     const port = { getItem: () => raw, setItem: (_: string, value: string) => { raw = value; } };
-    const save = readSave(port); expect(save.puzzleRecords).toEqual({ 1: 3, 8: 2 }); expect(save.records).toEqual({ 1: 2 });
+    const save = readSave(port); expect(save.puzzleRecords).toEqual({ 1: 3, 8: 2, 16: 1 }); expect(save.records).toEqual({ 1: 2 });
     writeSave(port, save); expect(readSave(port)).toEqual(save);
     raw = JSON.stringify({ version: 1, locale: 'en', voice: true, sound: true, records: { 1: 3 } }); expect(readSave(port).puzzleRecords).toEqual({});
     raw = JSON.stringify({ ...fresh(), puzzleRecords: [] }); expect(readSave(port).puzzleRecords).toEqual({}); expect(fresh().puzzleRecords).toEqual({});

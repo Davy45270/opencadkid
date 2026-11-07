@@ -66,9 +66,11 @@ test('model help, English speech, media disabled, keyboard 16px steps and locked
     await expect(page.locator('.stars')).toBeVisible(); expect((await media(page)).oscillators).toBe(sounds); expect((await media(page)).speech).toEqual([]);
 });
 test('all levels: actual painted dimensions, target sizes, SVG validity and no overflow at 320–1280', async ({ page }) => {
-    test.setTimeout(180_000);
-    for (let level = 1; level <= 8; level++) {
+    test.setTimeout(360_000);
+    for (let level = 1; level <= 16; level++) {
         await preparePuzzle(page, level);
+        // 64 px through nine pieces, 56 px for twelve to twenty (60 px rows), 48 px for the 50 px columns of twenty-four.
+        const least = level >= 15 ? 48 : level === 7 || level >= 10 ? 56 : 64;
         // Browser XML parser complements the pure unit SVG structure oracle.
         expect(await page.locator('.puzzle-piece>svg').evaluateAll(elements => elements.every(el => !new DOMParser().parseFromString(el.outerHTML, 'image/svg+xml').querySelector('parsererror')))).toBe(true);
         for (const width of [320, 360, 390, 480, 700, 940, 1280]) {
@@ -78,7 +80,7 @@ test('all levels: actual painted dimensions, target sizes, SVG validity and no o
                 const a = new DOMPoint(b.x, b.y).matrixTransform(m), z = new DOMPoint(b.x + b.width, b.y + b.height).matrixTransform(m);
                 return { width: z.x - a.x, height: z.y - a.y };
             }));
-            for (const r of sizes) { expect(r.width).toBeGreaterThanOrEqual(level === 7 ? 56 : 64); expect(r.height).toBeGreaterThanOrEqual(level === 7 ? 56 : 64); }
+            for (const r of sizes) { expect(r.width).toBeGreaterThanOrEqual(least); expect(r.height).toBeGreaterThanOrEqual(least); }
             for (const button of await page.locator('.shapes-header button').all()) { const r = (await button.boundingBox())!; expect(r.width).toBeGreaterThanOrEqual(64); expect(r.height).toBeGreaterThanOrEqual(64); }
             if (width === 390) expect((await page.locator('[data-puzzle-board]').boundingBox())!.width).toBeGreaterThanOrEqual(299.9);
             expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth && document.documentElement.scrollHeight <= innerHeight)).toBe(true);
@@ -155,4 +157,19 @@ for (const reducedMotion of ['no-preference', 'reduce'] as const) test(`puzzle c
     const animations = await page.evaluate(() => (window as unknown as { puzzleAnimation: { name: string; duration: number; state: string }[] }).puzzleAnimation);
     if (reducedMotion === 'reduce') expect(animations).toEqual([]);
     else expect(animations).toContainEqual({ name: 'happy', duration: 700, state: 'running' });
+});
+
+test('puzzle 16: twenty-four pieces without the eye, rebuilt to three stars, no next level; the sixteen-level list fits a phone', async ({ page }) => {
+    test.setTimeout(120_000);
+    await page.setViewportSize({ width: 390, height: 844 }); await preparePuzzle(page, 16);
+    await expect(page.locator('#model')).toHaveCount(0); await expect(page.locator('[data-piece]')).toHaveCount(24);
+    await expect(page.locator('.puzzle-instruction p')).toContainText('Sans modèle');
+    await solvePuzzle(page);
+    await expect(page.locator('.stars')).toHaveText('★★★'); await expect(page.locator('#next')).toHaveCount(0);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    await page.reload(); await page.locator('[data-game="puzzle"]').click();
+    await expect(page.locator('[data-level]')).toHaveCount(16); await expect(page.locator('[data-level="16"]')).toContainText('★★★');
+    const boxes = await page.locator('[data-level]').evaluateAll(els => els.map(el => { const r = el.getBoundingClientRect(); return { left: r.left, right: r.right, width: r.width, height: r.height }; }));
+    for (const r of boxes) { expect(r.left).toBeGreaterThanOrEqual(0); expect(r.right).toBeLessThanOrEqual(390); expect(r.width).toBeGreaterThanOrEqual(64); expect(r.height).toBeGreaterThanOrEqual(64); }
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });

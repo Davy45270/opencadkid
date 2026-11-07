@@ -27,7 +27,7 @@ export function readSave(storage?: StoragePort, locale: Locale = 'fr'): Save {
         }
         const puzzleRecords: Records = {};
         if (v.puzzleRecords && typeof v.puzzleRecords === 'object' && !Array.isArray(v.puzzleRecords)) {
-            for (const [key, score] of Object.entries(v.puzzleRecords)) if (/^[1-8]$/.test(key) && typeof score === 'number' && Number.isInteger(score) && score >= 1 && score <= 3) puzzleRecords[Number(key)] = score;
+            for (const [key, score] of Object.entries(v.puzzleRecords)) if (/^(?:[1-9]|1[0-6])$/.test(key) && typeof score === 'number' && Number.isInteger(score) && score >= 1 && score <= 3) puzzleRecords[Number(key)] = score;
         }
         const cheminRecords: Records = {};
         if (v.cheminRecords && typeof v.cheminRecords === 'object' && !Array.isArray(v.cheminRecords)) {

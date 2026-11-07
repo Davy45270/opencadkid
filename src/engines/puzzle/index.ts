@@ -1,7 +1,12 @@
 import { makeRng, shuffle } from '../rng';
 import { isUnlocked, type Records } from '../compter';
 export { isUnlocked };
-export const levels = [
+export interface Level {
+    id: number; columns: number; rows: number; model: boolean; wavy: boolean;
+    /** False removes the eye button: the picture is never shown before the end (true when absent). */
+    eye?: boolean;
+}
+export const levels: readonly Level[] = [
     { id: 1, columns: 2, rows: 1, model: true, wavy: false },
     { id: 2, columns: 3, rows: 1, model: true, wavy: false },
     { id: 3, columns: 2, rows: 2, model: false, wavy: false },
@@ -9,8 +14,19 @@ export const levels = [
     { id: 5, columns: 3, rows: 2, model: false, wavy: false },
     { id: 6, columns: 3, rows: 3, model: false, wavy: false },
     { id: 7, columns: 4, rows: 3, model: false, wavy: false },
-    { id: 8, columns: 3, rows: 3, model: false, wavy: true }
-] as const;
+    { id: 8, columns: 3, rows: 3, model: false, wavy: true },
+    // Each size first with the eye button, then without it. Twenty-four pieces (50 × 60) is the most the
+    // 320 × 270 reserve holds without overlap; curved edges stay on three columns for the same reason.
+    { id: 9, columns: 3, rows: 3, model: false, wavy: true, eye: false },
+    { id: 10, columns: 4, rows: 3, model: false, wavy: false, eye: false },
+    { id: 11, columns: 4, rows: 4, model: false, wavy: false },
+    { id: 12, columns: 4, rows: 4, model: false, wavy: false, eye: false },
+    { id: 13, columns: 5, rows: 4, model: false, wavy: false },
+    { id: 14, columns: 5, rows: 4, model: false, wavy: false, eye: false },
+    { id: 15, columns: 6, rows: 4, model: false, wavy: false },
+    { id: 16, columns: 6, rows: 4, model: false, wavy: false, eye: false }
+];
+export function hasEye(level: number): boolean { return levels[level - 1]?.eye !== false; }
 export const vectorSceneIds = ['castle', 'bamboo', 'rainbow', 'jungle', 'autumn', 'picnic'] as const;
 /** Painted scenes: a WebP over a vector fallback, fetched only when a puzzle shows them. */
 export const paintedSceneIds = ['zen', 'ardennes', 'volcano', 'islands', 'galaxy', 'valley'] as const;
