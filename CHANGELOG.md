@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.8
+
+- Tutu’s drums: 8 new levels, from 9 to 16: longer repetitions, an eight-beat rhythm, a new melody mode where both the drums and their long/short spacing count, and revision rounds mixing repetition, rhythm and melody. Levels 1 to 8 are unchanged and keep their stars.
+
 ## 1.6.7
 
 - Pestouille’s puzzle: 8 new levels, from 9 to 16, from 9 to 24 pieces (wavy 3×3, then 4×3, 4×4, 5×4 and 6×4 boards); each new size comes first with the eye button, then without any picture to peek at. Levels 1 to 8 are unchanged and keep their stars.
