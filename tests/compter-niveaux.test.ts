@@ -115,7 +115,14 @@ it('decoy instructions name the counted kind in both languages', () => {
     expect(q.decoy).toBeDefined();
     const plural = { fr: { apple: 'pommes', pear: 'poires', berry: 'fraises', carrot: 'carottes', star: 'étoiles', fish: 'poissons', flower: 'fleurs' }, en: { apple: 'apples', pear: 'pears', berry: 'strawberries', carrot: 'carrots', star: 'stars', fish: 'fish', flower: 'flowers' } };
     for (const object of Object.keys(plural.fr) as Question['object'][]) {
-        expect(instruction({ ...q, object }, 'fr')).toBe(`Combien de ${plural.fr[object]} y a-t-il ?`);
+        expect(instruction({ ...q, object }, 'fr')).toBe(`Combien ${/^[aeiouyé]/.test(plural.fr[object]) ? 'd’' : 'de '}${plural.fr[object]} y a-t-il ?`);
         expect(instruction({ ...q, object }, 'en', true)).toBe(`How many ${plural.en[object]} are there?`);
     }
+});
+
+it('the decoy question elides in French before a vowel', () => {
+    const q = { mode: 'combien', object: 'star', target: 4, choices: [3, 4, 5], left: 4, right: 1, answer: 4, reserve: 6, seed: 1, decoy: { object: 'apple', count: 6 } } as const;
+    expect(instruction({ ...q, choices: [...q.choices] }, 'fr')).toBe('Combien d’étoiles y a-t-il ?');
+    expect(instruction({ ...q, choices: [...q.choices], object: 'pear' }, 'fr')).toBe('Combien de poires y a-t-il ?');
+    expect(instruction({ ...q, choices: [...q.choices] }, 'en')).toBe('How many stars are there?');
 });

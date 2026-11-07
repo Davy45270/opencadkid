@@ -10,7 +10,8 @@ const nouns: Record<Locale, Record<ObjectKind, readonly [string, string, string]
 };
 export function instruction(q: Question, locale: Locale, oral = false): string {
     const [singular, plural, one] = nouns[locale][q.object];
-    if (q.decoy) return text(locale, 'combienOf').replace('{object}', plural);
+    // French elides before a vowel: « Combien d’étoiles », never « de étoiles ».
+    if (q.decoy) return text(locale, 'combienOf').replace('{object}', plural).replace(/\bde ([aeiouyàâéèêëîïôûh])/, 'd’$1');
     return text(locale, q.mode === 'plus' ? q.comparison === 'less' ? 'less' : 'more' : q.mode).replace('{n}', oral && q.target === 1 ? one : String(q.target)).replace('{object}', q.target === 1 ? singular : plural);
 }
 export function levelView(save: Save): string {

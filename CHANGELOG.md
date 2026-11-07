@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.0
+
+- Twice as many levels, published one game at a time. Boubou's baskets: eight harder levels, 8 to 16. Count, fill and compare larger quantities (6 to 10); wrong cards that are only one away; baskets that differ by one; count one kind of object among ten of two kinds; and a mixed review of everything. The first eight levels and their rounds do not change.
+
 ## 1.5.2
 
 - Boubou's studio: the eraser reaches a hair past its brush width, so erasing a mark along the same path no longer leaves a faint ghost line along its edges.
