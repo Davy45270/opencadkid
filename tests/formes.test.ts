@@ -16,7 +16,8 @@ function oracle(q: Question, p: Piece): boolean {
     return p.shape === q.target.shape && p.color === q.target.color;
 }
 it('hard-coded level and exclusion tables', () => {
-    expect(levels.map(l => [l.mode, l.choices, l.mixed])).toEqual(table);
+    // Levels 11–20 are covered by tests/formes-niveaux.test.ts.
+    expect(levels.slice(0, 10).map(l => [l.mode, l.choices, l.mixed])).toEqual(table);
     expect(forbiddenPairs).toEqual(banned);
     expect(() => generateRound(0, 1)).toThrow(); expect(() => generateRound(1, 1, 0)).toThrow();
 });
@@ -123,9 +124,9 @@ it('French gender and English adjective order: literal language oracle', () => {
     expect(instruction({ ...q, mode: 'taille', target: { ...p, shape: 'etoile', color: 'bleu', size: 'petit' } }, 'fr')).toBe('Touche la petite étoile bleue.');
 });
 it('shape records migrate independently, filter bad entries, persist and clear', () => {
-    let raw = JSON.stringify({ ...fresh(), records: { 1: 3 }, pairesRecords: { 2: 2 }, formesRecords: { 1: 1, 10: 3, 11: 2, 2: 0, 3: 1.5, 4: '3' } });
+    let raw = JSON.stringify({ ...fresh(), records: { 1: 3 }, pairesRecords: { 2: 2 }, formesRecords: { 1: 1, 10: 3, 20: 2, 21: 2, 2: 0, 3: 1.5, 4: '3' } });
     const port = { getItem: () => raw, setItem: (_: string, value: string) => { raw = value; } };
-    const s = readSave(port); expect(s.formesRecords).toEqual({ 1: 1, 10: 3 }); expect(s.records).toEqual({ 1: 3 }); expect(s.pairesRecords).toEqual({ 2: 2 });
+    const s = readSave(port); expect(s.formesRecords).toEqual({ 1: 1, 10: 3, 20: 2 }); expect(s.records).toEqual({ 1: 3 }); expect(s.pairesRecords).toEqual({ 2: 2 });
     writeSave(port, s); expect(readSave(port)).toEqual(s);
     raw = JSON.stringify({ version: 1, locale: 'fr', voice: true, sound: true, records: { 1: 2 } }); expect(readSave(port).formesRecords).toEqual({});
     expect(fresh().formesRecords).toEqual({});

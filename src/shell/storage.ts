@@ -19,7 +19,7 @@ export function readSave(storage?: StoragePort, locale: Locale = 'fr'): Save {
         }
         const formesRecords: Records = {};
         if (v.formesRecords && typeof v.formesRecords === 'object' && !Array.isArray(v.formesRecords)) {
-            for (const [key, score] of Object.entries(v.formesRecords)) if (/^(?:[1-9]|10)$/.test(key) && typeof score === 'number' && Number.isInteger(score) && score >= 1 && score <= 3) formesRecords[Number(key)] = score;
+            for (const [key, score] of Object.entries(v.formesRecords)) if (/^(?:[1-9]|1\d|20)$/.test(key) && typeof score === 'number' && Number.isInteger(score) && score >= 1 && score <= 3) formesRecords[Number(key)] = score;
         }
         const sonsRecords: Records = {};
         if (v.sonsRecords && typeof v.sonsRecords === 'object' && !Array.isArray(v.sonsRecords)) {

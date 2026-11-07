@@ -233,3 +233,25 @@ for (const rapid of [false, true]) test(`sorting two images into the same box wi
     await expect.poll(async () => (await shapeState(page)).shapes.placed).toEqual([first.piece, second.piece]);
     expect((await shapeState(page)).shapes.errors).toBe(0);
 });
+test('levels 11–20: targets keep their size and nothing overflows from 320 to 1280; twenty buttons fit the phone and level 20 plays to the end', async ({ page }) => {
+    test.setTimeout(180_000);
+    await prepareShapes(page, 20);
+    await expect(page.locator('.shape-choice, [data-piece]').first()).toBeVisible();
+    for (let level = 11; level <= 20; level++) {
+        await page.setViewportSize({ width: 390, height: 844 });
+        await page.locator('#back').click(); await page.locator('[data-game="formes"]').click();
+        await expect(page.locator('[data-level]')).toHaveCount(20);
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+        await page.locator(`[data-level="${level}"]`).click();
+        for (const width of [320, 390, 1280]) {
+            await page.setViewportSize({ width, height: 900 });
+            expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `level ${level} at ${width}`).toBe(true);
+            for (const r of await page.locator('.shape-choice, [data-box]').evaluateAll(els => els.map(el => el.getBoundingClientRect()))) {
+                expect(r.width).toBeGreaterThanOrEqual(44); expect(r.height).toBeGreaterThanOrEqual(44); expect(r.right).toBeLessThanOrEqual(width);
+            }
+        }
+    }
+    await page.setViewportSize({ width: 390, height: 844 });
+    await solveShapes(page);
+    await expect(page.locator('#next')).toHaveCount(0);
+});

@@ -12,7 +12,7 @@ Gentle educational games for children aged **4–8**, designed for fingers and p
 
 Boubou's baskets — count, fill and compare across sixteen levels, up to baskets that differ by one and counting one kind among two — and **Lumi's cards**, a gentle memory game with 2 to 12 pairs across fourteen levels: identical pictures, a picture and its shadow, then two identical shadows matched by outline alone. Lumi offers a two-second preview on the first three levels and a glowing hint after repeated misses. Sixteen procedural shapes remain distinguishable without colour; the largest board fits a 390×844 phone without scrolling. French comes first; English is included. English is selected automatically only when the device language starts with `en`. Adults can change and save the language.
 
-**CaliRoux's shapes** is also available: ten levels of shapes, colours, combinations, sizes and finger sorting into two or three colour boxes. Eight outlined SVG shapes and eight named colours accompany spoken prompts; close colour pairs never share a question. Two errors make the answer glow and repeat its name.
+**CaliRoux's shapes** is also available: twenty levels of shapes, colours, combinations, sizes, an odd one out and finger sorting into two to four colour boxes. Eight outlined SVG shapes and eight named colours accompany spoken prompts; close colour pairs never share a question. Two errors make the answer glow and repeat its name.
 
 The complete catalogue is described in [GAME_SPEC.md](GAME_SPEC.md). Learning to tell time is available in the sister application TicTac, through an adult-gated home card.
 

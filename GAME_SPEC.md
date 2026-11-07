@@ -157,7 +157,7 @@ Tests are written for independent execution; no Vitest, Playwright or browser wa
 
 ## Shapes: CaliRoux's shapes
 
-CaliRoux uses the existing `pandaroux` character identifier. The ten levels each contain six questions. Recognition has one matching choice; sorting has three pieces per question, each with exactly one matching box. Answer positions are drawn from the seeded RNG, excluding a position only after two consecutive uses. Adjacent requested shapes differ. No ambient randomness, time or DOM enters the engine. The scoring and unlocking functions are imported unchanged from counting: 0–2 clean questions earn one star, 3–4 two, 5–6 three. Sorting credits a question only when all three pieces were placed without error. Every finish unlocks the next level and preserves the best score in `formesRecords`; missing records migrate safely.
+CaliRoux uses the existing `pandaroux` character identifier. The twenty levels each contain six questions. Recognition has one matching choice; sorting has three pieces per question, each with exactly one matching box. Answer positions are drawn from the seeded RNG, excluding a position only after two consecutive uses. Adjacent requested shapes differ. No ambient randomness, time or DOM enters the engine. The scoring and unlocking functions are imported unchanged from counting: 0–2 clean questions earn one star, 3–4 two, 5–6 three. Sorting credits a question only when all three pieces were placed without error. Every finish unlocks the next level and preserves the best score in `formesRecords` (levels 1–20); missing records migrate safely.
 
 | Level | Mode | Choices | Task |
 | --- | --- | --- | --- |
@@ -171,6 +171,18 @@ CaliRoux uses the existing `pandaroux` character identifier. The ten levels each
 | 8 | taille | 4 | Small/large with other shapes as distractors |
 | 9 | trier | 2 boxes | Three shapes sorted by colour |
 | 10 | trier | 3 boxes | Three shapes sorted by colour |
+| 11 | couleur | 4 | Four distinct colours, varied shapes |
+| 12 | intrus | 4 | Odd one out: three pieces share a shape, one differs; colour and size never give it away; no prompt picture |
+| 13 | les-trois | 4 | Shape, colour and size; one near miss for each attribute |
+| 14 | les-deux | 6 | Two same-shape and two same-colour distractors |
+| 15 | taille | 6 | Distractors in both sizes; another shape always shares the requested size |
+| 16 | intrus | 6 | Odd one out hidden among a look-alike shape (circle/oval, square/rectangle, square/diamond) |
+| 17 | les-trois | 6 | Shape, colour and size with six choices |
+| 18 | trier | 3 boxes | Four shapes sorted by colour (one box takes two) |
+| 19 | trier | 4 boxes | Four shapes into four colour boxes |
+| 20 | mixed review | — | One question each from levels 11, 14, 15, 16, 17 and 19, shuffled |
+
+Levels 11–20 only add optional rules (`sizes`, `lookalike`, `pieces`, modes `les-trois`, `intrus` and `melange` with `review`); levels 1–10 keep their literal configuration and the same seeded rounds. Four-colour questions redraw the seeded palette until the greedy compatible palette reaches four colours (always reached). The odd-one-out prompt shows a comparison pictogram, never the answer's outline or colour: “Touche la forme qui n’est pas comme les autres.” / “Touch the shape that is not like the others.” Shape+colour+size prompts name the size and show the size cue and the swatch. The number of pieces and boxes on screen never decreases (4, 4, 4, 6, 6, 6, 6, 7, 8, 8). `tests/formes-niveaux.test.ts` checks the literal original table and a fingerprint of their rounds, distinct configurations and play fingerprints, and 200 solvable rounds per level with an independent oracle.
 
 Shapes: circle, square, triangle, rectangle, star, heart, diamond, oval. Colours: red, blue, yellow, green, orange, purple, pink, brown. Symmetric forbidden colour pairs: red/green, blue/purple, pink/orange, red/brown, green/brown, red/orange, red/pink, yellow/orange, purple/pink. Palettes are assembled from a seeded shuffle with pairwise exclusion before choices or boxes are made. These conservative exclusions reduce common confusions; they cannot guarantee perception for every colour vision. Shape recognition uses geometry independently of colour. Thick dark outlines surround every shape.
 

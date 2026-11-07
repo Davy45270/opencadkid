@@ -18,7 +18,11 @@ export async function prepareShapes(page: Page, level = 1, locale = 'fr'): Promi
 export async function shapeAnswer(page: Page): Promise<number> {
     const prompt = await page.locator('.instruction-pic').evaluate(el => { const d = (el as HTMLElement).dataset; return { mode: d.mode, targetShape: d.targetShape, targetColor: d.targetColor, targetSize: d.targetSize }; });
     const candidates = await page.locator('[data-answer]').evaluateAll(elements => elements.map(el => { const d = el.querySelector('svg')!.dataset; return { index: Number((el as HTMLElement).dataset.answer), shape: d.shape, color: d.color, size: d.size }; }));
-    const matching = candidates.filter(p => prompt.mode === 'forme' ? p.shape === prompt.targetShape : prompt.mode === 'couleur' ? p.color === prompt.targetColor : prompt.mode === 'taille' ? p.shape === prompt.targetShape && p.size === prompt.targetSize : p.shape === prompt.targetShape && p.color === prompt.targetColor);
+    const matching = candidates.filter(p => prompt.mode === 'forme' ? p.shape === prompt.targetShape : prompt.mode === 'couleur' ? p.color === prompt.targetColor : prompt.mode === 'taille' ? p.shape === prompt.targetShape && p.size === prompt.targetSize
+        // Odd one out: the prompt names no shape; the only piece whose shape appears once is the answer.
+        : prompt.mode === 'intrus' ? candidates.filter(o => o.shape === p.shape).length === 1
+        : prompt.mode === 'les-trois' ? p.shape === prompt.targetShape && p.color === prompt.targetColor && p.size === prompt.targetSize
+        : p.shape === prompt.targetShape && p.color === prompt.targetColor);
     expect(matching).toHaveLength(1);
     const result = matching[0]!.index;
     expect((await shapeState(page)).question.answer).toBe(result);
@@ -35,7 +39,8 @@ export async function dragShape(page: Page, from: Locator, to: Locator, outside 
 export async function solveShapes(page: Page): Promise<void> {
     for (let i = (await shapeState(page)).index; i < 6; i++) {
         if (await page.locator('[data-piece]').count()) {
-            for (let j = 0; j < 3; j++) {
+            const pieces = await page.locator('[data-piece]').count();
+            for (let j = 0; j < pieces; j++) {
                 const piece = page.locator(`[data-piece="${j}"]`);
                 if (await piece.isDisabled()) continue;
                 const c = await piece.locator('svg').getAttribute('data-color');
