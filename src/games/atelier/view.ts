@@ -1,5 +1,5 @@
 import { characterSvg } from '../../characters/svg';
-import { BACKGROUND, sheets, palette, SHEET, RASTER_WIDTH, RASTER_HEIGHT, type Artwork, type State } from '../../engines/atelier';
+import { BACKGROUND, ERASER, sheets, palette, SHEET, RASTER_WIDTH, RASTER_HEIGHT, type Artwork, type State } from '../../engines/atelier';
 import { animate, shows, smoke } from '../../engines/atelier/motion';
 import { icon, svg } from '../../ui/svg';
 import { volume } from '../../ui/illustration';
@@ -16,20 +16,70 @@ export function underpaint(art: Artwork): string {
     const paths=Array.from({length:13},()=> '');
     for(let y=0;y<RASTER_HEIGHT;y++) for(let x=0;x<RASTER_WIDTH;) {
         const c=art.underpaint[y*RASTER_WIDTH+x]!,start=x;while(x<RASTER_WIDTH && art.underpaint[y*RASTER_WIDTH+x]===c) x++;
-        if(c!=='d') paths[parseInt(c,16)]=(paths[parseInt(c,16)] ?? '')+`M${start*2} ${y*2}h${(x-start)*2}v2H${start*2}Z`;
+        // 'd' is empty paper; 'c' (white) is an eraser mark flattened by an older version: both show what lies beneath.
+        if(c!=='d' && c!=='c') paths[parseInt(c,16)]=(paths[parseInt(c,16)] ?? '')+`M${start*2} ${y*2}h${(x-start)*2}v2H${start*2}Z`;
     }
     return paths.map((d,i)=>d ? `<path d="${d}" fill="${palette[i]![0]}"/>` : '').join('');
 }
 const paper = (art: Artwork): string => art.zones[BACKGROUND] ?? '#ffffff';
-const strokeLayer = (art: Artwork): string => `<g class="atelier-strokes">${underpaint(art)}${art.strokes.map((s,i)=>`<path data-stroke="${i}" d="${strokePath(s.points)}" fill="none" stroke="${s.color}" stroke-width="${s.width}" stroke-linecap="round" stroke-linejoin="round"/>`).join('')}</g>`;
+let maskCount = 0;
+const markPath = (s: Artwork['strokes'][number], attrs: string): string => `<path ${attrs}d="${strokePath(s.points)}" fill="none" stroke="${s.color}" stroke-width="${s.width}" stroke-linecap="round" stroke-linejoin="round"/>`;
+/** Brush marks, oldest first. An eraser stroke is a mask over the marks made before it (flattened ones included):
+ * it removes what the child painted with the brush and nothing else, so the model's outlines, ink and zones stay.
+ * `keep` selects the marks of one animated part; each call gets its own mask ids so several sheets can share a page. */
+function marks(art: Artwork, keep: (index: number) => boolean = () => true, withUnderpaint = true): string {
+    const prefix = `atelier-mask-${++maskCount}`;
+    let content = withUnderpaint ? underpaint(art) : '', defs = '';
+    art.strokes.forEach((s, i) => {
+        if (s.color === ERASER) {
+            if (!content) return;
+            defs += `<mask id="${prefix}-${i}" maskUnits="userSpaceOnUse" x="0" y="0" width="${SHEET.width}" height="${SHEET.height}"><rect width="${SHEET.width}" height="${SHEET.height}" fill="#ffffff"/>${markPath({ ...s, color: '#000000' as typeof s.color }, '')}</mask>`;
+            content = `<g data-erased="${i}" mask="url(#${prefix}-${i})">${content}</g>`;
+        } else if (keep(i)) content += markPath(s, `data-stroke="${i}" `);
+    });
+    return (defs ? `<defs>${defs}</defs>` : '') + content;
+}
+/** While the child is erasing, the live gesture masks every mark instead of painting white over the model. */
+const LIVE_MASK = `<defs><mask id="atelier-live-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="${SHEET.width}" height="${SHEET.height}"><rect width="${SHEET.width}" height="${SHEET.height}" fill="#ffffff"/><path id="atelier-erase" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/></mask></defs>`;
+const strokeLayer = (art: Artwork, live = false): string => `<g class="atelier-strokes"${live ? ' mask="url(#atelier-live-mask)"' : ''}>${marks(art)}</g>`;
+type Polygon = readonly (readonly [number, number])[];
+const polygons = new Map<string, Polygon>();
+/** Zone paths are closed polygons ("M x y L x y … Z", see drawings.ts). */
+function polygonOf(path: string): Polygon {
+    let p = polygons.get(path);
+    if (!p) { p = [...path.matchAll(/[ML](-?[\d.]+) (-?[\d.]+)/g)].map(m => [Number(m[1]), Number(m[2])] as const); polygons.set(path, p); }
+    return p;
+}
+function inside(x: number, y: number, poly: Polygon): boolean {
+    let ok = false;
+    for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+        const [xi, yi] = poly[i]!, [xj, yj] = poly[j]!;
+        if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) ok = !ok;
+    }
+    return ok;
+}
+/** The zone a point falls in, topmost first (later zones are drawn over earlier ones). */
+export function zoneAt(drawingId: string, x: number, y: number): string | undefined {
+    const d = sheets.find(d => d.id === drawingId)!;
+    for (let i = d.zones.length - 1; i >= 0; i--) if (inside(x, y, polygonOf(d.zones[i]!.path))) return d.zones[i]!.id;
+    return undefined;
+}
+/** The animated part a brush stroke belongs to: the part holding most of its points, if more than half. */
+export function strokeOwner(drawingId: string, points: readonly { x: number; y: number }[]): number | undefined {
+    const show = shows[drawingId]; if (!show || !points.length) return undefined;
+    const votes = new Map<number, number>();
+    for (const p of points) { const z = zoneAt(drawingId, p.x, p.y); const k = z === undefined ? -1 : show.parts.findIndex(part => part.zones.includes(z)); if (k >= 0) votes.set(k, (votes.get(k) ?? 0) + 1); }
+    for (const [k, n] of votes) if (n * 2 > points.length) return k;
+    return undefined;
+}
 /** Background, coloured zones, brush marks, then the drawing's lines on top so they stay crisp.
  * Zones and background answer taps only in colour mode; in brush mode the whole sheet is paper. */
-export function sheet(art: Artwork, locale: Locale): string {
+export function sheet(art: Artwork, locale: Locale, live = true): string {
     const d=sheets.find(d=>d.id===art.drawing)!, tap=art.mode==='color';
     const ground=tap ? `<rect data-zone="${BACKGROUND}" data-fill="${paper(art)}" width="${SHEET.width}" height="${SHEET.height}" fill="${paper(art)}" tabindex="0" role="button" aria-label="${d.names[locale]} ${labels[locale].background}"/>` : `<rect class="atelier-ground" width="${SHEET.width}" height="${SHEET.height}" fill="${paper(art)}"/>`;
     const zones=d.zones.map(z=>tap ? `<path data-zone="${z.id}" data-fill="${art.zones[z.id] ?? '#ffffff'}" d="${z.path}" fill="${art.zones[z.id] ?? '#ffffff'}" stroke="#58443b" stroke-width="2" stroke-linejoin="round" tabindex="0" role="button" aria-label="${d.names[locale]} ${z.id}"/>`
         : `<path data-paint="${z.id}" d="${z.path}" fill="${art.zones[z.id] ?? '#ffffff'}" stroke="#58443b" stroke-width="2" stroke-linejoin="round"/>`).join('');
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${SHEET.width} ${SHEET.height}" aria-label="${d.names[locale]}" class="atelier-paper">${ground}${zones}${strokeLayer(art)}<g class="atelier-ink">${d.ink}</g><path id="atelier-live" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${SHEET.width} ${SHEET.height}" aria-label="${d.names[locale]}" class="atelier-paper">${ground}${zones}${live ? LIVE_MASK : ''}${strokeLayer(art, live)}<g class="atelier-ink">${d.ink}</g>${live ? '<path id="atelier-live" fill="none" stroke-linecap="round" stroke-linejoin="round"/>' : ''}</svg>`;
 }
 /** The same picture playing its pre-authored animation: shapes and colours are exactly the child's. */
 export function animatedSheet(art: Artwork, locale: Locale): string {
@@ -38,10 +88,14 @@ export function animatedSheet(art: Artwork, locale: Locale): string {
     const wrap=(content: string, part = undefined as typeof show.parts[number] | undefined): string => !part ? animate(show.whole,content) : part.follow ? animate(show.whole,animate(part.motion,content)) : animate(part.motion,content);
     const zones=d.zones.map(z=>wrap(`<path data-paint="${z.id}" d="${z.path}" fill="${art.zones[z.id] ?? '#ffffff'}" stroke="#58443b" stroke-width="2" stroke-linejoin="round"/>`,owner(z.id))).join('');
     let ink=d.ink; for(const part of show.parts) for(const line of part.ink) ink=ink.replace(` d="${line}"`,' d=""');
+    // Brush marks move like the zones under them: a mark drawn on a wing flaps with the wing, the rest follows the whole picture.
+    const owners=art.strokes.map(s=>s.color===ERASER ? undefined : strokeOwner(d.id,s.points));
+    const strokes=wrap(`<g class="atelier-strokes">${marks(art,i=>owners[i]===undefined)}</g>`)
+        +show.parts.map((p,k)=>owners.includes(k) ? wrap(`<g class="atelier-strokes" data-part="${k}">${marks(art,i=>owners[i]===k,false)}</g>`,p) : '').join('');
     const partInk=show.parts.filter(p=>p.ink.length).map(p=>wrap(p.ink.map(line=>`<path d="${line}" fill="none" stroke="#58443b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`).join(''),p)).join('');
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${SHEET.width} ${SHEET.height}" aria-label="${d.names[locale]}" class="atelier-paper atelier-playing"><rect width="${SHEET.width}" height="${SHEET.height}" fill="${paper(art)}"/>${show.extra==='smoke'?smoke:''}${zones}${wrap(strokeLayer(art))}${wrap(`<g class="atelier-ink">${ink}</g>`)}${partInk}</svg>`;
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${SHEET.width} ${SHEET.height}" aria-label="${d.names[locale]}" class="atelier-paper atelier-playing"><rect width="${SHEET.width}" height="${SHEET.height}" fill="${paper(art)}"/>${show.extra==='smoke'?smoke:''}${zones}${strokes}${wrap(`<g class="atelier-ink">${ink}</g>`)}${partInk}</svg>`;
 }
-export function thumbnail(art: Artwork, locale: Locale): string { return sheet(art,locale).replace(/\s(?:id|data-zone|data-fill|tabindex|role|aria-label)="[^"]*"/g,''); }
+export function thumbnail(art: Artwork, locale: Locale): string { return sheet(art,locale,false).replace(/\s(?:data-zone|data-fill|tabindex|role|aria-label)="[^"]*"/g,''); }
 export function strokePath(points: readonly {x:number;y:number}[]): string { return points.map((p,i)=>`${i?'L':'M'}${p.x} ${p.y}`).join('')+(points.length===1 ? 'l.01 0' : ''); }
 export function gameView(state: State, locale: Locale): string {
     const t=labels[locale];

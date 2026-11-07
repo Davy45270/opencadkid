@@ -1,5 +1,5 @@
 import { bindDragEnd } from '../../shell/drag';
-import { addStroke, appendGallery, change, choose as chooseSheet, clear, deserialize, fill, palette, pointCount, redo, sample, strokeTolerance, SHEET, start, undo, type Point, type State } from '../../engines/atelier';
+import { addStroke, appendGallery, ERASER, change, choose as chooseSheet, clear, deserialize, fill, palette, pointCount, redo, sample, strokeTolerance, SHEET, start, undo, type Point, type State } from '../../engines/atelier';
 import { acceptActivation, bindAction, recordActivation } from '../../shell/activation';
 import { screenToZone } from '../../shell/coordinates';
 import type { Locale } from '../../shell/i18n';
@@ -75,8 +75,10 @@ export function mount(root: HTMLElement, studio: Studio, locale: Locale, storage
             for(const e of batch.length ? batch : [event]) {
                 const p=position(e); points.push(p); preview=sample(preview,p,strokeTolerance(strokeScale));
             }
-            const live=root.querySelector('#atelier-live')!;
-            live.setAttribute('d',strokePath(preview)); live.setAttribute('stroke',state().color); live.setAttribute('stroke-width',String(state().width));
+            // The eraser's live gesture is a mask over the brush marks: it never paints white over the model.
+            const live=root.querySelector(state().color===ERASER ? '#atelier-erase' : '#atelier-live')!;
+            live.setAttribute('d',strokePath(preview)); live.setAttribute('stroke-width',String(state().width));
+            if(state().color!==ERASER) live.setAttribute('stroke',state().color);
         };
         paper.addEventListener('pointerdown',event=>{
             if(playing) {event.preventDefault();recordActivation('atelier:stroke',event.type,false,'stops-animation');paint();return;}

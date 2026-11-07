@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.1
+
+- Boubou's studio: the eraser now removes only what the child painted with the brush. It used to be a white brush, so it also wiped the model's outlines; now the outlines, the ink and the coloured zones stay, and a mark drawn after the eraser shows again. Old pictures that were flattened with white eraser marks show what lies beneath them.
+- Boubou's studio: brush marks now move with the picture like the coloured zones do. A mark drawn on a wing flaps with the wing, a mark on an ear wiggles with the ear, and the rest follows the whole picture.
+
 ## 1.5.0
 
 - Boubou's snack: 100 new levels, from 17 to 116. Seven kinds of rig take turns (one string, two strings, a slack string, a hook, a bubble that lifts the sweet to Boubou, a bubble that catches it on the way down, four strings), from one gesture to three. Every level is checked by the solver: finishable, three stars reachable, timing forgiving for small hands (at least ten steps either way), nothing happens without a gesture, and no new level plays like another one, even shifted sideways.

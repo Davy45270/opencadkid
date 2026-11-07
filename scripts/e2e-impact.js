@@ -39,7 +39,7 @@ export const GAME_SPECS = {
     'ranger': ['ranger', 'ranger-doigt'],
     'tambours': ['tambours', 'tambours-doigt', 'tambours-regressions'],
     'gouter': ['gouter', 'gouter-doigt'],
-    'atelier': ['atelier', 'atelier-dessin', 'atelier-doigt'],
+    'atelier': ['atelier', 'atelier-dessin', 'atelier-doigt', 'atelier-gomme'],
 };
 /** Cross-game specs, grouped by what they exercise. None is tied to a single game. */
 export const CROSS_SPECS = {

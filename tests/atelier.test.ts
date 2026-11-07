@@ -173,8 +173,8 @@ it('sampling accepts exactly two units and rejects shorter moves without mutatin
     expect(sample(initial,{x:22.5,y:20})).toEqual([...initial,{x:22.5,y:20}]);
     expect(initial).toEqual([{x:20,y:20}]);
 });
-it('SVG strokes render every selected colour and all three actual brush widths', () => {
-    for(const color of palette.map(c=>c[0])) for(const width of [4,9,18] as const) {
+it('SVG strokes render every selected colour and all three actual brush widths (the eraser is a mask, never a white mark)', () => {
+    for(const color of palette.map(c=>c[0]).filter(c=>c!=='#ffffff')) for(const width of [4,9,18] as const) {
         const s=addStroke({...start('fusee','draw'),color,width},[{x:20,y:30},{x:80,y:50}]);
         expect(sheet(s.art,'en')).toContain(`data-stroke="0" d="M20 30L80 50" fill="none" stroke="${color}" stroke-width="${width}"`);
     }
@@ -231,11 +231,12 @@ it('flattened polylines render the exact coloured grid and stay within 2px of th
     }
     expect(sheet(s.art,'en')).toContain(html);
 });
-it('underpaint renders all palette colours including white and skips transparent cells', () => {
+it('underpaint renders the twelve paint colours and skips transparent cells and old white eraser cells', () => {
     const art={...start('boubou','draw').art,underpaint:'0123456789abcd'+'d'.repeat(24000-14),flattened:1};
     const html=underpaint(art);
-    expect(html.match(/<path /g)).toHaveLength(13);
-    for(const [i,c] of palette.entries()) expect(html).toContain(`<path d="M${i*2} 0h2v2H${i*2}Z" fill="${c[0]}"/>`);
+    expect(html.match(/<path /g)).toHaveLength(12);
+    expect(html).not.toContain('fill="#ffffff"');
+    for(const [i,c] of palette.slice(0,12).entries()) expect(html).toContain(`<path d="M${i*2} 0h2v2H${i*2}Z" fill="${c[0]}"/>`);
 });
 
 

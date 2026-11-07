@@ -11,6 +11,8 @@ export const palette = [
     ['#ab83cc','violet','purple'], ['#ed9fc7','rose','pink'], ['#b78c70','marron','brown'], ['#666678','gris','grey'], ['#ffffff','gomme','eraser']
 ] as const;
 export type Color = typeof palette[number][0];
+/** The eraser colour. A stroke in this colour removes earlier brush marks; it never paints over the model. */
+export const ERASER = '#ffffff';
 export type Mode = 'color' | 'draw';
 export interface Point { x: number; y: number }
 export interface Stroke { color: Color; width: 4 | 9 | 18; points: Point[] }
@@ -58,7 +60,8 @@ export function sample(points: readonly Point[], p: Point, step = 2): Point[] {
 export const RASTER_WIDTH = 160, RASTER_HEIGHT = 150;
 function flatten(base: string | undefined, stroke: Stroke): string {
     const cells=(base ?? 'd'.repeat(RASTER_WIDTH*RASTER_HEIGHT)).split('');
-    const ink=palette.findIndex(c=>c[0]===stroke.color).toString(16), radius=stroke.width/2;
+    // The eraser removes earlier brush marks: its cells go back to empty paper, never to white paint.
+    const ink=stroke.color===ERASER ? 'd' : palette.findIndex(c=>c[0]===stroke.color).toString(16), radius=stroke.width/2;
     const mark=(a:Point,b:Point): void=>{
         const x0=Math.max(0,Math.floor((Math.min(a.x,b.x)-radius)/2)),x1=Math.min(RASTER_WIDTH-1,Math.floor((Math.max(a.x,b.x)+radius)/2));
         const y0=Math.max(0,Math.floor((Math.min(a.y,b.y)-radius)/2)),y1=Math.min(RASTER_HEIGHT-1,Math.floor((Math.max(a.y,b.y)+radius)/2));
