@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.7
+
+- Pestouille’s puzzle: 8 new levels, from 9 to 16, from 9 to 24 pieces (wavy 3×3, then 4×3, 4×4, 5×4 and 6×4 boards); each new size comes first with the eye button, then without any picture to peek at. Levels 1 to 8 are unchanged and keep their stars.
+
 ## 1.6.6
 
 - Pestouille’s path: 8 new levels, from 9 to 16. The path now snakes through whole columns (27 to 51 cells on 9×7 and 9×8 boards), up to six optional stars hide farther in dead ends, and from level 13 there is no bulb: the child finds the way alone. Levels 1 to 8 are unchanged and keep their stars.
