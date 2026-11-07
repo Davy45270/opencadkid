@@ -23,6 +23,8 @@ export function underpaint(art: Artwork): string {
 }
 const paper = (art: Artwork): string => art.zones[BACKGROUND] ?? '#ffffff';
 let maskCount = 0;
+/** The eraser reaches a little past its brush width: erasing a mark along the same path leaves no anti-aliased ghost edge. */
+export const ERASER_MARGIN = 3;
 const markPath = (s: Artwork['strokes'][number], attrs: string): string => `<path ${attrs}d="${strokePath(s.points)}" fill="none" stroke="${s.color}" stroke-width="${s.width}" stroke-linecap="round" stroke-linejoin="round"/>`;
 /** Brush marks, oldest first. An eraser stroke is a mask over the marks made before it (flattened ones included):
  * it removes what the child painted with the brush and nothing else, so the model's outlines, ink and zones stay.
@@ -33,7 +35,7 @@ function marks(art: Artwork, keep: (index: number) => boolean = () => true, with
     art.strokes.forEach((s, i) => {
         if (s.color === ERASER) {
             if (!content) return;
-            defs += `<mask id="${prefix}-${i}" maskUnits="userSpaceOnUse" x="0" y="0" width="${SHEET.width}" height="${SHEET.height}"><rect width="${SHEET.width}" height="${SHEET.height}" fill="#ffffff"/>${markPath({ ...s, color: '#000000' as typeof s.color }, '')}</mask>`;
+            defs += `<mask id="${prefix}-${i}" maskUnits="userSpaceOnUse" x="0" y="0" width="${SHEET.width}" height="${SHEET.height}"><rect width="${SHEET.width}" height="${SHEET.height}" fill="#ffffff"/>${markPath({ ...s, color: '#000000' as typeof s.color }, '').replace(`stroke-width="${s.width}"`, `stroke-width="${s.width + ERASER_MARGIN}"`)}</mask>`;
             content = `<g data-erased="${i}" mask="url(#${prefix}-${i})">${content}</g>`;
         } else if (keep(i)) content += markPath(s, `data-stroke="${i}" `);
     });

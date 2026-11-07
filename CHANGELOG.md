@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.2
+
+- Boubou's studio: the eraser reaches a hair past its brush width, so erasing a mark along the same path no longer leaves a faint ghost line along its edges.
+
 ## 1.5.1
 
 - Boubou's studio: the eraser now removes only what the child painted with the brush. It used to be a white brush, so it also wiped the model's outlines; now the outlines, the ink and the coloured zones stay, and a mark drawn after the eraser shows again. Old pictures that were flattened with white eraser marks show what lies beneath them.

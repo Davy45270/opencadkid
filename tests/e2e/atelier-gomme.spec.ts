@@ -15,13 +15,25 @@ const pixels = (page: Page, points: readonly (readonly [number, number])[]) => p
     g.fillStyle = '#fff'; g.fillRect(0, 0, 960, 900); g.drawImage(img, 0, 0);
     return pts.map(([x, y]) => [...g.getImageData(x * 3, y * 3, 1, 1).data.slice(0, 3)].map(v => v.toString(16).padStart(2, '0')).join(''));
 }, points);
+/** Every rendered pixel of a short vertical run, at a scale that puts the mark's edges between pixels (as on a phone). */
+const column = (page: Page, x: number, y0: number, y1: number) => page.locator('.atelier-paper').evaluate(async (svg, [x, y0, y1]) => {
+    const k = 3.37, w = Math.round(320 * k), h = Math.round(300 * k);
+    const html = new XMLSerializer().serializeToString(svg).replace('<svg ', `<svg width="${w}" height="${h}" `);
+    const img = new Image(); img.src = URL.createObjectURL(new Blob([html], { type: 'image/svg+xml' }));
+    await img.decode();
+    const c = document.createElement('canvas'); c.width = w; c.height = h; const g = c.getContext('2d')!;
+    g.fillStyle = '#fff'; g.fillRect(0, 0, w, h); g.drawImage(img, 0, 0);
+    const out: string[] = [];
+    for (let y = Math.round(y0 * k); y <= Math.round(y1 * k); y++) out.push([...g.getImageData(Math.round(x * k), y, 1, 1).data.slice(0, 3)].map(v => v.toString(16).padStart(2, '0')).join(''));
+    return out;
+}, [x, y0, y1] as const);
 async function stroke(page: Page, from: readonly [number, number], to: readonly [number, number]): Promise<void> {
     const a = await toScreen(page, ...from), b = await toScreen(page, ...to);
     await page.mouse.move(a.x, a.y); await page.mouse.down();
     for (let i = 1; i <= 20; i++) await page.mouse.move(a.x + (b.x - a.x) * i / 20, a.y + (b.y - a.y) * i / 20);
     await page.mouse.up();
 }
-const near = (hex: string, target: string) => { const d = [0, 2, 4].map(i => Math.abs(parseInt(hex.slice(i, i + 2), 16) - parseInt(target.slice(i, i + 2), 16))); return Math.max(...d) <= 40; };
+const near = (hex: string, target: string, tolerance = 40) => { const d = [0, 2, 4].map(i => Math.abs(parseInt(hex.slice(i, i + 2), 16) - parseInt(target.slice(i, i + 2), 16))); return Math.max(...d) <= tolerance; };
 
 test('the eraser removes the brush marks only: the model outline and the coloured zone stay', async ({ page }) => {
     await prepareStudio(page);
@@ -39,6 +51,8 @@ test('the eraser removes the brush marks only: the model outline and the coloure
     // Before the fix both points turned white: the eraser was a white brush covering the model.
     expect(near(outline!, '58443b')).toBe(true);
     expect(near(inside!, 'ee737a')).toBe(true);
+    // No ghost of the erased mark along its edges (anti-aliasing of an eraser exactly as wide as the brush left one).
+    for (const x of [84, 89]) for (const p of await column(page, x, 92, 118)) expect(near(p, 'ee737a', 12), `${x}: ${p}`).toBe(true);
     expect(await studioState(page)).toMatchObject({ strokeCount: 2, zones: { head: '#ee737a' } });
     await expect(page.locator('.atelier-paper path[stroke="#ffffff"]')).toHaveCount(0);
     // A new mark after the eraser shows again.

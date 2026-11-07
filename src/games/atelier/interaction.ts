@@ -5,7 +5,7 @@ import { screenToZone } from '../../shell/coordinates';
 import type { Locale } from '../../shell/i18n';
 import type { StoragePort } from '../../shell/storage';
 import { characterSvg } from '../../characters/svg';
-import { animatedSheet, gameView, labels, sheet, strokePath, thumbnail } from './view';
+import { animatedSheet, ERASER_MARGIN, gameView, labels, sheet, strokePath, thumbnail } from './view';
 import { readGallery, writeDraft, writeGallery } from './storage';
 import { exportPicture } from './export';
 export interface Studio { state: State; revision: number }
@@ -77,7 +77,7 @@ export function mount(root: HTMLElement, studio: Studio, locale: Locale, storage
             }
             // The eraser's live gesture is a mask over the brush marks: it never paints white over the model.
             const live=root.querySelector(state().color===ERASER ? '#atelier-erase' : '#atelier-live')!;
-            live.setAttribute('d',strokePath(preview)); live.setAttribute('stroke-width',String(state().width));
+            live.setAttribute('d',strokePath(preview)); live.setAttribute('stroke-width',String(state().width+(state().color===ERASER ? ERASER_MARGIN : 0)));
             if(state().color!==ERASER) live.setAttribute('stroke',state().color);
         };
         paper.addEventListener('pointerdown',event=>{
