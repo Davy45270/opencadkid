@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.4
+
+- Lumi's patterns: 10 new levels, from 11 to 20. Four-symbol patterns only (AABC, ABAC, ABCD), a new countdown of dots, holes in longer patterns, two holes filled from left to right and two-item continuations, with up to five choices. Levels 1 to 10 are unchanged and keep their stars.
+
 ## 1.6.3
 
 - Tutu's sounds: 10 new levels, from 11 to 20. More letters or pictures to choose from (up to six), sound-only questions with five and six letters, and sorting four pictures into three letter boxes whose sounds are never close. Levels 1 to 10 are unchanged and keep their stars.
