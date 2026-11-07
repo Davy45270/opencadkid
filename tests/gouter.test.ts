@@ -1,12 +1,13 @@
 import { expect, it } from 'vitest';
 import { advance, complete, cut, CUT_REACH, FIELD, isUnlocked, levels, parseRecords, pop, reward, start, swipeTargets, tap, tapTarget, type State } from '../src/engines/gouter';
 import { play, solve, tolerance } from '../src/engines/gouter/solver';
+import { signature, uses } from '../scripts/gouter-generate';
 import { fieldSvg, gameView, labels, levelView, pictogram, ropePath } from '../src/games/gouter/view';
 
 const idle = (id: number): State => advance(start(id), 900);
 
-it('sixteen authored levels stay inside the field and use every mechanism', () => {
-    expect(levels.length).toBeGreaterThanOrEqual(15);
+it('116 levels (16 drawn, 100 generated) stay inside the field and use every mechanism', () => {
+    expect(levels.length).toBe(116);
     expect(levels.map(l => l.id)).toEqual(levels.map((_, i) => i + 1));
     for (const l of levels) {
         for (const p of [l.treat, l.mouth, ...l.stars, ...l.ropes, ...(l.hooks ?? []), ...(l.bubbles ?? [])]) {
@@ -22,6 +23,15 @@ it('sixteen authored levels stay inside the field and use every mechanism', () =
     expect(levels.some(l => l.ropes.length >= 4)).toBe(true);
 });
 
+it('no two levels share a rig, and every generated hook and bubble takes part in the solution', () => {
+    const keys = levels.map(signature);
+    expect(new Set(keys).size).toBe(levels.length);
+    for (const l of levels.slice(16)) {
+        const solution = solve(l.id)!;
+        expect(uses(l, solution.plan), `level ${l.id}`).toBe(true);
+    }
+}, 300_000);
+
 it('the solver finishes every level with three stars, timing errors are forgiven, and nothing happens without the child', () => {
     for (const l of levels) {
         const solution = solve(l.id);
@@ -35,7 +45,7 @@ it('the solver finishes every level with three stars, timing errors are forgiven
         expect(replay.status).toBe('won'); expect(replay.stars).toEqual([true, true, true]); expect(reward(replay)).toBe(3);
         expect(idle(l.id).status, `level ${l.id} is not won without an action`).not.toBe('won');
     }
-}, 120_000);
+}, 600_000);
 
 it('physics is deterministic and pure: same actions, same ticks, same result; inputs are never mutated', () => {
     const plan = solve(4)!.plan;
@@ -96,7 +106,7 @@ it('records keep the best result, unlock the next level, and reject corrupt stor
     records = complete(records, { ...won, stars: [false, false, false] }); expect(records).toEqual({ 2: 2 });
     expect(complete(records, start(2))).toEqual(records);
     expect(isUnlocked(1, {})).toBe(true); expect(isUnlocked(3, {})).toBe(false); expect(isUnlocked(3, records)).toBe(true);
-    expect(parseRecords(JSON.stringify({ 1: 3, 2: 0, 3: 4, 99: 1, x: 2, 4: 1.5, 5: 2 }))).toEqual({ 1: 3, 5: 2 });
+    expect(parseRecords(JSON.stringify({ 1: 3, 2: 0, 3: 4, 117: 1, x: 2, 4: 1.5, 5: 2 }))).toEqual({ 1: 3, 5: 2 });
     for (const bad of [null, '', '{', '[]', '"x"', 'null']) expect(parseRecords(bad)).toEqual({});
 });
 

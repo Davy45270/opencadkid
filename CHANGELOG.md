@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.0
+
+- Boubou's snack: 100 new levels, from 17 to 116. Seven kinds of rig take turns (one string, two strings, a slack string, a hook, a bubble that lifts the sweet to Boubou, a bubble that catches it on the way down, four strings), from one gesture to three. Every level is checked by the solver: finishable, three stars reachable, timing forgiving for small hands (at least ten steps either way), nothing happens without a gesture, and no two levels share the same rig.
+
 ## 1.4.0
 
 - Pestouille’s path: a painted signpost, drawn by the author, now stands at the start of every maze, on the border next to the start square, and points the way of the first step: right on the first two levels, down or up on the later ones (turned a quarter, or mirrored for a path leaving to the left). It sits outside the board, so it never covers a square or Pestouille, and taps on it do nothing.
