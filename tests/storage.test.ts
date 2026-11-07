@@ -11,6 +11,6 @@ it('round trips preferences and filters invalid level records', () => {
     const storage = { getItem: () => raw, setItem: (key: string, value: string) => { expect(key).toBe(SAVE_KEY); raw = value; } };
     const save = { ...fresh('en'), voice: false, records: { 1: 3, 2: 1 } };
     writeSave(storage, save); expect(readSave(storage)).toEqual(save);
-    raw = JSON.stringify({ ...save, records: { 1: 2, 2: -1, 3: 4, 4: '3', 5: 1.5, 9: 3 } });
-    expect(readSave(storage).records).toEqual({ 1: 2 });
+    raw = JSON.stringify({ ...save, records: { 1: 2, 2: -1, 3: 4, 4: '3', 5: 1.5, 16: 2, 17: 3 } });
+    expect(readSave(storage).records).toEqual({ 1: 2, 16: 2 });
 });

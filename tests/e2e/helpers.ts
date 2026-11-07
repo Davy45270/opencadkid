@@ -58,7 +58,10 @@ export async function prepare(page: Page, level = 1, options: { voice?: boolean;
 export async function visibleAnswer(page: Page): Promise<number> {
     const current = await state(page), q = current.question!;
     if (q.mode === 'combien') {
-        const n = await page.locator('.objects [data-object]').count();
+        // Decoy scenes mix two kinds: count only the drawn kind the instruction pictogram shows.
+        const kinds = await page.locator('.objects [data-object]').evaluateAll(els => els.map(el => (el as HTMLElement).dataset.kind));
+        const n = q.decoy ? kinds.filter(k => k === q.object).length : kinds.length;
+        if (q.decoy) expect(kinds).toHaveLength(10);
         expect(n).toBe(q.target);
         const cards = page.locator('.answers button');
         const matches: number[] = [];

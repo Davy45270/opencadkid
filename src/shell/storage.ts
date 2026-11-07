@@ -12,7 +12,7 @@ export function readSave(storage?: StoragePort, locale: Locale = 'fr'): Save {
         const v = data as Record<string, unknown>;
         if (v.version !== 1 || (v.locale !== 'fr' && v.locale !== 'en') || typeof v.voice !== 'boolean' || typeof v.sound !== 'boolean' || !v.records || typeof v.records !== 'object' || Array.isArray(v.records)) return fresh(locale);
         const records: Records = {};
-        for (const [key, score] of Object.entries(v.records)) if (/^[1-8]$/.test(key) && typeof score === 'number' && Number.isInteger(score) && score >= 1 && score <= 3) records[Number(key)] = score;
+        for (const [key, score] of Object.entries(v.records)) if (/^(?:[1-9]|1[0-6])$/.test(key) && typeof score === 'number' && Number.isInteger(score) && score >= 1 && score <= 3) records[Number(key)] = score;
         const pairesRecords: Records = {};
         if (v.pairesRecords && typeof v.pairesRecords === 'object' && !Array.isArray(v.pairesRecords)) {
             for (const [key, score] of Object.entries(v.pairesRecords)) if (/^[1-7]$/.test(key) && typeof score === 'number' && Number.isInteger(score) && score >= 1 && score <= 3) pairesRecords[Number(key)] = score;

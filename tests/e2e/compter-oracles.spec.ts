@@ -124,7 +124,8 @@ test('level 8: displayed and spoken instruction says le moins throughout play', 
         await clearSpeech(page);
         await solveQuestion(page);
     }
-    await expect(page.locator('#next')).toHaveCount(0);
+    // Level eight is no longer the last one: levels 9–16 follow.
+    await expect(page.locator('#next')).toHaveCount(1);
 });
 
 for (const sound of [true, false]) test(`correct answer produces oscillators only when sound=${sound}`, async ({ page }) => {

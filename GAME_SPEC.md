@@ -24,7 +24,7 @@ Learning the time belongs to TicTac. Its home card opens the sister app only aft
 
 ## Counting levels
 
-All sessions contain six questions. Levels unlock in numerical order after completing the previous session, regardless of errors. The level chooser displays large numbered dot constellations and a mode pictogram. Level one is initially available. Completed levels remain replayable; level eight has an Again button and Home, without a nonexistent next level.
+All sessions contain six questions. Levels unlock in numerical order after completing the previous session, regardless of errors. The level chooser displays large numbered dot constellations and a mode pictogram. Level one is initially available. Completed levels remain replayable; level sixteen has an Again button and Home, without a nonexistent next level.
 
 | Level | Mode | Quantities | Task |
 | --- | --- | --- | --- |
@@ -36,6 +36,16 @@ All sessions contain six questions. Levels unlock in numerical order after compl
 | 6 | plus | 1–5 | Choose the basket with more objects. |
 | 7 | plus | 1–10 | Choose the basket with more objects up to ten. |
 | 8 | plus | 1–10 | Choose the basket with fewer objects. |
+| 9 | combien | 6–10 | Count large quantities only. |
+| 10 | remplir | 6–10 | Fill large quantities only. |
+| 11 | plus | 6–10 | More, between two large baskets. |
+| 12 | combien | 6–10 | Large quantities; wrong cards are the ±1 neighbours whenever the range allows. |
+| 13 | plus | 6–10 | More, the baskets differ by exactly one. |
+| 14 | plus | 6–10 | Fewer, the baskets differ by exactly one. |
+| 15 | combien | 3–7 among 10 | Count one kind among ten objects of two kinds (“How many apples are there?”); ±1 cards. |
+| 16 | mixed review | 6–10 (decoys 3–7) | Each round covers ±1 counting, filling, more and fewer by one, and decoys once, plus one more, shuffled. |
+
+Levels 9–16 only add optional rules (`min`, `close`, `gap`, `decoys`, mode `melange`); levels 1–8 keep their literal configuration and the same seeded rounds. Every new question shows at least six objects. The decoy scene always holds ten objects, so the total never reveals the answer; the counted kind is shown next to the eye pictogram and listed first in the scene's document order, so the shared two-error hint counts only that kind. `tests/compter-niveaux.test.ts` checks the literal original table and a fingerprint of their rounds, pairwise distinct configurations and play fingerprints, 200 playable rounds per level and a non-decreasing hardness score.
 
 `generateRound(level, seed, count = 6)` is deterministic with Mulberry32. Each question uses one illustrated object type: apple, pear, strawberry, carrot, star, fish or flower. Consecutive targets differ. Counting cards contain three distinct integers within the level's range; the answer appears once. Distractors differ from the target by one or two. Each answer position is drawn with the seeded RNG from all three positions, excluding the previous position only when it has already appeared twice consecutively. Across 600 questions each position must receive 20–47% of answers; triples are forbidden and fewer than 5% of 300 seeded rounds may follow a complete +1 modulo 3 rotation.
 

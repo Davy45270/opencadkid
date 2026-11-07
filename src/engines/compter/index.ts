@@ -2,44 +2,86 @@ import { makeRng, shuffle } from '../rng';
 export type Mode = 'combien' | 'remplir' | 'plus';
 export const objects = ['apple', 'pear', 'berry', 'carrot', 'star', 'fish', 'flower'] as const;
 export type ObjectKind = typeof objects[number];
-export interface Level { id: number; mode: Mode; max: number; comparison?: 'more' | 'less' }
+/**
+ * Levels 9–16 add optional rules; levels 1–8 keep their exact literal configuration (records are stored by id).
+ * min: lowest quantity (default 1). close: wrong cards are the target's ±1 neighbours whenever the range allows.
+ * gap: the two baskets differ by at most gap. decoys: count one kind among ten objects of two kinds (target 3–7).
+ * melange: each round reviews counting (close), filling, more, fewer and decoys in a shuffled order.
+ */
+export interface Level { id: number; mode: Mode | 'melange'; max: number; comparison?: 'more' | 'less'; min?: number; close?: boolean; gap?: number; decoys?: boolean }
 export const levels: readonly Level[] = [
     { id: 1, mode: 'combien', max: 3 }, { id: 2, mode: 'combien', max: 5 },
     { id: 3, mode: 'combien', max: 10 }, { id: 4, mode: 'remplir', max: 5 },
     { id: 5, mode: 'remplir', max: 10 }, { id: 6, mode: 'plus', max: 5, comparison: 'more' },
-    { id: 7, mode: 'plus', max: 10, comparison: 'more' }, { id: 8, mode: 'plus', max: 10, comparison: 'less' }
+    { id: 7, mode: 'plus', max: 10, comparison: 'more' }, { id: 8, mode: 'plus', max: 10, comparison: 'less' },
+    { id: 9, mode: 'combien', min: 6, max: 10 }, { id: 10, mode: 'remplir', min: 6, max: 10 },
+    { id: 11, mode: 'plus', min: 6, max: 10, comparison: 'more' }, { id: 12, mode: 'combien', min: 6, max: 10, close: true },
+    { id: 13, mode: 'plus', min: 6, max: 10, comparison: 'more', gap: 1 }, { id: 14, mode: 'plus', min: 6, max: 10, comparison: 'less', gap: 1 },
+    { id: 15, mode: 'combien', min: 3, max: 7, close: true, decoys: true }, { id: 16, mode: 'melange', min: 6, max: 10, close: true, gap: 1 }
 ];
+/** Every decoy scene holds exactly this many objects, so the total never gives the answer away. */
+export const DECOY_SCENE = 10;
 export interface Question {
     mode: Mode; object: ObjectKind; target: number; choices: number[];
     left: number; right: number; answer: number; reserve: number; comparison?: 'more' | 'less'; seed: number;
+    /** Present only when other objects share the scene: their kind and number (target + count = DECOY_SCENE). */
+    decoy?: { object: ObjectKind; count: number };
+}
+interface Rule { mode: Mode; min: number; max: number; comparison?: 'more' | 'less'; close: boolean; gap?: number; decoys: boolean }
+function rules(spec: Level, rng: () => number, count: number): Rule[] {
+    const base = { min: spec.min ?? 1, max: spec.max, close: spec.close ?? false, gap: spec.gap, decoys: false };
+    if (spec.mode !== 'melange') return Array.from({ length: count }, () => ({ ...base, mode: spec.mode as Mode, comparison: spec.comparison, decoys: spec.decoys ?? false }));
+    const review: Rule[] = [
+        { ...base, mode: 'combien' }, { ...base, mode: 'remplir' }, { ...base, mode: 'plus', comparison: 'more' },
+        { ...base, mode: 'plus', comparison: 'less' }, { ...base, mode: 'combien', min: 3, max: 7, decoys: true }
+    ];
+    const order: Rule[] = [];
+    // Every round of six covers the five reviewed tasks once, plus one more.
+    while (order.length < count) order.push(...shuffle(review, rng));
+    return order.slice(0, count);
 }
 export function generateRound(level: number, seed: number, count = 6): Question[] {
     const spec = levels.find(l => l.id === level);
     if (!spec) throw new RangeError('Unknown level');
     if (!Number.isInteger(count) || count < 1) throw new RangeError('Invalid count');
     const rng = makeRng(seed);
-    const integer = (max: number): number => 1 + Math.floor(rng() * max);
+    // Levels 1–8 never reach the extra random draws below, so their rounds are unchanged.
+    const plan = rules(spec, rng, count);
+    const within = (r: Rule): number => r.min + Math.floor(rng() * (r.max - r.min + 1));
     const round: Question[] = [];
     const positions: number[] = [];
     for (let index = 0; index < count; index++) {
-        let target = integer(spec.max);
+        const r = plan[index]!;
+        let target = within(r);
         const previous = round.at(-1);
         // Adjacent targets differ even if the object changes.
-        if (target === previous?.target) target = target % spec.max + 1;
+        if (target === previous?.target) target = target === r.max ? r.min : target + 1;
         const object = objects[Math.floor(rng() * objects.length)]!;
-        const candidates = shuffle([-1, 1, -2, 2], rng).map(d => target + d).filter(n => n >= 1 && n <= spec.max);
+        const deltas = r.close ? [...shuffle([-1, 1], rng), ...shuffle([-2, 2], rng)] : shuffle([-1, 1, -2, 2], rng);
+        const candidates = deltas.map(d => target + d).filter(n => n >= r.min && n <= r.max);
         const distractors = [...new Set(candidates)].slice(0, 2);
-        // max is at least three; near neighbours always supply two distractors.
+        // Every range spans at least three values; near neighbours always supply two distractors.
         const choices = [...distractors];
         const allowed = [0, 1, 2].filter(position => !(positions.at(-1) === position && positions.at(-2) === position));
         const position = allowed[Math.floor(rng() * allowed.length)]!;
         positions.push(position);
         choices.splice(position, 0, target);
         const left = target;
-        let right = integer(spec.max);
-        if (right === left) right = right % spec.max + 1;
-        const answer = spec.mode === 'plus' ? (spec.comparison === 'less' ? (left < right ? 0 : 1) : (left > right ? 0 : 1)) : target;
-        round.push({ mode: spec.mode, object, target, choices, left, right, answer, reserve: target + 2 + Math.floor(rng() * 3), comparison: spec.comparison, seed: Math.floor(rng() * 1000000) });
+        let right: number;
+        if (r.gap) {
+            const step = (1 + Math.floor(rng() * r.gap)) * (rng() < .5 ? -1 : 1);
+            right = target + step >= r.min && target + step <= r.max ? target + step : target - step;
+        } else {
+            right = within(r);
+            if (right === left) right = right === r.max ? r.min : right + 1;
+        }
+        const answer = r.mode === 'plus' ? (r.comparison === 'less' ? (left < right ? 0 : 1) : (left > right ? 0 : 1)) : target;
+        const question: Question = { mode: r.mode, object, target, choices, left, right, answer, reserve: target + 2 + Math.floor(rng() * 3), comparison: r.comparison, seed: Math.floor(rng() * 1000000) };
+        if (r.decoys) {
+            const others = objects.filter(o => o !== object);
+            question.decoy = { object: others[Math.floor(rng() * others.length)]!, count: DECOY_SCENE - target };
+        }
+        round.push(question);
     }
     return round;
 }
