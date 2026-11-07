@@ -55,7 +55,7 @@ for (const [i, [columns, rows, min, max, bonuses]] of oracle.entries()) it(`leve
 });
 it('different seeds give different mazes and invalid levels throw', () => {
     expect(newMaze(8, 1).grid).not.toEqual(newMaze(8, 2).grid);
-    for (const level of [0, 9, NaN, 1.5]) expect(() => newMaze(level, 0)).toThrow(RangeError);
+    for (const level of [0, 17, NaN, 1.5]) expect(() => newMaze(level, 0)).toThrow(RangeError);
 });
 it('pure advance, previous-cell erasure, wall/nonadjacent/invalid rejection, and finished lock', () => {
     const s = newMaze(4, 18), path = solve(s), next = extend(s, path[1]!);
@@ -118,9 +118,9 @@ it('complete bilingual UI, explicit DOM oracle, finite SVG, destination per leve
     }
 });
 it('separate records/medals migrate safely, filter, roundtrip, and erase without losing older games', () => {
-    let raw = JSON.stringify({ ...fresh(), records: { 1: 2 }, cheminRecords: { 1: 3, 4: 3, 8: 1, 9: 3, 2: 0, 3: '3', 5: 1.5 }, cheminMedals: { 1: true, 4: true, 5: true, 8: 'true', 9: true } });
+    let raw = JSON.stringify({ ...fresh(), records: { 1: 2 }, cheminRecords: { 1: 3, 4: 3, 8: 1, 16: 2, 17: 3, 2: 0, 3: '3', 5: 1.5 }, cheminMedals: { 1: true, 4: true, 5: true, 8: 'true', 16: true, 17: true } });
     const port = { getItem: () => raw, setItem: (_: string, value: string) => { raw = value; } };
-    const saved = readSave(port); expect(saved.cheminRecords).toEqual({ 1: 3, 4: 3, 8: 1 }); expect(saved.cheminMedals).toEqual({ 4: true }); expect(saved.records).toEqual({ 1: 2 });
+    const saved = readSave(port); expect(saved.cheminRecords).toEqual({ 1: 3, 4: 3, 8: 1, 16: 2 }); expect(saved.cheminMedals).toEqual({ 4: true, 16: true }); expect(saved.records).toEqual({ 1: 2 });
     writeSave(port, saved); expect(readSave(port)).toEqual(saved);
     raw = JSON.stringify({ version: 1, locale: 'fr', voice: true, sound: true, records: { 1: 2 } });
     expect(readSave(port).cheminRecords).toEqual({}); expect(readSave(port).cheminMedals).toEqual({});

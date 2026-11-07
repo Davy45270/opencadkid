@@ -31,7 +31,7 @@ export function readSave(storage?: StoragePort, locale: Locale = 'fr'): Save {
         }
         const cheminRecords: Records = {};
         if (v.cheminRecords && typeof v.cheminRecords === 'object' && !Array.isArray(v.cheminRecords)) {
-            for (const [key, score] of Object.entries(v.cheminRecords)) if (/^[1-8]$/.test(key) && typeof score === 'number' && Number.isInteger(score) && score >= 1 && score <= 3) cheminRecords[Number(key)] = score;
+            for (const [key, score] of Object.entries(v.cheminRecords)) if (/^(?:[1-9]|1[0-6])$/.test(key) && typeof score === 'number' && Number.isInteger(score) && score >= 1 && score <= 3) cheminRecords[Number(key)] = score;
         }
         const suitesRecords: Records = {};
         if (v.suitesRecords && typeof v.suitesRecords === 'object' && !Array.isArray(v.suitesRecords)) {
@@ -47,7 +47,7 @@ export function readSave(storage?: StoragePort, locale: Locale = 'fr'): Save {
         }
         const cheminMedals: Partial<Record<number, boolean>> = {};
         if (v.cheminMedals && typeof v.cheminMedals === 'object' && !Array.isArray(v.cheminMedals)) {
-            for (const [key, earned] of Object.entries(v.cheminMedals)) if (/^[4-8]$/.test(key) && earned === true && cheminRecords[Number(key)]) cheminMedals[Number(key)] = true;
+            for (const [key, earned] of Object.entries(v.cheminMedals)) if (/^(?:[4-9]|1[0-6])$/.test(key) && earned === true && cheminRecords[Number(key)]) cheminMedals[Number(key)] = true;
         }
         return { version: 1, locale: v.locale, voice: v.voice, sound: v.sound, records, pairesRecords, formesRecords, sonsRecords, puzzleRecords, cheminRecords, suitesRecords, rangerRecords, tamboursRecords, cheminMedals };
     } catch { return fresh(locale); }

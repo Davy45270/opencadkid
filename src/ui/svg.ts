@@ -16,6 +16,11 @@ export function objectSvg(kind: ObjectKind): string {
 }
 export function dots(n: number): string {
     const dice: readonly (readonly [number, number])[][] = [[], [[36, 24]], [[12, 8], [60, 40]], [[12, 8], [36, 24], [60, 40]], [[12, 8], [60, 8], [12, 40], [60, 40]], [[12, 8], [60, 8], [36, 24], [12, 40], [60, 40]], [[12, 8], [60, 8], [12, 24], [60, 24], [12, 40], [60, 40]]];
+    if (n > 10) {
+        // Beyond ten, a centred grid of smaller dots (at most six per row) stays inside the 72×48 box.
+        const rows = Math.ceil(n / 6), columns = Math.ceil(n / rows);
+        return svg(Array.from({ length: n }, (_, i) => `<circle cx="${36 + (i % columns - (columns - 1) / 2) * 11.5}" cy="${24 + (Math.floor(i / columns) - (rows - 1) / 2) * 11.5}" r="4.5" fill="currentColor"/>`).join(''), '0 0 72 48');
+    }
     const positions = n <= 6 ? dice[n]! : Array.from({ length: n }, (_, i) => [8 + i % 5 * 14, 14 + Math.floor(i / 5) * 20] as const);
     return svg(positions.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="5.5" fill="currentColor"/>`).join(''), '0 0 72 48');
 }

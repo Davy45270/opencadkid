@@ -40,7 +40,7 @@ test('keyboard arrows, English voice, available help and silent settings', async
         await page.keyboard.press(delta === 1 ? 'ArrowRight' : delta === -1 ? 'ArrowLeft' : delta === columns ? 'ArrowDown' : 'ArrowUp');
         expect(await head(page)).toBe(path[i]);
     }
-    await expect(page.locator('.stars')).toHaveAttribute('aria-label', '3 stars'); await expect(page.locator('#next')).toHaveCount(0);
+    await expect(page.locator('.stars')).toHaveAttribute('aria-label', '3 stars'); await expect(page.locator('#next')).toHaveCount(1);
     await page.evaluate(() => { const s = JSON.parse(localStorage.getItem('opencadkid.v1')!) as { voice: boolean; sound: boolean }; s.voice = false; s.sound = false; localStorage.setItem('opencadkid.v1', JSON.stringify(s)); });
     await page.reload(); await page.locator('[data-game="chemin"]').click(); await page.locator('[data-level="1"]').click();
     await page.locator('#listen').click(); expect((await media(page)).speech).toEqual([]);
@@ -49,8 +49,8 @@ test('keyboard arrows, English voice, available help and silent settings', async
     expect((await media(page)).oscillators).toBe(0);
 });
 test('all levels: real cells, painted strokes, header targets, valid SVG and zero overflow 320–1280', async ({ page }) => {
-    test.setTimeout(180_000);
-    for (let level = 1; level <= 8; level++) {
+    test.setTimeout(360_000);
+    for (let level = 1; level <= 16; level++) {
         await prepareChemin(page, level);
         for (const width of [320, 360, 390, 480, 699, 700, 940, 1280]) {
             await page.setViewportSize({ width, height: 844 });
@@ -178,4 +178,17 @@ test('a fast pointer release beyond the board applies the corridor to its destin
     await page.mouse.move(zone.x + zone.width + 40, start.y); await page.mouse.up();
     expect((await cheminState(page)).chemin.trace).toEqual(path);
     await expect(page.locator('.stars')).toBeVisible();
+});
+test('chemin 16: no bulb, a long serpentine traced to the end, no next level; the sixteen-level list fits a phone', async ({ page, context }) => {
+    await page.setViewportSize({ width: 390, height: 844 }); await prepareChemin(page, 16);
+    await expect(page.locator('#help')).toHaveCount(0);
+    await expect(page.locator('.chemin-instruction p')).toContainText('Sans ampoule');
+    const path = await mazeRoute(page); expect(path.length).toBeGreaterThanOrEqual(51);
+    await touchTrace(page, context, path); expect((await cheminState(page)).chemin.finished).toBe(true);
+    await expect(page.locator('.stars')).toHaveAttribute('aria-label', '3 étoiles'); await expect(page.locator('#next')).toHaveCount(0);
+    await page.reload(); await page.locator('[data-game="chemin"]').click();
+    await expect(page.locator('[data-level]')).toHaveCount(16); await expect(page.locator('[data-level="16"]')).toContainText('★★★');
+    const boxes = await page.locator('[data-level]').evaluateAll(els => els.map(el => { const r = el.getBoundingClientRect(); return { left: r.left, right: r.right, width: r.width, height: r.height }; }));
+    for (const r of boxes) { expect(r.left).toBeGreaterThanOrEqual(0); expect(r.right).toBeLessThanOrEqual(390); expect(r.width).toBeGreaterThanOrEqual(64); expect(r.height).toBeGreaterThanOrEqual(64); }
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });

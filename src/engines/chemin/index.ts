@@ -1,7 +1,16 @@
 import { makeRng, shuffle } from '../rng';
 import type { Records } from '../compter';
 export { isUnlocked } from '../compter';
-export const levels = [
+export interface Level {
+    id: number; columns: number; rows: number; min: number; max: number; bonuses: number;
+    /** From level 9: the route sweeps this many whole columns, top to bottom or back (a serpentine instead of a U). */
+    sweeps?: number;
+    /** Optional stars may hide in dead ends at most this many edges from the route (2 when absent). */
+    reach?: number;
+    /** False removes the bulb: the child finds the way alone (true when absent). */
+    help?: boolean;
+}
+export const levels: readonly Level[] = [
     { id: 1, columns: 3, rows: 3, min: 3, max: 3, bonuses: 0 },
     { id: 2, columns: 4, rows: 3, min: 4, max: 4, bonuses: 0 },
     { id: 3, columns: 5, rows: 4, min: 7, max: 20, bonuses: 0 },
@@ -9,8 +18,18 @@ export const levels = [
     { id: 5, columns: 7, rows: 5, min: 11, max: 35, bonuses: 2 },
     { id: 6, columns: 7, rows: 6, min: 11, max: 42, bonuses: 3 },
     { id: 7, columns: 8, rows: 6, min: 12, max: 48, bonuses: 3 },
-    { id: 8, columns: 9, rows: 7, min: 14, max: 63, bonuses: 3 }
-] as const;
+    { id: 8, columns: 9, rows: 7, min: 14, max: 63, bonuses: 3 },
+    // Serpentine routes: each sweep crosses a whole column, so the route length is exactly columns + sweeps × (rows − 1).
+    { id: 9, columns: 9, rows: 7, min: 27, max: 27, bonuses: 3, sweeps: 3 },
+    { id: 10, columns: 9, rows: 8, min: 30, max: 30, bonuses: 4, sweeps: 3 },
+    { id: 11, columns: 9, rows: 7, min: 33, max: 33, bonuses: 4, sweeps: 4, reach: 3 },
+    { id: 12, columns: 9, rows: 8, min: 37, max: 37, bonuses: 4, sweeps: 4, reach: 3 },
+    { id: 13, columns: 9, rows: 7, min: 39, max: 39, bonuses: 5, sweeps: 5, reach: 3, help: false },
+    { id: 14, columns: 9, rows: 8, min: 44, max: 44, bonuses: 5, sweeps: 5, reach: 4, help: false },
+    { id: 15, columns: 9, rows: 7, min: 45, max: 45, bonuses: 5, sweeps: 6, reach: 4, help: false },
+    { id: 16, columns: 9, rows: 8, min: 51, max: 51, bonuses: 6, sweeps: 6, reach: 4, help: false }
+];
+export function hasHelp(level: number): boolean { return levels[level - 1]?.help !== false; }
 export const directions = ['N', 'E', 'S', 'W'] as const;
 export type Direction = typeof directions[number];
 export interface Point { x: number; y: number }
@@ -41,7 +60,8 @@ export function newMaze(level: number, seed: number): Maze {
     const { columns, rows } = config, rng = makeRng(seed);
     const grid: Direction[][] = Array.from({ length: columns * rows }, () => []);
     const start = (level <= 2 ? Math.floor(rng() * rows) : rng() < .5 ? 0 : rows - 1) * columns;
-    const goal = start + columns - 1;
+    // A serpentine ends on the far row after an odd number of sweeps.
+    const goal = config.sweeps !== undefined && config.sweeps % 2 === 1 ? (rows - 1 - start / columns) * columns + columns - 1 : start + columns - 1;
     const state: Maze = { level, columns, rows, grid, start, goal, solution: [], trace: [start], bonuses: [], collected: [], finished: false };
     const seen = new Set<number>([start]);
     const open = (a: number, b: number, d: Direction): void => {
@@ -51,7 +71,16 @@ export function newMaze(level: number, seed: number): Maze {
     // otherwise a U-shaped detour whose depth guarantees the configured minimum.
     const roots = [start];
     if (level <= 2) for (let c = start; c < goal; c++) { open(c, c + 1, 'E'); roots.push(c + 1); }
-    else {
+    else if (config.sweeps !== undefined) {
+        // Seeded choice of the swept columns; between sweeps the route runs east along the current border row.
+        const swept = new Set(shuffle(Array.from({ length: columns }, (_, x) => x), rng).slice(0, config.sweeps));
+        let cell = start, down = start === 0;
+        const stepTo = (next: number, direction: Direction): void => { open(cell, next, direction); roots.push(next); cell = next; };
+        for (let x = 0; x < columns; x++) {
+            if (swept.has(x)) { for (let i = 1; i < rows; i++) stepTo(cell + (down ? columns : -columns), down ? 'S' : 'N'); down = !down; }
+            if (x < columns - 1) stepTo(cell + 1, 'E');
+        }
+    } else {
         const minimumDepth = Math.ceil((config.min - columns) / 2);
         const depth = minimumDepth + Math.floor(rng() * (rows - minimumDepth));
         const down = start === 0, step = down ? columns : -columns;
@@ -75,7 +104,7 @@ export function newMaze(level: number, seed: number): Maze {
         if (edges.length !== 1 || state.solution.includes(cell)) return false;
         const path = route(state, cell, goal), junction = path.findIndex(c => state.solution.includes(c));
         // Finishing must not block access to an optional star beyond the goal.
-        return junction <= 2 && path[junction] !== goal;
+        return junction <= (config.reach ?? 2) && path[junction] !== goal;
     }).map(v => v.cell);
     const candidates = [...shuffle(side, rng), ...shuffle(state.solution.slice(1, -1), rng)];
     state.bonuses = candidates.slice(0, config.bonuses);

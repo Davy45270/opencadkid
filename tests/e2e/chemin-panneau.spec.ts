@@ -9,7 +9,7 @@ const seedFor = (level: number, top: boolean): number => {
 };
 const overlaps = (a: Box, b: Box): boolean => a.x < b.x + b.width - .5 && b.x < a.x + a.width - .5 && a.y < b.y + b.height - .5 && b.y < a.y + a.height - .5;
 const signShot = (page: Page): Promise<Buffer> => page.locator('.chemin-panneau').screenshot({ animations: 'disabled' });
-for (let level = 1; level <= 8; level++) for (const top of [true, false]) test(`chemin ${level} (${top ? "top" : "other"} start row): the sign stands on the border next to the start, toward the real first step, over no cell and no guide`, async ({ page }) => {
+for (let level = 1; level <= 16; level++) for (const top of [true, false]) test(`chemin ${level} (${top ? "top" : "other"} start row): the sign stands on the border next to the start, toward the real first step, over no cell and no guide`, async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 }); await prepareChemin(page, level, 'fr', seedFor(level, top));
     const route = await mazeRoute(page), dom = await mazeDom(page), [a, b] = route as [number, number];
     // DOM-only oracle for the first step, independent of the engine's firstStep.
