@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.7.0
+
+- New game, Tutu’s hiding places: objects hide in the painted landscapes, some half behind tall grass or a cloud, and the child touches the ones shown in the list. 12 levels, from 3 objects to find among 2 decoys up to 8 among 14, smaller and more often hidden. After three misses in a row, one target shines. Works offline.
+- Erasing the progress in the parents’ space now also erases the snack and hide-and-seek stars.
+
 ## 1.6.8
 
 - Tutu’s drums: 8 new levels, from 9 to 16: longer repetitions, an eight-beat rhythm, a new melody mode where both the drums and their long/short spacing count, and revision rounds mixing repetition, rhythm and melody. Levels 1 to 8 are unchanged and keep their stars.
