@@ -43,7 +43,7 @@ export function readSave(storage?: StoragePort, locale: Locale = 'fr'): Save {
         }
         const tamboursRecords: Records = {};
         if (v.tamboursRecords && typeof v.tamboursRecords === 'object' && !Array.isArray(v.tamboursRecords)) {
-            for (const [key, score] of Object.entries(v.tamboursRecords)) if (/^[1-8]$/.test(key) && typeof score === 'number' && Number.isInteger(score) && score >= 1 && score <= 3) tamboursRecords[Number(key)] = score;
+            for (const [key, score] of Object.entries(v.tamboursRecords)) if (/^(?:[1-9]|1[0-6])$/.test(key) && typeof score === 'number' && Number.isInteger(score) && score >= 1 && score <= 3) tamboursRecords[Number(key)] = score;
         }
         const cheminMedals: Partial<Record<number, boolean>> = {};
         if (v.cheminMedals && typeof v.cheminMedals === 'object' && !Array.isArray(v.cheminMedals)) {

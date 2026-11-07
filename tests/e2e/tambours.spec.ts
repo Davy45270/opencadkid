@@ -29,7 +29,7 @@ for (const level of [1, 4, 5, 6, 7]) for (const sound of [true, false]) test(`dr
     const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('opencadkid.v1')!) as { tamboursRecords: Record<number, number> });
     expect(saved.tamboursRecords[level]).toBe(2);
 });
-test('free composition: eight beats, exact illuminated replay, three stars and no next level', async ({ page }) => {
+test('free composition: eight beats, exact illuminated replay, three stars and the next level', async ({ page }) => {
     await prepareDrums(page, 8);
     for (let q = 0; q < 5; q++) {
         const pattern = [0, 0, 2, 3, 4, 5, 1, 0];
@@ -40,7 +40,7 @@ test('free composition: eight beats, exact illuminated replay, three stars and n
         expect(lights).toEqual(pattern); expect((await drumsState(page)).errors).toBe(0);
         await page.locator('#continue').click(); await clearLights(page);
     }
-    await expect(page.locator('.stars')).toHaveText('★★★'); await expect(page.locator('#next')).toHaveCount(0);
+    await expect(page.locator('.stars')).toHaveText('★★★'); await expect(page.locator('#next')).toHaveCount(1);
 });
 for (const level of [1, 3, 4, 8]) test(`drum count at level ${level}: actual painted sizes, target bounds, reduced motion and no overflow 320–1280`, async ({ page }) => {
     await prepareDrums(page, level, { sound: false, voice: false });
@@ -77,4 +77,36 @@ test('an unavailable audio device still permits a light-observed round', async (
     }
     await expect(page.locator('.stars')).toHaveText('★★★');
     expect((await media(page)).oscillators).toBe(0);
+});
+test('drums 16: a revision round of repetition, rhythm and melody played from the lights to three stars, no next level; the sixteen-level list fits a phone', async ({ page }) => {
+    test.setTimeout(120_000);
+    await page.setViewportSize({ width: 390, height: 844 }); await prepareDrums(page, 16);
+    const modes: string[] = [];
+    for (let q = 0; q < 5; q++) {
+        const demo = await demonstration(page);
+        const mode = (await page.locator('.tambours-zone').getAttribute('data-mode'))!; modes.push(mode);
+        if (mode === 'melodie') await expect(page.locator('#drums-instruction')).toHaveText('À toi ! Mêmes tambours, même rythme.');
+        await playBeats(page, demo, true);
+        await expect(page.locator('#continue')).toBeVisible();
+        await clearLights(page); await page.locator('#continue').click();
+    }
+    expect(modes.sort()).toEqual(['melodie', 'melodie', 'repeter', 'rythme', 'rythme']);
+    await expect(page.locator('.stars')).toHaveText('★★★'); await expect(page.locator('#next')).toHaveCount(0);
+    await page.reload(); await page.locator('[data-game="tambours"]').click();
+    await expect(page.locator('[data-level]')).toHaveCount(16); await expect(page.locator('[data-level="16"]')).toContainText('★★★');
+    const boxes = await page.locator('[data-level]').evaluateAll(els => els.map(el => { const r = el.getBoundingClientRect(); return { left: r.left, right: r.right, width: r.width, height: r.height }; }));
+    for (const r of boxes) { expect(r.left).toBeGreaterThanOrEqual(0); expect(r.right).toBeLessThanOrEqual(390); expect(r.width).toBeGreaterThanOrEqual(64); expect(r.height).toBeGreaterThanOrEqual(64); }
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+test('drums 10: a melody refuses the right drums at swapped spacing, then accepts them at the shown spacing', async ({ page }) => {
+    await prepareDrums(page, 10);
+    await expect(page.locator('.tambours-zone')).toHaveAttribute('data-mode', 'melodie');
+    let demo = await demonstration(page);
+    // Long and short swapped: twice or half the shown spacing, far outside the ±35 % tolerance.
+    const gap = demo[1]!.t - demo[0]!.t;
+    await page.locator(`[data-drum="${demo[0]!.drum}"]`).click(); await page.clock.runFor(gap < 1000 ? gap * 2 : gap / 2);
+    await page.locator(`[data-drum="${demo[1]!.drum}"]`).click();
+    expect((await drumsState(page)).errors).toBe(1);
+    await clearLights(page); demo = await demonstration(page);
+    await playBeats(page, demo, true); await expect(page.locator('#continue')).toBeVisible();
 });

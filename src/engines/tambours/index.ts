@@ -1,7 +1,13 @@
-import { makeRng } from '../rng';
+import { makeRng, shuffle } from '../rng';
 import { stars as commonStars, type Records } from '../compter';
 export { isUnlocked } from '../compter';
-export type Mode = 'repeter' | 'rythme' | 'libre';
+/**
+ * `melodie` (from level 10): several drums AND their long/short spacing, checked like a rhythm.
+ * `mixte` (levels 14 and 16): a seeded revision round of repetition, rhythm and melody questions.
+ */
+export type Mode = 'repeter' | 'rythme' | 'libre' | 'melodie' | 'mixte';
+/** Modes a single question can take. */
+export type QuestionMode = Exclude<Mode, 'mixte'>;
 export interface Level { id: number; mode: Mode; drums: number; min: number; max: number }
 export const levels: readonly Level[] = [
     { id: 1, mode: 'repeter', drums: 4, min: 2, max: 3 },
@@ -11,18 +17,33 @@ export const levels: readonly Level[] = [
     { id: 5, mode: 'rythme', drums: 4, min: 3, max: 3 },
     { id: 6, mode: 'rythme', drums: 5, min: 4, max: 4 },
     { id: 7, mode: 'rythme', drums: 6, min: 6, max: 6 },
-    { id: 8, mode: 'libre', drums: 6, min: 8, max: 8 }
+    { id: 8, mode: 'libre', drums: 6, min: 8, max: 8 },
+    { id: 9, mode: 'repeter', drums: 6, min: 4, max: 7 },
+    { id: 10, mode: 'melodie', drums: 4, min: 4, max: 4 },
+    { id: 11, mode: 'rythme', drums: 6, min: 8, max: 8 },
+    { id: 12, mode: 'repeter', drums: 6, min: 5, max: 8 },
+    { id: 13, mode: 'melodie', drums: 5, min: 5, max: 5 },
+    { id: 14, mode: 'mixte', drums: 6, min: 5, max: 5 },
+    { id: 15, mode: 'melodie', drums: 6, min: 6, max: 6 },
+    { id: 16, mode: 'mixte', drums: 6, min: 6, max: 6 }
 ];
+/** Revision round order before shuffling: one repetition, two rhythms, two melodies. */
+export const MIXED_MODES: readonly QuestionMode[] = ['repeter', 'rythme', 'rythme', 'melodie', 'melodie'];
+/** Rhythm and melody check the spacing of strikes, not only the drums. */
+export function timed(mode: QuestionMode): boolean { return mode === 'rythme' || mode === 'melodie'; }
 // C major pentatonic, with the octave as the sixth voice.
 export const notes = [261.63, 293.66, 329.63, 392, 440, 523.25] as const;
 export const BASE_TEMPO = 650;
 export const MAX_TEMPO = 1600;
-export interface Question { mode: Mode; sequence: number[]; intervals: number[] }
+export interface Question { mode: QuestionMode; sequence: number[]; intervals: number[] }
 export function generateRound(level: number, seed: number, count = 5): Question[] {
     const spec = levels.find(l => l.id === level);
     if (!spec || !Number.isInteger(count) || count < 1 || count > 16) throw new RangeError('Invalid round');
     const rng = makeRng(seed), result: Question[] = [], used = new Set<string>();
+    // Drawn before any question, so that prefixes stay deterministic whatever the count.
+    const modes = spec.mode === 'mixte' ? shuffle(MIXED_MODES, rng) : [];
     for (let n = 0; n < count; n++) {
+        const mode: QuestionMode = spec.mode === 'mixte' ? modes[n % modes.length]! : spec.mode;
         let q: Question, signature: string;
         do {
             const sequence: number[] = [];
@@ -32,9 +53,10 @@ export function generateRound(level: number, seed: number, count = 5): Question[
             }
             // The rhythm uses one drum; long/short intervals carry its identity.
             const intervals = Array.from({ length: spec.max - 1 }, () => rng() < .5 ? 1 : 2);
-            if (spec.mode === 'rythme') sequence.fill(sequence[0]!);
-            q = { mode: spec.mode, sequence, intervals };
-            signature = JSON.stringify(spec.mode === 'rythme' ? [sequence[0], intervals] : sequence.slice(0, spec.min));
+            if (mode === 'rythme') sequence.fill(sequence[0]!);
+            q = { mode, sequence, intervals };
+            signature = JSON.stringify(mode === 'rythme' ? [sequence[0], intervals] : mode === 'melodie' ? [sequence, intervals] : sequence.slice(0, spec.min));
+            if (spec.mode === 'mixte') signature = mode + signature;
         } while (used.has(signature));
         used.add(signature); result.push(q);
     }
@@ -50,7 +72,7 @@ export function hit(state: Session, drum: number, t: number): { state: Session; 
     const spec = levels[state.level - 1]!, q = state.questions[state.index];
     if (!q || state.solved || state.finished || !Number.isInteger(drum) || drum < 0 || drum >= spec.drums || !Number.isFinite(t) || (state.last !== null && t < state.last)) return { state, correct: false, replay: false };
     const expected = state.tempo * q.intervals[state.cursor - 1]!;
-    const correct = spec.mode === 'libre' || (drum === q.sequence[state.cursor] && (spec.mode !== 'rythme' || state.last === null || Math.abs(t - state.last - expected) <= expected * .35 + 1e-7));
+    const correct = spec.mode === 'libre' || (drum === q.sequence[state.cursor] && (!timed(q.mode) || state.last === null || Math.abs(t - state.last - expected) <= expected * .35 + 1e-7));
     if (!correct) {
         const errors = state.errors + 1, length = spec.mode === 'repeter' && errors % 2 === 0 ? Math.max(spec.min, state.length - 1) : state.length;
         return { correct, replay: true, state: { ...state, errors, length, cursor: 0, last: null, tempo: Math.min(MAX_TEMPO, state.tempo * 1.3), hint: errors >= 2 } };

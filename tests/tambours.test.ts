@@ -12,8 +12,8 @@ const table = [
     ['rythme', 4, 3, 3], ['rythme', 5, 4, 4], ['rythme', 6, 6, 6], ['libre', 6, 8, 8]
 ];
 it('eight independently specified levels and invalid inputs', () => {
-    expect(levels.map(l => [l.mode, l.drums, l.min, l.max])).toEqual(table);
-    for (const l of [0, 9, 1.5, NaN]) expect(() => generateRound(l, 0)).toThrow();
+    expect(levels.slice(0, 8).map(l => [l.mode, l.drums, l.min, l.max])).toEqual(table);
+    for (const l of [0, 17, 1.5, NaN]) expect(() => generateRound(l, 0)).toThrow();
     for (const n of [0, -1, 1.5, NaN, 17]) expect(() => generateRound(1, 0, n)).toThrow();
     expect(generateRound(1, 0, 2)).toHaveLength(2);
 });
@@ -104,9 +104,9 @@ it('bilingual instructions, distinct shapes and finite valid shaded SVG', () => 
     }
 });
 it('optional records migrate, filter, round-trip and preserve other games', () => {
-    let raw = JSON.stringify({ ...fresh(), records: { 1: 2 }, tamboursRecords: { 1: 3, 8: 1, 9: 3, 2: 0, 3: 1.5 } });
+    let raw = JSON.stringify({ ...fresh(), records: { 1: 2 }, tamboursRecords: { 1: 3, 8: 1, 16: 2, 17: 3, 2: 0, 3: 1.5 } });
     const port = { getItem: () => raw, setItem: (_key: string, value: string) => { raw = value; } };
-    const s = readSave(port); expect(s.tamboursRecords).toEqual({ 1: 3, 8: 1 }); expect(s.records).toEqual({ 1: 2 });
+    const s = readSave(port); expect(s.tamboursRecords).toEqual({ 1: 3, 8: 1, 16: 2 }); expect(s.records).toEqual({ 1: 2 });
     writeSave(port, s); expect(readSave(port)).toEqual(s);
     raw = JSON.stringify({ version: 1, locale: 'fr', voice: true, sound: true, records: {} }); expect(readSave(port).tamboursRecords).toEqual({});
 });

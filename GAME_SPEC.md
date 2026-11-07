@@ -620,6 +620,16 @@ No Vitest, Playwright or browser is run during authoring. Screenshots are genera
 | 6 | rythme | 5 | 4 | 4 |
 | 7 | rythme | 6 | 6 | 6 |
 | 8 | libre | 6 | 8 | 8 |
+| 9 | repeter | 6 | 4 | 7 |
+| 10 | melodie | 4 | 4 | 4 |
+| 11 | rythme | 6 | 8 | 8 |
+| 12 | repeter | 6 | 5 | 8 |
+| 13 | melodie | 5 | 5 | 5 |
+| 14 | mixte | 6 | 5 | 5 |
+| 15 | melodie | 6 | 6 | 6 |
+| 16 | mixte | 6 | 6 | 6 |
+
+Since the doubling to sixteen levels, two modes join. `melodie` plays several drums with long and short spacing: each strike must be the demonstrated drum **and** land within the rhythm's ±35 % tolerance; the turn instruction becomes “À toi ! Mêmes tambours, même rythme.” / “Your turn! Same drums, same rhythm.”. `mixte` is a revision round: its five questions are, in a seeded order drawn before any question (so prefixes stay deterministic), one repetition, two rhythms and two melodies, each checked by its own mode at the level's fixed length; `data-mode` on the zone shows the current question's mode. What a question checks at its longest (repetition: max; rhythm: max; melody and revision: 2 × max − 1) never decreases from level 9 to 16. `tests/tambours-niveaux.test.ts` keeps a literal copy of levels 1–8, rejects duplicate configurations and question fingerprints, plays 200 seeds per new level to three stars, refuses late or wrong strikes where they count, and checks that progression. Records accept levels 1–16.
 
 The pure engine uses shared Mulberry32; it never reads a clock. `generateRound(level, seed, count = 5)` produces distinct sequences, with deterministic prefixes even when count changes. Count must be an integer 1–16. Repetition and generated composition examples forbid three identical drums in succession; rhythm intentionally uses one drum throughout, with identity determined by that drum and its interval pattern. User compositions may repeat any drum freely. Repetition prefixes are distinct even at the minimum playable length.
 
@@ -627,7 +637,7 @@ The interface supplies millisecond timestamps to `hit(state, drum, t)`. In repet
 
 Rhythm has three, four or six strikes, hence two, three or five measured intervals. Each interval is one base interval (short) or two (long). The first strike anchors the child's clock; there is no deadline to begin. Subsequent strikes must use the demonstrated drum and land within **±35% inclusive** of the expected interval at the current replay tempo. This deliberately wide tolerance suits young children. Synthetic tests accept ±34% and the ±35% boundary and reject ±36%; a tiny numerical epsilon only compensates floating point rounding. Early/late strikes invite another slower demonstration, with no visible clock or failure screen.
 
-In free mode every valid strike is accepted, including consecutive identical drums. After eight strikes Tutu replays those drums and their measured spacing (playback intervals clamped to 100–2000 ms), then offers Continue. No errors are possible and every completed free session earns three stars. All modes have five questions. Repetition and rhythm use the common first-try star thresholds: 0–2 clean questions earn one star, 3–4 two, and 5 three. Every completion unlocks the next level. `tamboursRecords` preserves best stars, migrates absent saves, filters levels 1–8 and clears with the shared erase control.
+In free mode every valid strike is accepted, including consecutive identical drums. After eight strikes Tutu replays those drums and their measured spacing (playback intervals clamped to 100–2000 ms), then offers Continue. No errors are possible and every completed free session earns three stars. All modes have five questions. Repetition and rhythm use the common first-try star thresholds: 0–2 clean questions earn one star, 3–4 two, and 5 three. Every completion unlocks the next level. `tamboursRecords` preserves best stars, migrates absent saves, filters levels 1–16 and clears with the shared erase control.
 
 ### Musical touch exception and media
 

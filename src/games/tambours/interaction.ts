@@ -1,4 +1,4 @@
-import { advance, hit, levels, notes, sequence, type Session } from '../../engines/tambours';
+import { advance, hit, levels, notes, sequence, timed, type Session } from '../../engines/tambours';
 import { bindAction, bindBeat } from '../../shell/activation';
 import { drumNote } from '../../shell/sound';
 import { icon, svg } from '../../ui/svg';
@@ -34,7 +34,7 @@ export function bindDrums(app: HTMLElement, initial: Session, locale: Locale, so
         const drums = composition ? state.composed.map(b => b.drum) : sequence(state);
         let at = 500;
         drums.forEach((drum, i) => {
-            if (i) at += composition ? Math.min(2000, Math.max(100, state.composed[i]!.t - state.composed[i - 1]!.t)) : state.tempo * (levels[state.level - 1]!.mode === 'rythme' ? state.questions[state.index]!.intervals[i - 1]! : 1);
+            if (i) at += composition ? Math.min(2000, Math.max(100, state.composed[i]!.t - state.composed[i - 1]!.t)) : state.tempo * (timed(state.questions[state.index]!.mode) ? state.questions[state.index]!.intervals[i - 1]! : 1);
             later(() => light(drum), at);
         });
         later(() => {
