@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.6
+
+- Pestouille’s path: 8 new levels, from 9 to 16. The path now snakes through whole columns (27 to 51 cells on 9×7 and 9×8 boards), up to six optional stars hide farther in dead ends, and from level 13 there is no bulb: the child finds the way alone. Levels 1 to 8 are unchanged and keep their stars.
+
 ## 1.6.5
 
 - CaliRoux’s tidy-up: 8 new levels, from 9 to 16. Five or six objects per question, all three shapes at once, then mixed colours that no longer help: every box holds several colours, and the odd one out wears a colour of its family. Levels 1 to 8 are unchanged and keep their stars.
