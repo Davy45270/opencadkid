@@ -27,7 +27,7 @@ async function drag(page: Page, context: BrowserContext, id: string, bin: string
         await cdp.send('Input.dispatchTouchEvent', { type: outcome === 'cancel' ? 'touchCancel' : 'touchEnd', touchPoints: [] }); await touchFrame(page);
     } finally { await cdp.detach(); }
 }
-for (const level of [1, 2, 3, 4, 5, 6, 7, 8]) test(`ranger ${level}: noisy finger session, rapid same bin, snap and no scroll`, async ({ page, context, isMobile }) => {
+for (const level of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]) test(`ranger ${level}: noisy finger session, rapid same bin, snap and no scroll`, async ({ page, context, isMobile }) => {
     test.skip(!isMobile, 'Mobile real touch only'); seed = 53 + level;
     await page.setViewportSize({ width: 390, height: 844 }); await prepareRanger(page, level);
     const scroll = await page.evaluate(() => [scrollX, scrollY]);

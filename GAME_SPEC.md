@@ -552,6 +552,16 @@ specs use state polling after release rather than fixed machine-speed delays.
 | 6 | Category | Three categories | 6 |
 | 7 | Two criteria | Yes / no for the illustrated category AND colour | 4 |
 | 8 | Find the odd one out | Touch the unique object outside the shown category | 4 |
+| 9 | Find the odd one out | Touch the unique object outside the shown category | 5 |
+| 10 | Simplified shape | Round, square, long | 6 |
+| 11 | Size | Small, large | 6 |
+| 12 | Two criteria | Yes / no for the illustrated category AND colour | 6 |
+| 13 | Category, colour lure | Two categories | 6 |
+| 14 | Category, colour lure | Three categories | 6 |
+| 15 | Simplified shape, colour lure | Round, square, long | 6 |
+| 16 | Find the odd one out, colour lure | Touch the unique object outside the shown category | 6 |
+
+Levels 9–16 keep the first eight unchanged, since records are stored by level id. They add objects (five or six per question), all three shapes at once, and a colour lure on the last four: instead of one shared colour, a drawn palette rotates so that every bin holds at least two colours and every colour spans at least two bins; in the mixed odd-one-out, the family shows two colours or more and the intruder wears one of them. Six-object two-criteria rounds keep the four combinations and add two free objects. Objects to examine, then the lure, never decrease from level 9 to level 16. `tests/ranger-niveaux.test.ts` checks the literal original table, distinct configurations and played fingerprints, solvability and the lure on 200 seeds, and this progression.
 
 `generateRound(level, seed, count = 4)` returns a reproducible series with the shared Mulberry32 RNG. The shell uses six questions for the common first-try reward table. Rule parameters, object identities, presentation order and bin order are drawn. Every presented object belongs to exactly one bin; every bin is occupied. Non-colour sorting uses a shared colour across bins. Two-criterion rounds include all four combinations of matching/nonmatching colour and matching/nonmatching category, so neither criterion alone suffices. In odd-one-out rounds three objects share a category, one differs, and all share a colour. The engine validates unique membership and occupied bins before returning a question; the tests reproduce the predicate independently.
 

@@ -1,7 +1,7 @@
 import { test, expect, media, clearSpeech, passGate } from './helpers';
 import { expectedInstruction } from '../ranger-oracles';
 import { binFor, prepareRanger, rangerDom, rangerState, solveSorting } from './ranger-helpers';
-for (let level = 1; level <= 8; level++) test(`ranger ${level}: independent rule oracle, voice, gentle error, hint, complete and reload`, async ({ page }) => {
+for (let level = 1; level <= 16; level++) test(`ranger ${level}: independent rule oracle, voice, gentle error, hint, complete and reload`, async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 }); await prepareRanger(page, level);
     for (let index = 0; index < 6; index++) {
         const question = (await rangerState(page)).ranger.questions[index]!;
@@ -32,7 +32,7 @@ for (let level = 1; level <= 8; level++) test(`ranger ${level}: independent rule
     await expect(page.locator('.stars')).toHaveAttribute('aria-label', '3 étoiles');
     await page.reload(); await page.locator('[data-game="ranger"]').click();
     await expect(page.locator(`[data-level="${level}"]`)).toContainText('★★★');
-    if (level < 8) await expect(page.locator(`[data-level="${level + 1}"]`)).toBeEnabled();
+    if (level < 16) await expect(page.locator(`[data-level="${level + 1}"]`)).toBeEnabled();
 });
 test('English rules and object labels, silent preferences and detached observation hook', async ({ page }) => {
     await prepareRanger(page, 7, 'en'); const prompt = await page.locator('.instruction p').innerText(); expect((await media(page)).speech).toContain(prompt);
@@ -48,10 +48,10 @@ test('English rules and object labels, silent preferences and detached observati
     const log = await media(page); await solveSorting(page); expect(await media(page)).toEqual(log);
 });
 test('all levels at 320–1280: actual painted size, bin targets and overflow', async ({ page }) => {
-    await prepareRanger(page, 8);
+    test.setTimeout(240_000); await prepareRanger(page, 16);
     for (const width of [320, 360, 390, 414, 768, 1280]) {
         await page.setViewportSize({ width, height: 844 });
-        for (let level = 1; level <= 8; level++) {
+        for (let level = 1; level <= 16; level++) {
             await page.locator('#back').click(); await page.locator('[data-game="ranger"]').click(); await page.locator(`[data-level="${level}"]`).click();
             const painted = await page.locator('.ranger-object>svg').evaluateAll(elements => elements.map(el => {
                 const g = el.querySelector('g')!, b = g.getBBox(), m = g.getScreenCTM()!;
@@ -71,7 +71,7 @@ for (const [level, filename] of [[1, 'ranger-couleur.png'], [4, 'ranger-categori
 });
 
 test('each English rule is displayed and spoken with the independent language oracle', async ({ page }) => {
-    for (let level = 1; level <= 8; level++) {
+    for (let level = 1; level <= 16; level++) {
         await prepareRanger(page, level, 'en');
         const q = (await rangerState(page)).ranger.questions[0]!, prompt = expectedInstruction(q, 'en');
         await expect(page.locator('.instruction p')).toHaveText(prompt);
@@ -92,4 +92,17 @@ test('parental erase cancels or confirms existing Ranger records and persists af
     await expect(page.locator('[data-level="1"]')).toBeEnabled();
     await expect(page.locator('[data-level="2"]')).toBeDisabled();
     await expect(page.locator('.level-grid')).not.toContainText('★');
+});
+test('sixteen levels: the list fits a 390×844 phone without horizontal overflow and the last level starts', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 }); await prepareRanger(page, 16);
+    await page.locator('#back').click(); await page.locator('[data-game="ranger"]').click();
+    await expect(page.locator('[data-level]')).toHaveCount(16);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    const right = await page.locator('[data-level]').evaluateAll(els => Math.max(...els.map(el => el.getBoundingClientRect().right)));
+    expect(right).toBeLessThanOrEqual(390);
+    await page.locator('[data-level="16"]').click();
+    expect((await rangerState(page)).ranger.level).toBe(16);
+    await expect(page.locator('[data-object]')).toHaveCount(6);
+    for (let n = 0; n < 6; n++) await solveSorting(page);
+    await expect(page.locator('.stars')).toBeVisible(); await expect(page.locator('#next')).toHaveCount(0);
 });

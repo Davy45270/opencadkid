@@ -25,12 +25,19 @@ const kinds: readonly [string, Shape, Category, string, string][] = [
 ];
 export const catalog: readonly ObjectItem[] = kinds.flatMap(([kind, shape, category, fr, en]) => (['rouge', 'vert', 'jaune'] as const).flatMap(color => (['petit', 'grand'] as const).map(size => ({ id: `${kind}-${color}-${size}`, kind, shape, category, color, size, names: { fr, en } }))));
 export type Rule = 'color' | 'shape' | 'size' | 'category' | 'two' | 'intrus';
-export interface Level { id: number; rule: Rule; bins: number }
+/** `objects`: objects per question (default 4, or 6 with three bins). `mixed`: the colours vary
+ * so that every bin holds several colours and every colour spans several bins (a colour lure). */
+export interface Level { id: number; rule: Rule; bins: number; objects?: number; mixed?: boolean }
 export const levels: readonly Level[] = [
     { id: 1, rule: 'color', bins: 2 }, { id: 2, rule: 'shape', bins: 2 },
     { id: 3, rule: 'size', bins: 2 }, { id: 4, rule: 'category', bins: 2 },
     { id: 5, rule: 'color', bins: 3 }, { id: 6, rule: 'category', bins: 3 },
-    { id: 7, rule: 'two', bins: 2 }, { id: 8, rule: 'intrus', bins: 2 }
+    { id: 7, rule: 'two', bins: 2 }, { id: 8, rule: 'intrus', bins: 2 },
+    // Second half: more objects, all three shapes, then colours that no longer help.
+    { id: 9, rule: 'intrus', bins: 2, objects: 5 }, { id: 10, rule: 'shape', bins: 3 },
+    { id: 11, rule: 'size', bins: 2, objects: 6 }, { id: 12, rule: 'two', bins: 2, objects: 6 },
+    { id: 13, rule: 'category', bins: 2, objects: 6, mixed: true }, { id: 14, rule: 'category', bins: 3, mixed: true },
+    { id: 15, rule: 'shape', bins: 3, mixed: true }, { id: 16, rule: 'intrus', bins: 2, objects: 6, mixed: true }
 ];
 export interface Question { rule: Rule; bins: string[]; objects: ObjectItem[]; color: Color; category: Category }
 export function belongs(q: Question, object: ObjectItem, bin: string): boolean {
@@ -41,7 +48,7 @@ export function belongs(q: Question, object: ObjectItem, bin: string): boolean {
 export function generateRound(level: number, seed: number, count = 4): Question[] {
     const spec = levels.find(l => l.id === level);
     if (!spec || !Number.isInteger(count) || count < 1) throw new RangeError('Invalid round');
-    const rng = makeRng(seed);
+    const rng = makeRng(seed), total = spec.objects ?? (spec.bins === 3 ? 6 : 4);
     return Array.from({ length: count }, () => {
         const color = shuffle(['rouge', 'vert', 'jaune'] as const, rng)[0]!;
         const category = shuffle(['fruit', 'jouet', 'vetement', 'animal', 'cuisine'] as const, rng)[0]!;
@@ -57,14 +64,20 @@ export function generateRound(level: number, seed: number, count = 4): Question[
             pick(o => o.category === category && o.color !== color);
             pick(o => o.category !== category && o.color === color);
             pick(o => o.category !== category && o.color !== color);
+            while (q.objects.length < total) pick(() => true);
         } else if (q.rule === 'intrus') {
-            for (let i = 0; i < 3; i++) pick(o => o.category === category && o.color === color);
+            // Mixed: the family shows two colours or more and the intruder wears one of them.
+            // First family member wears the intruder's colour, the second another one, the rest any.
+            const shade = (o: ObjectItem, i: number): boolean => i > 1 || (o.color === color) === (i === 0);
+            for (let i = 0; i < total - 1; i++) pick(o => o.category === category && (spec.mixed ? shade(o, i) : o.color === color));
             pick(o => o.category !== category && o.color === color);
         } else {
-            // A shared colour crosses every non-colour bin, preventing colour-only sorting.
-            for (let i = 0; i < (spec.bins === 3 ? 6 : 4); i++) {
-                const bin = q.bins[i % q.bins.length]!;
-                pick(o => belongs(q, o, bin) && (q.rule === 'color' || o.color === color) && (q.rule !== 'shape' || ['ballon', 'assiette', 'cube', 'puzzle', 'serviette', 'spatule', 'chaussette', 'poire'].includes(o.kind)));
+            // A shared colour crosses every non-colour bin, preventing colour-only sorting. Mixed
+            // levels rotate a drawn palette instead: bin b, round r wears palette[(r + b) % 3].
+            const palette = spec.mixed ? shuffle(['rouge', 'vert', 'jaune'] as const, rng) : [];
+            for (let i = 0; i < total; i++) {
+                const bin = q.bins[i % q.bins.length]!, shade = spec.mixed ? palette[(Math.floor(i / q.bins.length) + i % q.bins.length) % 3]! : color;
+                pick(o => belongs(q, o, bin) && (q.rule === 'color' || o.color === shade) && (q.rule !== 'shape' || ['ballon', 'assiette', 'cube', 'puzzle', 'serviette', 'spatule', 'chaussette', 'poire'].includes(o.kind)));
             }
         }
         q.objects = shuffle(q.objects, rng); q.bins = shuffle(q.bins, rng);

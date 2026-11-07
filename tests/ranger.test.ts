@@ -32,19 +32,21 @@ it('catalogue: complete attributes, unique identities and bilingual names', () =
         expect(o.names.fr.trim()).not.toBe(''); expect(o.names.en.trim()).not.toBe('');
     }
 });
-const table = [['color', 2], ['shape', 2], ['size', 2], ['category', 2], ['color', 3], ['category', 3], ['two', 2], ['intrus', 2]];
-it('independent eight-level table and invalid inputs', () => {
+const table = [['color', 2], ['shape', 2], ['size', 2], ['category', 2], ['color', 3], ['category', 3], ['two', 2], ['intrus', 2],
+    ['intrus', 2], ['shape', 3], ['size', 2], ['two', 2], ['category', 2], ['category', 3], ['shape', 3], ['intrus', 2]];
+const objectCounts = [4, 4, 4, 4, 6, 6, 4, 4, 5, 6, 6, 6, 6, 6, 6, 6];
+it('independent sixteen-level table and invalid inputs', () => {
     expect(levels.map(l => [l.rule, l.bins])).toEqual(table);
-    for (const level of [0, 9, 1.5, NaN]) expect(() => generateRound(level, 1)).toThrow();
+    for (const level of [0, 17, 1.5, NaN]) expect(() => generateRound(level, 1)).toThrow();
     for (const count of [0, -1, 1.5, NaN]) expect(() => generateRound(1, 1, count)).toThrow();
 });
-for (let level = 1; level <= 8; level++) it(`level ${level}: 300 seeds, unique membership, occupied bins and no colour shortcut`, () => {
+for (let level = 1; level <= 16; level++) it(`level ${level}: 300 seeds, unique membership, occupied bins and no colour shortcut`, () => {
     for (let seed = 0; seed < 300; seed++) {
         const round = generateRound(level, seed);
         expect(round).toEqual(generateRound(level, seed)); expect(round).toHaveLength(4);
         for (const q of round) {
             expect(q.rule).toBe(table[level - 1]![0]); expect(q.bins).toHaveLength(Number(table[level - 1]![1]));
-            expect(q.objects).toHaveLength(q.bins.length === 3 ? 6 : 4);
+            expect(q.objects).toHaveLength(objectCounts[level - 1]!);
             expect(new Set(q.objects.map(o => o.id)).size).toBe(q.objects.length);
             for (const o of q.objects) expect(q.bins.filter(b => oracle(q, o, b))).toHaveLength(1);
             for (const bin of q.bins) {
@@ -74,7 +76,7 @@ it('pure placement, object-specific two-error hint, soft return, invalid and dup
 });
 it('common rewards, every level completes, lowest score unlocks and best score survives', () => {
     expect(Array.from({ length: 7 }, (_, n) => stars(n))).toEqual([1, 1, 1, 2, 2, 3, 3]);
-    for (let level = 1; level <= 8; level++) for (const clean of [true, false]) {
+    for (let level = 1; level <= levels.length; level++) for (const clean of [true, false]) {
         let s = start(level, 77); expect(complete({}, s)).toEqual({});
         for (let i = 0; i < 6; i++) {
             const q = s.questions[s.index]!;
@@ -103,7 +105,7 @@ it('bilingual rules, hints and finite valid procedural illustrations', () => {
         for (const o of catalog) { const drawing = objectSvg(o, locale); expect(validSvg(drawing)).toBe(true); expect(drawing).not.toMatch(/NaN|Infinity|undefined/); expect(drawing).toContain(o.names[locale]); }
         for (const key of ['rouge', 'vert', 'jaune', 'petit', 'grand', 'carre', 'rond', 'long', 'fruit', 'jouet', 'vetement', 'animal', 'cuisine', 'oui', 'non']) expect(validSvg(pic(key))).toBe(true);
         expect(levelView(fresh(locale))).toContain('data-level="8"');
-        for (let level = 1; level <= 8; level++) {
+        for (let level = 1; level <= levels.length; level++) {
             const s = start(level, 19), q = s.questions[0]!;
             expect(instruction(q, locale)).not.toBe(''); expect(gameView(s, locale)).not.toMatch(/NaN|Infinity|undefined/);
             for (const o of q.objects) for (const attr of ['color', 'shape', 'size', 'category'] as const) expect(gameView(s, locale)).toContain(`data-${attr}="${o[attr]}"`);
@@ -111,9 +113,9 @@ it('bilingual rules, hints and finite valid procedural illustrations', () => {
     }
 });
 it('isolated records migrate, filter and round-trip', () => {
-    let raw = JSON.stringify({ ...fresh(), records: { 1: 3 }, rangerRecords: { 1: 2, 8: 3, 9: 2, 2: 0, 3: 1.5, 4: '3' } });
+    let raw = JSON.stringify({ ...fresh(), records: { 1: 3 }, rangerRecords: { 1: 2, 8: 3, 16: 2, 17: 2, 2: 0, 3: 1.5, 4: '3' } });
     const port = { getItem: () => raw, setItem: (_: string, value: string) => { raw = value; } };
-    const save = readSave(port); expect(save.rangerRecords).toEqual({ 1: 2, 8: 3 }); expect(save.records).toEqual({ 1: 3 });
+    const save = readSave(port); expect(save.rangerRecords).toEqual({ 1: 2, 8: 3, 16: 2 }); expect(save.records).toEqual({ 1: 3 });
     writeSave(port, save); expect(readSave(port)).toEqual(save);
     raw = JSON.stringify({ version: 1, locale: 'fr', voice: true, sound: true, records: { 1: 2 } });
     expect(readSave(port).rangerRecords).toEqual({}); expect(fresh().rangerRecords).toEqual({});
@@ -249,7 +251,7 @@ it('size pictograms show a smaller small circle and a larger large circle', () =
     }
 });
 it('every rule has an independent complete French and English instruction', () => {
-    for (const locale of ['fr', 'en'] as const) for (let level = 1; level <= 8; level++) for (const q of generateRound(level, 19)) {
+    for (const locale of ['fr', 'en'] as const) for (let level = 1; level <= levels.length; level++) for (const q of generateRound(level, 19)) {
         const expected = expectedInstruction(q, locale);
         expect(instruction(q, locale)).toBe(expected);
     }

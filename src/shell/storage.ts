@@ -39,7 +39,7 @@ export function readSave(storage?: StoragePort, locale: Locale = 'fr'): Save {
         }
         const rangerRecords: Records = {};
         if (v.rangerRecords && typeof v.rangerRecords === 'object' && !Array.isArray(v.rangerRecords)) {
-            for (const [key, score] of Object.entries(v.rangerRecords)) if (/^[1-8]$/.test(key) && typeof score === 'number' && Number.isInteger(score) && score >= 1 && score <= 3) rangerRecords[Number(key)] = score;
+            for (const [key, score] of Object.entries(v.rangerRecords)) if (/^(?:[1-9]|1[0-6])$/.test(key) && typeof score === 'number' && Number.isInteger(score) && score >= 1 && score <= 3) rangerRecords[Number(key)] = score;
         }
         const tamboursRecords: Records = {};
         if (v.tamboursRecords && typeof v.tamboursRecords === 'object' && !Array.isArray(v.tamboursRecords)) {
