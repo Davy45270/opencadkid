@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.1
+
+- Lumi's cards: 7 new levels, from 8 to 14. Picture-and-shadow pairs on bigger boards, a 4×6 board of twelve pairs that still fits a phone without scrolling, and a new mode where both cards are shadows and only the outline tells them apart. Levels 1–7 are unchanged.
+
 ## 1.6.0
 
 - Twice as many levels, published one game at a time. Boubou's baskets: eight harder levels, 8 to 16. Count, fill and compare larger quantities (6 to 10); wrong cards that are only one away; baskets that differ by one; count one kind of object among ten of two kinds; and a mixed review of everything. The first eight levels and their rounds do not change.
