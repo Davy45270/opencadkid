@@ -18,7 +18,8 @@ it('ships three PNG icons with the declared sizes', () => {
 it('uses a relative complete precache; only same-origin painted puzzle scenes are cached at runtime', () => {
     const config = readFileSync('vite.config.ts', 'utf8');
     expect(config).toContain("base: './'"); expect(config).toContain("strategies: 'generateSW'");
-    expect(config).toContain("globPatterns: ['**/*.{html,js,css,png,webmanifest}']");
+    // The hide-and-seek props are the only WebP files in the precache (see check-precache.js).
+    expect(config).toContain("globPatterns: ['**/*.{html,js,css,png,webmanifest}', 'assets/cherche-*.webp']");
     // Exactly one runtime rule: relative hashed WebP assets, cache first, bounded. No other network caching.
     expect(config.match(/urlPattern:/g)).toHaveLength(1);
     expect(config).toContain("runtimeCaching: [{ urlPattern: /\\/assets\\/[\\w-]+\\.webp$/, handler: 'CacheFirst', options: { cacheName: 'opencadkid-scenes', expiration: { maxEntries: 12 } } }] }");

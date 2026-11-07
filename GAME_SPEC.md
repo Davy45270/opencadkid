@@ -4,7 +4,7 @@ Audience: ages 4–8, primarily touch phones. French first, English included. No
 
 ## Catalogue
 
-`compter`, `paires`, `formes`, `sons`, `puzzle`, `chemin`, `suites`, `ranger`, `tambours`, `gouter` and `atelier` are implemented and present in the playable registry.
+`compter`, `paires`, `formes`, `sons`, `puzzle`, `chemin`, `suites`, `ranger`, `tambours`, `gouter`, `cherche` and `atelier` are implemented and present in the playable registry.
 
 | ID | Français | English | Guide | Skill and intended rules |
 | --- | --- | --- | --- | --- |
@@ -18,6 +18,7 @@ Audience: ages 4–8, primarily touch phones. French first, English included. No
 | ranger | Le rangement de CaliRoux | CaliRoux’s tidy-up | CaliRoux | Sort illustrated objects by spoken colour, shape, size or category. |
 | tambours | Les tambours de Tutu | Tutu's drums | Tutu | Listen to and repeat short rhythms with taps; replay freely, no penalty for timing. |
 | gouter | Le goûter de Boubou | Boubou's snack | Boubou | Cut strings so a hanging sweet falls into Boubou's mouth; bubbles, hooks and slack strings; 116 solver-checked levels. |
+| cherche | Les cachettes de Tutu | Tutu’s hiding places | Tutu | Find the objects shown in a strip among others hidden in a painted landscape; twelve levels, generated and checked for every seed. |
 | atelier | L'atelier de Boubou | Boubou's studio | Boubou | Colour drawing regions and the background, paint over the model or on a blank page, play the model's animation; creation rather than scoring. |
 
 Learning the time belongs to TicTac. Its home card opens the sister app only after the adult gate. No other future-game cards appear.
@@ -701,3 +702,11 @@ Gallery format version 1 stores palette indices, positional region colours and h
 - Version 2 serialization adds the background colour. Version 1 works are converted to what was visible: draw-mode works move to the blank page, colour-mode works keep their zones only.
 - The sheet in progress is kept under `opencadkid.atelier.draft.v1` and restored when the studio opens. The save button renders the sheet to a 960 × 900 PNG file locally.
 - Each model has a fixed SMIL animation (`src/engines/atelier/motion.ts`): whole-figure motion plus moving parts with their own lines. Only the child's colours vary; reduced motion removes the animation elements.
+
+## Hide and seek: Tutu’s hiding places (1.7.0)
+
+- Field 320×256 (the 5:4 shape of the painted puzzle scenes, drawn behind with a flat stand-in until the WebP arrives). Objects: twenty props of Petits Pompiers (already published in Opencade) and the seven fruits and friends drawn in code; every prop is a small WebP, precached so a scene is never empty offline (`check-precache.js` checks the twenty files, each within 20 kB).
+- Levels (`src/engines/cherche`): `find` objects to find, `decoys` other objects, `size` in field units, `covered` targets half hidden behind grass (a little cloud high in the sky). From 3 + 2 at size 60 to 8 + 14 at size 34 with six covered; every step adds objects or covers and shrinks them.
+- A round is generated from a seed. Each object to find keeps every other object's centre at least 40 units away, so a disc of 20 units around it (44 CSS px wide on a 390 px phone) answers only to it; a tap goes to the nearest centre within 22 units (or half the object). `tests/cherche.test.ts` checks every level on 200 seeds: right counts, distinct kinds, inside the field, clear tap zones, the round finishes with three stars, and no layout repeats across levels.
+- Misses are counted, never punished; three in a row make one object to find shine until the next find. Stars: at most one miss, three; up to four, two; otherwise one. Records under `opencadkid.cherche.v1`; finishing a level unlocks the next.
+

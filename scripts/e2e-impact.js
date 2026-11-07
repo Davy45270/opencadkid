@@ -39,6 +39,7 @@ export const GAME_SPECS = {
     'ranger': ['ranger', 'ranger-doigt'],
     'tambours': ['tambours', 'tambours-doigt', 'tambours-regressions'],
     'gouter': ['gouter', 'gouter-doigt'],
+    'cherche': ['cherche'],
     'atelier': ['atelier', 'atelier-dessin', 'atelier-doigt', 'atelier-gomme'],
 };
 /** Cross-game specs, grouped by what they exercise. None is tied to a single game. */
@@ -65,6 +66,7 @@ export const SMOKE_TESTS = {
     'ranger': ['ranger', 'English rules and object labels, silent preferences and detached observation hook'],
     'tambours': ['tambours', 'an unavailable audio device still permits a light-observed round'],
     'gouter': ['gouter', 'a sweet that misses falls away gently and the same level starts again by itself'],
+    'cherche': ['cherche', 'a miss is gentle, three in a row light up an object to find'],
     'atelier': ['atelier-dessin', 'the brush draws over the coloured model, which stays visible under the stroke'],
 };
 /** Shell zones: the cross-game specs that exercise that part of the shell, added to the selection. */
