@@ -1,7 +1,7 @@
 import { captureReturnOrigin, expectMotionFinished, expectReturned } from './motion-helpers';
 import type { Page } from '@playwright/test';
 import { expect, prepare } from './helpers';
-export interface SoundsProbe { game: string; selection: number | null; index: number; question: { answer: number }; sons: { errors: number; solved: boolean; finished: boolean; firstTry: number; placed: number[] }; targets: { width: number; height: number }[] }
+export interface SoundsProbe { game: string; selection: number | null; index: number; question: { answer: number }; sons: { level: number; errors: number; solved: boolean; finished: boolean; firstTry: number; placed: number[] }; targets: { width: number; height: number }[] }
 export const soundsState = (page: Page): Promise<SoundsProbe> => page.evaluate(() => (window as unknown as { __kid: { state: () => SoundsProbe } }).__kid.state());
 export const sounds: Record<string, Record<string, string>> = {
     fr: { A: 'a', B: 'beu', C: 'keu', D: 'deu', E: 'é', F: 'fff', G: 'gueu', I: 'i', J: 'jjj', L: 'lll', M: 'mmm', N: 'nnn', O: 'o', P: 'peu', R: 'rrr', S: 'sss', T: 'teu', U: 'u', V: 'vvv', Z: 'zzz' },
@@ -34,7 +34,7 @@ export async function soundAnswer(page: Page): Promise<number> {
 export async function dragSound(page: Page, piece: number, correct = true): Promise<void> {
     const from = page.locator(`[data-sound-piece="${piece}"]`), initial = await from.locator('svg').getAttribute('data-initial');
     const to = page.locator('[data-sound-box]').filter({ has: page.locator(`[data-letter="${initial!}"]`) });
-    const box = correct ? to : page.locator('[data-sound-box]').filter({ hasNot: page.locator(`[data-letter="${initial!}"]`) });
+    const box = correct ? to : page.locator('[data-sound-box]').filter({ hasNot: page.locator(`[data-letter="${initial!}"]`) }).first();
     const returnOrigin = await captureReturnOrigin(from);
     const a = (await from.boundingBox())!, b = (await box.boundingBox())!;
     await page.mouse.move(a.x + a.width / 2, a.y + a.height / 2); await page.mouse.down();
@@ -43,7 +43,8 @@ export async function dragSound(page: Page, piece: number, correct = true): Prom
     if (!await from.isDisabled()) await expectReturned(from, returnOrigin);
 }
 export async function solveSoundQuestion(page: Page): Promise<void> {
-    if (await page.locator('[data-sound-piece]').count()) for (let i = 0; i < 3; i++) await dragSound(page, i);
-    else await page.locator(`[data-answer="${await soundAnswer(page)}"]`).click();
+    const pieces = await page.locator('[data-sound-piece]').count();
+    for (let i = 0; i < pieces; i++) await dragSound(page, i);
+    if (!pieces) await page.locator(`[data-answer="${await soundAnswer(page)}"]`).click();
     await expect(page.locator('#continue')).toBeVisible(); await page.locator('#continue').click();
 }

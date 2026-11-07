@@ -2,7 +2,7 @@ import { captureReturnOrigin, expectReturned } from './motion-helpers';
 import { test, expect, expectTouch, state, touchFrame } from './helpers';
 import { prepareSounds, soundAnswer, soundsState } from './sons-helpers';
 import { makeRng } from '../../src/engines/rng';
-for (const level of [4, 6, 8, 10]) test(`level ${level}: mobile noisy finger, double touch and sorting without scrolling`, async ({ page, context }) => {
+for (const level of [4, 6, 8, 10, 18]) test(`level ${level}: mobile noisy finger, double touch and sorting without scrolling`, async ({ page, context }) => {
     test.skip(!test.info().project.use.hasTouch, 'Requires the mobile touch project.');
     await prepareSounds(page, level);
     const rng = makeRng(91), noise = (): number => rng() * 20 - 10;
@@ -23,7 +23,7 @@ for (const level of [4, 6, 8, 10]) test(`level ${level}: mobile noisy finger, do
     const drag = async (piece: number, correct = true): Promise<void> => {
         const before = (await soundsState(page)).sons;
         const from = page.locator(`[data-sound-piece="${piece}"]`), initial = (await from.locator('svg').getAttribute('data-initial'))!;
-        const box = page.locator('[data-sound-box]').filter(correct ? { has: page.locator(`[data-letter="${initial}"]`) } : { hasNot: page.locator(`[data-letter="${initial}"]`) });
+        const box = page.locator('[data-sound-box]').filter(correct ? { has: page.locator(`[data-letter="${initial}"]`) } : { hasNot: page.locator(`[data-letter="${initial}"]`) }).first();
         const returnOrigin = await captureReturnOrigin(from);
         const a = (await from.boundingBox())!, b = (await box.boundingBox())!;
         const x = a.x + a.width / 2 + noise(), y = a.y + a.height / 2 + noise(), tx = b.x + b.width / 2, ty = b.y + b.height / 2;
@@ -37,7 +37,8 @@ for (const level of [4, 6, 8, 10]) test(`level ${level}: mobile noisy finger, do
         if (!(await soundsState(page)).sons.placed.includes(piece)) await expectReturned(page.locator(`[data-sound-piece="${piece}"]`), returnOrigin);
     };
     for (let i = 0; i < 6; i++) {
-        if (level === 10) {
+        const sorting = level === 10 || level === 18, pieces = await page.locator('[data-sound-piece]').count();
+        if (sorting) {
             if (i === 0) {
                 await tap('[data-sound-piece="0"]'); await tap('[data-sound-piece="0"]'); expect((await soundsState(page)).sons.placed).toEqual([]);
                 await drag(0, false); expect((await soundsState(page)).sons.placed).toEqual([]);
@@ -46,12 +47,12 @@ for (const level of [4, 6, 8, 10]) test(`level ${level}: mobile noisy finger, do
                 await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ id: 1, x: a.x + a.width / 2, y: a.y + a.height / 2 }] });
                 await cdp.send('Input.dispatchTouchEvent', { type: 'touchCancel', touchPoints: [] }); expect((await soundsState(page)).sons.placed).toEqual([]);
             }
-            for (let piece = 0; piece < 3; piece++) await drag(piece);
+            for (let piece = 0; piece < pieces; piece++) await drag(piece);
         } else {
             const selector = `[data-answer="${await soundAnswer(page)}"]`; await tap(selector); await expectTouch(page, `réponse question ${i}`, async () => (await soundsState(page)).sons.solved);
             if (i === 0) { await tap(selector); expect((await soundsState(page)).index).toBe(0); expect((await soundsState(page)).sons.firstTry).toBe(1); }
         }
-        expect((await soundsState(page)).sons.placed.length).toBe(level === 10 ? 3 : 0);
+        expect((await soundsState(page)).sons.placed.length).toBe(sorting ? pieces : 0);
         expect((await soundsState(page)).sons.solved).toBe(true);
         expect((await soundsState(page)).sons.finished).toBe(false);
         await expect(page.locator('#continue')).toBeVisible(); await tap('#continue');

@@ -23,7 +23,7 @@ export function readSave(storage?: StoragePort, locale: Locale = 'fr'): Save {
         }
         const sonsRecords: Records = {};
         if (v.sonsRecords && typeof v.sonsRecords === 'object' && !Array.isArray(v.sonsRecords)) {
-            for (const [key, score] of Object.entries(v.sonsRecords)) if (/^(?:[1-9]|10)$/.test(key) && typeof score === 'number' && Number.isInteger(score) && score >= 1 && score <= 3) sonsRecords[Number(key)] = score;
+            for (const [key, score] of Object.entries(v.sonsRecords)) if (/^(?:[1-9]|1\d|20)$/.test(key) && typeof score === 'number' && Number.isInteger(score) && score >= 1 && score <= 3) sonsRecords[Number(key)] = score;
         }
         const puzzleRecords: Records = {};
         if (v.puzzleRecords && typeof v.puzzleRecords === 'object' && !Array.isArray(v.puzzleRecords)) {

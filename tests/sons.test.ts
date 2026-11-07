@@ -6,7 +6,9 @@ import { fresh, readSave, writeSave } from '../src/shell/storage';
 import { messages, type Locale } from '../src/shell/i18n';
 const table = [
     ['image-lettre', 2, false], ['image-lettre', 3, false], ['image-lettre', 4, false], ['image-lettre', 4, true],
-    ['lettre-image', 3, false], ['lettre-image', 3, true], ['son-lettre', 3, false], ['son-lettre', 4, true], ['trier', 2, false], ['trier', 2, true]
+    ['lettre-image', 3, false], ['lettre-image', 3, true], ['son-lettre', 3, false], ['son-lettre', 4, true], ['trier', 2, false], ['trier', 2, true],
+    ['image-lettre', 5, false], ['image-lettre', 6, true], ['lettre-image', 4, false], ['lettre-image', 5, true],
+    ['son-lettre', 5, false], ['son-lettre', 5, true], ['trier', 3, false], ['trier', 3, true], ['lettre-image', 6, true], ['son-lettre', 6, true]
 ] as const;
 // Authored separately: do not compute these expectations with production phoneme/compatibility.
 const sounds: Record<Locale, Record<string, string>> = {
@@ -57,7 +59,7 @@ it('literal phoneme, neighbour and level tables including lowercase', () => {
         expect(phoneme(letter, locale)).toBe(sound); expect(phoneme(letter.toLowerCase(), locale)).toBe(sound);
     }
     expect(() => phoneme('X', 'fr')).toThrow();
-    for (const [level, count] of [[0, 6], [11, 6], [1, 0], [1, 1.5], [1, 100]]) expect(() => generateRound(level!, 3, 'fr', count)).toThrow();
+    for (const [level, count] of [[0, 6], [21, 6], [1, 0], [1, 1.5], [1, 100]]) expect(() => generateRound(level!, 3, 'fr', count)).toThrow();
 });
 for (const locale of ['fr', 'en'] as const) for (const [index, [mode, count, lowercase]] of table.entries()) it(`${locale} level ${index + 1}: 300 seeds, independent uniqueness, exclusions and position distribution`, () => {
     const failures: string[] = [], positions = Array<number>(count).fill(0);
@@ -72,7 +74,8 @@ for (const locale of ['fr', 'en'] as const) for (const [index, [mode, count, low
             if (q.mode !== mode || q.lowercase !== lowercase) failures.push('level');
             if (i > 1 && q.answer === round[i - 1]!.answer && q.answer === round[i - 2]!.answer) failures.push('triple');
             if (mode === 'trier') {
-                if (q.boxes.length !== 2 || q.boxes[q.answer] !== q.target.initial || new Set(q.boxes).size !== 2) failures.push('boxes');
+                if (q.boxes.length !== count || q.boxes[q.answer] !== q.target.initial || new Set(q.boxes).size !== count || q.choices.length !== count + 1) failures.push('boxes');
+                for (const [i, a] of q.boxes.entries()) for (const b of q.boxes.slice(i + 1)) if (banned[locale].some(pair => pair.includes(a) && pair.includes(b))) failures.push('neighbour boxes');
                 for (const p of q.choices) if (q.boxes.filter(b => b === p.initial).length !== 1) failures.push('unique box');
             } else {
                 const initials = mode === 'lettre-image' ? q.choices.map(w => w.initial) : q.letters;
@@ -125,12 +128,12 @@ it('sorting: one box per native initial, retry, hint, duplicate-drop guard and c
 });
 it('common reward boundaries, all-mode completion, unlock and best-score preservation', () => {
     expect(Array.from({ length: 7 }, (_, i) => stars(i))).toEqual([1, 1, 1, 2, 2, 3, 3]);
-    for (const locale of ['fr', 'en'] as const) for (let level = 1; level <= 10; level++) for (const perfect of [false, true]) {
+    for (const locale of ['fr', 'en'] as const) for (let level = 1; level <= levels.length; level++) for (const perfect of [false, true]) {
         let s = start(level, 3, locale); expect(complete({}, s)).toEqual({});
         for (let i = 0; i < 6; i++) {
             const q = s.questions[s.index]!;
             if (q.mode === 'trier') {
-                if (!perfect) s = drop(s, 0, (q.boxes.indexOf(q.choices[0]!.initial) + 1) % 2).state;
+                if (!perfect) s = drop(s, 0, (q.boxes.indexOf(q.choices[0]!.initial) + 1) % q.boxes.length).state;
                 for (const [piece, w] of q.choices.entries()) s = drop(s, piece, q.boxes.indexOf(w.initial)).state;
             } else { if (!perfect) s = answer(s, (q.answer + 1) % q.letters.length).state; s = answer(s, q.answer).state; }
             s = advance(s);
@@ -142,7 +145,7 @@ it('common reward boundaries, all-mode completion, unlock and best-score preserv
 });
 it('i18n, spoken word then sound, sound-only cue, elongated hint and no printed words', () => {
     expect(Object.keys(messages.fr).sort()).toEqual(Object.keys(messages.en).sort());
-    for (const locale of ['fr', 'en'] as const) for (let level = 1; level <= 10; level++) {
+    for (const locale of ['fr', 'en'] as const) for (let level = 1; level <= levels.length; level++) {
         const s = start(level, 1, locale), q = s.questions[0]!, html = gameView(s, locale, true);
         expect(instruction(q, locale).length).toBeGreaterThan(0);
         if (q.mode === 'image-lettre') expect(spoken(q, locale).slice(0, 2)).toEqual([q.target.word, sounds[locale][q.target.initial]]);
@@ -154,20 +157,20 @@ it('i18n, spoken word then sound, sound-only cue, elongated hint and no printed 
     }
 });
 it('safe independent records: migration, filtering, roundtrip and erase', () => {
-    let raw = JSON.stringify({ ...fresh(), records: { 1: 3 }, pairesRecords: { 2: 2 }, formesRecords: { 3: 1 }, sonsRecords: { 1: 1, 10: 3, 11: 2, 2: 0, 3: 1.5, 4: '3' } });
+    let raw = JSON.stringify({ ...fresh(), records: { 1: 3 }, pairesRecords: { 2: 2 }, formesRecords: { 3: 1 }, sonsRecords: { 1: 1, 10: 3, 20: 2, 21: 2, 2: 0, 3: 1.5, 4: '3' } });
     const port = { getItem: () => raw, setItem: (_: string, value: string) => { raw = value; } };
-    const s = readSave(port); expect(s.sonsRecords).toEqual({ 1: 1, 10: 3 }); expect(s.records).toEqual({ 1: 3 }); expect(s.pairesRecords).toEqual({ 2: 2 }); expect(s.formesRecords).toEqual({ 3: 1 });
+    const s = readSave(port); expect(s.sonsRecords).toEqual({ 1: 1, 10: 3, 20: 2 }); expect(s.records).toEqual({ 1: 3 }); expect(s.pairesRecords).toEqual({ 2: 2 }); expect(s.formesRecords).toEqual({ 3: 1 });
     writeSave(port, s); expect(readSave(port)).toEqual(s);
     raw = JSON.stringify({ version: 1, locale: 'fr', voice: true, sound: true, records: { 1: 2 } }); expect(readSave(port).sonsRecords).toEqual({}); expect(fresh().sonsRecords).toEqual({});
 });
 it('feasible short and full rounds preserve length and distinct words over 300 seeds', () => {
     for (const locale of ['fr', 'en'] as const) for (const level of levels) {
-        const maximum = level.mode === 'trier' ? 20 : Math.floor(60 / level.choices);
+        const words = level.mode === 'trier' ? level.choices + 1 : level.choices, maximum = Math.floor(60 / words);
         for (const count of [1, 7, maximum - 1, maximum]) for (let seed = 0; seed < 300; seed++) {
             const round = generateRound(level.id, seed, locale, count);
             expect(round).toHaveLength(count);
-            const words = round.flatMap(q => q.choices.map(w => w.word));
-            expect(new Set(words).size).toBe(count * (level.mode === 'trier' ? 3 : level.choices));
+            const used = round.flatMap(q => q.choices.map(w => w.word));
+            expect(new Set(used).size).toBe(count * words);
             for (const q of round) {
                 const alternatives = q.letters.filter(l => l !== q.target.initial);
                 expect(q.letters[q.answer]).toBe(q.target.initial);

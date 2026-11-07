@@ -1,6 +1,6 @@
 import { test, expect, media, clearSpeech } from './helpers';
 import { dragSound, prepareSounds, soundAnswer, sounds, soundsState, solveSoundQuestion } from './sons-helpers';
-for (const locale of ['fr', 'en']) for (const level of [1, 5, 7, 9]) test(`${locale} level ${level}: native audio, independent full round, retry/hint and persisted unlock`, async ({ page }) => {
+for (const locale of ['fr', 'en']) for (const level of [1, 5, 7, 9, 17]) test(`${locale} level ${level}: native audio, independent full round, retry/hint and persisted unlock`, async ({ page }) => {
     await prepareSounds(page, level, locale);
     const entry = (await media(page)).speech;
     const entryInitial = (await page.locator('.sons-prompt').getAttribute('data-initial'))!;
@@ -23,7 +23,7 @@ for (const locale of ['fr', 'en']) for (const level of [1, 5, 7, 9]) test(`${loc
         const printed = await page.locator('#app').innerText();
         for (const picture of pictures) expect(printed.toLowerCase()).not.toMatch(new RegExp(`\\b${picture.word}\\b`, 'i'));
         if (i === 0) {
-            if (level === 9) {
+            if (level === 9 || level === 17) {
                 await dragSound(page, 0, false); expect((await soundsState(page)).sons.placed).toEqual([]);
                 expect((await soundsState(page)).sons.errors).toBe(1); await expect(page.locator('.shape-hint')).toHaveCount(0);
                 await clearSpeech(page); await dragSound(page, 0, false);
@@ -51,8 +51,8 @@ for (const locale of ['fr', 'en']) for (const level of [1, 5, 7, 9]) test(`${loc
     expect(saved.sonsRecords[level]).toBe(3); expect(saved.records).toEqual(records.records); expect(saved.pairesRecords ?? {}).toEqual(records.pairesRecords ?? {}); expect(saved.formesRecords ?? {}).toEqual(records.formesRecords ?? {});
 });
 test('all levels: 72px targets and images, 56px letters, AA contrast, detached hook and no overflow at 320–1280', async ({ page }) => {
-    test.setTimeout(180_000); await prepareSounds(page, 10);
-    for (let level = 1; level <= 10; level++) {
+    test.setTimeout(360_000); await prepareSounds(page, 20);
+    for (let level = 1; level <= 20; level++) {
         await page.locator('#back').click(); await page.locator('[data-game="sons"]').click(); await page.locator(`[data-level="${level}"]`).click();
         for (const width of [320, 321, 360, 390, 480, 699, 700, 768, 939, 940, 1024, 1280]) {
             await page.setViewportSize({ width, height: 900 });
@@ -61,7 +61,7 @@ test('all levels: 72px targets and images, 56px letters, AA contrast, detached h
             const cards = await page.locator('.sound-choice, [data-sound-box], svg[data-word]').evaluateAll(elements => elements.map(el => { const r = el.getBoundingClientRect(); return { x: r.x, y: r.y, width: r.width, height: r.height }; }));
             for (const r of cards) { expect(r.width).toBeGreaterThanOrEqual(72); expect(r.height).toBeGreaterThanOrEqual(72); }
             const letters = await page.locator('[data-letter]').evaluateAll(elements => elements.map(el => ({ size: parseFloat(getComputedStyle(el).fontSize), color: getComputedStyle(el).color, height: el.getBoundingClientRect().height, text: el.textContent, initial: el.getAttribute('data-letter') })));
-            for (const l of letters) { expect(l.size).toBeGreaterThanOrEqual(56); expect(l.height).toBeGreaterThanOrEqual(56); expect(l.color).toBe('rgb(36, 61, 48)'); expect(l.text).toBe([4, 6, 8, 10].includes(level) ? l.initial!.toLowerCase() : l.initial); }
+            for (const l of letters) { expect(l.size).toBeGreaterThanOrEqual(56); expect(l.height).toBeGreaterThanOrEqual(56); expect(l.color).toBe('rgb(36, 61, 48)'); expect(l.text).toBe([4, 6, 8, 10, 12, 14, 16, 18, 19, 20].includes(level) ? l.initial!.toLowerCase() : l.initial); }
             // Resolve the actual composited background through transparent ancestors.
             const contrasts = await page.locator('[data-letter]').evaluateAll(elements => elements.map(el => {
                 const ink = getComputedStyle(el).color;
@@ -171,4 +171,17 @@ for (const rapid of [false, true]) test(`sorting two images into the same box wi
     }
     await expect.poll(async () => (await soundsState(page)).sons.placed).toEqual([first.piece, second.piece]);
     expect((await soundsState(page)).sons.errors).toBe(0);
+});
+test('twenty levels: the list fits a 390×844 phone without horizontal overflow and the last level starts', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 }); await prepareSounds(page, 20);
+    await page.locator('#back').click(); await page.locator('[data-game="sons"]').click();
+    await expect(page.locator('[data-level]')).toHaveCount(20);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    const right = await page.locator('[data-level]').evaluateAll(els => Math.max(...els.map(el => el.getBoundingClientRect().right)));
+    expect(right).toBeLessThanOrEqual(390);
+    await page.locator('[data-level="20"]').click();
+    expect((await soundsState(page)).sons.level).toBe(20);
+    await expect(page.locator('[data-answer]')).toHaveCount(6);
+    for (let i = 0; i < 6; i++) await solveSoundQuestion(page);
+    await expect(page.locator('.stars')).toBeVisible(); await expect(page.locator('#next')).toHaveCount(0);
 });

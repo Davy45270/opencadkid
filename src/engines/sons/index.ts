@@ -16,7 +16,18 @@ export const levels: readonly Level[] = [
     { id: 7, mode: 'son-lettre', choices: 3, lowercase: false },
     { id: 8, mode: 'son-lettre', choices: 4, lowercase: true },
     { id: 9, mode: 'trier', choices: 2, lowercase: false },
-    { id: 10, mode: 'trier', choices: 2, lowercase: true }
+    { id: 10, mode: 'trier', choices: 2, lowercase: true },
+    // Second half: every level offers more letters, images or boxes than any earlier level of its mode.
+    { id: 11, mode: 'image-lettre', choices: 5, lowercase: false },
+    { id: 12, mode: 'image-lettre', choices: 6, lowercase: true },
+    { id: 13, mode: 'lettre-image', choices: 4, lowercase: false },
+    { id: 14, mode: 'lettre-image', choices: 5, lowercase: true },
+    { id: 15, mode: 'son-lettre', choices: 5, lowercase: false },
+    { id: 16, mode: 'son-lettre', choices: 5, lowercase: true },
+    { id: 17, mode: 'trier', choices: 3, lowercase: false },
+    { id: 18, mode: 'trier', choices: 3, lowercase: true },
+    { id: 19, mode: 'lettre-image', choices: 6, lowercase: true },
+    { id: 20, mode: 'son-lettre', choices: 6, lowercase: true }
 ];
 // Symmetric exclusions include both phonetic neighbours and identical initial sounds.
 export const neighbours: Record<Locale, readonly (readonly [string, string])[]> = {
@@ -29,8 +40,9 @@ export function compatible(a: string, b: string, locale: Locale): boolean {
 export interface Question { mode: Mode; target: Word; choices: Word[]; letters: string[]; boxes: string[]; answer: number; lowercase: boolean }
 export function generateRound(level: number, seed: number, locale: Locale, count = 6): Question[] {
     const spec = levels.find(l => l.id === level);
-    // Each sorting question consumes three words. Reject impossible distinct-word requests.
-    if (!spec || !Number.isInteger(count) || count < 1 || count * (spec.mode === 'trier' ? 3 : spec.choices) > lexicon[locale].length) throw new RangeError('Invalid round');
+    // A sorting question uses one box per family and two words of the target family:
+    // choices + 1 words. Reject impossible distinct-word requests.
+    if (!spec || !Number.isInteger(count) || count < 1 || count * (spec.mode === 'trier' ? spec.choices + 1 : spec.choices) > lexicon[locale].length) throw new RangeError('Invalid round');
     const rng = makeRng(seed), round: Question[] = [];
     const families = shuffle([...new Set(lexicon[locale].map(w => w.initial))], rng);
     const words = families.map(initial => shuffle(lexicon[locale].filter(w => w.initial === initial), rng));
@@ -52,7 +64,7 @@ export function generateRound(level: number, seed: number, locale: Locale, count
             const cost = (i: number): number => remaining[i] === 1 ? 0 : remaining[i] === 3 ? 1 : 2;
             others.sort((a, b) => sorting ? cost(a) - cost(b) : remaining[b]! - remaining[a]!);
             const choose = (start: number, selected: number[]): boolean => {
-                if (selected.length === (sorting ? 1 : spec.choices - 1)) {
+                if (selected.length === spec.choices - 1) {
                     const group = sorting ? [target, target, ...selected] : [target, ...selected];
                     group.forEach(i => remaining[i]!--);
                     plan.push(group);
@@ -60,7 +72,8 @@ export function generateRound(level: number, seed: number, locale: Locale, count
                     plan.pop(); group.forEach(i => remaining[i]!++);
                     return false;
                 }
-                for (let i = start; i < others.length; i++) if (choose(i + 1, [...selected, others[i]!])) return true;
+                // Sorting boxes must also be told apart from each other, not only from the target.
+                for (let i = start; i < others.length; i++) if (!sorting || selected.every(j => compatible(families[j]!, families[others[i]!]!, locale))) if (choose(i + 1, [...selected, others[i]!])) return true;
                 return false;
             };
             if (choose(0, [])) return true;
@@ -75,7 +88,7 @@ export function generateRound(level: number, seed: number, locale: Locale, count
         const boxes: string[] = [];
         let choices: Word[], letters: string[];
         if (sorting) {
-            boxes.push(selected[2]!.initial); boxes.splice(answer, 0, target.initial);
+            boxes.push(...selected.slice(2).map(w => w.initial)); boxes.splice(answer, 0, target.initial);
             letters = [...boxes]; choices = shuffle(selected, rng);
         } else {
             choices = selected.slice(1); choices.splice(answer, 0, target);

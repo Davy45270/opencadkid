@@ -221,6 +221,18 @@ Tutu is the existing `singe` guide. This game uses the shared six-question sessi
 | 8 | son-lettre | 4 letters, sound only | Lowercase |
 | 9 | trier | 3 images into 2 letter boxes | Uppercase |
 | 10 | trier | 3 images into 2 letter boxes | Lowercase |
+| 11 | image-lettre | 5 letters | Uppercase |
+| 12 | image-lettre | 6 letters | Lowercase |
+| 13 | lettre-image | 4 images | Uppercase |
+| 14 | lettre-image | 5 images | Lowercase |
+| 15 | son-lettre | 5 letters, sound only | Uppercase |
+| 16 | son-lettre | 5 letters, sound only | Lowercase |
+| 17 | trier | 4 images into 3 letter boxes | Uppercase |
+| 18 | trier | 4 images into 3 letter boxes | Lowercase |
+| 19 | lettre-image | 6 images | Lowercase |
+| 20 | son-lettre | 6 letters, sound only | Lowercase |
+
+Levels 11–20 keep the first ten unchanged, since records are stored by level id. Each new level offers more letters, images or boxes than every original level of its mode. Three-box sorting has two images of the target family and one of each other family; its three boxes are pairwise outside the neighbour table. `tests/sons-niveaux.test.ts` checks the literal original table, distinct configurations and played fingerprints, solvability on 200 seeds per language and the per-mode progression.
 
 `generateRound(level, seed, locale, count = 6)` is pure and uses shared Mulberry32/Fisher–Yates. Each language has twenty families, three distinct words per family. Selection happens in that language's native list; there is no question-translation step. Motif identifiers are shared only for the same represented object. All words in the question choices are reserved for the rest of the series, including unseen image-lettre/son-lettre distractor words. Sorting has two words from one family and one from the other, shuffled; the target family box is at the drawn answer position. Every image has exactly one matching box. Each question consumes fresh words; invalid/impossible counts throw. Answer positions are drawn from all allowed slots, excluding a slot only after two consecutive occurrences. No periodic position schedule.
 
