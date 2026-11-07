@@ -15,7 +15,7 @@ export function readSave(storage?: StoragePort, locale: Locale = 'fr'): Save {
         for (const [key, score] of Object.entries(v.records)) if (/^(?:[1-9]|1[0-6])$/.test(key) && typeof score === 'number' && Number.isInteger(score) && score >= 1 && score <= 3) records[Number(key)] = score;
         const pairesRecords: Records = {};
         if (v.pairesRecords && typeof v.pairesRecords === 'object' && !Array.isArray(v.pairesRecords)) {
-            for (const [key, score] of Object.entries(v.pairesRecords)) if (/^[1-7]$/.test(key) && typeof score === 'number' && Number.isInteger(score) && score >= 1 && score <= 3) pairesRecords[Number(key)] = score;
+            for (const [key, score] of Object.entries(v.pairesRecords)) if (/^(?:[1-9]|1[0-4])$/.test(key) && typeof score === 'number' && Number.isInteger(score) && score >= 1 && score <= 3) pairesRecords[Number(key)] = score;
         }
         const formesRecords: Records = {};
         if (v.formesRecords && typeof v.formesRecords === 'object' && !Array.isArray(v.formesRecords)) {

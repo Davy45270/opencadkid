@@ -68,6 +68,15 @@ Comparison baskets are never equal. Both quantities lie in the level range. The 
 | 5 | 8 | 4 × 4 | None | Identical pictures |
 | 6 | 10 | 4 × 5 | None | Identical pictures |
 | 7 (optional extension) | 6 | 4 × 3 | None | One coloured picture and its silhouette |
+| 8 | 8 | 4 × 4 | None | One coloured picture and its silhouette |
+| 9 | 10 | 4 × 5 | None | One coloured picture and its silhouette |
+| 10 | 12 | 4 × 6 | None | Identical pictures |
+| 11 | 8 | 4 × 4 | None | Two identical silhouettes (outline only) |
+| 12 | 10 | 4 × 5 | None | Two identical silhouettes (outline only) |
+| 13 | 12 | 4 × 6 | None | One coloured picture and its silhouette |
+| 14 | 12 | 4 × 6 | None | Two identical silhouettes (outline only) |
+
+Levels 8–14 add the optional `silhouettes` flag (both cards of a pair are dark, so only the outline matches; Lumi says “Trouve les deux mêmes ombres.” / “Find the two matching shadows.”) and the 4 × 6 board. Levels 1–7 keep their literal configuration and the same seeded boards. Difficulty, measured as pairs plus two per lost colour cue, never decreases (10, 12, 12, 12, 14, 14, 16). `tests/paires-niveaux.test.ts` checks the literal original table and a fingerprint of their boards, distinct configurations and play fingerprints, 200 solvable boards per level with unique silhouettes and the phone geometry.
 
 Sixteen motifs have distinct dominant colours and outline paths: apple, banana, cherries, carrot, fish, cat, butterfly, snail, car, boat, rocket, house, star, heart, moon and umbrella. Silhouettes reuse the exact filled outline in a uniform dark colour. Matching uses the motif identifier, including in shadow mode. Recognition never requires colour or reading.
 
@@ -75,9 +84,9 @@ The first three levels block flips until the view calls `endPreview` after two s
 
 `seen` records actual flips (the introductory preview does not count). Each card tracks consecutive failed attempts since its last match; the first encounter does not count as a repeated miss. After three failures involving a previously seen card, `hint` identifies that card and its partner only if both have been seen and neither is found. The hint survives settling and shines around the two card backs; finding the pair clears it. Lumi encourages throughout. No incorrect-pair sound, timer or visible move count is present.
 
-Completion occurs immediately when all cards are found. Three stars require moves ≤ ceil(1.5 × pairs), two require moves ≤ ceil(2.5 × pairs), otherwise one. Every completion unlocks the next level; level seven has no next button. `complete` preserves the maximum score. Existing `records` still belongs to counting; optional saved `pairesRecords` holds memory levels 1–7, filtered to integer stars 1–3. Missing memory records migrate to an empty object without losing counting progress. Erasing progress clears both games.
+Completion occurs immediately when all cards are found. Three stars require moves ≤ ceil(1.5 × pairs), two require moves ≤ ceil(2.5 × pairs), otherwise one. Every completion unlocks the next level; level fourteen has no next button. `complete` preserves the maximum score. Existing `records` still belongs to counting; optional saved `pairesRecords` holds memory levels 1–14, filtered to integer stars 1–3. Missing memory records migrate to an empty object without losing counting progress. Erasing progress clears both games.
 
-The home uses Lumi's existing `licorne` character identifier and the memory skill. Level dots, Home, ear, replay and next-level controls follow the counting shell. The game header has 64 px controls. Card buttons are at least 64 px on 320 px and wider phones, with 10 px gaps. At 390×844, twenty cards fit in four columns and five rows without scrolling. A star decorates each back. Faces turn with a short animation, matched cards sparkle and play the shared soft chime, and reduced motion removes transitions and particles. The active local voice names every flipped motif; the ear repeats the illustrated instruction. Hidden/backgrounded play cancels timers and audio; returning resumes pending preview/mismatch resolution.
+The home uses Lumi's existing `licorne` character identifier and the memory skill. Level dots, Home, ear, replay and next-level controls follow the counting shell. The game header has 64 px controls. Card buttons are at least 64 px on 320 px and wider phones, with 10 px gaps. At 390×844, twenty cards fit in four columns and five rows without scrolling, and twenty-four in four columns and six rows. A star decorates each back. Faces turn with a short animation, matched cards sparkle and play the shared soft chime, and reduced motion removes transitions and particles. The active local voice names every flipped motif; the ear repeats the illustrated instruction. Hidden/backgrounded play cancels timers and audio; returning resumes pending preview/mismatch resolution.
 
 `window.__kid.state().board` is a detached snapshot: board dimensions, identifiers, shadow flags, per-card visible/found flags and screen rectangles, pending indices, seen flags, moves, mismatch, hint and finished. It provides no mutation API. Found cards remain in the snapshot when the completion screen replaces the grid; their rectangles are then null.
 

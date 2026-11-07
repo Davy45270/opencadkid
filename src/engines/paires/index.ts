@@ -1,7 +1,8 @@
 import { makeRng, shuffle } from '../rng';
 export const motifs = ['apple', 'banana', 'cherry', 'carrot', 'fish', 'cat', 'butterfly', 'snail', 'car', 'boat', 'rocket', 'house', 'star', 'heart', 'moon', 'umbrella'] as const;
 export type Motif = typeof motifs[number];
-export interface Level { id: number; pairs: number; columns: number; rows: number; preview: number; shadows: boolean }
+/** silhouettes (levels 11, 12, 14): both cards of every pair are dark silhouettes, so only the outline matches. */
+export interface Level { id: number; pairs: number; columns: number; rows: number; preview: number; shadows: boolean; silhouettes?: boolean }
 export const levels: readonly Level[] = [
     { id: 1, pairs: 2, columns: 2, rows: 2, preview: 2000, shadows: false },
     { id: 2, pairs: 3, columns: 3, rows: 2, preview: 2000, shadows: false },
@@ -9,7 +10,14 @@ export const levels: readonly Level[] = [
     { id: 4, pairs: 6, columns: 4, rows: 3, preview: 0, shadows: false },
     { id: 5, pairs: 8, columns: 4, rows: 4, preview: 0, shadows: false },
     { id: 6, pairs: 10, columns: 4, rows: 5, preview: 0, shadows: false },
-    { id: 7, pairs: 6, columns: 4, rows: 3, preview: 0, shadows: true }
+    { id: 7, pairs: 6, columns: 4, rows: 3, preview: 0, shadows: true },
+    { id: 8, pairs: 8, columns: 4, rows: 4, preview: 0, shadows: true },
+    { id: 9, pairs: 10, columns: 4, rows: 5, preview: 0, shadows: true },
+    { id: 10, pairs: 12, columns: 4, rows: 6, preview: 0, shadows: false },
+    { id: 11, pairs: 8, columns: 4, rows: 4, preview: 0, shadows: true, silhouettes: true },
+    { id: 12, pairs: 10, columns: 4, rows: 5, preview: 0, shadows: true, silhouettes: true },
+    { id: 13, pairs: 12, columns: 4, rows: 6, preview: 0, shadows: true },
+    { id: 14, pairs: 12, columns: 4, rows: 6, preview: 0, shadows: true, silhouettes: true }
 ];
 export interface Card { motif: Motif; shadow: boolean; found: boolean }
 export interface Board {
@@ -23,7 +31,7 @@ export function newBoard(level: number, seed: number): Board {
     const rng = makeRng(seed);
     // The introductory palette has eight shapes; later boards explore all sixteen.
     const selected = shuffle(spec.pairs <= 4 ? motifs.slice(0, 8) : motifs, rng).slice(0, spec.pairs);
-    const cards = shuffle(selected.flatMap(motif => [{ motif, shadow: false, found: false }, { motif, shadow: spec.shadows, found: false }]), rng);
+    const cards = shuffle(selected.flatMap(motif => [{ motif, shadow: spec.silhouettes ?? false, found: false }, { motif, shadow: spec.shadows, found: false }]), rng);
     return { level, cards, columns: spec.columns, rows: spec.rows, preview: spec.preview > 0, visible: [], seen: cards.map(() => false), misses: cards.map(() => 0), moves: 0, mismatch: false, hint: [], finished: false };
 }
 export function endPreview(state: Board): Board { return state.preview ? { ...state, preview: false } : state; }

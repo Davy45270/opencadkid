@@ -32,7 +32,8 @@ test('preview closes after two seconds; English shadow level completes', async (
     const cards = (await memoryState(page)).board.cards;
     expect(cards.filter(c => c.shadow)).toHaveLength(6);
     await expect(page.locator('.instruction p').first()).toHaveText('Find each picture and its shadow.');
-    await solveMemory(page); await expect(page.locator('#next')).toHaveCount(0);
+    // Level seven is no longer the last one: levels 8–14 follow.
+    await solveMemory(page); await expect(page.locator('#next')).toHaveCount(1);
 });
 
 for (const enabled of [true, false]) test(`spoken card names, instruction replay and gentle sound with media=${enabled}`, async ({ page }) => {
@@ -188,4 +189,19 @@ test('English voice says the English motif name', async ({ page }) => {
     await clearSpeech(page); await page.locator('[data-card="0"]').click();
     expect((await media(page)).speech).toEqual([english[motif]]);
     await expect(page.locator('[data-card="0"]')).toHaveAccessibleName(`${english[motif]} 1`);
+});
+test('fourteen level buttons fit the phone width; the last level shows 24 silhouettes on one screen and finishes', async ({ page }) => {
+    await prepareMemory(page, 14);
+    const board = (await memoryState(page)).board;
+    expect(board.cards).toHaveLength(24); expect(board.cards.every(c => c.shadow)).toBe(true);
+    await expect(page.locator('.instruction p').first()).toHaveText('Trouve les deux mêmes ombres.');
+    const viewport = page.viewportSize()!;
+    for (const c of board.cards) { expect(c.rect!.width).toBeGreaterThanOrEqual(64); expect(c.rect!.x + c.rect!.width).toBeLessThanOrEqual(viewport.width); expect(c.rect!.y + c.rect!.height).toBeLessThanOrEqual(viewport.height); }
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    await solveMemory(page); await expect(page.locator('#next')).toHaveCount(0);
+    await page.locator('#back').click(); await page.locator('[data-game="paires"]').click();
+    await expect(page.locator('[data-level]')).toHaveCount(14);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    for (const r of await page.locator('[data-level]').evaluateAll(els => els.map(el => el.getBoundingClientRect()))) { expect(r.width).toBeGreaterThanOrEqual(48); expect(r.right).toBeLessThanOrEqual(viewport.width); }
+    await expect(page.locator('[data-level="14"]')).toContainText('★★★');
 });

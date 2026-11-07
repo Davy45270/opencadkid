@@ -11,7 +11,8 @@ function solve(state: Board): Board {
     return state;
 }
 it('independent level table, deterministic boards, exact pairs and phone grid over 300 seeds per level', () => {
-    expect(levels.map(l => [l.pairs, l.columns, l.rows, l.preview, l.shadows])).toEqual([
+    // Levels 8–14 are covered by tests/paires-niveaux.test.ts; the geometry loop below runs over all of them.
+    expect(levels.slice(0, 7).map(l => [l.pairs, l.columns, l.rows, l.preview, l.shadows])).toEqual([
         [2, 2, 2, 2000, false], [3, 3, 2, 2000, false], [4, 4, 2, 2000, false],
         [6, 4, 3, 0, false], [8, 4, 4, 0, false], [10, 4, 5, 0, false], [6, 4, 3, 0, true]
     ]);
@@ -111,7 +112,7 @@ it('sixteen valid distinct SVG shapes and colours, including silhouettes, and co
     }
 });
 it('separate memory records round-trip, migrate old saves and reject malformed records', () => {
-    let raw = JSON.stringify({ ...fresh(), pairesRecords: { 1: 3, 2: 0, 3: '2', 4: 1.5, 7: 2, 8: 3 } });
+    let raw = JSON.stringify({ ...fresh(), pairesRecords: { 1: 3, 2: 0, 3: '2', 4: 1.5, 7: 2, 15: 3 } });
     const port = { getItem: () => raw, setItem: (_key: string, value: string) => { raw = value; } };
     const save = readSave(port); expect(save.pairesRecords).toEqual({ 1: 3, 7: 2 }); expect(save.records).toEqual({});
     writeSave(port, save); expect(readSave(port)).toEqual(save);
