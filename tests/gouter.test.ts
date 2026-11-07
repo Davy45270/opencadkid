@@ -1,7 +1,7 @@
 import { expect, it } from 'vitest';
 import { advance, complete, cut, CUT_REACH, FIELD, isUnlocked, levels, parseRecords, pop, reward, start, swipeTargets, tap, tapTarget, type State } from '../src/engines/gouter';
 import { play, solve, tolerance } from '../src/engines/gouter/solver';
-import { signature, uses } from '../scripts/gouter-generate';
+import { clones, uses } from '../scripts/gouter-generate';
 import { fieldSvg, gameView, labels, levelView, pictogram, ropePath } from '../src/games/gouter/view';
 
 const idle = (id: number): State => advance(start(id), 900);
@@ -23,9 +23,10 @@ it('116 levels (16 drawn, 100 generated) stay inside the field and use every mec
     expect(levels.some(l => l.ropes.length >= 4)).toBe(true);
 });
 
-it('no two levels share a rig, and every generated hook and bubble takes part in the solution', () => {
-    const keys = levels.map(signature);
-    expect(new Set(keys).size).toBe(levels.length);
+it('no generated level plays like another level, and every generated hook and bubble takes part in the solution', () => {
+    // A rig moved sideways is the same level: clones() compares Boubou and the anchors as seen from the sweet.
+    const pairs = levels.slice(16).flatMap((a, i) => levels.slice(0, 16 + i).filter(b => clones(a, b)).map(b => `${String(a.id)}~${String(b.id)}`));
+    expect(pairs).toEqual([]);
     for (const l of levels.slice(16)) {
         const solution = solve(l.id)!;
         expect(uses(l, solution.plan), `level ${l.id}`).toBe(true);

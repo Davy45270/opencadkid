@@ -2,7 +2,7 @@
 
 ## 1.5.0
 
-- Boubou's snack: 100 new levels, from 17 to 116. Seven kinds of rig take turns (one string, two strings, a slack string, a hook, a bubble that lifts the sweet to Boubou, a bubble that catches it on the way down, four strings), from one gesture to three. Every level is checked by the solver: finishable, three stars reachable, timing forgiving for small hands (at least ten steps either way), nothing happens without a gesture, and no two levels share the same rig.
+- Boubou's snack: 100 new levels, from 17 to 116. Seven kinds of rig take turns (one string, two strings, a slack string, a hook, a bubble that lifts the sweet to Boubou, a bubble that catches it on the way down, four strings), from one gesture to three. Every level is checked by the solver: finishable, three stars reachable, timing forgiving for small hands (at least ten steps either way), nothing happens without a gesture, and no new level plays like another one, even shifted sideways.
 
 ## 1.4.0
 

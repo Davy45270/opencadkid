@@ -2,14 +2,17 @@
  * A rig (sweet, ropes, hook, bubble) is drawn, a child-paced plan is played without stars, and Boubou's
  * mouth and the three stars are put on the path the sweet really takes. A level is kept only if the
  * exhaustive solver finishes it with three stars, forgives at least TOLERANCE ticks of timing error,
- * nothing happens without the child, and its rig is not a near copy of a level already kept.
+ * nothing happens without the child, and it does not play like a level already kept (clones()).
  * Usage: node --experimental-strip-types scripts/gouter-generate.ts [count] > levels-extra.txt */
 import { FIELD, MOUTH_RADIUS, STAR_RADIUS, TREAT_RADIUS, advance, cut, pop, start, type State } from '../src/engines/gouter/index.ts';
-import { levels as authored, type LevelDef } from '../src/engines/gouter/levels.ts';
+import { levels, type LevelDef } from '../src/engines/gouter/levels.ts';
 import { CHILD_GAP, HORIZON, play, solve } from '../src/engines/gouter/solver.ts';
 import { makeRng } from '../src/engines/rng.ts';
 
 export const SEED = 20261107, TOLERANCE = 10;
+/** Levels 1 to 16 are drawn by hand: the generator only ever compares against them, never against its own past output. */
+export const HAND_DRAWN = 16;
+const authored = levels.slice(0, HAND_DRAWN);
 type Family = 'swing' | 'pair' | 'slack' | 'hook' | 'bubble' | 'lift' | 'web';
 const FAMILIES: readonly Family[] = ['swing', 'pair', 'slack', 'hook', 'bubble', 'lift', 'web'];
 interface P { x: number; y: number }
@@ -28,7 +31,8 @@ function rig(f: Family, rnd: () => number): LevelDef {
         case 'slack': { const a = anchor([40, 90]); return { ...base, ropes: [anchor([50, 80], 30), { ...a, length: r(Math.hypot(a.x - treat.x, a.y - treat.y) + between(40, 90)) }] }; }
         // The hook is placed on the path the sweet takes once cut (see hooked()).
         case 'hook': return { ...base, ropes: [anchor([50, 80], 100)] };
-        case 'bubble': return { ...base, ropes: [anchor([60, 80], 40)], bubbles: [{ x: treat.x, y: treat.y + between(60, 80) }] };
+        // Half the rising levels hang from a second, slanted string: cut first, it swings the sweet sideways.
+        case 'bubble': return { ...base, ropes: rnd() < 0.5 ? [anchor([60, 80], 40)] : [anchor([60, 80], 40), { x: Math.max(20, Math.min(300, treat.x + (rnd() < 0.5 ? -1 : 1) * between(70, 130))), y: treat.y - between(10, 60) }], bubbles: [{ x: treat.x, y: treat.y + between(60, 80) }] };
         case 'lift': return { ...base, ropes: [anchor([50, 80], 60)], bubbles: [{ x: Math.max(30, Math.min(290, treat.x + between(-60, 60))), y: between(300, 360) }] };
         case 'web': return { ...base, ropes: [anchor([60, 100], 80), anchor([60, 100], 80), { x: between(20, 60), y: treat.y + between(40, 80) }, { x: between(260, 300), y: treat.y + between(40, 80) }] };
     }
@@ -79,10 +83,18 @@ function dress(def: LevelDef, trail: P[]): LevelDef | null {
     const ok = stars.every((p, i) => d(p, def.treat) > TREAT_RADIUS + STAR_RADIUS + 10 && d(p, mouth) > MOUTH_RADIUS + STAR_RADIUS && p.x >= 20 && p.x <= 300 && p.y >= 30 && p.y <= 420 && stars.every((q, j) => j === i || d(p, q) > 2 * STAR_RADIUS));
     return ok ? { ...def, stars, mouth } : null;
 }
-/** Rig fingerprint: mechanism counts, then sweet, mouth and anchors to the nearest 40 units. */
-export function signature(l: LevelDef): string {
-    const q = (p: P): string => `${r(p.x / 40)}:${r(p.y / 40)}`;
-    return [l.ropes.length, l.hooks?.length ?? 0, l.bubbles?.length ?? 0, l.ropes.some(x => x.length !== undefined) ? 1 : 0, q(l.treat), q(l.mouth), ...l.ropes.map(q).sort()].join('|');
+/** Two levels play alike when they have the same mechanisms and, seen from the sweet, Boubou and every
+ * anchor sit at the same place to within CLONE units: a rig moved sideways is the same level. */
+export const CLONE = 45;
+export function clones(a: LevelDef, b: LevelDef): boolean {
+    const counts = (l: LevelDef): string => `${String(l.ropes.length)}|${String(l.hooks?.length ?? 0)}|${String(l.bubbles?.length ?? 0)}`;
+    if (counts(a) !== counts(b)) return false;
+    const rel = (l: LevelDef, p: P): P => ({ x: p.x - l.treat.x, y: p.y - l.treat.y });
+    const near = (p: P, q: P): boolean => d(p, q) < CLONE;
+    if (!near(rel(a, a.mouth), rel(b, b.mouth))) return false;
+    const order = (l: LevelDef): P[] => [...l.ropes, ...(l.hooks ?? []), ...(l.bubbles ?? [])].map(p => rel(l, p)).sort((p, q) => p.x - q.x || p.y - q.y);
+    const pa = order(a), pb = order(b);
+    return pa.every((p, i) => near(p, pb[i]!));
 }
 function idle(l: LevelDef): State { return advance(start(l), HORIZON); }
 /** Every hook and bubble of the rig takes part in the reference solution, and a plain fall travels sideways. */
@@ -95,25 +107,28 @@ export function uses(l: LevelDef, steps: readonly { tick: number; kind: 'cut' | 
 
 export function generate(count: number, seed = SEED, only?: Family): LevelDef[] {
     const rnd = makeRng(seed), kept: { def: LevelDef; actions: number; tolerance: number; family: number }[] = [];
-    const seen = new Set(authored.map(signature));
-    const quota = Math.ceil(count / FAMILIES.length);
-    for (const [fi, family] of FAMILIES.entries()) {
-        if (only && family !== only) continue;
-        let found = 0;
-        for (let attempt = 0; found < quota && attempt < 8000; attempt++) {
+    const families = FAMILIES.filter(f => !only || f === only), found = families.map(() => 0), dry = families.map(() => 0);
+    // Families take turns; one that cannot find a new level in DRY rigs in a row is left out.
+    const DRY = 1500;
+    for (let turn = 0; kept.length < count && dry.some(n => n < DRY); turn++) {
+        const fi = turn % families.length, family = families[fi]!;
+        if (dry[fi]! >= DRY) continue;
+        let added = false;
+        for (; !added && dry[fi]! < DRY; dry[fi]!++) {
             const def = rig(family, rnd);
-            for (let k = 0; k < 12; k++) {
+            for (let k = 0; k < 12 && !added; k++) {
                 const steps = plan(def, rnd), trail = path(def, steps);
                 const level = family === 'hook' ? hooked(def, trail, rnd) : def; if (!level) continue;
                 const dressed = dress(level, level === def ? trail : path(level, plan(level, rnd))); if (!dressed) continue;
-                const key = signature(dressed); if (seen.has(key)) continue;
+                if ([...authored, ...kept.map(x => x.def)].some(o => clones(o, dressed))) continue;
                 if (idle(dressed).status === 'won') continue;
                 const s = solve(dressed); if (!s || s.stars !== 3 || s.tolerance < TOLERANCE || !uses(dressed, s.plan)) continue;
-                seen.add(key); kept.push({ def: dressed, actions: s.plan.length, tolerance: s.tolerance, family: fi }); found++; break;
+                kept.push({ def: dressed, actions: s.plan.length, tolerance: s.tolerance, family: FAMILIES.indexOf(family) }); added = true;
             }
         }
-        process.stderr.write(`${family}: ${String(found)}\n`);
+        if (added) { found[fi]!++; dry[fi] = 0; }
     }
+    process.stderr.write(families.map((f, i) => `${f}: ${String(found[i])}`).join('\n') + '\n');
     // Easier first: fewer gestures, then more forgiving timing; families stay mixed within a difficulty.
     kept.sort((a, b) => a.actions - b.actions || b.tolerance - a.tolerance);
     return kept.slice(0, count).map((k, i) => ({ ...k.def, id: authored.length + 1 + i }));
