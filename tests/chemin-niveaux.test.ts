@@ -65,30 +65,31 @@ for (const l of levels.slice(8)) it(`level ${l.id}: ${SEEDS} seeds, perfect conn
     // Layout budget measured in the browser (tests/e2e/chemin.spec.ts): nine columns keep 40 px cells at 390 px,
     // and at most eight rows for nine columns keep the page without scrolling at 844 px high.
     expect(l.columns).toBeLessThanOrEqual(9); expect(l.rows / l.columns).toBeLessThanOrEqual(8 / 9);
+    // Failures are collected as text and asserted once per seed: thousands of expect() calls would dominate the run time.
     for (let seed = 0; seed < SEEDS; seed++) {
-        const s = newMaze(l.id, seed);
+        const s = newMaze(l.id, seed), bad: string[] = [];
         expect(s).toEqual(newMaze(l.id, seed));
         expect([s.columns, s.rows]).toEqual([l.columns, l.rows]);
-        expect(s.start % s.columns).toBe(0); expect(s.goal % s.columns).toBe(s.columns - 1);
-        expect(s.grid.reduce((n, e) => n + e.length, 0)).toBe(2 * (s.columns * s.rows - 1));
-        for (let c = 0; c < s.grid.length; c++) for (const n of neighbours(s, c)) expect(neighbours(s, n)).toContain(c);
-        expect(bfs(s, s.start).size).toBe(s.columns * s.rows);
-        const route = path(s, s.start, s.goal);
-        expect(s.solution).toEqual(route);
-        expect(route.length).toBeGreaterThanOrEqual(l.min); expect(route.length).toBeLessThanOrEqual(l.max);
-        expect(new Set(s.bonuses).size).toBe(l.bonuses);
+        if (s.start % s.columns !== 0 || s.goal % s.columns !== s.columns - 1) bad.push('start or goal off its border');
+        if (s.grid.reduce((n, e) => n + e.length, 0) !== 2 * (s.columns * s.rows - 1)) bad.push('not a tree');
+        for (let c = 0; c < s.grid.length; c++) for (const n of neighbours(s, c)) if (!neighbours(s, n).includes(c)) bad.push(`one-way ${c}/${n}`);
+        if (bfs(s, s.start).size !== s.columns * s.rows) bad.push('disconnected');
+        const route = path(s, s.start, s.goal), onRoute = new Set(route);
+        if (JSON.stringify(s.solution) !== JSON.stringify(route)) bad.push('stored solution differs');
+        if (route.length < l.min || route.length > l.max) bad.push(`route of ${route.length}`);
+        if (new Set(s.bonuses).size !== l.bonuses) bad.push('star count');
         for (const b of s.bonuses) {
-            expect([s.start, s.goal]).not.toContain(b);
-            expect(path(s, s.start, b)).not.toContain(s.goal);
-            const back = path(s, b, s.goal).findIndex(c => route.includes(c));
-            expect(back).toBeLessThanOrEqual(l.reach ?? 2);
+            if (b === s.start || b === s.goal) bad.push(`star ${b} on an end`);
+            if (path(s, s.start, b).includes(s.goal)) bad.push(`star ${b} beyond the goal`);
+            if (path(s, b, s.goal).findIndex(c => onRoute.has(c)) > (l.reach ?? 2)) bad.push(`star ${b} too far`);
         }
         // Played through the engine itself: every star collected on the way, then the goal.
         let play = s;
-        const visit = (to: number): void => { for (const c of path(s, play.trace.at(-1)!, to).slice(1)) { const next = extend(play, c); expect(next).not.toBe(play); play = next; } };
-        for (const b of s.bonuses) { visit(b); visit(route[route.findIndex(c => path(s, b, s.goal).includes(c))]!); }
+        const visit = (to: number): void => { for (const c of path(s, play.trace.at(-1)!, to).slice(1)) { const next = extend(play, c); if (next === play) bad.push(`step ${c} refused`); play = next; } };
+        for (const b of s.bonuses) { visit(b); visit(path(s, b, s.goal).find(c => onRoute.has(c))!); }
         visit(s.goal);
-        expect(play.finished).toBe(true); expect([...play.collected].sort()).toEqual([...s.bonuses].sort());
+        if (!play.finished || [...play.collected].sort().join() !== [...s.bonuses].sort().join()) bad.push('not finished with every star');
+        expect(bad, `seed ${seed}`).toEqual([]);
     }
 });
 
