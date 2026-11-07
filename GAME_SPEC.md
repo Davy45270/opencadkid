@@ -497,6 +497,18 @@ Pure `src/engines/suites/` uses the common seeded Mulberry32 RNG. `generateRound
 | 8 | trou | AABB | 4 |
 | 9 | deux-suivants | ABC | 4 |
 | 10 | croissant | 1, 2, 3, 4… or 2, 3, 4, 5… dots | 4 |
+| 11 | suivant | AABC | 4 |
+| 12 | suivant | ABAC | 4 |
+| 13 | decroissant | 8, 7, 6, 5… or 7, 6, 5, 4… dots | 4 |
+| 14 | trou | ABCD | 4 |
+| 15 | trou | AABC | 4 |
+| 16 | deux-suivants | AABB | 4 |
+| 17 | deux-suivants | AABC | 4 |
+| 18 | trou, two holes | ABCD | 4 |
+| 19 | trou, two holes | AABC | 5 |
+| 20 | deux-suivants | ABCD | 5 |
+
+Levels 11–20 keep the first ten unchanged, since records are stored by level id. Every new periodic level uses a four-symbol motif. The shrinking count removes one dot per step; its distractors stay on both sides of the answer (one more, one and two fewer, never zero). Two-hole questions place two distinct interior holes among positions 4–7, filled from left to right; whenever a later answer is a wrong rank of the first, it is moved among the kept ranks so that every answer is offered. Five choices use a three-column palette. The answers to find per question, then the choices, never decrease from level 11 to level 20. `tests/suites-niveaux.test.ts` checks the literal original table, distinct configurations and played fingerprints, a left-to-right solver on 200 seeds and this progression.
 
 Next-item questions show at least two complete repetitions (8–11 visible objects), with a seeded variable stopping rank across every residue of the motif; middle gaps have 12 positions with one interior hole. Two-item continuation extends a visible motif in order, letting the child build its continuation by tap or drag. The same choice palette remains available for the second item. Each symbol has a distinct silhouette: bead, triangle, square, flower, star or moon. Colours may be shared or paired with different shapes; colour alone never distinguishes symbols. Growing objects differ by their visible dot pattern and share a colour. Distractors prioritize wrong ranks and always include an outside motif. Where a two-symbol motif has four choices, two outside objects fill the palette; ABCD selects two wrong ranks and one outside object. Growing distractors include both smaller and larger quantities than the next count, so choosing the largest cannot solve the question. Correct first-choice positions are randomly drawn, excluding a third consecutive identical position.
 

@@ -28,10 +28,10 @@ export async function patternAnswer(page: Page): Promise<number> {
     const dom = await patternDom(page), slot = dom.slots.findIndex(s => s.item === null);
     expect(slot).toBeGreaterThanOrEqual(0);
     let matches: number[];
-    if (dom.mode === 'croissant') {
-        const visible = dom.slots.filter(s => s.item !== null);
-        expect(visible.slice(1).every((s, i) => s.dots === visible[i]!.dots + 1)).toBe(true);
-        matches = dom.choices.filter(c => c.dots === dom.slots[0]!.dots + slot).map(c => c.choice);
+    if (dom.mode === 'croissant' || dom.mode === 'decroissant') {
+        const visible = dom.slots.filter(s => s.item !== null), step = dom.mode === 'croissant' ? 1 : -1;
+        expect(visible.slice(1).every((s, i) => s.dots === visible[i]!.dots + step)).toBe(true);
+        matches = dom.choices.filter(c => c.dots === dom.slots[0]!.dots + slot * step).map(c => c.choice);
     } else {
         const alphabet = [...new Set([...dom.slots.flatMap(s => s.item ?? []), ...dom.choices.map(c => c.item)])];
         const candidates = new Set<string>();

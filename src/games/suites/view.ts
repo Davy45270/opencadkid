@@ -7,7 +7,7 @@ import { itemSvg, name, pictogram } from './items';
 export { pictogram } from './items';
 export function instruction(q: Question, locale: Locale): string { return text(locale, q.mode === 'trou' ? 'patternsHole' : q.mode === 'deux-suivants' ? 'patternsTwo' : 'patternsNext'); }
 export function hintSpeech(q: Question, locale: Locale): string[] {
-    const base = q.mode === 'croissant' ? q.sequence.filter((p): p is Item => p !== null) : q.pattern;
+    const base = q.mode === 'croissant' || q.mode === 'decroissant' ? q.sequence.filter((p): p is Item => p !== null) : q.pattern;
     const phrase = base.map(p => name(p, locale)).join(' ; ');
     return [phrase, `${phrase}…`];
 }
@@ -22,5 +22,5 @@ export function gameView(state: Session, locale: Locale, hint: boolean): string 
     return `${top}<div class="instruction suites-instruction"><div id="guide">${characterSvg('licorne', state.errors && !state.solved ? 'surprise' : 'joie')}</div><div><div class="instruction-pic">${icon('eye')}${icon('arrow')}</div><p>${instruction(q, locale)}</p></div></div><section class="question suites-zone ${q.mode === 'deux-suivants' ? 'suites-drag-zone' : ''}" data-mode="${q.mode}"><div class="suites-sequence">${q.sequence.map((item, i) => {
         const slot = q.slots.indexOf(i), p = item ?? (slot < state.placed.length ? q.choices[state.placed[slot]!] : null);
         return `<div data-slot="${i}" data-missing="${item === null}" class="suites-slot ${!p ? 'suites-empty' : ''} ${slot === state.placed.length ? 'suites-active' : ''} ${hint && i < (q.pattern.length || 4) ? 'suites-base' : ''}" ${p ? attributes(p) : ''}>${p ? itemSvg(p, locale) : icon('arrow')}</div>`;
-    }).join('')}</div><div class="suites-choices">${q.choices.map((p, i) => `<button data-pattern-choice="${i}" ${attributes(p)} class="suites-choice" ${state.solved ? 'disabled' : ''} aria-label="${name(p, locale)}">${itemSvg(p, locale)}</button>`).join('')}</div></section><p id="feedback" aria-live="polite">${state.solved ? text(locale, 'bravo') : state.errors ? text(locale, 'tryAgain') : ''}</p>${state.solved ? `<button id="continue">${icon('arrow')}<span>${text(locale, 'continue')}</span></button>` : ''}`;
+    }).join('')}</div><div class="suites-choices ${q.choices.length > 4 ? 'suites-wide' : ''}">${q.choices.map((p, i) => `<button data-pattern-choice="${i}" ${attributes(p)} class="suites-choice" ${state.solved ? 'disabled' : ''} aria-label="${name(p, locale)}">${itemSvg(p, locale)}</button>`).join('')}</div></section><p id="feedback" aria-live="polite">${state.solved ? text(locale, 'bravo') : state.errors ? text(locale, 'tryAgain') : ''}</p>${state.solved ? `<button id="continue">${icon('arrow')}<span>${text(locale, 'continue')}</span></button>` : ''}`;
 }

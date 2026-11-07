@@ -4,8 +4,9 @@ import { test, expect, media, clearSpeech, state } from './helpers';
 import { patternAnswer, patternDom, patternState, prepareSuites, solvePattern } from './suites-helpers';
 for (const [level, mode, prompt] of [
     [1, 'suivant', 'Qu’est-ce qui vient après ?'], [7, 'trou', 'Qu’est-ce qui manque ?'],
-    [9, 'deux-suivants', 'À toi de continuer ! Place les deux suivants.'], [10, 'croissant', 'Qu’est-ce qui vient après ?']
-] as const) test(`suites ${mode}: DOM-only oracle, voice, retry, hint, six questions and reload`, async ({ page }) => {
+    [9, 'deux-suivants', 'À toi de continuer ! Place les deux suivants.'], [10, 'croissant', 'Qu’est-ce qui vient après ?'],
+    [13, 'decroissant', 'Qu’est-ce qui vient après ?'], [19, 'trou', 'Qu’est-ce qui manque ?'], [20, 'deux-suivants', 'À toi de continuer ! Place les deux suivants.']
+] as const) test(`suites ${mode}${level > 10 ? ` (level ${level})` : ""}: DOM-only oracle, voice, retry, hint, six questions and reload`, async ({ page }) => {
     await prepareSuites(page, level); await expect(page.locator('.suites-zone')).toHaveAttribute('data-mode', mode);
     expect((await media(page)).speech).toContain(prompt); await clearSpeech(page);
     await page.locator('#listen').click(); expect((await media(page)).speech).toEqual([prompt]);
@@ -29,7 +30,7 @@ for (const [level, mode, prompt] of [
     const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('opencadkid.v1')!) as { suitesRecords: Record<number, number>; records: object });
     expect(saved.suitesRecords[level]).toBe(3); expect(saved.records).toEqual({});
     await page.reload(); await page.locator('[data-game="suites"]').click(); await expect(page.locator(`[data-level="${level}"]`)).toContainText('★★★');
-    if (level < 10) await expect(page.locator(`[data-level="${level + 1}"]`)).toBeEnabled();
+    if (level < 20) await expect(page.locator(`[data-level="${level + 1}"]`)).toBeEnabled();
 });
 test('English, keyboard continuation, one-star completion unlocks, silent replay', async ({ page }) => {
     await prepareSuites(page, 9, 'en'); expect((await media(page)).speech).toContain('Your turn to continue! Place the next two.');
@@ -42,14 +43,15 @@ test('English, keyboard continuation, one-star completion unlocks, silent replay
     await expect(page.locator('.stars')).toHaveAttribute('aria-label', '1 star');
     await page.locator('#next').click(); expect((await patternState(page)).level).toBe(10);
     for (let n = 0; n < 6; n++) await solvePattern(page);
-    await expect(page.locator('#next')).toHaveCount(0);
+    // Level 10 is no longer the last one: the final-level controls are checked at level 20 below.
+    await expect(page.locator('#next')).toBeVisible();
     await page.evaluate(() => { const s = JSON.parse(localStorage.getItem('opencadkid.v1')!) as { sound: boolean; voice: boolean }; s.sound = false; s.voice = false; localStorage.setItem('opencadkid.v1', JSON.stringify(s)); });
     await page.reload(); await page.locator('[data-game="suites"]').click(); await page.locator('[data-level="1"]').click(); await page.locator('#listen').click();
     await solvePattern(page); expect((await media(page)).speech).toEqual([]); expect((await media(page)).oscillators).toBe(0);
 });
 test('all levels: real targets, painted SVG geometry, two rows on phone, no overflow 320–1280', async ({ page }) => {
-    test.setTimeout(180_000);
-    for (let level = 1; level <= 10; level++) {
+    test.setTimeout(360_000);
+    for (let level = 1; level <= 20; level++) {
         await prepareSuites(page, level);
         for (const width of [320, 360, 390, 480, 699, 700, 940, 1280]) {
             await page.setViewportSize({ width, height: 844 });
@@ -120,4 +122,17 @@ test('every silhouette and one to eight dots paint at least 48 px including stro
         expect(painted.height, `${item.shape}:${item.dots}`).toBeGreaterThanOrEqual(48);
         expect(painted.inside, `${item.shape}:${item.dots}`).toBe(true);
     }
+});
+test('twenty levels: the list fits a 390×844 phone without horizontal overflow and the last level starts', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 }); await prepareSuites(page, 20);
+    await page.locator('#back').click(); await page.locator('[data-game="suites"]').click();
+    await expect(page.locator('[data-level]')).toHaveCount(20);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    const right = await page.locator('[data-level]').evaluateAll(els => Math.max(...els.map(el => el.getBoundingClientRect().right)));
+    expect(right).toBeLessThanOrEqual(390);
+    await page.locator('[data-level="20"]').click();
+    expect((await patternState(page)).level).toBe(20);
+    await expect(page.locator('[data-pattern-choice]')).toHaveCount(5);
+    for (let n = 0; n < 6; n++) await solvePattern(page);
+    await expect(page.locator('.stars')).toBeVisible(); await expect(page.locator('#next')).toHaveCount(0);
 });

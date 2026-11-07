@@ -8,17 +8,19 @@ import { validSvg } from './svg-oracles';
 const table = [
     ['suivant', 'AB', 3], ['suivant', 'AAB', 3], ['suivant', 'ABB', 4], ['suivant', 'ABC', 4],
     ['suivant', 'AABB', 4], ['suivant', 'ABCD', 4], ['trou', 'ABC', 4], ['trou', 'AABB', 4],
-    ['deux-suivants', 'ABC', 4], ['croissant', '', 4]
+    ['deux-suivants', 'ABC', 4], ['croissant', '', 4],
+    ['suivant', 'AABC', 4], ['suivant', 'ABAC', 4], ['decroissant', '', 4], ['trou', 'ABCD', 4], ['trou', 'AABC', 4],
+    ['deux-suivants', 'AABB', 4], ['deux-suivants', 'AABC', 4], ['trou', 'ABCD', 4], ['trou', 'AABC', 5], ['deux-suivants', 'ABCD', 5]
 ] as const;
 const identity = (p: Item): string => JSON.stringify([p.shape, p.color, p.dots]);
 /** Deliberately enumerate actual motifs, rather than calling the engine's
  * residue validator or reading its pattern/answer to decide a continuation. */
 function possibilities(q: Question, slot: number): number[] {
-    if (q.mode === 'croissant') {
-        const shown = q.sequence.flatMap((p, i) => p ? [{ p, i }] : []);
+    if (q.mode === 'croissant' || q.mode === 'decroissant') {
+        const shown = q.sequence.flatMap((p, i) => p ? [{ p, i }] : []), step = q.mode === 'croissant' ? 1 : -1;
         const differences = shown.slice(1).map((v, i) => (v.p.dots - shown[i]!.p.dots) / (v.i - shown[i]!.i));
-        if (!differences.every(d => d === 1)) throw new Error('Not growing by one');
-        return q.choices.flatMap((p, i) => p.shape === 'points' && p.dots === shown[0]!.p.dots + slot ? [i] : []);
+        if (!differences.every(d => d === step)) throw new Error('Not changing by one');
+        return q.choices.flatMap((p, i) => p.shape === 'points' && p.dots === shown[0]!.p.dots + slot * step ? [i] : []);
     }
     const alphabet = [...new Set([...q.sequence.filter((p): p is Item => p !== null), ...q.choices].map(identity))];
     const possible = new Set<string>();
@@ -36,7 +38,7 @@ function possibilities(q: Question, slot: number): number[] {
 }
 it('independent ten-level specification and invalid generation inputs', () => {
     expect(levels.map(l => [l.mode, l.pattern, l.choices])).toEqual(table);
-    for (const level of [0, 11, 1.5]) expect(() => generateRound(level, 1)).toThrow();
+    for (const level of [0, 21, 1.5]) expect(() => generateRound(level, 1)).toThrow();
     for (const count of [0, -1, 1.5, NaN]) expect(() => generateRound(1, 1, count)).toThrow();
     expect(generateRound(1, 2, 2)).toHaveLength(2);
 });
@@ -70,10 +72,10 @@ for (const [index, [mode, motif, count]] of table.entries()) it(`level ${index +
                 if (new Set(letters.values()).size !== letters.size) failures.push('distinct symbols');
                 if (!shown.every((p, i) => identity(p!) === letters.get(motif[i % motif.length]!))) failures.push('visible rule');
             }
-            if (mode === 'trou' && (q.slots[0]! <= 0 || q.slots[0]! >= q.sequence.length - 1)) failures.push('interior hole');
+            if (mode === 'trou' && q.slots.some(slot => slot <= 0 || slot >= q.sequence.length - 1)) failures.push('interior hole');
             const all = [...q.choices, ...q.sequence.filter((p): p is Item => p !== null)];
             for (const a of all) for (const b of all) if (identity(a) !== identity(b) && a.shape === b.shape && a.dots === b.dots) failures.push('colour alone');
-            if (mode !== 'croissant') {
+            if (mode !== 'croissant' && mode !== 'decroissant') {
                 const base = new Set(q.pattern.map(identity));
                 if (!q.choices.some(p => !base.has(identity(p)))) failures.push('outside distractor');
                 if (!q.choices.some((p, i) => i !== q.answer && base.has(identity(p)))) failures.push('wrong rank distractor');
@@ -105,7 +107,7 @@ it('pure answers, two-error hint, ordered double continuation, invalid inputs an
 });
 it('common reward boundaries, six successes, low score unlock and best score preservation', () => {
     expect(Array.from({ length: 7 }, (_, n) => stars(n))).toEqual([1, 1, 1, 2, 2, 3, 3]);
-    for (let level = 1; level <= 10; level++) for (const clean of [false, true]) {
+    for (let level = 1; level <= levels.length; level++) for (const clean of [false, true]) {
         let s = start(level, 5); expect(complete({}, s)).toEqual({});
         for (let i = 0; i < 6; i++) {
             const q = s.questions[s.index]!;
@@ -125,7 +127,7 @@ it('complete bilingual prompts and names, finite well-formed SVG and hint around
         for (const value of Object.values(messages[locale])) expect(value.trim()).not.toBe('');
         expect(Object.values(colorNames[locale]).every(Boolean)).toBe(true); expect(Object.values(shapeNames[locale]).every(Boolean)).toBe(true);
         expect(levelView(fresh(locale))).toContain('data-level="10"');
-        for (let level = 1; level <= 10; level++) {
+        for (let level = 1; level <= levels.length; level++) {
             const state = start(level, 4), q = state.questions[0]!;
             expect(instruction(q, locale)).not.toBe(''); expect(hintSpeech(q, locale).every(Boolean)).toBe(true);
             const view = gameView(state, locale, true);
@@ -142,9 +144,9 @@ it('complete bilingual prompts and names, finite well-formed SVG and hint around
     expect(instruction(generateRound(7, 0)[0]!, 'en')).toBe('What is missing?');
 });
 it('independent saved records migrate, filter, round-trip and clear', () => {
-    let raw = JSON.stringify({ ...fresh(), records: { 1: 3 }, suitesRecords: { 1: 1, 10: 3, 11: 2, 2: 0, 3: 1.5, 4: '3' } });
+    let raw = JSON.stringify({ ...fresh(), records: { 1: 3 }, suitesRecords: { 1: 1, 10: 3, 20: 2, 21: 2, 2: 0, 3: 1.5, 4: '3' } });
     const port = { getItem: () => raw, setItem: (_: string, value: string) => { raw = value; } };
-    const save = readSave(port); expect(save.suitesRecords).toEqual({ 1: 1, 10: 3 }); expect(save.records).toEqual({ 1: 3 });
+    const save = readSave(port); expect(save.suitesRecords).toEqual({ 1: 1, 10: 3, 20: 2 }); expect(save.records).toEqual({ 1: 3 });
     writeSave(port, save); expect(readSave(port)).toEqual(save);
     raw = JSON.stringify({ version: 1, locale: 'fr', voice: true, sound: true, records: { 1: 2 } });
     expect(readSave(port).suitesRecords).toEqual({}); expect(readSave(port).records).toEqual({ 1: 2 });
@@ -173,7 +175,7 @@ it('next ranks cover every motif residue over 300 seeds without a first-item sho
 }, 30_000);
 it('growing choices straddle the independently inferred answer on 300 seeds', () => {
     let largest = 0, questions = 0;
-    for (let seed = 0; seed < 300; seed++) for (const q of generateRound(10, seed)) {
+    for (const level of [10, 13]) for (let seed = 0; seed < 300; seed++) for (const q of generateRound(level, seed)) {
         const possible = possibilities(q, q.sequence.findIndex(p => p === null));
         expect(possible).toHaveLength(1);
         const target = q.choices[possible[0]!]!.dots;

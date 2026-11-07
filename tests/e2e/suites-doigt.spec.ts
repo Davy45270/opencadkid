@@ -50,7 +50,7 @@ async function drag(page: Page, context: BrowserContext, choice: number, outcome
         if (outcome !== 'drop') await expectReturned(page.locator(selector), returnOrigin);
     } finally { await cdp.detach(); }
 }
-for (const level of [1, 7, 9, 10]) test(`suites ${level}: noisy mobile finger, double touch, ordered drag, no scroll`, async ({ page, context, isMobile }) => {
+for (const level of [1, 7, 9, 10, 19, 20]) test(`suites ${level}: noisy mobile finger, double touch, ordered drag, no scroll`, async ({ page, context, isMobile }) => {
     test.skip(!isMobile, 'Real mobile touch only'); noiseSeed = 700 + level;
     await page.setViewportSize({ width: 390, height: 844 }); await prepareSuites(page, level);
     const scroll = await page.evaluate(() => [scrollX, scrollY]);
@@ -65,7 +65,7 @@ for (const level of [1, 7, 9, 10]) test(`suites ${level}: noisy mobile finger, d
             await tap(page, `[data-pattern-choice="${wrong}"]`);
             await tap(page, `[data-pattern-choice="${(choice + 2) % rects.length}"]`);
             expect((await patternState(page)).suites.errors).toBe(2); expect(await page.locator('.suites-base').count()).toBeGreaterThan(0);
-            if (level === 9) {
+            if (level === 9 || level === 20) {
                 // The preceding wrong answer wiggles a choice; never freeze that transient geometry.
                 await expectMotionFinished(page.locator('[data-pattern-choice]'));
                 const before = await patternState(page);
@@ -80,9 +80,14 @@ for (const level of [1, 7, 9, 10]) test(`suites ${level}: noisy mobile finger, d
                 const s = await patternState(page); return s.index === question && s.suites.placed.length === 1 && s.suites.errors === 2;
             });
         }
+        let previous = question === 0 ? choice : -1;
         while (await page.locator('.suites-empty').count()) {
             const next = await patternAnswer(page), before = (await patternState(page)).suites.placed.length;
-            if (level === 9) await drag(page, context, next); else await tap(page, `[data-pattern-choice="${next}"]`);
+            // Two holes may need the same object (AABC): a child's second touch on the same card
+            // is deliberate only after the shared 350 ms double-touch window.
+            if (next === previous) await page.waitForTimeout(400);
+            previous = next;
+            if (level === 9 || level === 20) await drag(page, context, next); else await tap(page, `[data-pattern-choice="${next}"]`);
             await expectTouch(page, 'Noisy gesture must advance exactly one slot', async () => (await patternState(page)).suites.placed.length === before + 1);
         }
         await expect(page.locator('#continue')).toBeVisible(); await tap(page, '#continue');
