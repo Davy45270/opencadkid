@@ -51,7 +51,7 @@ test('a miss is gentle, three in a row light up an object to find', async ({ pag
     expect(after.state!.items[after.state!.hint!]!.target).toBe(true);
 });
 
-test('the last level opens with grass hiding some objects, and every screen fits from 320 to 1280 px', async ({ page }) => {
+test('the last level opens with the scenery hiding some objects, and every screen fits from 320 to 1280 px', async ({ page }) => {
     await open(page, Object.fromEntries(levels.slice(0, -1).map(l => [l.id, 1])));
     for (const width of [320, 390, 1280]) {
         await page.setViewportSize({ width, height: 844 });
@@ -61,7 +61,7 @@ test('the last level opens with grass hiding some objects, and every screen fits
     await page.locator(`[data-cherche-level="${levels.length}"]`).click();
     const last = levels.at(-1)!;
     await expect(page.locator('.cherche-zone [data-item]')).toHaveCount(last.find + last.decoys);
-    await expect(page.locator('.cherche-zone [data-grass]')).toHaveCount(last.covered);
+    await expect(page.locator('.cherche-zone [data-cover]')).toHaveCount(last.covered);
     for (const width of [320, 390, 1280]) {
         await page.setViewportSize({ width, height: 844 });
         expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);

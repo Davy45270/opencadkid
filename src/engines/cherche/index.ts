@@ -10,7 +10,8 @@ export const kinds = [...props, ...drawn] as const;
 export type Kind = typeof kinds[number];
 export const scenes = ['zen', 'ardennes', 'volcano', 'islands', 'galaxy', 'valley'] as const;
 export type Scene = typeof scenes[number];
-/** find: objects to find; decoys: other objects in the way; size: drawn size in field units; covered: targets half hidden behind grass. */
+/** find: objects to find; decoys: other objects in the way; size: drawn size in field units, for an object in the foreground;
+ * covered: targets half hidden behind a piece of the scenery. */
 export interface Level { id: number; find: number; decoys: number; size: number; covered: number }
 export const levels: readonly Level[] = [
     { id: 1, find: 3, decoys: 2, size: 60, covered: 0 }, { id: 2, find: 3, decoys: 4, size: 56, covered: 0 },
@@ -26,24 +27,94 @@ export const TARGET_CLEARANCE = 40;
 /** A tap within this distance of an object's centre (or within its drawn half-size, if larger) is a tap on that object. */
 export const HIT_RADIUS = 22;
 export interface Item { kind: Kind; x: number; y: number; size: number; target: boolean; covered: boolean; found: boolean }
+type Polygon = readonly (readonly [number, number])[];
+/** Where an object can stand in each painting, in field units: the point under its feet lies in one of these zones (sand,
+ * meadow, bridge deck, pier, rock top, lily pad…), never in the sky or on water. `horizon` sets the perspective: an object
+ * standing high up the picture is farther away, so smaller. Traced by hand on the six paintings. */
+export const grounds: Record<Scene, { horizon: number; zones: readonly Polygon[] }> = {
+    zen: { horizon: 100, zones: [
+        [[0, 212], [320, 212], [320, 252], [0, 252]], // raked sand and the stones of the shore
+        [[100, 133], [140, 125], [200, 124], [244, 130], [244, 135], [100, 137]], // bridge deck
+        [[28, 120], [68, 120], [68, 125], [28, 125]], // mossy rock
+        [[78, 158], [132, 158], [132, 164], [78, 164]], [[262, 152], [320, 150], [320, 160], [262, 161]], // banks
+        [[30, 202], [116, 202], [116, 207], [30, 207]], [[214, 188], [306, 186], [306, 192], [214, 193]] // lily pads
+    ] },
+    ardennes: { horizon: 110, zones: [
+        [[0, 228], [320, 228], [320, 252], [0, 252]], // meadow
+        [[0, 190], [200, 198], [200, 228], [0, 228]], // grass under the trees
+        [[252, 184], [320, 181], [320, 190], [252, 192]] // far bank of the river
+    ] },
+    volcano: { horizon: 120, zones: [
+        [[0, 212], [320, 210], [320, 252], [0, 252]], // cold lava plain
+        [[12, 140], [138, 140], [138, 149], [12, 149]], [[182, 150], [298, 146], [298, 156], [182, 158]] // rock shelves
+    ] },
+    islands: { horizon: 125, zones: [
+        [[0, 222], [320, 220], [320, 252], [0, 252]], // beach
+        [[250, 129], [320, 129], [320, 133], [250, 133]], // pier
+        [[74, 134], [148, 136], [148, 140], [74, 140]] // islet
+    ] },
+    galaxy: { horizon: 150, zones: [
+        [[0, 204], [320, 204], [320, 252], [0, 252]], // plain
+        [[60, 174], [250, 172], [250, 198], [60, 200]], [[0, 186], [55, 186], [55, 200], [0, 200]], [[250, 190], [320, 188], [320, 200], [250, 200]] // plateau
+    ] },
+    valley: { horizon: 110, zones: [
+        [[0, 228], [320, 228], [320, 252], [0, 252]], // meadow
+        [[226, 178], [320, 175], [320, 228], [226, 228]], // flowering slope
+        [[106, 168], [195, 161], [288, 166], [288, 170], [106, 172]], // bridge
+        [[0, 136], [100, 140], [100, 168], [0, 170]], [[100, 128], [320, 124], [320, 148], [100, 150]] // hills
+    ] }
+};
+/** How big an object standing at `foot` looks, relative to the foreground: from FAR at the horizon to NEAR at the bottom edge. */
+export const DEPTH = { far: .7, near: 1.12 } as const;
+/** An object to find never shrinks below this share of the level's size, however far it stands. */
+export const TARGET_MIN_SCALE = .9;
+export function depthScale(scene: Scene, foot: number): number {
+    const { horizon } = grounds[scene], t = Math.min(1, Math.max(0, (foot - horizon) / (FIELD.height - horizon)));
+    return DEPTH.far + (DEPTH.near - DEPTH.far) * t;
+}
+export function inside(poly: Polygon, x: number, y: number): boolean {
+    let hit = false;
+    for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+        const [xi, yi] = poly[i]!, [xj, yj] = poly[j]!;
+        if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) hit = !hit;
+    }
+    return hit;
+}
+const area = (poly: Polygon): number => Math.abs(poly.reduce((sum, [x, y], i) => { const [nx, ny] = poly[(i + 1) % poly.length]!; return sum + x * ny - nx * y; }, 0)) / 2;
+/** A point under an object's feet, picked uniformly over the scene's ground zones. */
+function footPoint(scene: Scene, rng: () => number): Point {
+    const zones = grounds[scene].zones, weights = zones.map(area), total = weights.reduce((a, b) => a + b, 0);
+    let pick = rng() * total, zone = zones[0]!;
+    for (const [i, w] of weights.entries()) { if (pick < w) { zone = zones[i]!; break; } pick -= w; }
+    const xs = zone.map(p => p[0]), ys = zone.map(p => p[1]);
+    for (;;) {
+        const x = Math.min(...xs) + rng() * (Math.max(...xs) - Math.min(...xs)), y = Math.min(...ys) + rng() * (Math.max(...ys) - Math.min(...ys));
+        if (inside(zone, x, y)) return { x, y };
+    }
+}
+/** Bottom of an object's drawing: it stands there. */
+export const foot = (item: Pick<Item, 'y' | 'size'>): number => item.y + item.size / 2;
 export interface State { level: number; scene: Scene; items: Item[]; misses: number; sinceFind: number; hint: number | null; finished: boolean }
 export interface Point { x: number; y: number }
-/** Decoys vary a little in size so the scene does not look like a grid; targets keep the level's size. */
-function place(spec: Level, rng: () => number): Item[] | null {
+/** Every object stands on the ground of the painting, at the size its distance gives it; decoys also vary a little. */
+function place(spec: Level, scene: Scene, rng: () => number): Item[] | null {
     const chosen = shuffle(kinds, rng).slice(0, spec.find + spec.decoys);
     const items: Item[] = [];
     const coveredSet = new Set(shuffle(Array.from({ length: spec.find }, (_, i) => i), rng).slice(0, spec.covered));
     for (const [i, kind] of chosen.entries()) {
-        const target = i < spec.find, size = target ? spec.size : Math.round(spec.size * (0.85 + rng() * 0.3));
-        const margin = size / 2 + 2;
+        const target = i < spec.find, vary = target ? 1 : 0.9 + rng() * 0.2;
         let ok = false;
         for (let attempt = 0; attempt < 400 && !ok; attempt++) {
+            const ground = footPoint(scene, rng), depth = depthScale(scene, ground.y);
+            const size = Math.round(spec.size * (target ? Math.max(TARGET_MIN_SCALE, depth) : depth * vary));
             // Rounded before the checks, so the stored positions are exactly the ones that passed them.
-            const x = Math.round((margin + rng() * (FIELD.width - 2 * margin)) * 10) / 10, y = Math.round((margin + rng() * (FIELD.height - 2 * margin)) * 10) / 10;
+            const x = Math.round(ground.x * 10) / 10, y = Math.round((ground.y - size / 2) * 10) / 10;
+            if (x - size / 2 < 0 || x + size / 2 > FIELD.width || y - size / 2 < 0 || y + size / 2 > FIELD.height) continue;
+            if (!grounds[scene].zones.some(z => inside(z, x, y + size / 2))) continue;
             ok = items.every(o => {
                 const d = Math.hypot(o.x - x, o.y - y);
-                // Objects may touch but never sit on top of each other; a target keeps its clear tap zone.
-                return d >= 0.8 * (o.size + size) / 2 && (!(target || o.target) || d >= TARGET_CLEARANCE);
+                // Decoys may stand partly behind one another, as things do; a target keeps its clear tap zone.
+                return d >= (target || o.target ? 0.8 : 0.55) * (o.size + size) / 2 && (!(target || o.target) || d >= TARGET_CLEARANCE);
             });
             if (ok) items.push({ kind, x, y, size, target, covered: target && coveredSet.has(i), found: false });
         }
@@ -55,10 +126,14 @@ export function start(level: number, seed: number): State {
     const spec = levels.find(l => l.id === level);
     if (!spec) throw new RangeError('Unknown level');
     const rng = makeRng(seed);
-    const scene = scenes[Math.floor(rng() * scenes.length)]!;
-    for (let round = 0; round < 50; round++) {
-        const items = place(spec, rng);
-        if (items) return { level, scene, items, misses: 0, sinceFind: 0, hint: null, finished: false };
+    const first = Math.floor(rng() * scenes.length);
+    // A painting with too little ground for this many objects hands over to the next one.
+    for (let k = 0; k < scenes.length; k++) {
+        const scene = scenes[(first + k) % scenes.length]!;
+        for (let round = 0; round < 30; round++) {
+            const items = place(spec, scene, rng);
+            if (items) return { level, scene, items, misses: 0, sinceFind: 0, hint: null, finished: false };
+        }
     }
     throw new RangeError('No layout found');
 }

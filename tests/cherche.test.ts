@@ -1,7 +1,7 @@
 import { expect, it } from 'vitest';
-import { complete, FIELD, HINT_AFTER, isUnlocked, itemAt, kinds, levels, parseRecords, props, scenes, stars, start, tap, TARGET_CLEARANCE, type State } from '../src/engines/cherche';
+import { complete, depthScale, FIELD, foot, grounds, HINT_AFTER, inside, isUnlocked, itemAt, kinds, levels, parseRecords, props, scenes, stars, start, tap, TARGET_CLEARANCE, TARGET_MIN_SCALE, type State } from '../src/engines/cherche';
 import { names, propUrl } from '../src/games/cherche/items';
-import { fieldSvg, gameView, levelView } from '../src/games/cherche/view';
+import { fieldSvg, gameView, levelView, lightGains } from '../src/games/cherche/view';
 
 const SEEDS = 200;
 it('twelve distinct levels, harder step by step', () => {
@@ -10,7 +10,7 @@ it('twelve distinct levels, harder step by step', () => {
     expect(new Set(keys).size).toBe(levels.length);
     for (let i = 1; i < levels.length; i++) {
         const a = levels[i - 1]!, b = levels[i]!;
-        // Never easier: as many objects to find and in the way, never larger, never fewer hidden in the grass; and something changes.
+        // Never easier: as many objects to find and in the way, never larger, never fewer half hidden; and something changes.
         expect(b.find).toBeGreaterThanOrEqual(a.find); expect(b.decoys).toBeGreaterThanOrEqual(a.decoys);
         expect(b.size).toBeLessThan(a.size); expect(b.covered).toBeGreaterThanOrEqual(a.covered);
         expect(b.covered).toBeLessThanOrEqual(b.find);
@@ -43,6 +43,13 @@ function solvable(s: State): void {
             expect(itemAt(s, p)).toBe(i);
         }
     }
+    // Every object stands on the ground of its painting, at the size of its distance; an object to find never gets too small.
+    for (const it of s.items) {
+        expect(grounds[s.scene].zones.some(z => inside(z, it.x, foot(it))), `${s.scene} ${it.kind} at ${it.x},${foot(it)}`).toBe(true);
+        const depth = depthScale(s.scene, foot(it));
+        if (it.target) { expect(Math.abs(it.size - spec.size * Math.max(TARGET_MIN_SCALE, depth))).toBeLessThanOrEqual(1); expect(it.size).toBeGreaterThanOrEqual(Math.round(spec.size * TARGET_MIN_SCALE)); }
+        else expect(Math.abs(it.size - spec.size * depth)).toBeLessThanOrEqual(spec.size * depth * .1 + .5);
+    }
     // Playing every target in order finishes the level with three stars.
     let state = s;
     for (const [i, it] of s.items.entries()) if (it.target) { const r = tap(state, it); expect(r.found).toBe(i); state = r.state; }
@@ -59,6 +66,17 @@ it(`every level is solvable on ${SEEDS} seeds, deterministic, and no two levels 
         fingerprints.set(print, level.id);
     }
 }, 120_000);
+it('the scenery is in front of a hidden object, nearer objects are drawn last, and the local light only shades an object', () => {
+    const s = start(12, 5), html = fieldSvg(s, 'fr');
+    expect(html).not.toMatch(/data-grass/);
+    // Each cover is a clipped copy of the painting itself, not a drawing laid over it.
+    expect(html.match(/<g data-cover[^>]*><image [^>]*href="[^"]+"/g)).toHaveLength(levels[11]!.covered);
+    expect(html.match(/data-shadow/g)).toHaveLength(s.items.length);
+    const drawn = [...html.matchAll(/data-item="(\d+)"/g)].map(m => foot(s.items[Number(m[1])]!));
+    expect(drawn).toEqual([...drawn].sort((a, b) => a - b));
+    for (const scene of scenes) for (let x = 5; x < FIELD.width; x += 40) for (let y = 5; y < FIELD.height; y += 32)
+        for (const g of lightGains(scene, x, y)) { expect(g).toBeGreaterThanOrEqual(.6); expect(g).toBeLessThanOrEqual(1.15); }
+});
 it('misses count, a hint shows after three misses in a row, an object already found is not a mistake', () => {
     let s = start(6, 42);
     const decoy = s.items.find(it => !it.target)!, target = s.items.findIndex(it => it.target);
@@ -84,7 +102,7 @@ it('the views draw every object, the list of objects to find, and finite numbers
         const html = gameView(s, locale, 'x');
         expect(html.match(/data-item=/g)).toHaveLength(s.items.length);
         expect(html.match(/data-wanted=/g)).toHaveLength(levels[11]!.find);
-        expect(html.match(/data-grass/g)).toHaveLength(levels[11]!.covered);
+        expect(html.match(/data-cover/g)).toHaveLength(levels[11]!.covered);
         expect(html).not.toMatch(/NaN|undefined|Infinity/);
         expect(levelView({ 1: 3 }, locale).match(/data-cherche-level=/g)).toHaveLength(12);
     }
