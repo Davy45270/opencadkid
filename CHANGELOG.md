@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.1
+
+- Tutu’s hiding places: the objects now belong to the landscape. They stand on its ground (sand, meadow, bridge, pier, rocks) instead of floating in the sky or on water, get smaller with distance, cast a soft shadow and take the colour of the light around them; the hidden ones are half behind a piece of the painting itself instead of a green tuft or a white cloud. More than half of every object to find still shows.
+
 ## 1.7.0
 
 - New game, Tutu’s hiding places: objects hide in the painted landscapes, some half behind tall grass or a cloud, and the child touches the ones shown in the list. 12 levels, from 3 objects to find among 2 decoys up to 8 among 14, smaller and more often hidden. After three misses in a row, one target shines. Works offline.
