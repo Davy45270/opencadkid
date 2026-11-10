@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.13.0
+
+- New game, Boubou’s boxes, the gentle Kid version of Opencade’s Caisses: Boubou tidies his toys by pushing toy boxes onto their places in the garden. He can also pull a box, so a box stuck in a corner always comes back out: no scene can ever get stuck. A big free “Back” button undoes the last step, as often as wanted.
+- No clock, no step limit, no lives, nothing to lose. A wrong step is a funny try that changes nothing: the box bonks the wall and rolls its eyes, two boxes are too heavy, Boubou bumps his nose or stubs his toe, a toy shakes its head at the wrong place, a splash at the pond, a pull on nothing and Boubou sits down on his bottom.
+- 32 scenes written by hand, each with a short title said by Boubou: pulling, places with a toy drawn on them (ball on ball, teddy on teddy), a pond, a conveyor belt, a door opened by a button, ice where a box slides to the wall, a hole to fill with a box to walk over. After three funny tries, the next good step shines.
+- Erasing the progress in the parents’ space also erases the boxes stars.
+
 ## 1.12.0
 
 - New game, Lumi’s crossing, the gentle Kid version of Opencade’s Traverse: a little one crosses roads, rivers and rails to reach Lumi. It is turn by turn: nothing moves until the child takes a step (slide a finger, touch a big arrow or the next square), then cars, logs and water lilies move one notch, so the child always sees what comes next.
