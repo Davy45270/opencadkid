@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.11.1
+
+- A game opened from the bottom of the home page now shows its first levels: the level picker used to open scrolled down to the last, locked levels.
+
 ## 1.11.0
 
 - New game, Lumi’s sweets, the gentle Kid version of Opencade’s Gourmandises: swap two neighbouring sweets by sliding a finger or with two touches; three alike in a line jump into Lumi’s jar. Every colour also carries a shape (heart, diamond, star, square, round, berlingot), and close colours never share a scene.
