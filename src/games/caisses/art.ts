@@ -33,11 +33,12 @@ export function crate(m: Motif): string {
 export function sunk(m: Motif): string {
     return `<rect x="-40" y="-36" width="80" height="72" rx="10" fill="#b98550" stroke="${INK}" stroke-width="4"/><path d="M-40 -12H40M-40 12H40" stroke="#8a5a2e" stroke-width="3"/><rect x="-40" y="-36" width="80" height="10" rx="5" fill="${COLOURS[m].main}" opacity=".8"/>`;
 }
-/** A spot: a rug with a chalk outline of its toy, or a big dotted star when any crate fits. */
+/** A spot: a rug with a chalk outline of its toy, or, when any crate fits, a plain round rug with no drawing on it (a
+ * symbol there would read as « the spot of another toy » before the toys' drawings are brought in). */
 export function spot(m: Motif | null): string {
     const edge = m ? COLOURS[m].main : '#8d68a0';
     return `<rect x="-44" y="-44" width="88" height="88" rx="16" fill="${m ? COLOURS[m].light : '#f3e9ff'}" stroke="${edge}" stroke-width="5" stroke-dasharray="14 8"/>`
-        + (m ? `<g opacity=".9">${toy(m, false)}</g>` : `<path d="M0 -24L7 -8L24 -7L11 4L15 21L0 12L-15 21L-11 4L-24 -7L-7 -8Z" fill="none" stroke="#8d68a0" stroke-width="4" stroke-linejoin="round"/>`);
+        + (m ? `<g opacity=".9">${toy(m, false)}</g>` : `<circle r="26" fill="#e3d2f7" stroke="#8d68a0" stroke-width="4"/><circle r="14" fill="none" stroke="#b9a0d8" stroke-width="3"/>`);
 }
 /** The ground of a cell. `x + y` alternates the grass so the cells can be counted. */
 export function ground(kind: string, x: number, y: number, dir?: Move): string {
