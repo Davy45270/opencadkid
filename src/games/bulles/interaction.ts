@@ -17,6 +17,8 @@ export const AIM_LENGTH = 190;
 export const FLIGHT_SPEED = 0.55;
 export const EFFECT_MS = 1700;
 const KEY_STEP = 3 * Math.PI / 180;
+/** The written line under the guide: a title without its own full stop gets one before what follows. */
+export const sentence = (words: readonly string[]): string => words.map((w, i) => i < words.length - 1 && !/[.!?…]$/.test(w) ? `${w}.` : w).join(' ');
 const reducedMotion = (): boolean => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
 let observed = { flying: false, aiming: false };
 export function snapshot(session: Session, root: ParentNode): object {
@@ -158,8 +160,8 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
     function play(s: State, fresh: boolean): void {
         stop(); flying = false; observed.flying = false; session.screen = 'play'; session.state = s;
         const words = instruction(levelOf(s.level), locale);
-        if (fresh) { session.aim = 0; session.last = null; message = words.join(' '); speak(words); }
-        else if (!message) message = words.join(' ');
+        if (fresh) { session.aim = 0; session.last = null; message = sentence(words); speak(words); }
+        else if (!message) message = sentence(words);
         draw(); loop();
     }
     if (session.screen === 'play' && session.state) play(session.state, false); else levelsScreen();
