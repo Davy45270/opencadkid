@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.10.0
+
+- New game, Boubou’s bubbles, the gentle Kid version of Opencade’s Bubble Lab: aim with a finger along a long dotted line and throw coloured bubbles at a hanging cluster. Three of a colour that touch fly away as butterflies, and whatever no longer hangs falls gently and grows into flowers. Every colour also carries a shape (heart, diamond, star, square, circle, triangle), and close colours never share a scene.
+- No clock, no lives, no ceiling coming down, nothing to lose. A throw that changes nothing is a funny try: boing on the empty ceiling (Boubou scratches his head), a dizzy bubble after many bounces, a friend who waves, a cloud that sneezes, two bubbles that kiss, a face pulled at the wrong colours.
+- 32 scenes written by hand, each with a short title said by Lumi or Boubou: a rainbow bubble that goes with every colour, sleepy clouds that float away, a chick, a ladybird and a snail to free from their bubbles, ice bubbles that melt in two throws, a swinging cluster, planks to bounce on. After three throws that change nothing, a golden line shows a good throw.
+- Erasing the progress in the parents’ space also erases the bubbles stars.
+
 ## 1.9.0
 
 - Lumi’s walk, new levels written as scenes: 52 scenes, each with a short title Lumi says (“A little rabbit is lost”, “The little ones want to see the sea”…) and its own strong moment. Eight sceneries: meadow, autumn, beach, mountain, forest, snow, rain and night.
