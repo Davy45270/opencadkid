@@ -41,6 +41,7 @@ export const GAME_SPECS = {
     'gouter': ['gouter', 'gouter-doigt'],
     'cherche': ['cherche'],
     'promenade': ['promenade'],
+    'bulles': ['bulles'],
     'atelier': ['atelier', 'atelier-dessin', 'atelier-doigt', 'atelier-gomme'],
 };
 /** Cross-game specs, grouped by what they exercise. None is tied to a single game. */
@@ -69,6 +70,7 @@ export const SMOKE_TESTS = {
     'gouter': ['gouter', 'a sweet that misses falls away gently and the same level starts again by itself'],
     'cherche': ['cherche', 'a miss is gentle, three in a row light up an object to find'],
     'promenade': ['promenade', 'a wrong job is a funny try, three make the right one shine and Lumi names it'],
+    'bulles': ['bulles', 'a throw into the void goes boing, Boubou scratches his head, nothing else changes'],
     'atelier': ['atelier-dessin', 'the brush draws over the coloured model, which stays visible under the stroke'],
 };
 /** Shell zones: the cross-game specs that exercise that part of the shell, added to the selection. */
