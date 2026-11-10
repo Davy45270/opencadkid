@@ -45,6 +45,7 @@ export const GAME_SPECS = {
     'bonbons': ['bonbons'],
     'traverse': ['traverse'],
     'caisses': ['caisses'],
+    'chenille': ['chenille'],
     'atelier': ['atelier', 'atelier-dessin', 'atelier-doigt', 'atelier-gomme'],
 };
 /** Cross-game specs, grouped by what they exercise. None is tied to a single game. */
@@ -77,6 +78,7 @@ export const SMOKE_TESTS = {
     'bonbons': ['bonbons', 'a swap that makes no line is a funny try: both sweets react and come back, nothing changes'],
     'traverse': ['traverse', 'a step under a car is a funny try: the car honks and brakes, the little one jumps back, the world waits'],
     'caisses': ['caisses', 'a push against the wall is a funny try: bonk, the crate makes big eyes, nothing moves'],
+    'chenille': ['chenille', 'a step into the hedge is a funny try: boing, the caterpillar rubs its head, nothing moves'],
     'atelier': ['atelier-dessin', 'the brush draws over the coloured model, which stays visible under the stroke'],
 };
 /** Shell zones: the cross-game specs that exercise that part of the shell, added to the selection. */
