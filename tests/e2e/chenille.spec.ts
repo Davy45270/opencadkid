@@ -159,9 +159,12 @@ test('the board takes the height of a 390 × 844 phone with cells of at least 44
         await page.locator('#back').click();
     }
     await page.locator('[data-chenille-level="32"]').click();
+    // A wide font, as on the CI runner (DejaVu Sans): the two big buttons must still fit 320 px.
+    await page.addStyleTag({ content: '*{font-family:"DejaVu Sans",Verdana,sans-serif !important}' });
     for (const width of [320, 390, 1280]) {
         await page.setViewportSize({ width, height: 844 });
-        expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth && document.documentElement.scrollHeight <= window.innerHeight), `width ${width}`).toBe(true);
+        const size = await page.evaluate(() => ({ width: document.documentElement.scrollWidth, height: document.documentElement.scrollHeight }));
+        expect(size, `width ${width}`).toEqual({ width, height: 844 });
     }
 });
 
