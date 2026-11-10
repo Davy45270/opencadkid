@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.11.0
+
+- New game, Lumi’s sweets, the gentle Kid version of Opencade’s Gourmandises: swap two neighbouring sweets by sliding a finger or with two touches; three alike in a line jump into Lumi’s jar. Every colour also carries a shape (heart, diamond, star, square, round, berlingot), and close colours never share a scene.
+- No clock, no move limit, no lives, nothing to lose. A swap that makes no line is a funny try and leaves the board as it was: two sweets bump heads, leapfrog, blush, a friend is tickled, a wrapper crinkles, a sugar cube is too heavy, chocolate is sticky. The board never gets stuck: with no swap left, it mixes itself.
+- 32 scenes written by hand, each with a short title said by Lumi: a rainbow sweet that takes a whole colour, wrapped sweets that pop their neighbours, sugar cubes that melt in two, a cherry and a teddy bear to bring down, chocolate that spreads gently, and boards shaped as a heart, a house, an hourglass, a cake, an arch and a rocket. After three tries that make no line, a good swap pulses.
+- Erasing the progress in the parents’ space also erases the sweets stars.
+
 ## 1.10.0
 
 - New game, Boubou’s bubbles, the gentle Kid version of Opencade’s Bubble Lab: aim with a finger along a long dotted line and throw coloured bubbles at a hanging cluster. Three of a colour that touch fly away as butterflies, and whatever no longer hangs falls gently and grows into flowers. Every colour also carries a shape (heart, diamond, star, square, circle, triangle), and close colours never share a scene.
