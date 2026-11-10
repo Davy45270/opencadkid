@@ -88,3 +88,15 @@ test('all five landscape guides and the sun fit the banner and window', async ({
         }
     }
 });
+test('a game opened from the bottom of the home page starts at its first levels', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/');
+    const last = page.locator('[data-game]').last();
+    await last.scrollIntoViewIfNeeded();
+    expect(await page.evaluate(() => scrollY)).toBeGreaterThan(300);
+    await page.locator('[data-game="bonbons"]').scrollIntoViewIfNeeded();
+    await page.locator('[data-game="bonbons"]').click();
+    await expect(page.locator('[data-bonbons-level]').first()).toBeVisible();
+    expect(await page.evaluate(() => scrollY)).toBe(0);
+    await expect(page.locator('[data-bonbons-level]').first()).toBeInViewport();
+});

@@ -108,8 +108,12 @@ function bind(selector: string, fn: (element: HTMLElement) => void, keyFor = act
         } else bindAction(el, () => fn(el), () => keyFor(el));
     });
 }
+let shownView = '';
 function render(): void {
     cancel(); applyLocale(save.locale);
+    // A new screen starts at its top: the home page scroll must not open a game at its last levels.
+    const view = `${screen}:${activeGame}`;
+    if (view !== shownView) { shownView = view; window.scrollTo(0, 0); }
     app.dataset.theme = screen === 'game' || screen === 'levels' ? activeGame : screen;
     if (screen === 'home') {
         app.innerHTML = home(save);
