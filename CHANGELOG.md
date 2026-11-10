@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.14.0
+
+- New game, Lumi’s caterpillar, the gentle Kid version of Opencade’s Serpentin: a caterpillar eats every leaf of the garden, grows one ring per leaf, then crawls into its cocoon and comes out as a butterfly. It moves only when the child guides it (slide a finger, touch a big arrow or the next square): no clock, nothing moves by itself.
+- No lives, nothing to lose, never stuck. Bumping into the edge, a stone, a flower, a puddle or its own body is a funny try that changes nothing, and the caterpillar can always turn round with the big “I turn round” button (its head becomes its tail). A free “Back” button undoes the last step.
+- 32 scenes written by hand, each with a short title said by Lumi: stones, turning round, flowers to sniff and not to eat, puddles, a sweet leaf that grows two rings, an apple that shrinks it, a tunnel under the hedge, a bridge to cross over its own tail, and leaves to eat in rainbow order. After three funny tries, the next good step shines.
+- Erasing the progress in the parents’ space also erases the caterpillar stars.
+
 ## 1.13.0
 
 - New game, Boubou’s boxes, the gentle Kid version of Opencade’s Caisses: Boubou tidies his toys by pushing toy boxes onto their places in the garden. He can also pull a box, so a box stuck in a corner always comes back out: no scene can ever get stuck. A big free “Back” button undoes the last step, as often as wanted.
