@@ -291,3 +291,50 @@ button:active{transform:translateY(3px);box-shadow:0 1px 0 #c7d5b7,inset 0 2px 4
 @keyframes traverse-bulle{from{transform:scale(.3);opacity:0}15%{transform:scale(1.1);opacity:1}25%{transform:scale(1)}85%{opacity:1}100%{opacity:0}}
 @keyframes traverse-eclabousse{from{transform:scale(.3)}60%{transform:scale(1.2);opacity:1}100%{opacity:0}}
 @media(prefers-reduced-motion:reduce){.traverse-zone [data-thing],.traverse-zone [data-hero],.traverse-zone [data-follower],.traverse-zone [data-train]{transition:none}.traverse-arrow,.traverse-hint{animation:none!important}.traverse-hint{filter:drop-shadow(0 0 4px #f5b400)}.traverse-zone .traverse-inner{animation-duration:.01s!important}}
+.caisses{max-width:560px;margin:auto}.caisses .play-header h1{flex:1;text-align:center;font-size:1.2rem;margin:0}.caisses .level-grid span{min-height:1.2em}
+.caisses-play{display:flex;flex-direction:column;height:calc(100svh - 48px);min-height:520px}
+.caisses-instruction{display:flex;align-items:center;gap:10px;width:100%;max-width:460px;margin:4px auto 6px;min-height:80px;border-radius:24px;background:#fcf8edf5;padding:0 8px}.caisses-instruction #guide{width:72px;height:72px;flex:none}.caisses-instruction p{margin:0;font-size:1.05rem;line-height:1.22}
+.caisses-stage{position:relative;flex:1;min-height:0;display:flex;justify-content:center}
+.caisses-zone{position:relative;border-radius:20px;overflow:hidden;outline:2px solid #b9dca0;box-shadow:0 4px 0 #cfe5bf;touch-action:none;user-select:none;-webkit-user-select:none}
+.caisses-zone:focus-visible{outline:4px solid #8d68a0;outline-offset:2px}.caisses-zone>svg{display:block;width:100%;height:100%}
+.caisses-tools{display:flex;justify-content:center;gap:12px;margin:8px auto 0}.caisses-tools button{display:flex;align-items:center;gap:8px;min-height:64px;padding:4px 20px 4px 10px;border-radius:32px;font-size:1.2rem;font-weight:700}.caisses-tools svg{width:48px;height:48px}
+#caisses-retour{flex:1;max-width:220px;justify-content:center}#caisses-retour:disabled{opacity:.45}#caisses-tire[aria-pressed=true]{background:#fff2b0;box-shadow:0 0 0 4px #f5b400}
+.caisses-zone [data-crate],.caisses-zone [data-hero]{transition:transform .2s ease-in-out}.caisses-zone [data-crate].caisses-glisse{transition:transform .11s linear}
+.caisses-zone .caisses-inner,.caisses-zone [class^=caisses-]{transform-box:fill-box;transform-origin:center}
+.caisses-face-surprise,.caisses-rouge,.caisses-patte,.caisses-pattes,.caisses-yeux,.caisses-non-non{display:none}
+.caisses-surpris .caisses-face-surprise{display:inline}.caisses-surpris .caisses-face-joie{display:none}.caisses-essai-lourd .caisses-rouge{display:inline}.caisses-essai-lourd .caisses-joues{display:none}.caisses-essai-motif .caisses-patte{display:inline}
+.caisses-zone [data-hero][data-grip] .caisses-pattes{display:inline}.caisses-gros-yeux .caisses-yeux,.caisses-tremble .caisses-yeux{display:inline}.caisses-non .caisses-non-non{display:inline}
+.caisses-zone [data-crate][data-held]>.caisses-inner{filter:drop-shadow(0 0 6px #f5b400)}.caisses-zone [data-crate][data-home]>.caisses-inner{filter:drop-shadow(0 0 5px #fff)}
+.caisses-zone [data-gate] .caisses-battant{transition:transform .25s ease-out}.caisses-zone [data-gate][data-open] .caisses-battant{transform:scaleX(.18)}
+.caisses-zone [data-button] .caisses-bouton{transition:transform .2s}.caisses-zone [data-button][data-pressed] .caisses-bouton{transform:translate(0,6px) scale(.85)}
+.caisses-defile{animation:caisses-defile 1.2s linear infinite}
+.caisses-arrow{animation:caisses-souffle-fleche 2.4s ease-in-out infinite}.caisses-hint{animation:caisses-hint 1s ease-in-out infinite!important}
+.caisses-pas{animation:caisses-pas .2s ease-out}.caisses-range{animation:caisses-range .5s ease-in-out}
+.caisses-bubble{animation:caisses-bulle 1.3s ease-out forwards}.caisses-splash,.caisses-etoiles,.caisses-feuilles,.caisses-toc{animation:caisses-eclat .9s ease-out forwards}
+.caisses-reward{position:absolute;inset:30% 8px auto;padding:10px;border-radius:24px;background:#fffdf5ee;text-align:center;z-index:2}.caisses-reward .stars{font-size:3rem;line-height:1}.caisses-reward .finish-actions button{margin:6px 0}
+.caisses-nez{animation:caisses-nez 1.3s ease-out}.caisses-bonk{animation:caisses-bonk 1.3s ease-in-out}.caisses-souffle{animation:caisses-souffle 1.3s ease-in-out}.caisses-gratte{animation:caisses-gratte 1.3s ease-in-out}.caisses-bascule{animation:caisses-bascule 1.3s ease-in-out}
+.caisses-pique{animation:caisses-pique 1.3s ease-in-out}.caisses-fesses{animation:caisses-fesses 1.3s ease-in-out}.caisses-brr{animation:caisses-brr 1.3s linear}.caisses-frappe{animation:caisses-frappe 1.3s ease-in-out}.caisses-penche{animation:caisses-penche 1.3s ease-in-out}
+.caisses-gros-yeux{animation:caisses-gros-yeux 1.3s ease-in-out}.caisses-tremble{animation:caisses-tremble 1.3s linear}.caisses-non{animation:caisses-non 1.3s ease-in-out}.caisses-vacille{animation:caisses-vacille 1.3s ease-in-out}.caisses-coince{animation:caisses-coince 1.3s ease-in-out}
+@keyframes caisses-nez{20%{transform:translate(var(--dx),var(--dy)) scale(.9,1.1)}30%{transform:translate(calc(var(--dx) * -.6),calc(var(--dy) * -.6)) rotate(-8deg)}45%,75%{transform:rotate(8deg)}60%,90%{transform:rotate(-8deg)}100%{transform:none}}
+@keyframes caisses-bonk{25%{transform:translate(var(--dx),var(--dy))}35%{transform:translate(calc(var(--dx) * .3),calc(var(--dy) * .3)) scale(1.08,.92)}100%{transform:none}}
+@keyframes caisses-souffle{15%,45%,75%{transform:translate(calc(var(--dx) * .5),calc(var(--dy) * .5)) scale(1.06,.94)}30%,60%,90%{transform:translate(calc(var(--dx) * .2),calc(var(--dy) * .2)) scale(.97,1.03)}100%{transform:none}}
+@keyframes caisses-gratte{20%{transform:rotate(-10deg)}35%{transform:rotate(-6deg) translate(0,-4px)}50%{transform:rotate(-10deg)}65%{transform:rotate(-6deg) translate(0,-4px)}80%{transform:rotate(-10deg)}100%{transform:none}}
+@keyframes caisses-bascule{20%{transform:translate(calc(var(--dx) * .6),calc(var(--dy) * .6))}40%{transform:translate(calc(var(--dx) * .3),calc(var(--dy) * .3)) rotate(-14deg)}60%{transform:rotate(12deg)}80%{transform:rotate(-6deg)}100%{transform:none}}
+@keyframes caisses-pique{20%{transform:translate(calc(var(--dx) * .6),calc(var(--dy) * .6))}30%{transform:translate(calc(var(--dx) * .2),calc(var(--dy) * .2)) scale(1.1)}40%,60%,80%{transform:translate(-5px,0)}50%,70%,90%{transform:translate(5px,0)}100%{transform:none}}
+@keyframes caisses-fesses{20%{transform:translate(calc(var(--dx) * .5),calc(var(--dy) * .5)) rotate(10deg)}40%{transform:translate(0,22px) scale(1.15,.75)}70%{transform:translate(0,22px) scale(1.15,.75) rotate(-6deg)}100%{transform:none}}
+@keyframes caisses-brr{20%{transform:translate(var(--dx),var(--dy))}25%,35%,45%,55%,65%,75%{transform:translate(-4px,0) scale(.95)}30%,40%,50%,60%,70%,80%{transform:translate(4px,0) scale(.95)}100%{transform:none}}
+@keyframes caisses-frappe{15%,45%{transform:translate(calc(var(--dx) * .7),calc(var(--dy) * .7))}30%,60%{transform:translate(calc(var(--dx) * .3),calc(var(--dy) * .3))}100%{transform:none}}
+@keyframes caisses-penche{30%{transform:translate(calc(var(--dx) * .6),calc(var(--dy) * .6)) rotate(14deg)}50%{transform:translate(calc(var(--dx) * .7),calc(var(--dy) * .7)) rotate(18deg)}70%{transform:translate(calc(var(--dx) * -.3),calc(var(--dy) * -.3)) rotate(-6deg)}100%{transform:none}}
+@keyframes caisses-gros-yeux{25%{transform:none}35%{transform:scale(1.12,.9)}50%{transform:scale(.95,1.06)}100%{transform:none}}
+@keyframes caisses-tremble{10%,30%,50%,70%{transform:translate(-3px,0)}20%,40%,60%,80%{transform:translate(3px,0)}100%{transform:none}}
+@keyframes caisses-non{20%,60%{transform:rotate(-10deg)}40%,80%{transform:rotate(10deg)}100%{transform:none}}
+@keyframes caisses-vacille{25%{transform:translate(calc(var(--dx,0px) * .3),0) rotate(16deg)}45%{transform:rotate(22deg)}65%{transform:rotate(-8deg)}100%{transform:none}}
+@keyframes caisses-coince{20%{transform:scale(.92)}40%,60%{transform:scale(.92) rotate(4deg)}50%,70%{transform:scale(.92) rotate(-4deg)}100%{transform:none}}
+@keyframes caisses-defile{to{transform:translateX(32px)}}
+@keyframes caisses-souffle-fleche{50%{opacity:.75;transform:scale(.92)}}
+@keyframes caisses-hint{50%{transform:scale(1.2);filter:drop-shadow(0 0 8px #f5b400)}}
+@keyframes caisses-pas{50%{transform:translate(0,-10px) scale(1.04)}}
+@keyframes caisses-range{30%{transform:scale(1.15) rotate(-6deg)}60%{transform:scale(1.1) rotate(6deg)}}
+@keyframes caisses-bulle{from{transform:scale(.3);opacity:0}15%{transform:scale(1.1);opacity:1}25%{transform:scale(1)}85%{opacity:1}100%{opacity:0}}
+@keyframes caisses-eclat{from{transform:scale(.3);opacity:0}30%{opacity:1}60%{transform:scale(1.15)}100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.caisses-zone [data-crate],.caisses-zone [data-hero]{transition:none}.caisses-arrow,.caisses-hint,.caisses-defile{animation:none!important}.caisses-hint{filter:drop-shadow(0 0 4px #f5b400)}.caisses-zone .caisses-inner{animation-duration:.01s!important}}
