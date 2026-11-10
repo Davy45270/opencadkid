@@ -77,7 +77,8 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         session.state = s;
         if (s.finished && !before?.finished) { session.records = complete(session.records, s); writeRecords(storage, session.records); chime(sound()); message = wonWords(levelOf(s.level), locale); speak([message]); draw(); return; }
         const kind = needed(s);
-        if (kind && s.hint === 'role' && before?.hint !== 'role') say(t.say[kind]);
+        // The help is named once the foal waits again: after a long wait, or when the third funny try ends.
+        if (kind && s.hint === 'role' && (before?.hint !== 'role' || needed(before) === null)) say(t.say[kind]);
         else if (kind && waiting(before ?? s) === null && !before?.fail) say(isRole(kind) ? t.waiting : t.say[kind], false);
         else if (!kind && before && needed(before) && !s.fail) say(t.good, false);
         refresh();
