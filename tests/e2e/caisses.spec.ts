@@ -170,7 +170,8 @@ test('the board takes the height of a 390 × 844 phone with cells of at least 44
     await page.locator('[data-caisses-level="32"]').click();
     for (const width of [320, 390, 1280]) {
         await page.setViewportSize({ width, height: 844 });
-        expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth && document.documentElement.scrollHeight <= window.innerHeight), `width ${width}`).toBe(true);
+        // The board is laid out again on the resize event, one frame after the viewport changes.
+        await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth && document.documentElement.scrollHeight <= window.innerHeight), { message: `width ${width}` }).toBe(true);
     }
 });
 
