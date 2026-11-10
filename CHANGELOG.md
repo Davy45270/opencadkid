@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.12.0
+
+- New game, Lumi’s crossing, the gentle Kid version of Opencade’s Traverse: a little one crosses roads, rivers and rails to reach Lumi. It is turn by turn: nothing moves until the child takes a step (slide a finger, touch a big arrow or the next square), then cars, logs and water lilies move one notch, so the child always sees what comes next.
+- No clock, no lives, nothing to lose. A wrong step is a funny try and the world waits: a car honks and brakes, a truck goes pouet, a slow tractor nudges, a duck bumps, the train whistles at its lowered gate, a splash in the river, a water lily that dives, a log about to leave the board. The little one hops back to the square before and nothing is lost.
+- 34 scenes written by hand, each with a short title said by Lumi: two-way roads, a long truck, a slow tractor, logs that carry, water lilies that dive in turn, a train announced by its gate, a friend to fetch, an apple to pick on the way, a red light to touch, and a “I’m watching” button that lets the world move without stepping. After three funny tries, the first step of a shortest way pulses.
+- Erasing the progress in the parents’ space also erases the crossing stars.
+
 ## 1.11.1
 
 - A game opened from the bottom of the home page now shows its first levels: the level picker used to open scrolled down to the last, locked levels.
