@@ -68,7 +68,7 @@ export const SMOKE_TESTS = {
     'tambours': ['tambours', 'an unavailable audio device still permits a light-observed round'],
     'gouter': ['gouter', 'a sweet that misses falls away gently and the same level starts again by itself'],
     'cherche': ['cherche', 'a miss is gentle, three in a row light up an object to find'],
-    'promenade': ['promenade', 'a wrong job is gentle, two make the right one shine and Lumi names it'],
+    'promenade': ['promenade', 'a wrong job is a funny try, three make the right one shine and Lumi names it'],
     'atelier': ['atelier-dessin', 'the brush draws over the coloured model, which stays visible under the stroke'],
 };
 /** Shell zones: the cross-game specs that exercise that part of the shell, added to the selection. */
