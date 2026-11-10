@@ -168,6 +168,8 @@ test('the board takes the height of a 390 × 844 phone with cells of at least 44
         await page.locator('#back').click();
     }
     await page.locator('[data-caisses-level="32"]').click();
+    // A wide font, as on the CI runner (DejaVu Sans): the two tool buttons must still fit 320 px.
+    await page.addStyleTag({ content: '*{font-family:"DejaVu Sans",Verdana,sans-serif !important}' });
     for (const width of [320, 390, 1280]) {
         await page.setViewportSize({ width, height: 844 });
         // The board is laid out again on the resize event, one frame after the viewport changes.

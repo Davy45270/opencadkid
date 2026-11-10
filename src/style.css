@@ -298,7 +298,8 @@ button:active{transform:translateY(3px);box-shadow:0 1px 0 #c7d5b7,inset 0 2px 4
 .caisses-zone{position:relative;border-radius:20px;overflow:hidden;outline:2px solid #b9dca0;box-shadow:0 4px 0 #cfe5bf;touch-action:none;user-select:none;-webkit-user-select:none}
 .caisses-zone:focus-visible{outline:4px solid #8d68a0;outline-offset:2px}.caisses-zone>svg{display:block;width:100%;height:100%}
 .caisses-tools{display:flex;justify-content:center;gap:12px;margin:8px auto 0}.caisses-tools button{display:flex;align-items:center;gap:8px;min-height:64px;padding:4px 20px 4px 10px;border-radius:32px;font-size:1.2rem;font-weight:700}.caisses-tools svg{width:48px;height:48px}
-#caisses-retour{flex:1;max-width:220px;justify-content:center}#caisses-retour:disabled{opacity:.45}#caisses-tire[aria-pressed=true]{background:#fff2b0;box-shadow:0 0 0 4px #f5b400}
+#caisses-retour{flex:1;max-width:220px;justify-content:center}
+@media (max-width:359px){.caisses-tools{gap:8px}.caisses-tools button{padding:4px 12px 4px 6px;font-size:1.05rem}.caisses-tools svg{width:40px;height:40px}}#caisses-retour:disabled{opacity:.45}#caisses-tire[aria-pressed=true]{background:#fff2b0;box-shadow:0 0 0 4px #f5b400}
 .caisses-zone [data-crate],.caisses-zone [data-hero]{transition:transform .2s ease-in-out}.caisses-zone [data-crate].caisses-glisse{transition:transform .11s linear}
 .caisses-zone .caisses-inner,.caisses-zone [class^=caisses-]{transform-box:fill-box;transform-origin:center}
 .caisses-face-surprise,.caisses-rouge,.caisses-patte,.caisses-pattes,.caisses-yeux,.caisses-non-non{display:none}
