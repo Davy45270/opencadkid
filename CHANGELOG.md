@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.8.0
+
+- New game, Lumi’s walk: Lumi’s five little ones walk from a trapdoor to a rainbow door. In front of a ditch, a wall, soft earth or a step too high, they wait at the edge, never fall; the child touches the one who waits and gives it its job: a bridge, a tunnel, a hole or a ladder. No clock, no lives. A wrong job only makes it shake its head; after two, Lumi names the right one. 52 levels: twelve drawn by hand bring in the jobs one by one, forty generated and checked by a solver go up to four obstacles over three floors, in four sceneries.
+- Erasing the progress in the parents’ space also erases the walk stars.
+
 ## 1.7.1
 
 - Tutu’s hiding places: the objects now belong to the landscape. They stand on its ground (sand, meadow, bridge, pier, rocks) instead of floating in the sky or on water, get smaller with distance, cast a soft shadow and take the colour of the light around them; the hidden ones are half behind a piece of the painting itself instead of a green tuft or a white cloud. More than half of every object to find still shows.
