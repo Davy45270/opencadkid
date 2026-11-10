@@ -4,7 +4,7 @@ Audience: ages 4–8, primarily touch phones. French first, English included. No
 
 ## Catalogue
 
-`compter`, `paires`, `formes`, `sons`, `puzzle`, `chemin`, `suites`, `ranger`, `tambours`, `gouter`, `cherche` and `atelier` are implemented and present in the playable registry.
+`compter`, `paires`, `formes`, `sons`, `puzzle`, `chemin`, `suites`, `ranger`, `tambours`, `gouter`, `cherche`, `promenade` and `atelier` are implemented and present in the playable registry.
 
 | ID | Français | English | Guide | Skill and intended rules |
 | --- | --- | --- | --- | --- |
@@ -19,6 +19,7 @@ Audience: ages 4–8, primarily touch phones. French first, English included. No
 | tambours | Les tambours de Tutu | Tutu's drums | Tutu | Listen to and repeat short rhythms with taps; replay freely, no penalty for timing. |
 | gouter | Le goûter de Boubou | Boubou's snack | Boubou | Cut strings so a hanging sweet falls into Boubou's mouth; bubbles, hooks and slack strings; 116 solver-checked levels. |
 | cherche | Les cachettes de Tutu | Tutu’s hiding places | Tutu | Find the objects shown in a strip among others hidden in a painted landscape; twelve levels, generated and checked for every seed. |
+| promenade | La promenade de Lumi | Lumi’s walk | Lumi | Five foals walk from a trapdoor to a rainbow door and wait in front of each obstacle; the child gives the waiting foal its job (bridge, tunnel, hole, ladder). No falls, no clock, no lives; 52 solver-checked levels. |
 | atelier | L'atelier de Boubou | Boubou's studio | Boubou | Colour drawing regions and the background, paint over the model or on a blank page, play the model's animation; creation rather than scoring. |
 
 Learning the time belongs to TicTac. Its home card opens the sister app only after the adult gate. No other future-game cards appear.
@@ -711,3 +712,10 @@ Gallery format version 1 stores palette indices, positional region colours and h
 - A round is generated from a seed. Each object to find keeps every other object's centre at least 40 units away, so a disc of 20 units around it (44 CSS px wide on a 390 px phone) answers only to it; a tap goes to the nearest centre within 22 units (or half the object). `tests/cherche.test.ts` checks every level on 200 seeds: right counts, distinct kinds, inside the field, clear tap zones, the round finishes with three stars, and no layout repeats across levels.
 - Misses are counted, never punished; three in a row make one object to find shine until the next find. Stars: at most one miss, three; up to four, two; otherwise one. Records under `opencadkid.cherche.v1`; finishing a level unlocks the next.
 
+## Lumi’s walk: La promenade de Lumi (1.8.0)
+
+- An adaptation for five-year-olds of Opencade’s Marmaille, with its own pure engine (`src/engines/promenade`). A level is one to three floors of six cells, stacked; the troupe walks the first floor to the right, the next to the left, and goes down at the end of each floor by a slide or through soft earth. Five foals leave the trapdoor once the child touches it, one SUB (an eighth of a cell) per 40 ms tick, keeping five SUBs apart.
+- Obstacles: a ditch (`G`, bridge), a wall (`W`, tunnel), soft earth at the end of a floor (hole) and a step up to high ground (`^`, ladder). In front of one, the first foal stops at the edge and the others queue behind it: nobody falls, waits are unlimited. `problems()` keeps every level fair: plain ground where the troupe arrives and leaves a floor, obstacles only on cells 2 to 4 and never next to each other, no way down inside a floor, at most four obstacles and three roles.
+- The waiting foal gets a 92 px touch zone. With one role on offer, the touch starts the work; otherwise up to three 84 px picture buttons appear, always in the same order. A wrong role makes the foal shake its head, silently; two wrong roles make the right button pulse while Lumi names it. About 8 s without a touch: the waiting foal pulses; as long again: the right role is shown and named. Showing the right role counts as one help. Stars: no help, three; one, two; otherwise one. Records under `opencadkid.promenade.v1`, erased with the progress in the parents’ space; finishing a level unlocks the next.
+- 52 levels: 1 to 12 drawn by hand (walking; bridge, tunnel, hole, ladder one by one; then two, then three obstacles), 13 to 52 generated from the fixed seed 20261110 with two obstacles up to level 22, three up to 36, then four. Four sceneries (meadow, beach, snow, autumn). `tests/promenade.test.ts` plays every level with the solver (`solver.ts`): five foals home with three stars; at each obstacle every other role is refused, and without its role the troupe stays in front of it, whole; no two levels share a layout; the generator gives the same list again from its seed.
+- Spoken instruction at the start of each level, the ear button repeats it; pictograms only, no reading needed. Reduced motion removes the walking bounce, the head shake and the pulses (a thicker outline stays). Every touch target is a button, so the keyboard plays too.
