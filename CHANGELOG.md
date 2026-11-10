@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.9.0
+
+- Lumi’s walk, new levels written as scenes: 52 scenes, each with a short title Lumi says (“A little rabbit is lost”, “The little ones want to see the sea”…) and its own strong moment. Eight sceneries: meadow, autumn, beach, mountain, forest, snow, rain and night.
+- New things on the path, all waiting for a touch, never for a clock: a lost rabbit, hedgehog or duckling who follows the troupe to the door, a sleeping bear to tickle, a leaf boat, a flower that lowers a castle drawbridge (even from another floor), a dark cave lit by a jar of fireflies, balloons to float over a tall rock, a bouncy mushroom, a rainbow fork full of treats (the tasty way or straight on), treats to pick into a basket, puddles to splash in and piles of leaves.
+- Wrong jobs are now tried for real, and they are funny: a tunnel dug over a ditch ends in a splash, a bridge against a wall folds up like an accordion, a ladder over a ditch becomes a seesaw… twelve little scenes, one for each obstacle and wrong job. Then the little one simply waits again: nothing is lost and they cost no star.
+- Harder choices: once two jobs are known, every known job is offered (three or four buttons), not only the right ones. The right one shines and Lumi names it after three tries on the same obstacle, or after about 24 seconds; only that help lowers the stars.
+- Progress: the levels changed, so the walk keeps its stars under a new key. As many levels as were open stay open; erasing the progress in the parents’ space erases it too.
+
 ## 1.8.0
 
 - New game, Lumi’s walk: Lumi’s five little ones walk from a trapdoor to a rainbow door. In front of a ditch, a wall, soft earth or a step too high, they wait at the edge, never fall; the child touches the one who waits and gives it its job: a bridge, a tunnel, a hole or a ladder. No clock, no lives. A wrong job only makes it shake its head; after two, Lumi names the right one. 52 levels: twelve drawn by hand bring in the jobs one by one, forty generated and checked by a solver go up to four obstacles over three floors, in four sceneries.
