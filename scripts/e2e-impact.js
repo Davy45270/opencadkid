@@ -60,6 +60,7 @@ export const GAME_SPECS = {
     'ferraille': ['ferraille'],
     'taupes': ['taupes'],
     'eclosion': ['eclosion'],
+    'vis': ['vis'],
     'atelier': ['atelier', 'atelier-dessin', 'atelier-doigt', 'atelier-gomme'],
 };
 /** Cross-game specs, grouped by what they exercise. None is tied to a single game. */
@@ -107,6 +108,7 @@ export const SMOKE_TESTS = {
     'ferraille': ['ferraille', 'a shelf too high is a funny try: bong, stars, and Boubou is back where he was'],
     'taupes': ['taupes', 'a mole touched is a funny try: it yawns « shh », and nothing changes'],
     'eclosion': ['eclosion', 'a slide against the edge is a funny try: boing, and nothing in the nest changes'],
+    'vis': ['vis', 'a screw under a plate is a funny try: knock knock, the plate on top wriggles'],
     'atelier': ['atelier-dessin', 'the brush draws over the coloured model, which stays visible under the stroke'],
 };
 /** Shell zones: the cross-game specs that exercise that part of the shell, added to the selection. */
