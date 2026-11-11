@@ -52,6 +52,7 @@ export const GAME_SPECS = {
     'pepites': ['pepites'],
     'dedale': ['dedale'],
     'empilo': ['empilo'],
+    'orbite': ['orbite'],
     'atelier': ['atelier', 'atelier-dessin', 'atelier-doigt', 'atelier-gomme'],
 };
 /** Cross-game specs, grouped by what they exercise. None is tied to a single game. */
@@ -91,6 +92,7 @@ export const SMOKE_TESTS = {
     'pepites': ['pepites', 'a step into hard rock is a funny try: bzzz, Lumi shivers, nothing moves'],
     'dedale': ['dedale', 'a step into a hedge is a funny try: boing, the hedge shakes, nothing moves'],
     'empilo': ['empilo', 'a piece dropped on the little cloud is a funny try: atchoo, the cloud sneezes, nothing changes'],
+    'orbite': ['orbite', 'a heart that goes past the troop bounces on the Moon: boing, nothing changes'],
     'atelier': ['atelier-dessin', 'the brush draws over the coloured model, which stays visible under the stroke'],
 };
 /** Shell zones: the cross-game specs that exercise that part of the shell, added to the selection. */

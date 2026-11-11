@@ -664,3 +664,48 @@ button:active{transform:translateY(3px);box-shadow:0 1px 0 #c7d5b7,inset 0 2px 4
 @keyframes empilo-bulle{from{transform:scale(.3);opacity:0}15%{transform:scale(1.1);opacity:1}25%{transform:scale(1)}85%{opacity:1}100%{opacity:0}}
 @keyframes empilo-eclat{from{transform:scale(.3);opacity:0}30%{opacity:1}60%{transform:scale(1.15)}100%{opacity:0}}
 @media(prefers-reduced-motion:reduce){.empilo-zone [data-piece],.empilo-zone [data-cloud]>g{transition:none!important}.empilo-hint,.empilo-scintille,.empilo-ailes,.empilo-nuage,.empilo-arcenciel,.empilo-hint-button,.empilo-echo{animation:none!important}.empilo-hint{filter:drop-shadow(0 0 4px #f5b400)}.empilo-pousse{animation-duration:.01s}}
+/* Les nuages de Lumi: the sky takes all the height left under the goals. */
+.orbite{max-width:560px;margin:auto}.orbite .play-header h1{flex:1;text-align:center;font-size:1.2rem;margin:0}.orbite .level-grid span{min-height:1.2em}
+.orbite-play{display:flex;flex-direction:column;height:calc(100svh - 48px);min-height:520px}
+.orbite-instruction{display:flex;align-items:center;gap:10px;width:100%;max-width:460px;margin:4px auto 4px;min-height:80px;border-radius:24px;background:#fcf8edf5;padding:0 8px}.orbite-instruction #guide{width:72px;height:72px;flex:none}.orbite-instruction p{margin:0;font-size:1.05rem;line-height:1.22}
+.orbite-goals{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:4px;min-height:40px;margin:0 auto 4px}.orbite-goals>span{width:40px;height:40px;display:block;opacity:.45;transition:opacity .3s,transform .3s}.orbite-goals svg{width:100%;height:100%}.orbite-goals [data-got]{opacity:1;transform:scale(1.1)}
+.orbite-stage{position:relative;flex:1;min-height:0;display:flex;justify-content:center}
+.orbite-zone{position:relative;border-radius:20px;overflow:hidden;outline:2px solid #7fb2d9;box-shadow:0 4px 0 #b9d9ef;touch-action:none;user-select:none;-webkit-user-select:none;cursor:pointer}
+.orbite-zone:focus-visible{outline:4px solid #3f86c0;outline-offset:2px}.orbite-zone>svg{display:block;width:100%;height:100%}
+.orbite-zone [data-troop],.orbite-zone [data-lumi],.orbite-zone [data-heart],.orbite-zone [data-bird],.orbite-zone [data-drop]{transition-property:transform;transition-timing-function:linear}
+.orbite-zone [data-troop]{transition-timing-function:ease-in-out}
+.orbite-zone [class^=orbite-],.orbite-zone [data-frame]{transform-box:fill-box;transform-origin:center}
+.orbite-nuage{animation:orbite-flotte 2.8s ease-in-out infinite}.orbite-aile{animation:orbite-aile .45s ease-in-out infinite;transform-origin:0 0}.orbite-vent{animation:orbite-vent 1.6s ease-in-out infinite}
+.orbite-hint{animation:orbite-hint 1s ease-in-out infinite}
+.orbite-soleil{opacity:0;transform:scale(.3)}.orbite-soleil-sort{animation:orbite-soleil-sort 1.5s ease-out forwards}.orbite-soleil-haut{opacity:1;transform:none}.orbite-rayons{animation:orbite-rayons 6s linear infinite}
+.orbite-envol{animation:orbite-envol 1s ease-in forwards}
+.orbite-bulle{animation:orbite-bulle 1.4s ease-out forwards}.orbite-eclat{animation:orbite-eclat 1s ease-out forwards}
+.orbite-reward{position:absolute;inset:30% 8px auto;padding:10px;border-radius:24px;background:#fffdf5ee;text-align:center;z-index:2}.orbite-reward .stars{font-size:3rem;line-height:1}.orbite-reward .finish-actions button{margin:6px 0}
+.orbite-coeur-fond{animation:orbite-coeur-fond 1.4s ease-in-out}.orbite-coeur-boing{animation:orbite-coeur-boing 1.4s ease-out}.orbite-coeur-zigzag{animation:orbite-coeur-zigzag 1.4s ease-in-out}.orbite-coeur-bisou{animation:orbite-coeur-bisou 1.4s ease-in-out}
+.orbite-coeur-plume{animation:orbite-coeur-plume 1.4s ease-out}.orbite-coeur-bonk{animation:orbite-coeur-bonk 1.4s ease-out}.orbite-ebroue{animation:orbite-ebroue 1.4s ease-in-out}
+.orbite-rougit{animation:orbite-rougit 1.4s ease-in-out}.orbite-lune-boing{animation:orbite-lune-boing 1.4s ease-out}.orbite-chatouille{animation:orbite-chatouille 1.4s linear}.orbite-bisou{animation:orbite-bisou 1.4s ease-in-out}
+.orbite-pirouette{animation:orbite-pirouette 1.4s ease-in-out}.orbite-secoue{animation:orbite-secoue 1.4s linear}.orbite-parapluie{animation:orbite-parapluie 1.4s ease-in-out}
+@keyframes orbite-coeur-fond{30%{transform:scale(1.3)}60%{transform:scale(.6);opacity:.8}100%{transform:scale(.2);opacity:0}}
+@keyframes orbite-coeur-boing{15%{transform:translateY(-14px) scale(1.2,.8)}40%{transform:translateY(120px) rotate(20deg)}70%{transform:translateY(60px) rotate(-10deg)}100%{transform:translateY(200px);opacity:0}}
+@keyframes orbite-coeur-zigzag{15%{transform:translateX(-18px)}30%{transform:translateX(18px)}45%{transform:translateX(-12px) rotate(-15deg)}60%{transform:translateX(12px) rotate(15deg)}100%{transform:translateY(-60px);opacity:0}}
+@keyframes orbite-coeur-bisou{25%{transform:scale(1.4)}50%{transform:scale(1.1) rotate(-10deg)}75%{transform:scale(1.3) rotate(10deg)}100%{transform:translateY(-50px) scale(.6);opacity:0}}
+@keyframes orbite-coeur-plume{20%{transform:translateY(20px) scale(1.15,.85)}50%{transform:translateY(-30px) rotate(-30deg)}100%{transform:translateY(120px) rotate(40deg);opacity:0}}
+@keyframes orbite-coeur-bonk{15%{transform:translateX(10px)}30%{transform:translateX(-20px) rotate(-14deg) scale(.9,1.1)}55%{transform:translateY(40px) rotate(10deg)}100%{transform:translateY(160px);opacity:0}}
+@keyframes orbite-ebroue{10%,30%,50%{transform:rotate(-8deg)}20%,40%,60%{transform:rotate(8deg)}75%{transform:translateY(-8px)}100%{transform:none}}
+@keyframes orbite-rougit{20%{transform:scale(1.15,.9)}45%{transform:scale(.92,1.08) rotate(-6deg)}70%{transform:scale(1.05) rotate(4deg)}100%{transform:none}}
+@keyframes orbite-lune-boing{20%{transform:scale(1.3,.75)}40%{transform:scale(.85,1.2) rotate(-12deg)}65%{transform:scale(1.1) rotate(8deg)}100%{transform:none}}
+@keyframes orbite-chatouille{10%,30%,50%,70%{transform:rotate(-7deg) scale(1.05)}20%,40%,60%,80%{transform:rotate(7deg) scale(.95)}100%{transform:none}}
+@keyframes orbite-bisou{25%{transform:scale(1.2) translateY(6px)}45%{transform:scale(.9,1.1) translateY(-6px)}70%{transform:scale(1.1)}100%{transform:none}}
+@keyframes orbite-pirouette{60%{transform:rotate(360deg) translateY(-20px)}80%{transform:rotate(360deg) translateY(4px)}100%{transform:rotate(360deg)}}
+@keyframes orbite-secoue{10%,30%,50%,70%,90%{transform:translateX(-6px)}20%,40%,60%,80%{transform:translateX(6px)}100%{transform:none}}
+@keyframes orbite-parapluie{15%{transform:translateY(6px) scale(1.08,.9)}30%,70%{transform:rotate(-6deg)}50%,85%{transform:rotate(6deg)}100%{transform:none}}
+@keyframes orbite-flotte{50%{transform:translateY(-5px)}}
+@keyframes orbite-aile{50%{transform:rotate(-30deg)}}
+@keyframes orbite-vent{50%{transform:translateX(14px)}}
+@keyframes orbite-hint{50%{opacity:.55;filter:drop-shadow(0 0 10px #f5b400)}}
+@keyframes orbite-soleil-sort{from{opacity:0;transform:translateY(60px) scale(.3)}60%{opacity:1;transform:scale(1.15)}100%{opacity:1;transform:none}}
+@keyframes orbite-rayons{to{transform:rotate(360deg)}}
+@keyframes orbite-envol{from{transform:none}25%{transform:scale(1.15)}100%{transform:translate(40px,-300px) scale(.6);opacity:0}}
+@keyframes orbite-bulle{from{transform:scale(.3);opacity:0}15%{transform:scale(1.1);opacity:1}25%{transform:scale(1)}85%{opacity:1}100%{opacity:0}}
+@keyframes orbite-eclat{from{transform:scale(.3);opacity:0}30%{opacity:1}60%{transform:scale(1.15)}100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.orbite-zone [data-troop],.orbite-zone [data-lumi],.orbite-zone [data-heart],.orbite-zone [data-bird],.orbite-zone [data-drop]{transition:none!important}.orbite-nuage,.orbite-aile,.orbite-vent,.orbite-rayons,.orbite-hint{animation:none!important}.orbite-hint{filter:drop-shadow(0 0 4px #f5b400)}}
