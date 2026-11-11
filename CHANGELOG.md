@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.26.0
+
+- New game, Boubou’s robot, the gentle Kid version of Opencade’s Ferraille, with no shooting, no enemies and no deadly falls: a big friendly robot has broken down at the end of a toy workshop and its parts (golden bolts, cogs, a spring, batteries) are scattered over crates and shelves. The child touches a crate or a shelf and Boubou jumps onto it, picking up the parts on the way. When every part is back, the robot is mended, stands up and dances.
+- No clock, no lives, nothing to lose: the workshop floor is a big soft cushion, so a jump too far just bounces Boubou back home. Funny tries cost nothing: a bong against a shelf too high, a ball pit Boubou comes out of covered in balls, a rubber duck that squeaks, running on the spot on a conveyor belt going the wrong way, the robot sneezing bolts when a part is still missing.
+- 32 scenes written by hand, each with a short title said by Boubou, going up at least three floors. New things one by one: the trampoline, the conveyor belt, the ladder, the lift, a red button that brings out a bridge, heavy batteries carried one at a time. After three jumps that bring no part closer, the next good shelf shines.
+- Two games can no longer share the same title: a test now checks every displayed name in French and in English. Erasing the progress in the parents’ space also erases the robot stars.
+
 ## 1.25.0
 
 - New game, Pestouille’s kart, the gentle Kid version of Opencade’s Dérapage, with no race and no rivals: Pestouille is a delivery dragon. A friend asks for something (a cake for the bear, a ball for the puppy, a letter for the owl), and the little kart drives on its own, slowly. At each fork the road waits, big arrows appear and wooden signs with pictures show where each road goes: the child touches an arrow. At the right friend’s house: delivery and confetti.
