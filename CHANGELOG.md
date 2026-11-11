@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.15.0
+
+- New game, Boubou’s necklace, the gentle Kid version of Opencade’s Collier: a necklace of coloured beads lies along a path, and Boubou throws the bead he holds where the child touches or aims along a long dotted line. Three alike that touch fly away as butterflies and the two ends meet again, sometimes in a chain. Every colour also carries a shape, and close colours never share a scene.
+- The necklace never moves by itself and never grows: no clock, no hole that swallows it, no lives, nothing to lose. A bead that makes no line still goes in, and the bead at the end slips off the string and flies away. Funny tries: a bead that boings off the edge and comes back, one that knocks on a rock, one that wakes nobody, a tickle, a blush. The next bead is always a colour still on the necklace, and the big “Swap” button gives the other one.
+- 32 scenes written by hand, each with a short title said by Boubou: bends and arches, chain reactions, a rainbow bead that goes with every colour, sleepy beads to wake with a line next to them, rocks that make the bead bounce, two necklaces, a necklace all around Boubou. After three throws that make no line, a good place on the necklace shines.
+- Erasing the progress in the parents’ space also erases the necklace stars.
+
 ## 1.14.0
 
 - New game, Lumi’s caterpillar, the gentle Kid version of Opencade’s Serpentin: a caterpillar eats every leaf of the garden, grows one ring per leaf, then crawls into its cocoon and comes out as a butterfly. It moves only when the child guides it (slide a finger, touch a big arrow or the next square): no clock, nothing moves by itself.
