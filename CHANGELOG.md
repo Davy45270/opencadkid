@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.22.0
+
+- New game, Boubou’s trip, the gentle Kid version of Opencade’s Essaim, with no shooting and no enemies: Boubou flies a little round rocket up through space. The child touches one of five lanes and the rocket glides there, picking up stars and lost friends (a little rocket, a kitten, a robot) who line up behind it. When everything is picked up, the home planet appears and everyone gets off for a party.
+- No clock, no lives, nothing to lose: what you miss comes back on the next pass, and after three misses its lane shines and it moves closer to the rocket. The sky slows down while a finger stays on the screen. Funny tries cost nothing: a soft rock (boing, the rocket spins), a sneeze in a dust cloud, a soap bubble, a comet that makes Boubou’s hair stand up, a bounce on the edge, a hug from a friend already aboard, a rainbow gate that only opens with a friend behind you.
+- 32 scenes written by hand, each with a short title said by Boubou and the stars drawing a shape (a flower, a turtle, a fish, a boat, a house, a fir tree, a cat, a castle). New things one by one: friends, soft rocks, dust, bubbles, comets, star carpets that push sideways, the rainbow gate, a kind black hole that takes you round and out further on.
+- Erasing the progress in the parents’ space also erases the trip stars. The offline cache budget grows to 480 kB to hold the whole Kid programme.
+
 ## 1.21.0
 
 - New game, Lumi’s clouds, the gentle Kid version of Opencade’s Orbite, with no shooting and no enemies: a troop of grumpy clouds floats in the sky. The child touches a column, Lumi trots there and sends a big slow heart straight up. The cloud it reaches smiles, turns rainbow and flies away; when every cloud smiles, the sun comes out.
