@@ -47,6 +47,7 @@ export const GAME_SPECS = {
     'caisses': ['caisses'],
     'chenille': ['chenille'],
     'collier': ['collier'],
+    'briques': ['briques'],
     'atelier': ['atelier', 'atelier-dessin', 'atelier-doigt', 'atelier-gomme'],
 };
 /** Cross-game specs, grouped by what they exercise. None is tied to a single game. */
@@ -81,6 +82,7 @@ export const SMOKE_TESTS = {
     'caisses': ['caisses', 'a push against the wall is a funny try: bonk, the crate makes big eyes, nothing moves'],
     'chenille': ['chenille', 'a step into the hedge is a funny try: boing, the caterpillar rubs its head, nothing moves'],
     'collier': ['collier', 'a throw into the void goes boing and comes back to Boubou, nothing else changes'],
+    'briques': ['briques', 'a throw against the iron bricks is a funny try: the iron laughs, nothing breaks, the ball comes back to Lumi'],
     'atelier': ['atelier-dessin', 'the brush draws over the coloured model, which stays visible under the stroke'],
 };
 /** Shell zones: the cross-game specs that exercise that part of the shell, added to the selection. */
