@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.16.0
+
+- New game, Lumi’s bricks, the gentle Kid version of Opencade’s Briqueterie: a brick breaker without a paddle and without reflexes. A wall of coloured bricks hides a drawing; the child aims along a dotted line that shows the first bounce, Lumi throws the ball, it bounces, breaks what it touches and always comes back into Lumi’s arms. The drawing appears little by little and is shown big at the end.
+- No clock, no paddle, no lost ball, no lives, nothing to lose. A throw that breaks nothing is a funny try: an iron brick that laughs, a jelly brick that wobbles, a cloud that sneezes, the ball landing on Lumi’s head, a dizzy ball, a boing in the grass.
+- 32 scenes written by hand, each with a short title said by Lumi and its own hidden drawing (a sun, a house with a smoking chimney, a sleeping cat, a rocket, a snowman… and the five friends at the end): bricks that need two hits, iron bricks, sweet bricks that give two balls on the next throw, confetti bombs, bricks on wheels, jelly bricks, a coloured ball that goes through its colour. After three throws that break nothing, a good direction shows in gold.
+- Erasing the progress in the parents’ space also erases the bricks stars.
+
 ## 1.15.0
 
 - New game, Boubou’s necklace, the gentle Kid version of Opencade’s Collier: a necklace of coloured beads lies along a path, and Boubou throws the bead he holds where the child touches or aims along a long dotted line. Three alike that touch fly away as butterflies and the two ends meet again, sometimes in a chain. Every colour also carries a shape, and close colours never share a scene.
