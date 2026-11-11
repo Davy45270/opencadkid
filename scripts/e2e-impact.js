@@ -49,6 +49,7 @@ export const GAME_SPECS = {
     'collier': ['collier'],
     'briques': ['briques'],
     'fusee': ['fusee'],
+    'pepites': ['pepites'],
     'atelier': ['atelier', 'atelier-dessin', 'atelier-doigt', 'atelier-gomme'],
 };
 /** Cross-game specs, grouped by what they exercise. None is tied to a single game. */
@@ -85,6 +86,7 @@ export const SMOKE_TESTS = {
     'collier': ['collier', 'a throw into the void goes boing and comes back to Boubou, nothing else changes'],
     'briques': ['briques', 'a throw against the iron bricks is a funny try: the iron laughs, nothing breaks, the ball comes back to Lumi'],
     'fusee': ['fusee', 'touching nothing, the rocket comes down slowly and bounces like a ball on the runway: boing, then it rises a little by itself'],
+    'pepites': ['pepites', 'a step into hard rock is a funny try: bzzz, Lumi shivers, nothing moves'],
     'atelier': ['atelier-dessin', 'the brush draws over the coloured model, which stays visible under the stroke'],
 };
 /** Shell zones: the cross-game specs that exercise that part of the shell, added to the selection. */

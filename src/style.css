@@ -524,3 +524,49 @@ button:active{transform:translateY(3px);box-shadow:0 1px 0 #c7d5b7,inset 0 2px 4
 @keyframes fusee-wobble{20%{transform:rotate(-14deg)}40%{transform:rotate(12deg)}60%{transform:rotate(-8deg)}80%{transform:rotate(4deg)}}
 @keyframes fusee-squash{0%{transform:scale(1.3,.7)}20%{transform:scale(.85,1.2)}40%{transform:scale(1.08,.94)}60%{transform:scale(1)}}
 @media(prefers-reduced-motion:reduce){.fusee-zone [data-still] *,.fusee-zone *{animation:none!important;transition:none!important}.fusee-zone [data-puff] .fusee-flame{opacity:1}}
+.pepites{max-width:560px;margin:auto}.pepites .play-header h1{flex:1;text-align:center;font-size:1.2rem;margin:0}.pepites .level-grid span{min-height:1.2em}
+.pepites-play{display:flex;flex-direction:column;height:calc(100svh - 48px);min-height:520px}
+.pepites-instruction{display:flex;align-items:center;gap:10px;width:100%;max-width:460px;margin:4px auto 4px;min-height:80px;border-radius:24px;background:#fcf8edf5;padding:0 8px}.pepites-instruction #guide{width:72px;height:72px;flex:none}.pepites-instruction p{margin:0;font-size:1.05rem;line-height:1.22}
+.pepites-goals{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:10px;min-height:36px;margin:0 auto 4px}.pepites-goals>span{display:flex;gap:2px}.pepites-goals span span{width:34px;height:34px;display:block;transition:opacity .3s,transform .3s}.pepites-goals svg{width:100%;height:100%}.pepites-goals [data-got]{opacity:.25;transform:scale(.8)}
+.pepites-stage{position:relative;flex:1;min-height:0;display:flex;justify-content:center}
+.pepites-zone{position:relative;border-radius:20px;overflow:hidden;outline:2px solid #c99a6a;box-shadow:0 4px 0 #e2c4a0;touch-action:none;user-select:none;-webkit-user-select:none}
+.pepites-zone:focus-visible{outline:4px solid #8d68a0;outline-offset:2px}.pepites-zone>svg{display:block;width:100%;height:100%}
+.pepites-tools{display:flex;justify-content:center;gap:12px;margin:8px auto 0}.pepites-tools button{display:flex;align-items:center;justify-content:center;gap:8px;min-height:64px;min-width:200px;padding:4px 18px 4px 10px;border-radius:32px;font-size:1.15rem;font-weight:700}.pepites-tools svg{width:48px;height:48px;flex:none}
+#pepites-retour:disabled{opacity:.45}
+.pepites-zone [data-lumi],.pepites-zone [data-thing]{transition:transform .2s ease-in}.pepites-zone .pepites-saute{transition:none!important}
+.pepites-zone .pepites-inner,.pepites-zone [class^=pepites-]{transform-box:fill-box;transform-origin:center}
+.pepites-face-surprise,.pepites-rocher-yeux,.pepites-ver-baille,.pepites-gouttes{display:none}
+.pepites-visage-surprise .pepites-face-surprise{display:inline}.pepites-visage-surprise .pepites-face-joie{display:none}
+.pepites-gros-yeux .pepites-rocher-yeux,.pepites-baille .pepites-ver-baille,.pepites-mouillee .pepites-gouttes{display:inline}.pepites-baille .pepites-ver-dort{display:none}
+.pepites-zone [data-door] .pepites-halo{opacity:0;transition:opacity .4s}.pepites-zone [data-door][data-ready] .pepites-halo{opacity:.9}.pepites-zone [data-door][data-ready] .pepites-porte{animation:pepites-pret 1.6s ease-in-out infinite}
+.pepites-scintille{animation:pepites-scintille 1.8s ease-in-out infinite}
+.pepites-arrow{animation:pepites-souffle-fleche 2.4s ease-in-out infinite}.pepites-hint{animation:pepites-hint 1s ease-in-out infinite!important}
+.pepites-parti{transition:opacity .35s!important;opacity:0}.pepites-toc{animation:pepites-toc .3s ease-in-out}
+.pepites-rentre{transition:transform .6s ease-in,opacity 1.2s ease-in .3s!important;opacity:0}.pepites-ouverte{animation:pepites-ouverte 1s ease-in-out forwards!important}
+.pepites-bubble{animation:pepites-bulle 1.3s ease-out forwards}.pepites-eclat,.pepites-etoiles{animation:pepites-eclat .9s ease-out forwards}
+.pepites-reward{position:absolute;inset:30% 8px auto;padding:10px;border-radius:24px;background:#fffdf5ee;text-align:center;z-index:2}.pepites-reward .stars{font-size:3rem;line-height:1}.pepites-reward .finish-actions button{margin:6px 0}
+.pepites-cogne{animation:pepites-cogne 1.3s ease-out}.pepites-bzzz{animation:pepites-bzzz 1.3s linear}.pepites-pousse{animation:pepites-pousse 1.3s ease-in-out}.pepites-chut{animation:pepites-chut 1.3s ease-in-out}
+.pepites-plouf{animation:pepites-plouf 1.3s ease-in-out}.pepites-toque{animation:pepites-toque 1.3s ease-in-out}.pepites-bonk{animation:pepites-bonk 1s ease-out}
+.pepites-vibre{animation:pepites-vibre 1.3s linear}.pepites-gros-yeux{animation:pepites-gros-yeux 1.3s ease-in-out}.pepites-baille{animation:pepites-baille-ver 1.3s ease-in-out}.pepites-pas-encore{animation:pepites-pas-encore 1.3s ease-in-out!important}.pepites-vague{animation:pepites-vague 1.3s ease-in-out}
+@keyframes pepites-cogne{20%{transform:translate(var(--dx),var(--dy)) scale(.9,1.1)}30%{transform:translate(calc(var(--dx) * -.6),calc(var(--dy) * -.6)) rotate(-8deg)}45%,75%{transform:rotate(8deg)}60%,90%{transform:rotate(-8deg)}100%{transform:none}}
+@keyframes pepites-bzzz{15%{transform:translate(var(--dx),var(--dy))}20%,30%,40%,50%,60%,70%,80%{transform:translate(calc(var(--dx) + 4px),var(--dy))}25%,35%,45%,55%,65%,75%{transform:translate(calc(var(--dx) - 4px),var(--dy))}100%{transform:none}}
+@keyframes pepites-pousse{20%,70%{transform:translate(calc(var(--dx) * .7),calc(var(--dy) * .7)) scale(1.08,.92)}45%{transform:translate(calc(var(--dx) * .8),calc(var(--dy) * .8)) scale(1.12,.88)}100%{transform:none}}
+@keyframes pepites-chut{25%{transform:translate(calc(var(--dx) * .5),calc(var(--dy) * .5)) scale(1.05)}50%{transform:translate(calc(var(--dx) * .3),calc(var(--dy) * .3)) rotate(-6deg)}75%{transform:rotate(6deg)}100%{transform:none}}
+@keyframes pepites-plouf{20%{transform:translate(var(--dx),var(--dy)) scale(1.05,.9)}35%{transform:translate(calc(var(--dx) * -.4),calc(var(--dy) * -.4)) translateY(-14px)}50%,70%,90%{transform:rotate(10deg)}60%,80%{transform:rotate(-10deg)}100%{transform:none}}
+@keyframes pepites-toque{15%,45%{transform:translate(calc(var(--dx) * .5),calc(var(--dy) * .5))}30%,60%{transform:translate(calc(var(--dx) * .2),calc(var(--dy) * .2))}100%{transform:none}}
+@keyframes pepites-bonk{0%{transform:scale(1.15,.75) translateY(8px)}25%{transform:scale(.92,1.1)}45%{transform:rotate(-10deg)}65%{transform:rotate(8deg)}85%{transform:rotate(-4deg)}100%{transform:none}}
+@keyframes pepites-vibre{10%,30%,50%,70%,90%{transform:translateX(-3px)}20%,40%,60%,80%{transform:translateX(3px)}100%{transform:none}}
+@keyframes pepites-gros-yeux{25%,75%{transform:scale(1.1,.92)}50%{transform:scale(.95,1.06)}100%{transform:none}}
+@keyframes pepites-baille-ver{30%,70%{transform:scale(1.08,1.14)}100%{transform:none}}
+@keyframes pepites-pas-encore{20%,60%{transform:rotate(-8deg)}40%,80%{transform:rotate(8deg)}100%{transform:none}}
+@keyframes pepites-vague{30%{transform:scale(1.06,.94)}60%{transform:scale(.96,1.04)}100%{transform:none}}
+@keyframes pepites-pret{50%{transform:scale(1.05)}}
+@keyframes pepites-ouverte{to{transform:scale(1.2);opacity:.6}}
+@keyframes pepites-toc{50%{transform:scale(.9) rotate(4deg)}}
+@keyframes pepites-scintille{50%{opacity:.2;transform:scale(.6)}}
+
+@keyframes pepites-souffle-fleche{50%{opacity:.75;transform:scale(.92)}}
+@keyframes pepites-hint{50%{transform:scale(1.2);filter:drop-shadow(0 0 8px #f5b400)}}
+@keyframes pepites-bulle{from{transform:scale(.3);opacity:0}15%{transform:scale(1.1);opacity:1}25%{transform:scale(1)}85%{opacity:1}100%{opacity:0}}
+@keyframes pepites-eclat{from{transform:scale(.3);opacity:0}30%{opacity:1}60%{transform:scale(1.15)}100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.pepites-zone [data-lumi],.pepites-zone [data-thing]{transition:none}.pepites-arrow,.pepites-hint,.pepites-scintille{animation:none!important}.pepites-hint{filter:drop-shadow(0 0 4px #f5b400)}}
