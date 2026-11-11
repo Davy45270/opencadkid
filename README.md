@@ -64,7 +64,7 @@ Phone screenshots (390×844).
 
 | | |
 |---|---|
-| <img src="docs/captures/accueil-catalogue.png" alt="All eleven games" width="240"><br>All eleven games | <img src="docs/captures/accueil-fr.png" alt="Home (French)" width="240"><br>Home (French) |
+| <img src="docs/captures/accueil-catalogue.png" alt="The games catalogue" width="240"><br>The games catalogue | <img src="docs/captures/accueil-fr.png" alt="Home (French)" width="240"><br>Home (French) |
 | <img src="docs/captures/compter-combien.png" alt="Boubou's baskets: how many?" width="240"><br>Boubou's baskets: how many? | <img src="docs/captures/compter-remplir.png" alt="Boubou's baskets: fill the basket" width="240"><br>Boubou's baskets: fill the basket |
 | <img src="docs/captures/paires-plateau.png" alt="Lumi's cards" width="240"><br>Lumi's cards | <img src="docs/captures/formes-trier.png" alt="CaliRoux's shapes: sort by colour" width="240"><br>CaliRoux's shapes: sort by colour |
 | <img src="docs/captures/sons-image-lettre.png" alt="Tutu's sounds" width="240"><br>Tutu's sounds | <img src="docs/captures/puzzle-chateau.png" alt="Pestouille's puzzle" width="240"><br>Pestouille's puzzle |

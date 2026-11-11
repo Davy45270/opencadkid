@@ -64,7 +64,7 @@ Captures sur téléphone (390×844).
 
 | | |
 |---|---|
-| <img src="docs/captures/accueil-catalogue.png" alt="Les onze jeux" width="240"><br>Les onze jeux | <img src="docs/captures/accueil-fr.png" alt="Accueil" width="240"><br>Accueil |
+| <img src="docs/captures/accueil-catalogue.png" alt="Le catalogue des jeux" width="240"><br>Le catalogue des jeux | <img src="docs/captures/accueil-fr.png" alt="Accueil" width="240"><br>Accueil |
 | <img src="docs/captures/compter-combien.png" alt="Les paniers de Boubou : combien ?" width="240"><br>Les paniers de Boubou : combien ? | <img src="docs/captures/compter-remplir.png" alt="Les paniers de Boubou : remplir le panier" width="240"><br>Les paniers de Boubou : remplir le panier |
 | <img src="docs/captures/paires-plateau.png" alt="Les cartes de Lumi" width="240"><br>Les cartes de Lumi | <img src="docs/captures/formes-trier.png" alt="Les formes de CaliRoux : trier par couleur" width="240"><br>Les formes de CaliRoux : trier par couleur |
 | <img src="docs/captures/sons-image-lettre.png" alt="Les sons de Tutu" width="240"><br>Les sons de Tutu | <img src="docs/captures/puzzle-chateau.png" alt="Le puzzle de Pestouille" width="240"><br>Le puzzle de Pestouille |
@@ -91,7 +91,7 @@ npm run test:e2e
 
 La configuration E2E démarre automatiquement `preview` après le build, avec un seul worker, pour un bureau et un téléphone tactile Chromium. Les icônes PWA sont reproductibles avec `node scripts/make-icons.js`, sans dépendance d’image.
 
-Les moteurs purs dans `src/engines/` reçoivent une graine ; ils n’utilisent ni DOM, ni heure, ni hasard ambiant. L’interface dessine et transmet les gestes. Le crochet de lecture `window.__kid.state()` donne une copie détachée de l’état et des rectangles des cibles, avec les motifs, faces visibles, cartes trouvées, coups, erreur en cours et rectangles des cartes de mémoire, sans permettre de modifier le jeu. Les tests vérifient notamment 300 graines par niveau et par quantité disposée. Les E2E couvrent les séries, le doigt bruité, la langue, le contrôle parental et le hors ligne. Les tests ont été écrits sans être exécutés pendant cette livraison ; seuls lint, types et build sont validés localement.
+Les moteurs purs dans `src/engines/` reçoivent une graine ; ils n’utilisent ni DOM, ni heure, ni hasard ambiant. L’interface dessine et transmet les gestes. Le crochet de lecture `window.__kid.state()` donne une copie détachée de l’état et des rectangles des cibles, avec les motifs, faces visibles, cartes trouvées, coups, erreur en cours et rectangles des cartes de mémoire, sans permettre de modifier le jeu. Les tests vérifient notamment 300 graines par niveau et par quantité disposée. Les E2E couvrent les séries, le doigt bruité, la langue, le contrôle parental et le hors ligne. La CI lance à chaque envoi le lint, les types, les tests unitaires, le build et la vérification du précache, puis seulement les specs E2E que `scripts/e2e-impact.js` désigne pour le changement (jamais toute la suite E2E).
 
 Le catalogue jouable est dans `src/registry.ts`. Les règles et l’oracle des tests sont dans [GAME_SPEC.md](GAME_SPEC.md). La CI vérifie le projet puis Pages déploie lorsque la CI de main réussit. Les actions sont épinglées.
 
