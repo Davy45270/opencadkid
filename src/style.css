@@ -614,3 +614,53 @@ button:active{transform:translateY(3px);box-shadow:0 1px 0 #c7d5b7,inset 0 2px 4
 @keyframes dedale-bulle{from{transform:scale(.3);opacity:0}15%{transform:scale(1.1);opacity:1}25%{transform:scale(1)}85%{opacity:1}100%{opacity:0}}
 @keyframes dedale-eclat{from{transform:scale(.3);opacity:0}30%{opacity:1}60%{transform:scale(1.15)}100%{opacity:0}}
 @media(prefers-reduced-motion:reduce){.dedale-zone [data-boubou],.dedale-zone [data-friend]{transition:none}.dedale-arrow,.dedale-hint,.dedale-scintille,.dedale-ailes,.dedale-danse{animation:none!important}.dedale-hint{filter:drop-shadow(0 0 4px #f5b400)}.dedale-pousse{animation-duration:.01s}}
+/* Les cubes de Lumi: the well takes all the height left between the goals and the two big buttons. */
+.empilo{max-width:560px;margin:auto}.empilo .play-header h1{flex:1;text-align:center;font-size:1.2rem;margin:0}.empilo .level-grid span{min-height:1.2em}
+.empilo-play{display:flex;flex-direction:column;height:calc(100svh - 48px);min-height:520px}
+.empilo-instruction{display:flex;align-items:center;gap:10px;width:100%;max-width:460px;margin:4px auto 4px;min-height:80px;border-radius:24px;background:#fcf8edf5;padding:0 8px}.empilo-instruction #guide{width:72px;height:72px;flex:none}.empilo-instruction p{margin:0;font-size:1.05rem;line-height:1.22}
+.empilo-goals{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:6px;min-height:40px;margin:0 auto 4px}.empilo-goals>span{width:40px;height:40px;display:block;opacity:.4;transition:opacity .3s,transform .3s}.empilo-goals svg{width:100%;height:100%}.empilo-goals [data-got]{opacity:1;transform:scale(1.1)}.empilo-goals .empilo-goal-big{width:48px;height:48px}
+.empilo-stage{position:relative;flex:1;min-height:0;display:flex;justify-content:center}
+.empilo-zone{position:relative;border-radius:20px;overflow:hidden;outline:2px solid #a98cc0;box-shadow:0 4px 0 #d9c8ea;touch-action:none;user-select:none;-webkit-user-select:none}
+.empilo-zone:focus-visible{outline:4px solid #8d68a0;outline-offset:2px}.empilo-zone>svg{display:block;width:100%;height:100%}
+.empilo-tools{display:flex;justify-content:center;gap:8px;margin:8px auto 0;max-width:100%}.empilo-tools button{display:flex;align-items:center;justify-content:center;gap:4px;min-height:64px;padding:4px 12px 4px 6px;border-radius:32px;font-size:1.1rem;font-weight:700}.empilo-tools svg{width:44px;height:44px;flex:none}
+#empilo-echange .empilo-autre svg{width:48px;height:48px}#empilo-echange .empilo-swap-icon{width:30px;height:30px}#empilo-echange:disabled,#empilo-tourne:disabled{opacity:.5}
+.empilo-hint-button{animation:empilo-bouton 1s ease-in-out infinite}
+.empilo-zone [data-piece]{transition:transform .12s ease-out}.empilo-zone [data-cloud]>g{transition:transform .4s ease-in-out}
+.empilo-zone .empilo-inner,.empilo-zone [class^=empilo-],.empilo-zone [data-frame]{transform-box:fill-box;transform-origin:center}
+.empilo-scintille{animation:empilo-scintille 1.8s ease-in-out infinite}.empilo-ailes{animation:empilo-ailes .5s ease-in-out infinite}.empilo-nuage{animation:empilo-flotte 2.6s ease-in-out infinite}
+.empilo-hint{animation:empilo-hint 1s ease-in-out infinite}
+.empilo-envol{animation:empilo-envol .9s ease-in forwards}.empilo-souffle-rangee{animation:empilo-souffle-rangee .9s ease-in forwards}.empilo-vent{animation:empilo-vent .9s ease-out forwards}
+.empilo-arcenciel{animation:empilo-arcenciel .45s linear infinite}.empilo-pousse{animation:empilo-pousse .5s ease-out both}.empilo-libre{animation:empilo-eclat .9s ease-out forwards}
+.empilo-allume{animation:empilo-allume .6s ease-out}.empilo-dessin{transition:opacity .4s}.empilo-dessin-fini{animation:empilo-fini 1.2s ease-in-out}
+.empilo-bubble{animation:empilo-bulle 1.3s ease-out forwards}.empilo-eclat{animation:empilo-eclat .9s ease-out forwards}
+.empilo-reward{position:absolute;inset:30% 8px auto;padding:10px;border-radius:24px;background:#fffdf5ee;text-align:center;z-index:2}.empilo-reward .stars{font-size:3rem;line-height:1}.empilo-reward .finish-actions button{margin:6px 0}
+.empilo-tasse{animation:empilo-tasse 1.3s ease-in-out}.empilo-bonk{animation:empilo-bonk 1.3s ease-out}.empilo-rebond{animation:empilo-rebond 1.3s ease-out}.empilo-souffle{animation:empilo-souffle 1.3s ease-in-out}
+.empilo-tournis{animation:empilo-tournis 1.3s ease-in-out}.empilo-cherche{animation:empilo-cherche 1.3s ease-in-out}.empilo-leche{animation:empilo-leche 1.3s ease-in-out}
+.empilo-echo{animation:empilo-echo .9s ease-out infinite}.empilo-secoue{animation:empilo-secoue 1.3s linear}.empilo-vacille{animation:empilo-vacille 1.3s ease-in-out}.empilo-atchoum{animation:empilo-atchoum 1.3s ease-in-out}.empilo-vertige{animation:empilo-vertige 1.3s ease-in-out}
+@keyframes empilo-tasse{20%{transform:scale(1.12,.82) translateY(10px)}45%{transform:scale(.94,1.06)}65%{transform:scale(1.04,.96)}100%{transform:none}}
+@keyframes empilo-bonk{15%{transform:translateX(-10px)}30%{transform:translateX(-24px) rotate(-12deg) scale(.92,1.08)}45%{transform:translateX(10px) rotate(6deg)}70%{transform:translateY(-12px)}100%{transform:none}}
+@keyframes empilo-rebond{20%{transform:translateY(var(--fall,60px))}35%{transform:translateY(var(--fall,60px)) scale(1.1,.85)}55%{transform:translateY(-30px)}75%{transform:translateY(8px)}100%{transform:none}}
+@keyframes empilo-souffle{20%{transform:translateY(var(--fall,60px))}40%{transform:translateY(-40px) rotate(-14deg)}60%{transform:translateY(-20px) rotate(10deg)}80%{transform:translateY(-6px) rotate(-4deg)}100%{transform:none}}
+@keyframes empilo-tournis{25%{transform:rotate(180deg) scale(.9)}50%{transform:rotate(360deg)}70%{transform:rotate(380deg) translateX(6px)}85%{transform:rotate(350deg) translateX(-6px)}100%{transform:rotate(360deg)}}
+@keyframes empilo-cherche{15%,75%{transform:translateY(var(--fall,60px))}35%{transform:translateY(var(--fall,60px)) translateX(-18px)}55%{transform:translateY(var(--fall,60px)) translateX(18px)}100%{transform:none}}
+@keyframes empilo-leche{20%{transform:translateY(var(--fall,60px)) scale(1.06)}35%,65%{transform:translateY(var(--fall,60px)) rotate(-8deg)}50%,80%{transform:translateY(var(--fall,60px)) rotate(8deg)}100%{transform:none}}
+@keyframes empilo-echo{from{transform:scale(.4);opacity:1}100%{transform:scale(1.6);opacity:0}}
+@keyframes empilo-secoue{10%,30%,50%,70%,90%{transform:translateX(-5px)}20%,40%,60%,80%{transform:translateX(5px)}100%{transform:none}}
+@keyframes empilo-vacille{20%,60%{transform:rotate(-6deg)}40%,80%{transform:rotate(6deg)}100%{transform:none}}
+@keyframes empilo-atchoum{20%{transform:scale(1.15,.85)}35%{transform:scale(.85,1.15) translateY(-10px)}50%{transform:scale(1.2) rotate(-6deg)}70%{transform:scale(.95)}100%{transform:none}}
+@keyframes empilo-vertige{25%{transform:rotate(-20deg) scale(1.08)}50%{transform:rotate(20deg)}75%{transform:rotate(-10deg)}100%{transform:none}}
+@keyframes empilo-bouton{50%{transform:scale(1.08);box-shadow:0 0 0 6px #f5b40088}}
+@keyframes empilo-scintille{50%{opacity:.2;transform:scale(.6)}}
+@keyframes empilo-ailes{50%{transform:scaleX(.55)}}
+@keyframes empilo-flotte{50%{transform:translateY(-6px)}}
+@keyframes empilo-hint{50%{transform:scale(1.08);filter:drop-shadow(0 0 8px #f5b400)}}
+@keyframes empilo-envol{from{transform:scale(.5)}30%{transform:scale(1) translateY(-20px)}100%{transform:translate(30px,-320px) rotate(20deg) scale(.7);opacity:0}}
+@keyframes empilo-souffle-rangee{from{transform:none}100%{transform:translate(260px,-80px) rotate(40deg);opacity:0}}
+@keyframes empilo-vent{from{transform:translateX(-120px);opacity:0}30%{opacity:1}100%{transform:translateX(40px);opacity:0}}
+@keyframes empilo-arcenciel{50%{transform:scale(1.1);filter:brightness(1.25)}}
+@keyframes empilo-pousse{from{transform:scale(0)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
+@keyframes empilo-allume{50%{transform:scale(1.15)}}
+@keyframes empilo-fini{30%{transform:scale(1.08);filter:drop-shadow(0 0 12px #f5b400)}100%{transform:none}}
+@keyframes empilo-bulle{from{transform:scale(.3);opacity:0}15%{transform:scale(1.1);opacity:1}25%{transform:scale(1)}85%{opacity:1}100%{opacity:0}}
+@keyframes empilo-eclat{from{transform:scale(.3);opacity:0}30%{opacity:1}60%{transform:scale(1.15)}100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.empilo-zone [data-piece],.empilo-zone [data-cloud]>g{transition:none!important}.empilo-hint,.empilo-scintille,.empilo-ailes,.empilo-nuage,.empilo-arcenciel,.empilo-hint-button,.empilo-echo{animation:none!important}.empilo-hint{filter:drop-shadow(0 0 4px #f5b400)}.empilo-pousse{animation-duration:.01s}}
