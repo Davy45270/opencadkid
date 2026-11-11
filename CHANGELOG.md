@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.25.0
+
+- New game, Pestouille’s kart, the gentle Kid version of Opencade’s Dérapage, with no race and no rivals: Pestouille is a delivery dragon. A friend asks for something (a cake for the bear, a ball for the puppy, a letter for the owl), and the little kart drives on its own, slowly. At each fork the road waits, big arrows appear and wooden signs with pictures show where each road goes: the child touches an arrow. At the right friend’s house: delivery and confetti.
+- No clock, no lives, nothing to lose: a wrong road leads to a funny try and loops back. Funny tries: a mud puddle and then a bubble car wash, sheep crossing the road, a haystack at a dead end, the wrong friend who waves hello, a wooden bridge that goes clack clack, a dark cave where only Pestouille’s eyes shine, a merry-go-round. Starred bends have a big “Drift!” button for a sparkly slide and a bonus star, never needed to finish.
+- 32 scenes written by hand, each with a short title said by Pestouille. New things one by one: two forks in a row, starred bends, three-way signs, two parcels in one trip, signs that only show the colour of the roof (remember who asked!), one-way roads, a roundabout, a bridge, a tunnel. After two wrong roads, the right arrow shines.
+- Erasing the progress in the parents’ space also erases the kart stars.
+
 ## 1.24.0
 
 - New game, CaliRoux’s water balloons, the gentle Kid version of Opencade’s Les Artificiers, with no duel and no damage: CaliRoux stands on top of a big hill with a soft water-balloon slingshot. The child pulls back with a finger: the further you pull, the further it flies, and dots show the start of the arc. The balloon lands with a splash and the thirsty flowers it reaches drink, stand up and open; when every flower is open, a rainbow and butterflies.
