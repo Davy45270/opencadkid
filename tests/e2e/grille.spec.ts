@@ -231,7 +231,7 @@ test('phone captures of the grid', async ({ page, isMobile }) => {
     await put(page, 15, 0);
     await page.waitForTimeout(600); await page.screenshot({ path: `${dir}/05-tableau-anime.png` });
     await page.locator('#back').click(); await page.locator('[data-grille-level="12"]').click();
-    await page.locator('[data-cell="9"]').click();
+    await page.locator('[data-cell="13"]').click();
     await page.screenshot({ path: `${dir}/06-croiser-case-choisie.png` });
     await page.locator('#back').click(); await page.locator('[data-grille-level="23"]').click();
     await page.screenshot({ path: `${dir}/07-grande-grille.png` });

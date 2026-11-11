@@ -54,7 +54,7 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         root.querySelectorAll('.grille-hint').forEach(el => el.classList.remove('grille-hint')); root.querySelectorAll('[data-hint]').forEach(el => el.removeAttribute('data-hint'));
         const h = !observed.busy && helpOn(s) ? hint(s) : null;
         root.querySelector('.grille-board')?.toggleAttribute('data-help', Boolean(h));
-        if (h) { cellEl(h.cell)?.querySelector('.grille-in')?.classList.add('grille-hint'); cellEl(h.cell)?.setAttribute('data-hint', ''); pickEl(h.image)?.querySelector('.grille-in')?.classList.add('grille-hint'); }
+        if (h) { cellEl(h.cell)?.querySelector('.grille-in')?.classList.add('grille-hint'); cellEl(h.cell)?.setAttribute('data-hint', ''); pickEl(h.image)?.querySelector('.grille-in')?.classList.add('grille-hint'); pickEl(h.image)?.setAttribute('data-hint', ''); }
     };
     /** A bubble with a sound word over an element of the screen. */
     const pop = (over: Element | null, word: string): void => {
