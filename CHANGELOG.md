@@ -1,8 +1,14 @@
 # Changelog
 
+## 1.31.0
+
+- New game, CaliRoux’s buses, the gentle Kid version of Opencade’s Bus en folie, with no move count, no undo and no game over: children wait at the bus stop, each wearing the cap of their bus’s colour, and the buses are parked in CaliRoux’s little yard among grey cars, a long lorry and orange cones. The child touches a vehicle: it drives straight ahead along its lane as far as it can, or backs up when it cannot go forward. A bus that reaches its gate leaves with the first child, but only if that child waits for its colour. Every colour also has its picture (heart, ball, star, triangle, square).
+- No clock, no lives, nothing to lose: every scene is proved to have no dead end, whatever is touched. Funny tries cost nothing: the children shake their heads when it is not their bus, a stuck bus honks, a cone goes “bong”, the children wave, a pigeon walks into the yard, CaliRoux rolls over.
+- 32 scenes written by hand, from one touch to twelve. New things one by one: a grey car in the way, two buses in turn, cones, a gate on the side, the long coach, the lorry, two gates, then the big yard of six. After three funny tries, the vehicle to touch shines until the next bus leaves; using that help costs one star.
+
 ## 1.30.0
 
-- New game, CaliRoux’s grid, the gentle Kid version of Opencade’s Sudoku: a small grid of pictures (fruits, animals or coloured shapes) where each picture goes only once in every row, every column and every square, first 4 × 4, then 6 × 6. The child touches an empty cell then a picture of the big tray, or drags the picture onto the cell.
+- New game, CaliRoux’s grid, the gentle Kid version of Opencade’s grid of figures: a small grid of pictures (fruits, animals or coloured shapes) where each picture goes only once in every row, every column and every square, first 4 × 4, then 6 × 6. The child touches an empty cell then a picture of the big tray, or drags the picture onto the cell.
 - No clock, no lives, nothing to lose: only the right picture stays, so the grid never holds a wrong one and there is no dead end. Funny tries cost nothing: the fruit pulls a face and goes back to the tray, the animals squabble, the shapes bump.
 - 34 scenes written by hand, every grid checked to have exactly one solution, found by looking only. New things one by one: a row to finish, a column, a square, two to cross, then the big grid. After three funny tries in a row, the right picture and its cell shine; taking that help costs one star.
 
