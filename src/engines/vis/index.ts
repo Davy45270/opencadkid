@@ -12,7 +12,7 @@ export const TOY: Box = { what: 'jouet', x0: 4, y0: 62, x1: 176, y1: 230 };
 export const PEST: Box = { what: 'pestouille', x0: 4, y0: 232, x1: 70, y1: 298 };
 export const CHEST: Box = { what: 'coffre', x0: 108, y0: 242, x1: 176, y1: 296 };
 /** The pots, one per colour of the scene, in a row at the top. */
-export const POT_W = 30, POT_GAP = 3, POT_Y0 = 6, POT_Y1 = 56;
+export const POT_W = 28, POT_GAP = 6, POT_Y0 = 6, POT_Y1 = 56;
 export const JOUET = 'jouet', COFFRE = 'coffre', PESTOUILLE = 'pestouille';
 export const potId = (c: Color): string => `pot-${c}`;
 /** The colours of a scene, in the order of the pots. */
