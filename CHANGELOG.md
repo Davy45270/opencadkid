@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.27.0
+
+- New game, Tutu’s moles, the gentle Kid version of Opencade’s Démineur, where nothing explodes: sleeping moles hide under some clods of a little garden. The child touches a clod: with no mole under it, it opens on a flower and little mole faces tell how many moles sleep in the eight squares around. A clod with no mole around opens its neighbours all by itself. When every safe clod is open, the moles wake up, eat their carrots and have a party.
+- No clock, no lives, nothing to lose: a mole touched by mistake just yawns “shh, I’m sleeping!” and goes back to sleep. Funny tries cost nothing: a rabbit that takes a misplaced carrot, a flower that sneezes pollen, Tutu’s somersault, a jumping carrot, an earthworm on the lawn, a rock that goes “knock”.
+- 32 scenes written by hand, from 3×3 to 6×6 gardens, each solvable without guessing. New things one by one: two moles, carrots to mark a mole (a tool button or a long press), empty clods that open a whole area, two clues to cross, the big garden, rocks. After three funny tries in a row, a safe clod shines; using it costs one star.
+
 ## 1.26.0
 
 - New game, Boubou’s robot, the gentle Kid version of Opencade’s Ferraille, with no shooting, no enemies and no deadly falls: a big friendly robot has broken down at the end of a toy workshop and its parts (golden bolts, cogs, a spring, batteries) are scattered over crates and shelves. The child touches a crate or a shelf and Boubou jumps onto it, picking up the parts on the way. When every part is back, the robot is mended, stands up and dances.
