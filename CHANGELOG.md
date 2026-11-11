@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.28.0
+
+- New game, Lumi’s eggs, the gentle Kid version of Opencade’s Fusio, with no numbers and no game over: eggs sit in Lumi’s nest. The child slides a finger and everything slides to the edge; two alike that touch hatch into the next creature, read in pictures: egg, chick, hen, peacock, then a little dragon. When the creature asked for appears, the whole nest has a party.
+- No clock, no lives, nothing to lose: if the nest is full and stuck, a gentle breeze carries the smallest away. Funny tries cost nothing: a boing against the edge, two different creatures sulking at each other, ouch the stone, a slide on the slant where they hesitate, a shake that makes them dizzy, Lumi jumping, the target waving hello.
+- 32 scenes written by hand, every one checked to have no dead end. New things one by one: two to hatch, the hen, the big nest, the stone that cuts a row, Lumi laying a new egg after each slide, then the peacock and the dragon. After three funny tries or eight slides with no hatching, the right arrow shines; following it costs one star.
+
 ## 1.27.0
 
 - New game, Tutu’s moles, the gentle Kid version of Opencade’s Démineur, where nothing explodes: sleeping moles hide under some clods of a little garden. The child touches a clod: with no mole under it, it opens on a flower and little mole faces tell how many moles sleep in the eight squares around. A clod with no mole around opens its neighbours all by itself. When every safe clod is open, the moles wake up, eat their carrots and have a party.
