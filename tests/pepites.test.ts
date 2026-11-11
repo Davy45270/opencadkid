@@ -174,7 +174,7 @@ it('digging, the door, a rock that falls when dug under, a bonk on the hat, push
     expect(solve(start(6), { push: false })).toBeNull();
 });
 
-it('apples roll off rocks and are caught on the hat, water runs and splashes, worms want apples, the giant nugget takes two knocks', () => {
+it('apples roll off rocks and are caught on the hat, water runs and splashes, earthworms want apples, the giant nugget takes two knocks', () => {
     // Scene 12: under the apple, a step down: it falls on the hat and Lumi catches it.
     let s = play(12, 'd d b d');
     const catchIt = step(s, 'bas')!;

@@ -47,7 +47,7 @@ export interface State {
     /** Every cell, row by row (`y * width + x`); the cell under Lumi is always `_`. */
     grid: string;
     lumi: number;
-    /** Apples Lumi carries, to give to the worms. */
+    /** Apples Lumi carries, to give to the earthworms. */
     basket: number;
     /** Steps (funny tries included), funny tries, funny tries in a row, steps since the last nugget, helps. */
     steps: number; tries: number; dry: number; idle: number; helps: number; finished: boolean;

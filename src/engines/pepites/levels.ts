@@ -155,7 +155,7 @@ const scenes: readonly Scene[] = [
         '##v##',
         '.*...',
         '....P'),
-    say('Deux vers gourmands', 'Two hungry worms', 'Two worms, two gates: one apple rolls off a rock, the other waits below.',
+    say('Deux vers gourmands', 'Two hungry earthworms', 'Two earthworms, two gates: one apple rolls off a rock, the other waits below.',
         '@...a.',
         '....o#',
         '##v###',
