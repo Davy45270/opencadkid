@@ -709,3 +709,60 @@ button:active{transform:translateY(3px);box-shadow:0 1px 0 #c7d5b7,inset 0 2px 4
 @keyframes orbite-bulle{from{transform:scale(.3);opacity:0}15%{transform:scale(1.1);opacity:1}25%{transform:scale(1)}85%{opacity:1}100%{opacity:0}}
 @keyframes orbite-eclat{from{transform:scale(.3);opacity:0}30%{opacity:1}60%{transform:scale(1.15)}100%{opacity:0}}
 @media(prefers-reduced-motion:reduce){.orbite-zone [data-troop],.orbite-zone [data-lumi],.orbite-zone [data-heart],.orbite-zone [data-bird],.orbite-zone [data-drop]{transition:none!important}.orbite-nuage,.orbite-aile,.orbite-vent,.orbite-rayons,.orbite-hint{animation:none!important}.orbite-hint{filter:drop-shadow(0 0 4px #f5b400)}}
+/* Le voyage de Boubou: the sky takes all the height left under the goals. */
+.essaim{max-width:560px;margin:auto}.essaim .play-header h1{flex:1;text-align:center;font-size:1.2rem;margin:0}.essaim .level-grid span{min-height:1.2em}
+.essaim-play{display:flex;flex-direction:column;height:calc(100svh - 48px);min-height:520px}
+.essaim-instruction{display:flex;align-items:center;gap:10px;width:100%;max-width:460px;margin:4px auto 4px;min-height:80px;border-radius:24px;background:#fcf8edf5;padding:0 8px}.essaim-instruction #guide{width:72px;height:72px;flex:none}.essaim-instruction p{margin:0;font-size:1.05rem;line-height:1.22}
+.essaim-goals{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:2px;min-height:36px;margin:0 auto 4px;max-width:100%}.essaim-goals>span{width:34px;height:34px;display:block;opacity:.35;filter:grayscale(1);transition:opacity .3s,transform .3s,filter .3s}.essaim-goals svg{width:100%;height:100%}.essaim-goals [data-got]{opacity:1;filter:none;transform:scale(1.1)}
+.essaim-stage{position:relative;flex:1;min-height:0;display:flex;justify-content:center}
+.essaim-zone{position:relative;border-radius:20px;overflow:hidden;outline:2px solid #5a4a9a;box-shadow:0 4px 0 #b3a6e0;touch-action:none;user-select:none;-webkit-user-select:none;cursor:pointer}
+.essaim-zone:focus-visible{outline:4px solid #3f86c0;outline-offset:2px}.essaim-zone>svg{display:block;width:100%;height:100%}
+.essaim-zone [data-sky],.essaim-zone [data-rocket],.essaim-zone [data-thing]{transition-property:transform;transition-timing-function:linear}
+.essaim-zone [data-rocket]{transition-timing-function:ease-in-out}
+.essaim-zone [class^=essaim-],.essaim-zone [data-frame]{transform-box:fill-box;transform-origin:center}
+.essaim-scintille{animation:essaim-scintille 2.4s ease-in-out infinite}.essaim-flamme{animation:essaim-flamme .35s ease-in-out infinite alternate;transform-origin:50% 0}.essaim-tourbillon{animation:essaim-tourbillon 3s linear infinite}.essaim-tourne{animation:essaim-tourne 5s linear infinite}.essaim-defile{animation:essaim-defile .9s linear infinite}.essaim-pique{animation:essaim-pique 3s ease-in-out infinite}
+.essaim-vitre-poussiere{opacity:0;transition:opacity .3s}.essaim-poussiereuse .essaim-vitre-poussiere{opacity:1}
+.essaim-hint{animation:essaim-hint 1s ease-in-out infinite}
+.essaim-attrape{animation:essaim-attrape .6s ease-in forwards}.essaim-ouvre{animation:essaim-ouvre .8s ease-out forwards}
+.essaim-dans-trou{animation:essaim-dans-trou .8s ease-in forwards}.essaim-sort-trou{animation:essaim-sort-trou .7s ease-out}
+.essaim-pousse{animation:essaim-pousse .6s ease-out}.essaim-fete{animation:essaim-fete .6s ease-in-out infinite alternate}
+.essaim-planete{animation:essaim-planete 2s ease-out forwards}
+.essaim-bulle-mot{animation:essaim-bulle-mot 1.3s ease-out forwards}.essaim-eclat{animation:essaim-eclat 1s ease-out forwards}
+.essaim-reward{position:absolute;inset:auto 8px 12px;padding:10px;border-radius:24px;background:#fffdf5ee;text-align:center;z-index:2}.essaim-reward .stars{font-size:3rem;line-height:1}.essaim-reward .finish-actions button{margin:6px 0}
+.essaim-fusee-toupie{animation:essaim-fusee-toupie 1.3s ease-in-out}.essaim-fusee-atchoum{animation:essaim-fusee-atchoum 1.3s ease-out}.essaim-fusee-flotte{animation:essaim-fusee-flotte 1.3s ease-in-out}.essaim-fusee-frisson{animation:essaim-fusee-frisson 1.3s linear}
+.essaim-fusee-rebond{animation:essaim-fusee-rebond 1.3s ease-out}.essaim-fusee-calin{animation:essaim-fusee-calin 1.3s ease-in-out}.essaim-fusee-recule{animation:essaim-fusee-recule 1.3s ease-out}
+.essaim-rocher-mou{animation:essaim-rocher-mou 1.3s ease-in-out}.essaim-poussiere-pouf{animation:essaim-poussiere-pouf 1.3s ease-out}.essaim-bulle-tremble{animation:essaim-bulle-tremble 1.3s ease-in-out}.essaim-comete-file{animation:essaim-comete-file 1.3s ease-in}
+.essaim-filante-coucou{animation:essaim-filante-coucou 1.3s ease-in-out}.essaim-ami-calin{animation:essaim-ami-calin 1.3s ease-in-out}.essaim-porte-rit{animation:essaim-porte-rit 1.3s linear}
+.essaim-fusee-frisson .essaim-meche{animation:essaim-meche 1.3s ease-out}
+@keyframes essaim-fusee-toupie{15%{transform:translateY(16px) scale(1.15,.85)}60%{transform:translateY(-10px) rotate(360deg)}80%{transform:rotate(380deg)}100%{transform:rotate(360deg)}}
+@keyframes essaim-fusee-atchoum{10%{transform:scale(1.08)}20%{transform:scale(1.12) translateY(-6px)}30%{transform:translateY(22px) scale(.9,1.1)}45%{transform:translateY(-4px)}60%,100%{transform:none}}
+@keyframes essaim-fusee-flotte{20%{transform:translateY(-30px) scale(.92)}50%{transform:translateY(-40px) rotate(-10deg) scale(.92)}75%{transform:translateY(-26px) rotate(8deg) scale(.95)}100%{transform:none}}
+@keyframes essaim-fusee-frisson{10%,30%,50%{transform:translateX(-5px) rotate(-4deg)}20%,40%,60%{transform:translateX(5px) rotate(4deg)}100%{transform:none}}
+@keyframes essaim-fusee-rebond{20%{transform:translateX(var(--essaim-bord,-20px)) scale(.85,1.1)}45%{transform:translateX(calc(var(--essaim-bord,-20px) * -1.5)) rotate(-10deg)}70%{transform:translateX(6px)}100%{transform:none}}
+@keyframes essaim-fusee-calin{25%{transform:scale(1.15)}45%{transform:scale(.9,1.12)}65%{transform:scale(1.1) rotate(-6deg)}100%{transform:none}}
+@keyframes essaim-fusee-recule{20%{transform:translateY(-10px) scale(.9,1.1)}45%{transform:translateY(40px) rotate(-8deg)}70%{transform:translateY(10px) rotate(6deg)}100%{transform:none}}
+@keyframes essaim-rocher-mou{20%{transform:scale(1.3,.7)}45%{transform:scale(.8,1.25) rotate(-10deg)}70%{transform:scale(1.1,.95) rotate(6deg)}100%{transform:none}}
+@keyframes essaim-poussiere-pouf{30%{transform:scale(1.5);opacity:.8}100%{transform:scale(2.1);opacity:0}}
+@keyframes essaim-bulle-tremble{20%{transform:scale(1.25,.85)}40%{transform:scale(.88,1.18)}60%{transform:scale(1.12,.92)}80%{transform:scale(.96,1.05)}100%{transform:none}}
+@keyframes essaim-comete-file{30%{transform:translate(-20px,-20px) scale(1.1)}100%{transform:translate(120px,260px) scale(.6);opacity:0}}
+@keyframes essaim-filante-coucou{15%{transform:scale(1.4)}30%,60%{transform:scale(1.4) rotate(-20deg)}45%,75%{transform:scale(1.4) rotate(20deg)}100%{transform:none}}
+@keyframes essaim-ami-calin{30%{transform:translateY(-70px) scale(1.4)}60%{transform:translateY(-80px) scale(1.5) rotate(-10deg)}100%{transform:none}}
+@keyframes essaim-porte-rit{10%,30%,50%,70%{transform:rotate(-6deg) scale(1.05)}20%,40%,60%,80%{transform:rotate(6deg) scale(.95)}100%{transform:none}}
+@keyframes essaim-meche{15%{transform:translateY(-8px) scaleY(1.8)}70%{transform:translateY(-8px) scaleY(1.8) rotate(8deg)}100%{transform:none}}
+@keyframes essaim-scintille{50%{transform:scale(1.08) rotate(6deg)}}
+@keyframes essaim-flamme{to{transform:scaleY(1.25)}}
+@keyframes essaim-tourbillon{to{transform:rotate(-360deg)}}
+@keyframes essaim-tourne{to{transform:rotate(360deg)}}
+@keyframes essaim-defile{from{transform:translateX(-6px)}to{transform:translateX(6px)}}
+@keyframes essaim-pique{50%{opacity:.3}}
+@keyframes essaim-hint{50%{opacity:.5}}
+@keyframes essaim-attrape{30%{transform:scale(1.3)}100%{transform:scale(.2);opacity:0}}
+@keyframes essaim-ouvre{40%{transform:scale(1.25)}100%{transform:scale(1.6);opacity:0}}
+@keyframes essaim-dans-trou{to{transform:rotate(540deg) scale(.15);opacity:.25}}
+@keyframes essaim-sort-trou{from{transform:rotate(-360deg) scale(.2);opacity:.3}to{transform:none;opacity:1}}
+@keyframes essaim-pousse{30%{transform:rotate(18deg) scale(1.05)}100%{transform:none}}
+@keyframes essaim-fete{from{transform:translateY(0)}to{transform:translateY(-18px)}}
+@keyframes essaim-planete{from{transform:translateY(-700px)}to{transform:none}}
+@keyframes essaim-bulle-mot{from{transform:scale(.3);opacity:0}15%{transform:scale(1.1);opacity:1}25%{transform:scale(1)}85%{opacity:1}100%{opacity:0}}
+@keyframes essaim-eclat{from{transform:scale(.3);opacity:0}30%{opacity:1}60%{transform:scale(1.15)}100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.essaim-zone [data-sky],.essaim-zone [data-rocket],.essaim-zone [data-thing]{transition:none!important}.essaim-scintille,.essaim-flamme,.essaim-tourbillon,.essaim-tourne,.essaim-defile,.essaim-pique,.essaim-hint,.essaim-fete{animation:none!important}}

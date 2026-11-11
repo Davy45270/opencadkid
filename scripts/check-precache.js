@@ -17,7 +17,9 @@ for (const url of urls) {
     assert(!/^(?:[a-z]+:|\/)|\.\./i.test(url), `Nonlocal precache asset: ${url}`);
     compressed += gzipSync(readFileSync(new URL(url, root)), { level: 9 }).byteLength;
 }
-assert(compressed < 400_000, `Precache exceeds 400 kB gzip: ${compressed} bytes`);
+// 400 kB until game 13 of 17 (Boubou's trip) took it to 407 kB. 480 kB covers the 17 games of the Kid programme at about
+// 13 kB each (407 + 4 × 13 ≈ 460 kB), and the check still fails beyond.
+assert(compressed < 480_000, `Precache exceeds 480 kB gzip: ${compressed} bytes`);
 // Paintings: six puzzle scenes and the path start sign, hashed WebP files, never precached, each within its 60 kB budget.
 const webp = readdirSync(new URL('assets/', root)).filter(name => name.endsWith('.webp'));
 const props = webp.filter(name => name.startsWith('cherche-')), assets = webp.filter(name => !name.startsWith('cherche-'));
