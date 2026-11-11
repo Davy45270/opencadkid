@@ -859,3 +859,61 @@ button:active{transform:translateY(3px);box-shadow:0 1px 0 #c7d5b7,inset 0 2px 4
 @keyframes arrosoir-pomme{from{transform:none}45%{transform:translate(calc(var(--dx) * .5),calc(var(--dy) * .55))}75%{transform:translate(var(--dx),var(--dy))}88%{transform:translate(var(--dx),calc(var(--dy) - 8px))}100%{transform:translate(calc(var(--dx) + 10px),var(--dy));opacity:0}}
 @keyframes arrosoir-pluie{from{transform:translateY(0);opacity:0}15%{opacity:1}100%{transform:translateY(60px);opacity:0}}
 @media(prefers-reduced-motion:reduce){.arrosoir-zone *{animation:none!important;transition:none!important}}
+.derapage{max-width:560px;margin:auto}.derapage .play-header h1{flex:1;text-align:center;font-size:1.2rem;margin:0}.derapage .level-grid span{min-height:1.2em}
+.derapage-play{display:flex;flex-direction:column;height:calc(100svh - 48px);min-height:540px}
+.derapage-instruction{display:flex;align-items:center;gap:10px;width:100%;max-width:460px;margin:4px auto;min-height:72px;border-radius:24px;background:#fcf8edf5;padding:0 8px}.derapage-instruction #guide{width:60px;height:60px;flex:none}.derapage-instruction p{margin:0;font-size:1.05rem;line-height:1.22}
+.derapage-goals{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:6px;min-height:52px;margin:0 auto 4px;max-width:100%}.derapage-goals>span[data-goal]{width:64px;height:52px;display:block;border-radius:12px;background:#fffdf5;outline:2px solid #e6dcc4;transition:transform .3s}.derapage-goals svg{width:100%;height:100%}.derapage-goals [data-got]{outline-color:#27ae60;background:#e3f6e1;transform:scale(1.08)}.derapage-goals>span[data-goal]{position:relative}.derapage-goals [data-got]::after{content:"✓";position:absolute;top:-6px;right:-4px;font-weight:900;font-size:1.2rem;color:#27ae60}
+.derapage-bonus{font-weight:800;color:#b07a00;font-size:1.1rem;padding:0 6px}
+.derapage-stage{position:relative;flex:1;min-height:0;container-type:size;display:flex;justify-content:center;align-items:flex-start;padding-bottom:4px}
+.derapage-zone{position:relative;width:min(100cqw,calc(100cqh * 180 / 300));aspect-ratio:180/300;border-radius:22px;overflow:hidden;outline:2px solid #8cc46c;box-shadow:0 4px 0 #c6e3b5;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.derapage-zone:focus-visible{outline:4px solid #8d68a0;outline-offset:2px}.derapage-zone>svg{display:block;width:100%;height:100%}
+.derapage-derape{display:block;margin:2px auto 6px;min-height:60px;min-width:180px;padding:6px 22px;border-radius:30px;border:3px solid #46364a;background:#ff8c42;color:#fff;font-size:1.35rem;font-weight:900;box-shadow:0 4px 0 #b4572a;text-shadow:0 1px 0 #46364a}
+.derapage-derape:disabled{background:#e8ded0;color:#9a8f86;box-shadow:0 4px 0 #cbbfae;text-shadow:none;border-color:#b9ad9f}.derapage-derape[data-ready]{animation:derapage-pret .7s ease-in-out infinite alternate}
+.derapage-reward{position:absolute;inset:auto 8px 30%;padding:10px;border-radius:24px;background:#fffdf5ee;text-align:center;z-index:2}.derapage-reward .stars{font-size:3rem;line-height:1}.derapage-reward .finish-actions button{margin:6px 0}
+.derapage-zone [data-kart],.derapage-zone .derapage-chassis{transition-property:transform;transition-timing-function:linear}
+.derapage-zone [class^=derapage-]{transform-box:fill-box;transform-origin:center}
+.derapage-zone [data-arrow]{visibility:hidden;cursor:pointer}.derapage-zone[data-waiting] [data-arrow]{visibility:visible}.derapage-zone[data-waiting] .derapage-fleche{animation:derapage-fleche .9s ease-in-out infinite alternate}
+.derapage-zone[data-waiting] [data-sign]:not([data-one-way]){cursor:pointer}
+.derapage-zone [data-shine] .derapage-fleche{animation:derapage-brille .6s ease-in-out infinite alternate;filter:drop-shadow(0 0 4px #ffd23f)}
+.derapage-crotte,.derapage-yeux{opacity:0}
+.derapage-scintille{animation:derapage-scintille 1.6s ease-in-out infinite}.derapage-mousse{animation:derapage-mousse 1.4s ease-in-out infinite alternate}.derapage-bras{animation:derapage-bras 1.6s ease-in-out infinite;transform-origin:20% 90%}
+.derapage-glisse{animation:derapage-glisse .9s ease-out}.derapage-etincelles{animation:derapage-etincelles .9s ease-out forwards}.derapage-etoile-bonus{animation:derapage-etoile-bonus 1.2s ease-out forwards}
+.derapage-bulle-mot{animation:derapage-bulle-mot 2.3s ease-out forwards}.derapage-eclat{animation:derapage-eclat 1.2s ease-out forwards}.derapage-confettis{animation:derapage-confettis 1.6s ease-out forwards}
+.derapage-ami-joie{animation:derapage-ami-joie .5s ease-in-out infinite alternate}.derapage-colis-parti{opacity:0;transition:opacity .3s}.derapage-cadeau{animation:derapage-cadeau .6s ease-out}
+.derapage-kart-crotte{animation:derapage-kart-crotte 2.3s ease-in-out}.derapage-kart-crotte .derapage-crotte{animation:derapage-boue-lave 2.3s linear}
+.derapage-kart-attend{animation:derapage-kart-attend 2.3s ease-in-out}.derapage-kart-boing{animation:derapage-kart-boing 2.3s ease-out}.derapage-kart-oups{animation:derapage-kart-oups 2.3s ease-in-out}
+.derapage-kart-clac{animation:derapage-kart-clac 2.3s linear}.derapage-kart-noir{animation:derapage-kart-noir 2.3s ease-in-out}.derapage-kart-noir .derapage-yeux{animation:derapage-yeux 2.3s ease-in-out}.derapage-kart-noir .derapage-chassis,.derapage-kart-noir .derapage-pilote>svg{animation:derapage-sombre 2.3s ease-in-out}.derapage-kart-tours{animation:derapage-kart-tours 2.3s ease-in-out}
+.derapage-flaque-splash{animation:derapage-flaque-splash 2.3s ease-out}.derapage-moutons-passent{animation:derapage-moutons-passent 2.3s linear}.derapage-foin-boing{animation:derapage-foin-boing 2.3s ease-out}.derapage-ami-coucou{animation:derapage-ami-coucou 2.3s ease-in-out}
+.derapage-planches-clac{animation:derapage-planches-clac 2.3s linear}.derapage-grotte-noire{animation:derapage-grotte-noire 2.3s ease-in-out}.derapage-manege-tourne{animation:derapage-manege-tourne 2.3s ease-in-out}
+@keyframes derapage-kart-crotte{15%{transform:translateY(-44px)}25%{transform:translateY(-40px) scale(1.06,.9)}35%,55%{transform:translateY(-44px) rotate(6deg)}45%,65%{transform:translateY(-44px) rotate(-6deg)}85%{transform:translateY(-8px)}100%{transform:none}}
+@keyframes derapage-boue-lave{0%,8%{opacity:0}15%,55%{opacity:1}75%,100%{opacity:0}}
+@keyframes derapage-kart-attend{15%,45%,75%{transform:translateY(-5px)}30%,60%,90%{transform:translateY(0)}100%{transform:none}}
+@keyframes derapage-kart-boing{20%{transform:translateY(-34px)}30%{transform:translateY(-30px) scale(1.1,.85)}50%{transform:translateY(10px) rotate(8deg)}70%{transform:translateY(2px) rotate(-6deg)}100%{transform:none}}
+@keyframes derapage-kart-oups{20%{transform:rotate(-12deg)}40%{transform:rotate(10deg)}60%{transform:rotate(-6deg)}100%{transform:none}}
+@keyframes derapage-kart-clac{15%{transform:translateY(-50px)}25%,45%,65%{transform:translateY(-56px) rotate(3deg)}35%,55%,75%{transform:translateY(-50px) rotate(-3deg)}90%{transform:translateY(-10px)}100%{transform:none}}
+@keyframes derapage-kart-noir{20%,80%{transform:translateY(-58px)}100%{transform:none}}
+@keyframes derapage-sombre{20%,80%{filter:brightness(.3)}100%{filter:none}}
+@keyframes derapage-yeux{0%,15%{opacity:0}25%,80%{opacity:1}100%{opacity:0}}
+@keyframes derapage-kart-tours{10%{transform:translateY(-40px)}80%{transform:translateY(-40px) rotate(1080deg)}100%{transform:rotate(1080deg)}}
+@keyframes derapage-flaque-splash{10%{transform:scale(1.25,.8)}30%{transform:scale(.9,1.15)}50%{transform:scale(1.08,.95)}100%{transform:none}}
+@keyframes derapage-moutons-passent{from{transform:translateX(-150px)}to{transform:translateX(150px)}}
+@keyframes derapage-foin-boing{15%{transform:scale(1.15,.82)}35%{transform:scale(.92,1.1)}55%{transform:scale(1.05,.95)}100%{transform:none}}
+@keyframes derapage-ami-coucou{15%{transform:translateY(-10px)}30%{transform:translateY(0) rotate(-8deg)}45%{transform:translateY(-10px) rotate(8deg)}60%{transform:translateY(0)}100%{transform:none}}
+@keyframes derapage-planches-clac{10%,50%{transform:translateY(-3px) scaleY(1.04)}30%,70%{transform:translateY(3px) scaleY(.96)}100%{transform:none}}
+@keyframes derapage-grotte-noire{20%,80%{transform:scale(1.4);opacity:.95}100%{transform:none}}
+@keyframes derapage-manege-tourne{to{transform:rotate(360deg)}}
+@keyframes derapage-fleche{to{transform:scale(1.12)}}
+@keyframes derapage-brille{from{transform:scale(1.05)}to{transform:scale(1.3)}}
+@keyframes derapage-pret{to{box-shadow:0 4px 0 #b4572a,0 0 0 8px #ffd23f88}}
+@keyframes derapage-scintille{50%{transform:scale(1.25) rotate(15deg)}}
+@keyframes derapage-mousse{to{transform:translateY(-3px)}}
+@keyframes derapage-bras{50%{transform:rotate(-25deg)}}
+@keyframes derapage-glisse{20%{transform:translateX(-14px) rotate(-28deg)}55%{transform:translateX(10px) rotate(22deg)}80%{transform:translateX(-3px) rotate(-6deg)}100%{transform:none}}
+@keyframes derapage-etincelles{from{opacity:1;transform:scale(.6)}to{opacity:0;transform:scale(1.4)}}
+@keyframes derapage-etoile-bonus{from{transform:scale(.3);opacity:0}25%{transform:translateY(-10px) scale(1.2);opacity:1}100%{transform:translateY(-60px) scale(.6) rotate(200deg);opacity:0}}
+@keyframes derapage-bulle-mot{from{transform:scale(.3);opacity:0}12%{transform:scale(1.1);opacity:1}20%{transform:scale(1)}85%{opacity:1}100%{opacity:0}}
+@keyframes derapage-eclat{from{transform:scale(.3);opacity:0}30%{opacity:1}60%{transform:scale(1.15)}100%{opacity:0}}
+@keyframes derapage-confettis{from{transform:scale(.2);opacity:0}25%{opacity:1}100%{transform:scale(1.6) translateY(16px);opacity:0}}
+@keyframes derapage-ami-joie{to{transform:translateY(-8px)}}
+@keyframes derapage-cadeau{from{transform:translate(-50px,60px) scale(.5)}to{transform:none}}
+@media(prefers-reduced-motion:reduce){.derapage-zone [data-kart],.derapage-zone .derapage-chassis{transition:none!important}.derapage-scintille,.derapage-mousse,.derapage-bras,.derapage-fleche,.derapage-ami-joie,.derapage-derape[data-ready]{animation:none!important}}
