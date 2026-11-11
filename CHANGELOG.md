@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.24.0
+
+- New game, CaliRoux’s water balloons, the gentle Kid version of Opencade’s Les Artificiers, with no duel and no damage: CaliRoux stands on top of a big hill with a soft water-balloon slingshot. The child pulls back with a finger: the further you pull, the further it flies, and dots show the start of the arc. The balloon lands with a splash and the thirsty flowers it reaches drink, stand up and open; when every flower is open, a rainbow and butterflies.
+- Turn by turn, no clock, no lives, no stock of balloons. Funny tries cost nothing: too short and CaliRoux gets splashed, too far and a fish jumps, a cow that moos and shakes her horns, a duck making waves in the pond, an apple falling on CaliRoux’s head, a passing cloud that rains for a moment, a frog in a new puddle, a kiss from a flower already open.
+- 32 scenes written by hand, each with a short title said by CaliRoux, the flowers set at different heights on hills and rocks. New things one by one: a hill in between, wind with a big windsock, flowers up on rocks, apple trees to throw over, the cow, the pond, sand, a passing cloud, bunches watered in one splash, the giant watering balloon, and shorter dots. After three dry balloons a ghost hand shows the right pull.
+- Erasing the progress in the parents’ space also erases the watering stars.
+
 ## 1.23.0
 
 - New game, Tutu’s surprises, the gentle Kid version of Opencade’s Bombercade, with no bombs and no rivals: Tutu walks square by square around a little yard full of cartons and puts down a confetti box. It counts “3, 2, 1” with Tutu’s steps, then goes pouf: confetti flies out in a cross, shown beforehand in red dots, and opens the cartons it reaches. Kittens, balloons, apples and a teddy bear hide inside; when every surprise is found, the whole yard has a party.
