@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.18.0
+
+- New game, Lumi’s nuggets, the gentle Kid version of Opencade’s Pépites: Lumi digs an underground garden square by square, picks up golden nuggets, then the burrow door opens and she goes home. Turn by turn: nothing moves until the child takes a step, then rocks and apples that are no longer held fall one square.
+- Nobody is ever squashed, no lives, nothing to lose. A rock that falls on Lumi bounces off her helmet (bonk!) and rolls aside. Funny tries cost nothing: a rock too heavy to push, hard stone that goes bzzz, a sleepy worm that yawns, a splash, the door that says “not yet!”. A big free “Back” button undoes the last step, and no scene can ever get stuck, even without it.
+- 30 scenes written by hand, each with a short title said by Lumi: falling rocks, rocks to push into holes, apples that roll down rocks, hard stone, water that flows into the tunnels you dig, sleepy worms that leave for an apple, giant nuggets that need two taps. After three funny tries, the next good step shines.
+- Erasing the progress in the parents’ space also erases the nuggets stars.
+
 ## 1.17.0
 
 - New game, Boubou’s rocket, the gentle Kid version of Opencade’s Alunir: Boubou flies a little round rocket that comes down very slowly towards the Moon and lands it on a starry pad. One gesture: press to puff and go up, let go to come down gently; slide a finger or touch the big arrows to drift sideways. No turning, no fuel, no clock.
