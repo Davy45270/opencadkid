@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.19.0
+
+- New game, Boubou’s garden, the gentle Kid version of Opencade’s Dédale: Boubou walks a small maze of flowering hedges and picks up seeds; when the last seed is picked, flowers grow everywhere at once. Turn by turn: one step per gesture, and the “On my own” button lets him walk on to the next crossing.
+- No chasers, no clock, no lives, nothing to lose. Friends stroll along a dotted path you can see (a butterfly, a hedgehog, a ladybird): meeting one is a funny try, a tickle or a hug. Funny tries also for a hedge (boing), a puddle, the brook, and a garden gate that says “not yet!”. A sun makes the friends dance and give a bonus seed.
+- 32 scenes written by hand, each with a short title said by Boubou, the hedges drawing something every time: a house, a heart, a snail, a star, glasses, a castle, a fir tree, a boat, a mushroom, a moon, a big butterfly. New things one by one: friends, puddles, suns, a flower key for a little gate, a tunnel between two edges, a bridge over the brook, a carpet of leaves that slides. After three funny tries, the way to the nearest seed shines.
+- Erasing the progress in the parents’ space also erases the garden stars.
+
 ## 1.18.0
 
 - New game, Lumi’s nuggets, the gentle Kid version of Opencade’s Pépites: Lumi digs an underground garden square by square, picks up golden nuggets, then the burrow door opens and she goes home. Turn by turn: nothing moves until the child takes a step, then rocks and apples that are no longer held fall one square.
