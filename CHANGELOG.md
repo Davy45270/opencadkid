@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.17.0
+
+- New game, Boubou’s rocket, the gentle Kid version of Opencade’s Alunir: Boubou flies a little round rocket that comes down very slowly towards the Moon and lands it on a starry pad. One gesture: press to puff and go up, let go to come down gently; slide a finger or touch the big arrows to drift sideways. No turning, no fuel, no clock.
+- No crash, no explosion, no lives, nothing to lose. Touching down too fast, beside the pad, on a rock or in a crater is a funny try: the rocket bounces like a ball, Boubou’s eyes spin, a crater puffs dust and spits it back out, a green friend giggles, and the rocket rises a little so the child tries again. Speeds are always low and bounded: a child who touches nothing still lands in the end.
+- 32 scenes written by hand, each with a short title said by Boubou: a pad to the side, rocks to go around, stars to catch on the way, a pad on top of a hill, wind shown by arrows, a pad that slides, two friends to visit in order, a tunnel through layers of rock, a little passenger to take home. After three funny tries, a golden arrow shows the pad and the rocket comes down slower.
+- Erasing the progress in the parents’ space also erases the rocket stars.
+
 ## 1.16.0
 
 - New game, Lumi’s bricks, the gentle Kid version of Opencade’s Briqueterie: a brick breaker without a paddle and without reflexes. A wall of coloured bricks hides a drawing; the child aims along a dotted line that shows the first bounce, Lumi throws the ball, it bounces, breaks what it touches and always comes back into Lumi’s arms. The drawing appears little by little and is shown big at the end.
