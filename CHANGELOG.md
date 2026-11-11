@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.29.0
+
+- New game, Pestouille’s screws, the gentle Kid version of Opencade’s Dévisso, with no reserve, no dead end and no game over: Pestouille takes a toy apart to put it away (a car, a rocket, a house, a boat, a train). The child touches a free screw, or the plate holding it: it spins, jumps and flies into the pot of its colour, and a plate with no screw left falls gently into the toy chest. Every colour also has its picture (heart, ball, star, triangle, square). At the end the toy puts itself back together and drives, flies, lights up or sails.
+- No clock, no lives, nothing to lose: every screw always has its pot, and the only obstacle is the order, when a plate hides another. Funny tries cost nothing: the plate on top goes “knock knock” and wriggles, a screw touched again on its way spins like a top, a pot burps, the toy honks, rings or whistles, a jack-in-the-box pops out of the chest, Pestouille wears a plate as a hat.
+- 32 scenes written by hand, every one checked to have no dead end. New things one by one: a plate on a plate, three colours, tilted plates, a plate held by two screws, piles three plates deep, then big toys. After three touches that take no screw out, the screw that frees the most shines; using it costs one star.
+
 ## 1.28.0
 
 - New game, Lumi’s eggs, the gentle Kid version of Opencade’s Fusio, with no numbers and no game over: eggs sit in Lumi’s nest. The child slides a finger and everything slides to the edge; two alike that touch hatch into the next creature, read in pictures: egg, chick, hen, peacock, then a little dragon. When the creature asked for appears, the whole nest has a party.
