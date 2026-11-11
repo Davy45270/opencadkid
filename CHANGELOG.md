@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.20.0
+
+- New game, Lumi’s cubes, the gentle Kid version of Opencade’s Empilo: nothing falls by itself and there is no clock. A piece waits at the top; the child slides it over a column (or touches the column), can turn it with a big button, then lets go: it comes down gently and lands. A full row turns rainbow and flies away as butterflies.
+- Soft cubes: a cube placed over an empty square slides into it, so the well never keeps a hole. The well never overflows either: when it is nearly full, a cloud blows the top row away. Funny tries cost nothing: “ooh ooh” in a hole, a piece too wide for the column, a dizzy piece turned four times, a cloud that sneezes. The next piece is shown, and the big “Swap” button takes the other one.
+- 32 scenes written by hand, each with a short title said by Lumi: pieces of one to four cubes, turning from scene 6, a row already nearly full, drawings to light up at the bottom of the well (a house, a boat, a heart, a fir tree, a rocket, a fish, a castle, a star, a flower), chicks to free from under stones, a rainbow cube that fills the hole you touch, a sweet cube that lifts its whole column away. After three placings that help no goal, a good place shines in gold.
+- Erasing the progress in the parents’ space also erases the cubes stars.
+
 ## 1.19.0
 
 - New game, Boubou’s garden, the gentle Kid version of Opencade’s Dédale: Boubou walks a small maze of flowering hedges and picks up seeds; when the last seed is picked, flowers grow everywhere at once. Turn by turn: one step per gesture, and the “On my own” button lets him walk on to the next crossing.
