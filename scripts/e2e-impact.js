@@ -57,6 +57,7 @@ export const GAME_SPECS = {
     'cartons': ['cartons'],
     'arrosoir': ['arrosoir'],
     'derapage': ['derapage'],
+    'ferraille': ['ferraille'],
     'atelier': ['atelier', 'atelier-dessin', 'atelier-doigt', 'atelier-gomme'],
 };
 /** Cross-game specs, grouped by what they exercise. None is tied to a single game. */
@@ -101,6 +102,7 @@ export const SMOKE_TESTS = {
     'cartons': ['cartons', 'a step into the bricks is a funny try: Tutu pulls a face, nothing moves'],
     'arrosoir': ['arrosoir', 'a balloon thrown straight up falls back on CaliRoux: a funny try, nothing opens'],
     'derapage': ['derapage', 'the mud puddle is a funny try: Pestouille is muddy, washed, and back at the fork'],
+    'ferraille': ['ferraille', 'a shelf too high is a funny try: bong, stars, and Boubou is back where he was'],
     'atelier': ['atelier-dessin', 'the brush draws over the coloured model, which stays visible under the stroke'],
 };
 /** Shell zones: the cross-game specs that exercise that part of the shell, added to the selection. */
