@@ -13,7 +13,7 @@ export const labels = {
         hatch: ['', 'Un poussin !', 'Une poule !', 'Un paon !', 'Un petit dragon !'],
         fail: { mur: 'Boing ! Tout est déjà contre le bord.', tete: 'Hmpf ! Ils ne sont pas pareils : ils se font la tête.', pierre: 'Aïe ! La pierre ne bouge pas.', hesite: 'Euh… en biais ? Ils hésitent : glisse tout droit.', tournis: 'Wouh ! Tu as secoué le nid : tout le monde a le tournis.', saut: 'Hop ! Je saute de joie.', coucou: 'Coucou ! C’est moi qu’il faut faire éclore.' },
         laid: 'Un nouvel œuf !', breeze: 'Une petite brise ! Les plus petits vont dans mon panier.',
-        shine: 'Regarde la flèche qui brille !', won: 'Bravo ! Il est éclos !', again: 'Recommencer', next: 'Niveau suivant', list: 'Niveaux', listen: 'Écouter', level: 'Niveau',
+        shine: 'Regarde la flèche qui brille !', won: 'Bravo, c’est éclos !', again: 'Recommencer', next: 'Niveau suivant', list: 'Niveaux', listen: 'Écouter', level: 'Niveau',
         board: 'Le nid : glisse ton doigt pour tout faire glisser', goal: 'À faire éclore', lumi: 'Lumi', arrows: { haut: 'Vers le haut', bas: 'Vers le bas', gauche: 'Vers la gauche', droite: 'Vers la droite' } },
     en: { title: 'Lumi’s eggs', levels: 'Choose a level',
         gesture: 'Slide your finger on the nest, or touch an arrow: everything slides, and two alike that touch hatch!',
@@ -23,7 +23,7 @@ export const labels = {
         hatch: ['', 'A chick!', 'A hen!', 'A peacock!', 'A little dragon!'],
         fail: { mur: 'Boing! Everything is already against the edge.', tete: 'Hmph! They are not alike: they sulk.', pierre: 'Ouch! The stone does not move.', hesite: 'Er… sideways? They hesitate: slide straight.', tournis: 'Whoa! You shook the nest: everyone is dizzy.', saut: 'Hop! I jump for joy.', coucou: 'Hello! I am the one to hatch.' },
         laid: 'A new egg!', breeze: 'A little breeze! The smallest go into my basket.',
-        shine: 'Look at the arrow that shines!', won: 'Well done! It has hatched!', again: 'Try again', next: 'Next level', list: 'Levels', listen: 'Listen', level: 'Level',
+        shine: 'Look at the arrow that shines!', won: 'Well done, it hatched!', again: 'Try again', next: 'Next level', list: 'Levels', listen: 'Listen', level: 'Level',
         board: 'The nest: slide your finger to slide everything', goal: 'To hatch', lumi: 'Lumi', arrows: { haut: 'Up', bas: 'Down', gauche: 'Left', droite: 'Right' } }
 } as const;
 /** What is said when a scene opens: its title, the gesture (first scene) or the new thing it brings in, then the goal. */

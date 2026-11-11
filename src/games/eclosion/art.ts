@@ -28,7 +28,7 @@ export const shells = `<g class="eclosion-eclats">${[[-36, -30, -30], [34, -34, 
 /** The sulk of two different creatures face to face: a little storm cloud. */
 export const sulk = `<g class="eclosion-nuage"><path d="M-22 -40Q-26 -54 -12 -54Q-8 -64 4 -58Q18 -62 20 -48Q30 -44 20 -36H-18Q-30 -36 -22 -40Z" fill="#cfd3df" stroke="${INK}" stroke-width="3"/><path d="M-4 -34L-8 -24H0L-4 -14" fill="none" stroke="#f2c21b" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></g>`;
 /** Little stars turning above a creature that bumped a stone. */
-export const dizzy = `<g class="eclosion-etoiles">${[[-22, -46], [0, -54], [22, -46]].map(([x, y]) => `<path transform="translate(${x} ${y}) scale(.36)" d="M0 -26L7.6 -9.4L25.7 -8L12 3.8L16 21.5L0 12.2L-16 21.5L-12 3.8L-25.7 -8L-7.6 -9.4Z" fill="#ffe381" stroke="${INK}" stroke-width="5"/>`).join('')}</g>`;
+export const dizzy = `<g class="eclosion-etoiles">${[[-26, -30], [0, -40], [26, -30]].map(([x, y]) => `<path transform="translate(${x} ${y}) scale(.5)" d="M0 -26L7.6 -9.4L25.7 -8L12 3.8L16 21.5L0 12.2L-16 21.5L-12 3.8L-25.7 -8L-7.6 -9.4Z" fill="#ffe381" stroke="${INK}" stroke-width="5"/>`).join('')}</g>`;
 /** The gentle breeze: three curls of wind going across the nest. */
 export const wind = (w: number, h: number): string => `<g class="eclosion-vent">${[0.25, 0.5, 0.75].map(k => `<path d="M${-40} ${h * U * k}q${w * 25} -30 ${w * 50} 0t${w * 50} 0" fill="none" stroke="#ffffffd0" stroke-width="10" stroke-linecap="round"/>`).join('')}</g>`;
 /** Confetti for the hatching of the target. */
