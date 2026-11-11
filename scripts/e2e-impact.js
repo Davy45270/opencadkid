@@ -62,6 +62,7 @@ export const GAME_SPECS = {
     'eclosion': ['eclosion'],
     'vis': ['vis'],
     'grille': ['grille'],
+    'autobus': ['autobus'],
     'atelier': ['atelier', 'atelier-dessin', 'atelier-doigt', 'atelier-gomme'],
 };
 /** Cross-game specs, grouped by what they exercise. None is tied to a single game. */
@@ -111,6 +112,7 @@ export const SMOKE_TESTS = {
     'eclosion': ['eclosion', 'a slide against the edge is a funny try: boing, and nothing in the nest changes'],
     'vis': ['vis', 'a screw under a plate is a funny try: knock knock, the plate on top wriggles'],
     'grille': ['grille', 'a fruit already in the row pulls a face, and the picture put goes back to the tray'],
+    'autobus': ['autobus', 'a bus whose child is not first is a funny try: the children shake their heads, and nothing moves'],
     'atelier': ['atelier-dessin', 'the brush draws over the coloured model, which stays visible under the stroke'],
 };
 /** Shell zones: the cross-game specs that exercise that part of the shell, added to the selection. */
