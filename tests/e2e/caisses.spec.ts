@@ -174,7 +174,8 @@ test('the board takes the height of a 390 × 844 phone with cells of at least 44
         await page.setViewportSize({ width, height: 844 });
         // The board is laid out again on the resize event, one frame after the viewport changes.
         // Read as text so that a failure shows the sizes, not only « false ».
-        await expect.poll(() => page.evaluate(() => { const d = document.documentElement; return d.scrollWidth <= innerWidth && d.scrollHeight <= innerHeight ? 'fits' : `${d.scrollWidth}×${d.scrollHeight} in ${innerWidth}×${innerHeight}, sentence ${Math.round(document.querySelector('.caisses-instruction')?.getBoundingClientRect().height ?? 0)} px`; }), { message: `width ${width}` }).toBe('fits');
+        // Compared with the width asked for: a mobile browser widens its layout to fit what overflows.
+        await expect.poll(() => page.evaluate(w => { const d = document.documentElement; return d.scrollWidth <= w && innerWidth <= w && d.scrollHeight <= innerHeight ? 'fits' : `${d.scrollWidth}×${d.scrollHeight} in ${innerWidth}×${innerHeight} (asked ${w}), sentence ${Math.round(document.querySelector('.caisses-instruction')?.getBoundingClientRect().height ?? 0)} px`; }, width), { message: `width ${width}` }).toBe('fits');
     }
 });
 
