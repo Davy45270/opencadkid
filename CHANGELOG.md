@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.23.0
+
+- New game, Tutu’s surprises, the gentle Kid version of Opencade’s Bombercade, with no bombs and no rivals: Tutu walks square by square around a little yard full of cartons and puts down a confetti box. It counts “3, 2, 1” with Tutu’s steps, then goes pouf: confetti flies out in a cross, shown beforehand in red dots, and opens the cartons it reaches. Kittens, balloons, apples and a teddy bear hide inside; when every surprise is found, the whole yard has a party.
+- Turn by turn, no clock, no lives, nothing to lose: the box always comes back to Tutu’s pocket, a surprise is never lost, and a big “Wait” button moves the count on. Funny tries cost nothing: confetti all over Tutu (atchoo), a clown that pops out of an empty carton, confetti raining off the bricks, a snail or a duck that dances, a tiny “pfff” box that opens nothing, a face pulled at a wall.
+- 32 scenes written by hand, each with a short title said by Tutu and the cartons drawing a shape (a house, a snake, a fish, a heart, a fir tree, a boat, a cat, a rocket, a star). New things one by one: brick walls, big cartons that need two poufs, flower beds Tutu walks around but confetti flies over, the big box, a strolling friend, a fan that blows the box one square, two boxes at once. After three boxes that open nothing useful, the best square shines.
+- Erasing the progress in the parents’ space also erases the surprises stars.
+
 ## 1.22.0
 
 - New game, Boubou’s trip, the gentle Kid version of Opencade’s Essaim, with no shooting and no enemies: Boubou flies a little round rocket up through space. The child touches one of five lanes and the rocket glides there, picking up stars and lost friends (a little rocket, a kitten, a robot) who line up behind it. When everything is picked up, the home planet appears and everyone gets off for a party.
