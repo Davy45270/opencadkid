@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.30.0
+
+- New game, CaliRoux’s grid, the gentle Kid version of Opencade’s Sudoku: a small grid of pictures (fruits, animals or coloured shapes) where each picture goes only once in every row, every column and every square, first 4 × 4, then 6 × 6. The child touches an empty cell then a picture of the big tray, or drags the picture onto the cell.
+- No clock, no lives, nothing to lose: only the right picture stays, so the grid never holds a wrong one and there is no dead end. Funny tries cost nothing: the fruit pulls a face and goes back to the tray, the animals squabble, the shapes bump.
+- 34 scenes written by hand, every grid checked to have exactly one solution, found by looking only. New things one by one: a row to finish, a column, a square, two to cross, then the big grid. After three funny tries in a row, the right picture and its cell shine; taking that help costs one star.
+
 ## 1.29.0
 
 - New game, Pestouille’s screws, the gentle Kid version of Opencade’s Dévisso, with no reserve, no dead end and no game over: Pestouille takes a toy apart to put it away (a car, a rocket, a house, a boat, a train). The child touches a free screw, or the plate holding it: it spins, jumps and flies into the pot of its colour, and a plate with no screw left falls gently into the toy chest. Every colour also has its picture (heart, ball, star, triangle, square). At the end the toy puts itself back together and drives, flies, lights up or sails.
