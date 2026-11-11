@@ -55,6 +55,7 @@ export const GAME_SPECS = {
     'orbite': ['orbite'],
     'essaim': ['essaim'],
     'cartons': ['cartons'],
+    'arrosoir': ['arrosoir'],
     'atelier': ['atelier', 'atelier-dessin', 'atelier-doigt', 'atelier-gomme'],
 };
 /** Cross-game specs, grouped by what they exercise. None is tied to a single game. */
@@ -97,6 +98,7 @@ export const SMOKE_TESTS = {
     'orbite': ['orbite', 'a heart that goes past the troop bounces on the Moon: boing, nothing changes'],
     'essaim': ['essaim', 'a soft rock in the lane is a funny try: boing, the rocket spins, nothing changes'],
     'cartons': ['cartons', 'a step into the bricks is a funny try: Tutu pulls a face, nothing moves'],
+    'arrosoir': ['arrosoir', 'a balloon thrown straight up falls back on CaliRoux: a funny try, nothing opens'],
     'atelier': ['atelier-dessin', 'the brush draws over the coloured model, which stays visible under the stroke'],
 };
 /** Shell zones: the cross-game specs that exercise that part of the shell, added to the selection. */
