@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.21.0
+
+- New game, Lumi’s clouds, the gentle Kid version of Opencade’s Orbite, with no shooting and no enemies: a troop of grumpy clouds floats in the sky. The child touches a column, Lumi trots there and sends a big slow heart straight up. The cloud it reaches smiles, turns rainbow and flies away; when every cloud smiles, the sun comes out.
+- No clock, no lives, nothing to lose. The sky stands still while a heart flies. Funny tries cost nothing: a heart that bounces on the Moon, slips between two clouds, gives a kiss to a cloud already smiling, makes the friendly bird spin, gets pushed against the edge by the wind; a raindrop on Lumi opens her umbrella; a helmeted cloud blushes at the first heart.
+- 32 scenes written by hand, each with a short title said by Lumi and the troop drawing a shape (a smile, a boat, a fish, a heart, a star, a fir tree, a cat, a house). New things one by one: clouds that move one step per heart, clouds that sway, helmeted clouds, the bird, rain, clouds hiding behind others, a rainbow that cheers up the neighbours, wind. After three hearts that make no cloud smile, a good column shines in gold.
+- Erasing the progress in the parents’ space also erases the clouds stars.
+
 ## 1.20.0
 
 - New game, Lumi’s cubes, the gentle Kid version of Opencade’s Empilo: nothing falls by itself and there is no clock. A piece waits at the top; the child slides it over a column (or touches the column), can turn it with a big button, then lets go: it comes down gently and lands. A full row turns rainbow and flies away as butterflies.
