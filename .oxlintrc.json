@@ -195,6 +195,21 @@
       {
         "requireStringLiterals": false
       }
+    ],
+    "eslint/no-restricted-imports": [
+      "error",
+      {
+        "patterns": [
+          {
+            "group": [
+              "phaser",
+              "phaser/*",
+              "@phaser-ae/*"
+            ],
+            "message": "Kid renders with SVG and the DOM: no Phaser, no Phaser AE."
+          }
+        ]
+      }
     ]
   },
   "overrides": [
