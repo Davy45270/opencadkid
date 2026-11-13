@@ -19,8 +19,11 @@ for (const url of urls) {
 }
 // 400 kB until game 13 of 17 (Boubou's trip) took it to 407 kB; 480 kB covered the 17 games of the Kid programme
 // (469 kB at 1.26.0). 550 kB covers the five Kid versions of Opencade's new puzzles at about 13 kB each
-// (469 + 5 × 13 ≈ 535 kB), and the check still fails beyond.
-assert(compressed < 550_000, `Precache exceeds 550 kB gzip: ${compressed} bytes`);
+// (469 + 5 × 13 ≈ 535 kB). At 1.31.0 a fresh build measured 529 kB for 35 games, one or two games short of the
+// ceiling. Raised to 800 kB rather than splitting the code: splitting alone would not shrink the precache (every
+// game would still be precached for offline play), and each game adds about 13 kB, so this leaves room for about
+// twenty more. The check still fails beyond.
+assert(compressed < 800_000, `Precache exceeds 800 kB gzip: ${compressed} bytes`);
 // Paintings: six puzzle scenes and the path start sign, hashed WebP files, never precached, each within its 60 kB budget.
 const webp = readdirSync(new URL('assets/', root)).filter(name => name.endsWith('.webp'));
 const props = webp.filter(name => name.startsWith('cherche-')), assets = webp.filter(name => !name.startsWith('cherche-'));
