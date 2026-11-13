@@ -1,4 +1,5 @@
-# Local CI (Woodpecker): the "checks" job of .github/workflows/ci.yml, same commands, same order.
+# Local CI (Woodpecker): the "checks" job of .github/workflows/ci.yml, same commands, same order, plus the "assets"
+# step (image budgets), which the GitHub mirror does not run.
 # Node: the official node:26 image (.nvmrc says 26), through the Harbor Docker Hub proxy, pulled on every run
 # like setup-node resolving "24". The build step also prints the fingerprint of dist/: the publication script
 # rebuilds the same commit and refuses to publish a different tree.
@@ -23,6 +24,12 @@ steps:
     image: *node
     commands:
       - npm run lint
+  - name: assets
+    image: *node
+    commands:
+      # Image budgets of assets-budget.json (pure Node, no system tool), then the tests of the check itself.
+      - npm run assets -- check
+      - node --test scripts/test-assets.js
   - name: typecheck
     image: *node
     commands:

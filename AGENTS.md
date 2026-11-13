@@ -96,7 +96,33 @@ The router still wires every game by hand. Copy the most recent game (`autobus`)
 | `npm test` | whole Vitest suite (CI only) |
 | `npm run test:e2e` | Playwright (always with an explicit list of specs) |
 | `npm run check:precache` | precache budget, after a build |
+| `npm run assets -- check` | image budgets (`assets-budget.json`), no build needed |
 | `npm run test:impact` | tests of the E2E selection |
+
+## Assets: images and their budgets
+
+Drawings are SVG strings in code; image files are the exception (painted scenes, hide-and-seek props, icons).
+`scripts/assets.js` (no dependency) handles them:
+
+| Command | Does |
+|---|---|
+| `npm run assets -- check` | inventory of every image (png, webp, avif, svg, jpg, gif) outside `node_modules`/`dist`, against `assets-budget.json`; exit 1 on any image or group over budget. Pure Node: the `assets` step of `.woodpecker/checks.yml`. |
+| `npm run assets -- optimize --dry-run [paths]` | prices the gain without writing: oxipng for PNG, svgo for SVG, lossless only, kept only when pixel-identical |
+| `npm run assets -- optimize [--lossy] [paths]` | writes it; `--lossy` adds pngquant and a cwebp re-encode, kept only at PSNR >= 40 dB (`--min-psnr`) |
+| `npm run assets -- raster <in.svg> --width 64,128 --format png\|webp\|avif --out <dir>` | SVG source to sized rasters (rsvg-convert, then oxipng, cwebp or avifenc) |
+
+- `assets-budget.json`: each image takes `maxImage` (bytes) and `maxSide` (px) from the first matching rule with
+  `maxImage`, and is summed into the group of the first matching rule with `maxTotal`. `src/games/*/` makes one
+  group per game; `docs/` is counted but marked not served. Painted scenes (60 kB) and props (20 kB) use the
+  limits of `scripts/check-precache.js`, which checks the built files; the two guards do not replace each other.
+  A new asset that needs more raises its budget in the same commit, with the measured size in the message.
+- `optimize` and `raster` need the workstation tools (oxipng, pngquant, cwebp, avifenc, svgo, rsvg-convert,
+  ImageMagick); the CI never runs them. Commit their output, then run `assets check` and, after a build,
+  `check:precache`.
+- `scripts/test-assets.js` (`node --test`) tests the header reader and the budget failures; the CI runs it.
+- No texture atlas: Kid has no canvas and loads each image as a DOM `<img>`. Add one only if a game needs it,
+  with `free-tex-packer-core` as a devDependency (discuss it first).
+- A drawing made for the games enters the repository only with its author's agreement.
 
 ## Precache budget
 
@@ -106,7 +132,7 @@ Run `npm run build && npm run check:precache` when a change adds a game or an as
 
 ## Continuous integration
 
-The reference CI is **Woodpecker**, on the local forge: `.woodpecker/checks.yml` (npm ci, lint, typecheck,
+The reference CI is **Woodpecker**, on the local forge: `.woodpecker/checks.yml` (npm ci, lint, assets, typecheck,
 test, build, check:precache, test:impact) then `.woodpecker/e2e.yml` (targeted E2E selection, then
 Playwright). It runs on a push to `main`, on pull requests and on manual runs. **A push to any other branch
 triggers nothing**: start a manual pipeline on the branch, with the variable `E2E_BASE=<commit before the

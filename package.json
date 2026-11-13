@@ -15,6 +15,7 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "check:precache": "node scripts/check-precache.js",
+    "assets": "node scripts/assets.js",
     "test:impact": "node --test scripts/test-e2e-impact.js",
     "typecheck": "tsc --noEmit",
     "lint": "oxlint --max-warnings=0",

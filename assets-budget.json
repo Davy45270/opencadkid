@@ -1,0 +1,14 @@
+{
+  "$comment": "Image budgets checked by `npm run assets -- check` (scripts/assets.js), in the CI (.woodpecker/checks.yml). Each image takes maxImage (bytes) and maxSide (pixels, optional) from the first rule with maxImage whose path matches, and is summed into the group of the first rule with maxTotal. A path ending in / is a directory, * stands for one segment (src/games/*/ = one group per game), '' matches everything. The painted scenes (60 kB) and the hide-and-seek props (20 kB) use the same limits as scripts/check-precache.js, which checks the built files. Raise a budget in the same commit as the asset that needs it, with the measured size in the message.",
+  "ignore": ["node_modules", "dist", "test-results", "playwright-report", "assets-out"],
+  "rules": [
+    { "path": "docs/", "maxImage": 600000, "maxSide": 2000, "maxTotal": 2200000, "served": false },
+    { "path": "public/", "maxImage": 8000, "maxSide": 512, "maxTotal": 30000 },
+    { "path": "src/games/puzzle/painted/", "maxImage": 60000, "maxSide": 800 },
+    { "path": "src/games/puzzle/", "maxImage": 60000, "maxSide": 800, "maxTotal": 360000 },
+    { "path": "src/games/chemin/painted/", "maxImage": 60000, "maxSide": 800 },
+    { "path": "src/games/cherche/props/", "maxImage": 20000, "maxSide": 256 },
+    { "path": "src/games/*/", "maxImage": 20000, "maxSide": 512, "maxTotal": 120000 },
+    { "path": "", "maxImage": 20000, "maxSide": 512, "maxTotal": 50000 }
+  ]
+}
