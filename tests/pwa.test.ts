@@ -19,7 +19,8 @@ it('uses a relative complete precache; only same-origin painted puzzle scenes ar
     const config = readFileSync('vite.config.ts', 'utf8');
     expect(config).toContain("base: './'"); expect(config).toContain("strategies: 'generateSW'");
     // The hide-and-seek props are the only WebP files in the precache (see check-precache.js).
-    expect(config).toContain("globPatterns: ['**/*.{html,js,css,png,webmanifest}', 'assets/cherche-*.webp']");
+    // The word list of the dictation is precached; its audio is not (kept by the game once a feed has used it).
+    expect(config).toContain("globPatterns: ['**/*.{html,js,css,png,webmanifest}', 'assets/cherche-*.webp', 'dictee/catalogue.json']");
     // Exactly one runtime rule: relative hashed WebP assets, cache first, bounded. No other network caching.
     expect(config.match(/urlPattern:/g)).toHaveLength(1);
     expect(config).toContain("runtimeCaching: [{ urlPattern: /\\/assets\\/[\\w-]+\\.webp$/, handler: 'CacheFirst', options: { cacheName: 'opencadkid-scenes', expiration: { maxEntries: 12 } } }] }");

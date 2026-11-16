@@ -1180,3 +1180,37 @@ button:active{transform:translateY(3px);box-shadow:0 1px 0 #c7d5b7,inset 0 2px 4
 @keyframes bus-eclat{from{transform:scale(.3);opacity:0}30%{opacity:1}60%{transform:scale(1.15)}100%{opacity:0}}
 @keyframes bus-confettis{from{transform:scale(.2);opacity:0}25%{opacity:1}100%{transform:scale(1.8) translateY(20px);opacity:0}}
 @media(prefers-reduced-motion:reduce){.autobus-zone [data-vehicle]{transition:none!important}.bus-part,.bus-monte{animation-duration:.05s!important}}
+.age-badge{font-size:.8rem!important;font-weight:700;color:#5d3f86;background:#efe4fb;border-radius:999px;padding:2px 10px}
+.dictee{max-width:620px;margin:auto}.dictee-header{gap:10px}.dictee-header h1{flex:1;text-align:center;font-size:1.25rem;margin:0}
+.dictee-choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:14px;margin:12px auto;max-width:560px}.dictee-choices button{min-height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;background:#f6f0fd;border-color:#d8c8ef;box-shadow:0 4px 0 #cdbbe6}
+.dictee-choices b{font-size:2rem;color:#4b3470}.dictee-choices span{font-size:.85rem;color:#6d5a8a}.dictee-profiles button{min-height:120px;padding:6px}.dictee-profiles svg{width:96px;height:96px}
+.dictee-guide{width:110px;height:110px;margin:4px auto}.dictee-note{text-align:center;color:#6d5a8a;margin:12px auto;max-width:440px;line-height:1.3}.dictee-drafts{color:#a2471f;font-weight:700}
+.dictee-feed{display:flex;flex-direction:column;height:calc(100svh - 40px);min-height:600px;gap:6px}
+.dictee-dots{display:flex;flex-wrap:wrap;gap:4px;max-width:96px;justify-content:flex-end}.dictee-dots i{width:9px;height:9px;border-radius:50%;border:2px solid #b8a5d6}.dictee-dots .fait{background:#9a7fcb}.dictee-dots .ici{background:#ffc94d;border-color:#a2802f}
+.dictee-stage{position:relative;flex:1;min-height:200px;display:flex;perspective:1200px}
+.dictee-card{position:relative;flex:1;display:flex;flex-direction:column;border-radius:28px;background:radial-gradient(ellipse at 50% 0,#fffaf0,transparent 70%),linear-gradient(170deg,#f4ecff,#e6dafb);border:3px solid #cdb9ef;box-shadow:0 6px 0 #c4afe6,0 12px 24px #4b347020;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:pointer;transition:transform .26s ease,opacity .26s ease;overflow:hidden}
+.dictee-card:focus-visible{outline:4px solid #8d68a0;outline-offset:3px}.dictee-card.dictee-sortie{transform:translateY(-110%)!important;opacity:0}
+.dictee-inner{position:relative;flex:1;min-height:0;transform-style:preserve-3d;transition:transform .5s ease}.dictee-retournee .dictee-inner,.retournee .dictee-inner{transform:rotateY(180deg)}
+.dictee-face{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:10px 14px;backface-visibility:hidden;-webkit-backface-visibility:hidden;text-align:center}
+.dictee-back{transform:rotateY(180deg);background:linear-gradient(170deg,#fff8e8,#fdeccc);border-radius:25px}
+.dictee-mascot{width:min(150px,42%);aspect-ratio:1;flex:none}.dictee-mascot svg{height:100%}
+.dictee-hint{display:flex;align-items:center;gap:8px;margin:0;color:#4b3470;font-size:1rem;line-height:1.25;max-width:330px}.dictee-hint svg{width:34px;height:34px;flex:none;color:#7b5bb3}
+.juste{border-color:#7fc28f;box-shadow:0 6px 0 #7fb98c,0 0 0 6px #c9f0d0,0 12px 24px #2e6a3c30;background:radial-gradient(ellipse at 50% 20%,#fffbe0,transparent 70%),linear-gradient(170deg,#e9fbe9,#cdeed3)}.juste .dictee-hint{font-size:1.4rem;font-weight:700;color:#2e6a3c}
+.dictee-word{margin:0;font-size:clamp(2rem,10vw,3.2rem);font-weight:700;letter-spacing:.04em;color:#3b2a57;line-height:1.1}.dictee-word-right{color:#2e6a3c}
+.dictee-word .faux{color:#b33c12;background:#ffd8b8;border-radius:8px;box-shadow:inset 0 -4px 0 #f08a4b;padding:0 2px}
+.dictee-wrote{margin:0;color:#6d5a8a}.dictee-explain{margin:4px 0 0;font-size:1.1rem;line-height:1.3;color:#4b3470;font-weight:700;max-width:360px}.dictee-tip{margin:0;font-size:.95rem;color:#6d5a8a;max-width:360px}
+.dictee-card-tools{display:flex;justify-content:center;gap:10px;padding:0 10px 10px;flex-wrap:wrap}.dictee-pill{display:flex;align-items:center;gap:8px;min-height:48px;border-radius:999px;padding:6px 16px;background:#fffdf6;border-color:#cdb9ef;box-shadow:0 3px 0 #cdb9ef;color:#4b3470}.dictee-pill svg{width:26px;height:26px;flex:none}
+.dictee-next{background:#ffe7a6;border-color:#e2b84c;box-shadow:0 3px 0 #d6a93b}.dictee-next svg{transform:rotate(-90deg)}
+.dictee-input{display:flex;flex-direction:column;gap:6px;flex:none}
+.dictee-answer{width:100%;height:50px;border-radius:16px;border:3px solid #cdb9ef;background:#fffdf6;text-align:center;font-size:1.6rem;font-weight:700;letter-spacing:.06em;color:#3b2a57;caret-color:transparent}
+.dictee-keyboard{display:flex;flex-direction:column;gap:3px}.dictee-repondu .dictee-input{display:none}
+.dictee-letters{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px}.dictee-accents{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:3px}
+.dictee-key{min-width:0;min-height:44px;height:44px;padding:0;border-radius:12px;font-size:1.35rem;font-weight:700;color:#3b2a57;background:#fffdf6;border:2px solid #d8c8ef;box-shadow:0 3px 0 #cdbbe6}
+.dictee-accents .dictee-key{background:#f6efff}
+.dictee-actions{display:grid;grid-template-columns:1fr 2fr;gap:3px}.dictee-ok{display:flex;align-items:center;justify-content:center;gap:8px;background:#dff3d9;border-color:#a8d69d;box-shadow:0 3px 0 #94c389;font-size:1.1rem}.dictee-ok svg{width:26px;height:26px}
+.dictee-tile-row{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:4px 0}.dictee-tile{width:56px;height:56px;min-height:56px;font-size:1.7rem;background:#fff6d8;border-color:#e7c86d;box-shadow:0 4px 0 #d9b452}
+.dictee-end{cursor:default;align-items:center;padding:12px;gap:4px;overflow:auto;touch-action:auto}.dictee-end .dictee-mascot{width:120px}.dictee-endsaid{font-size:1.3rem;font-weight:700;color:#4b3470;margin:4px 0;text-align:center}.dictee-end h2{font-size:1rem;margin:6px 0 2px;color:#6d5a8a}
+.dictee-list{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;list-style:none;margin:0;padding:0}.dictee-list li{padding:4px 10px;border-radius:999px;font-weight:700}.dictee-list.liste-juste li{background:#d8f2dc;color:#2e6a3c}.dictee-list.liste-revoir li{background:#ffe2c6;color:#8a3c12}
+@media(min-width:560px){.dictee-letters{grid-template-columns:repeat(10,minmax(0,1fr))}.dictee-accents{grid-template-columns:repeat(11,minmax(0,1fr))}.dictee-key{height:48px}}
+@media(min-width:700px){.dictee-feed{height:calc(100svh - 48px)}.dictee-mascot{width:min(180px,40%)}}
+@media(prefers-reduced-motion:reduce){.dictee-card,.dictee-inner{transition:none}.dictee-card.dictee-sortie{transform:none!important}}

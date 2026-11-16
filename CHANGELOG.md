@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- New game for readers, The magic dictation (6 and up), the first Kid game that needs reading: a finite vertical feed of word cards, one word per card, swiped up (or the « next word » button, or an arrow key) one after the other. The word is heard when its card arrives; touching the card says it again as often as wanted, holding it says it at 0.75×, and a button says it in a sentence. The voice is pre-generated at build time by a local speech engine and shipped as small OGG files, the same on every device and playable offline.
+- A big keyboard of the game's own: AZERTY letters in big keys (44 px at least, four rows on a phone), a row of accents always visible, no suggestion, and a field that never opens the device keyboard nor corrects anything; the physical keyboard works too. At the first grade, the word's letters are shuffled tiles to put back in order.
+- An answer is checked at once by a deterministic checker (Unicode NFC, spaces, letter alignment by dynamic programming, never a language model): a right word makes the mascot jump; a wrong one turns the card over and shows the word with the letters to look at and one line for a child (a missing letter, an accent, a double consonant, a sound written another way, a silent letter, an agreement ending, a homophone).
+- Five, ten, fifteen or twenty cards, then a summary card that stops: no endless scrolling, no chaining, no streak, no notification. About a third of a feed are words to look at again (Leitner boxes per child profile, stored on the device); a missed word comes back three cards later. A profile is one of the five friends, never a name.
+- 500 words, 100 per class (CP to CM2), chosen from a school-reader frequency list, with a context sentence and a tip proposed by a local language model: all drafts, shown to no child until an adult has reviewed them. A homophone without a context sentence can never be published.
+
 ## 1.31.0
 
 - New game, CaliRoux’s buses, the gentle Kid version of Opencade’s Bus en folie, with no move count, no undo and no game over: children wait at the bus stop, each wearing the cap of their bus’s colour, and the buses are parked in CaliRoux’s little yard among grey cars, a long lorry and orange cones. The child touches a vehicle: it drives straight ahead along its lane as far as it can, or backs up when it cannot go forward. A bus that reaches its gate leaves with the first child, but only if that child waits for its colour. Every colour also has its picture (heart, ball, star, triangle, square).

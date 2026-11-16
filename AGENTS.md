@@ -5,10 +5,11 @@ before changing or adding a game: it is the contract of every game.
 
 ## What this is
 
-Gentle, touch-first games for young children (35 games), an offline PWA built with Vite and TypeScript.
+Gentle, touch-first games for young children (36 games, one of them for readers of 6 and up), an offline PWA built with Vite and TypeScript.
 **No game library and no canvas game loop**: views are SVG and HTML strings injected into the DOM
 (`root.innerHTML = …`), animated with CSS classes, `requestAnimationFrame` and timers. Sound is synthesized
-(`shell/sound.ts`, oscillators, no audio file); the voice is `speechSynthesis` (`shell/speech.ts`).
+(`shell/sound.ts`, oscillators, no audio file); the voice is `speechSynthesis` (`shell/speech.ts`). One exception: the
+dictation plays its words from OGG files pre-generated at build time by a local voice (`scripts/dictee/`).
 `package.json` has no runtime dependency, and that is deliberate.
 
 ### Rendering lock: no Phaser, no Phaser AE

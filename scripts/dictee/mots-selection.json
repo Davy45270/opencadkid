@@ -1,0 +1,8280 @@
+[
+ {
+  "id": "fr-cp-001",
+  "lemma": "air",
+  "expectedForm": "air",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "homophone"
+  ],
+  "homophones": [
+   "ère"
+  ],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 447.51
+  }
+ },
+ {
+  "id": "fr-cp-002",
+  "lemma": "ami",
+  "expectedForm": "ami",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 1367.43
+  }
+ },
+ {
+  "id": "fr-cp-003",
+  "lemma": "animal",
+  "expectedForm": "animal",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 700.06
+  }
+ },
+ {
+  "id": "fr-cp-004",
+  "lemma": "arbre",
+  "expectedForm": "arbre",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 666.19
+  }
+ },
+ {
+  "id": "fr-cp-005",
+  "lemma": "avion",
+  "expectedForm": "avion",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 281.93
+  }
+ },
+ {
+  "id": "fr-cp-006",
+  "lemma": "ballon",
+  "expectedForm": "ballon",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 260.59
+  }
+ },
+ {
+  "id": "fr-cp-007",
+  "lemma": "bois",
+  "expectedForm": "bois",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 450.8
+  }
+ },
+ {
+  "id": "fr-cp-008",
+  "lemma": "bord",
+  "expectedForm": "bord",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 366.07
+  }
+ },
+ {
+  "id": "fr-cp-009",
+  "lemma": "bout",
+  "expectedForm": "bout",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "lettre-muette",
+   "homophone"
+  ],
+  "homophones": [
+   "boue"
+  ],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 313.0
+  }
+ },
+ {
+  "id": "fr-cp-010",
+  "lemma": "bruit",
+  "expectedForm": "bruit",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 440.17
+  }
+ },
+ {
+  "id": "fr-cp-011",
+  "lemma": "bébé",
+  "expectedForm": "bébé",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 449.37
+  }
+ },
+ {
+  "id": "fr-cp-012",
+  "lemma": "chat",
+  "expectedForm": "chat",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 1897.59
+  }
+ },
+ {
+  "id": "fr-cp-013",
+  "lemma": "chemin",
+  "expectedForm": "chemin",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 267.98
+  }
+ },
+ {
+  "id": "fr-cp-014",
+  "lemma": "cheval",
+  "expectedForm": "cheval",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 354.31
+  }
+ },
+ {
+  "id": "fr-cp-015",
+  "lemma": "cheveu",
+  "expectedForm": "cheveu",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 330.93
+  }
+ },
+ {
+  "id": "fr-cp-016",
+  "lemma": "chien",
+  "expectedForm": "chien",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 850.61
+  }
+ },
+ {
+  "id": "fr-cp-017",
+  "lemma": "classe",
+  "expectedForm": "classe",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 329.18
+  }
+ },
+ {
+  "id": "fr-cp-018",
+  "lemma": "coin",
+  "expectedForm": "coin",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 291.81
+  }
+ },
+ {
+  "id": "fr-cp-019",
+  "lemma": "coup",
+  "expectedForm": "coup",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "lettre-muette",
+   "homophone"
+  ],
+  "homophones": [
+   "cou"
+  ],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 573.55
+  }
+ },
+ {
+  "id": "fr-cp-020",
+  "lemma": "course",
+  "expectedForm": "course",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 349.93
+  }
+ },
+ {
+  "id": "fr-cp-021",
+  "lemma": "dent",
+  "expectedForm": "dent",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "son-an",
+   "lettre-muette",
+   "homophone"
+  ],
+  "homophones": [
+   "dans"
+  ],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 366.95
+  }
+ },
+ {
+  "id": "fr-cp-022",
+  "lemma": "dessin",
+  "expectedForm": "dessin",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "double-consonne",
+   "homophone"
+  ],
+  "homophones": [
+   "dessein"
+  ],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 403.7
+  }
+ },
+ {
+  "id": "fr-cp-023",
+  "lemma": "dos",
+  "expectedForm": "dos",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "lettre-muette",
+   "homophone"
+  ],
+  "homophones": [
+   "do"
+  ],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 362.61
+  }
+ },
+ {
+  "id": "fr-cp-024",
+  "lemma": "eau",
+  "expectedForm": "eau",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "son-o",
+   "homophone"
+  ],
+  "homophones": [
+   "au",
+   "oh",
+   "haut",
+   "ô"
+  ],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 1153.02
+  }
+ },
+ {
+  "id": "fr-cp-025",
+  "lemma": "feu",
+  "expectedForm": "feu",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 503.93
+  }
+ },
+ {
+  "id": "fr-cp-026",
+  "lemma": "fil",
+  "expectedForm": "fil",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 281.49
+  }
+ },
+ {
+  "id": "fr-cp-027",
+  "lemma": "fille",
+  "expectedForm": "fille",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 432.43
+  }
+ },
+ {
+  "id": "fr-cp-028",
+  "lemma": "fleur",
+  "expectedForm": "fleur",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 693.55
+  }
+ },
+ {
+  "id": "fr-cp-029",
+  "lemma": "glace",
+  "expectedForm": "glace",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 397.89
+  }
+ },
+ {
+  "id": "fr-cp-030",
+  "lemma": "hiver",
+  "expectedForm": "hiver",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 361.21
+  }
+ },
+ {
+  "id": "fr-cp-031",
+  "lemma": "idée",
+  "expectedForm": "idée",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 312.62
+  }
+ },
+ {
+  "id": "fr-cp-032",
+  "lemma": "jardin",
+  "expectedForm": "jardin",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 1107.45
+  }
+ },
+ {
+  "id": "fr-cp-033",
+  "lemma": "jeu",
+  "expectedForm": "jeu",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 422.04
+  }
+ },
+ {
+  "id": "fr-cp-034",
+  "lemma": "joue",
+  "expectedForm": "joue",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 273.88
+  }
+ },
+ {
+  "id": "fr-cp-035",
+  "lemma": "jour",
+  "expectedForm": "jour",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 1107.65
+  }
+ },
+ {
+  "id": "fr-cp-036",
+  "lemma": "lait",
+  "expectedForm": "lait",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "lettre-muette",
+   "homophone"
+  ],
+  "homophones": [
+   "laid"
+  ],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 374.37
+  }
+ },
+ {
+  "id": "fr-cp-037",
+  "lemma": "lapin",
+  "expectedForm": "lapin",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 483.2
+  }
+ },
+ {
+  "id": "fr-cp-038",
+  "lemma": "lettre",
+  "expectedForm": "lettre",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 341.01
+  }
+ },
+ {
+  "id": "fr-cp-039",
+  "lemma": "lit",
+  "expectedForm": "lit",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 894.55
+  }
+ },
+ {
+  "id": "fr-cp-040",
+  "lemma": "livre",
+  "expectedForm": "livre",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 775.34
+  }
+ },
+ {
+  "id": "fr-cp-041",
+  "lemma": "loup",
+  "expectedForm": "loup",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 590.84
+  }
+ },
+ {
+  "id": "fr-cp-042",
+  "lemma": "lune",
+  "expectedForm": "lune",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 470.6
+  }
+ },
+ {
+  "id": "fr-cp-043",
+  "lemma": "main",
+  "expectedForm": "main",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 537.64
+  }
+ },
+ {
+  "id": "fr-cp-044",
+  "lemma": "maison",
+  "expectedForm": "maison",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 1595.16
+  }
+ },
+ {
+  "id": "fr-cp-045",
+  "lemma": "maman",
+  "expectedForm": "maman",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 2333.21
+  }
+ },
+ {
+  "id": "fr-cp-046",
+  "lemma": "matin",
+  "expectedForm": "matin",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 715.64
+  }
+ },
+ {
+  "id": "fr-cp-047",
+  "lemma": "mer",
+  "expectedForm": "mer",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "homophone"
+  ],
+  "homophones": [
+   "mère",
+   "maire"
+  ],
+  "difficulty": 1,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 347.01
+  }
+ },
+ {
+  "id": "fr-cp-048",
+  "lemma": "monde",
+  "expectedForm": "monde",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 567.32
+  }
+ },
+ {
+  "id": "fr-cp-049",
+  "lemma": "mot",
+  "expectedForm": "mot",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 1085.35
+  }
+ },
+ {
+  "id": "fr-cp-050",
+  "lemma": "moto",
+  "expectedForm": "moto",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 283.42
+  }
+ },
+ {
+  "id": "fr-cp-051",
+  "lemma": "mouton",
+  "expectedForm": "mouton",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 296.27
+  }
+ },
+ {
+  "id": "fr-cp-052",
+  "lemma": "mur",
+  "expectedForm": "mur",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "homophone"
+  ],
+  "homophones": [
+   "mûr"
+  ],
+  "difficulty": 1,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 272.06
+  }
+ },
+ {
+  "id": "fr-cp-053",
+  "lemma": "neige",
+  "expectedForm": "neige",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 554.44
+  }
+ },
+ {
+  "id": "fr-cp-054",
+  "lemma": "nez",
+  "expectedForm": "nez",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "lettre-muette",
+   "homophone"
+  ],
+  "homophones": [
+   "né"
+  ],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 566.92
+  }
+ },
+ {
+  "id": "fr-cp-055",
+  "lemma": "nom",
+  "expectedForm": "nom",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "homophone"
+  ],
+  "homophones": [
+   "non"
+  ],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 396.13
+  }
+ },
+ {
+  "id": "fr-cp-056",
+  "lemma": "nuit",
+  "expectedForm": "nuit",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 790.17
+  }
+ },
+ {
+  "id": "fr-cp-057",
+  "lemma": "oiseau",
+  "expectedForm": "oiseau",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "son-o"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 840.92
+  }
+ },
+ {
+  "id": "fr-cp-058",
+  "lemma": "ours",
+  "expectedForm": "ours",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 662.65
+  }
+ },
+ {
+  "id": "fr-cp-059",
+  "lemma": "pain",
+  "expectedForm": "pain",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "homophone"
+  ],
+  "homophones": [
+   "pin",
+   "peint"
+  ],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 354.87
+  }
+ },
+ {
+  "id": "fr-cp-060",
+  "lemma": "papa",
+  "expectedForm": "papa",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 1269.72
+  }
+ },
+ {
+  "id": "fr-cp-061",
+  "lemma": "papier",
+  "expectedForm": "papier",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 350.41
+  }
+ },
+ {
+  "id": "fr-cp-062",
+  "lemma": "parent",
+  "expectedForm": "parent",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 373.98
+  }
+ },
+ {
+  "id": "fr-cp-063",
+  "lemma": "patte",
+  "expectedForm": "patte",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "double-consonne",
+   "homophone"
+  ],
+  "homophones": [
+   "pâte"
+  ],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 586.32
+  }
+ },
+ {
+  "id": "fr-cp-064",
+  "lemma": "peur",
+  "expectedForm": "peur",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 612.08
+  }
+ },
+ {
+  "id": "fr-cp-065",
+  "lemma": "photo",
+  "expectedForm": "photo",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 278.01
+  }
+ },
+ {
+  "id": "fr-cp-066",
+  "lemma": "pied",
+  "expectedForm": "pied",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 397.66
+  }
+ },
+ {
+  "id": "fr-cp-067",
+  "lemma": "place",
+  "expectedForm": "place",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 345.53
+  }
+ },
+ {
+  "id": "fr-cp-068",
+  "lemma": "pluie",
+  "expectedForm": "pluie",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 303.64
+  }
+ },
+ {
+  "id": "fr-cp-069",
+  "lemma": "point",
+  "expectedForm": "point",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "lettre-muette",
+   "homophone"
+  ],
+  "homophones": [
+   "poing"
+  ],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 507.38
+  }
+ },
+ {
+  "id": "fr-cp-070",
+  "lemma": "pomme",
+  "expectedForm": "pomme",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 742.03
+  }
+ },
+ {
+  "id": "fr-cp-071",
+  "lemma": "porte",
+  "expectedForm": "porte",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 615.59
+  }
+ },
+ {
+  "id": "fr-cp-072",
+  "lemma": "pot",
+  "expectedForm": "pot",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "lettre-muette",
+   "homophone"
+  ],
+  "homophones": [
+   "peau"
+  ],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 413.75
+  }
+ },
+ {
+  "id": "fr-cp-073",
+  "lemma": "pré",
+  "expectedForm": "pré",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 409.02
+  }
+ },
+ {
+  "id": "fr-cp-074",
+  "lemma": "rat",
+  "expectedForm": "rat",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "lettre-muette",
+   "homophone"
+  ],
+  "homophones": [
+   "ras"
+  ],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 547.15
+  }
+ },
+ {
+  "id": "fr-cp-075",
+  "lemma": "renard",
+  "expectedForm": "renard",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 448.71
+  }
+ },
+ {
+  "id": "fr-cp-076",
+  "lemma": "robe",
+  "expectedForm": "robe",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 285.0
+  }
+ },
+ {
+  "id": "fr-cp-077",
+  "lemma": "robot",
+  "expectedForm": "robot",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 321.41
+  }
+ },
+ {
+  "id": "fr-cp-078",
+  "lemma": "route",
+  "expectedForm": "route",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 472.43
+  }
+ },
+ {
+  "id": "fr-cp-079",
+  "lemma": "rue",
+  "expectedForm": "rue",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 796.01
+  }
+ },
+ {
+  "id": "fr-cp-080",
+  "lemma": "sac",
+  "expectedForm": "sac",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 502.39
+  }
+ },
+ {
+  "id": "fr-cp-081",
+  "lemma": "salade",
+  "expectedForm": "salade",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 325.97
+  }
+ },
+ {
+  "id": "fr-cp-082",
+  "lemma": "soir",
+  "expectedForm": "soir",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 537.79
+  }
+ },
+ {
+  "id": "fr-cp-083",
+  "lemma": "soleil",
+  "expectedForm": "soleil",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 598.72
+  }
+ },
+ {
+  "id": "fr-cp-084",
+  "lemma": "souris",
+  "expectedForm": "souris",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 514.05
+  }
+ },
+ {
+  "id": "fr-cp-085",
+  "lemma": "sucre",
+  "expectedForm": "sucre",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 307.93
+  }
+ },
+ {
+  "id": "fr-cp-086",
+  "lemma": "table",
+  "expectedForm": "table",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 498.59
+  }
+ },
+ {
+  "id": "fr-cp-087",
+  "lemma": "tarte",
+  "expectedForm": "tarte",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 258.32
+  }
+ },
+ {
+  "id": "fr-cp-088",
+  "lemma": "terre",
+  "expectedForm": "terre",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "double-consonne",
+   "homophone"
+  ],
+  "homophones": [
+   "taire",
+   "ter"
+  ],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 569.25
+  }
+ },
+ {
+  "id": "fr-cp-089",
+  "lemma": "tortue",
+  "expectedForm": "tortue",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 590.85
+  }
+ },
+ {
+  "id": "fr-cp-090",
+  "lemma": "tour",
+  "expectedForm": "tour",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 364.66
+  }
+ },
+ {
+  "id": "fr-cp-091",
+  "lemma": "train",
+  "expectedForm": "train",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 361.64
+  }
+ },
+ {
+  "id": "fr-cp-092",
+  "lemma": "trou",
+  "expectedForm": "trou",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 263.06
+  }
+ },
+ {
+  "id": "fr-cp-093",
+  "lemma": "vent",
+  "expectedForm": "vent",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 428.95
+  }
+ },
+ {
+  "id": "fr-cp-094",
+  "lemma": "verre",
+  "expectedForm": "verre",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "double-consonne",
+   "homophone"
+  ],
+  "homophones": [
+   "vers",
+   "vert",
+   "ver"
+  ],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 317.14
+  }
+ },
+ {
+  "id": "fr-cp-095",
+  "lemma": "ville",
+  "expectedForm": "ville",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "double-consonne",
+   "homophone"
+  ],
+  "homophones": [
+   "vil"
+  ],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 429.36
+  }
+ },
+ {
+  "id": "fr-cp-096",
+  "lemma": "voix",
+  "expectedForm": "voix",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "lettre-muette",
+   "homophone"
+  ],
+  "homophones": [
+   "voie"
+  ],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 257.81
+  }
+ },
+ {
+  "id": "fr-cp-097",
+  "lemma": "vélo",
+  "expectedForm": "vélo",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 617.72
+  }
+ },
+ {
+  "id": "fr-cp-098",
+  "lemma": "yeux",
+  "expectedForm": "yeux",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 473.66
+  }
+ },
+ {
+  "id": "fr-cp-099",
+  "lemma": "école",
+  "expectedForm": "école",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 1096.2
+  }
+ },
+ {
+  "id": "fr-cp-100",
+  "lemma": "étoile",
+  "expectedForm": "étoile",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CP",
+   "frequencyPerMillion": 314.65
+  }
+ },
+ {
+  "id": "fr-ce1-001",
+  "lemma": "aider",
+  "expectedForm": "aider",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 419.87
+  }
+ },
+ {
+  "id": "fr-ce1-002",
+  "lemma": "aimer",
+  "expectedForm": "aimer",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 974.2
+  }
+ },
+ {
+  "id": "fr-ce1-003",
+  "lemma": "appeler",
+  "expectedForm": "appeler",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 1165.61
+  }
+ },
+ {
+  "id": "fr-ce1-004",
+  "lemma": "arriver",
+  "expectedForm": "arriver",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 1183.96
+  }
+ },
+ {
+  "id": "fr-ce1-005",
+  "lemma": "arrêter",
+  "expectedForm": "arrêter",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [
+   "accent",
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 554.1
+  }
+ },
+ {
+  "id": "fr-ce1-006",
+  "lemma": "autre",
+  "expectedForm": "autre",
+  "grade": "CE1",
+  "category": "ADJ",
+  "tags": [
+   "son-o"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 1009.23
+  }
+ },
+ {
+  "id": "fr-ce1-007",
+  "lemma": "beau",
+  "expectedForm": "beau",
+  "grade": "CE1",
+  "category": "ADJ",
+  "tags": [
+   "son-o"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 957.46
+  }
+ },
+ {
+  "id": "fr-ce1-008",
+  "lemma": "blanc",
+  "expectedForm": "blanc",
+  "grade": "CE1",
+  "category": "ADJ",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 669.29
+  }
+ },
+ {
+  "id": "fr-ce1-009",
+  "lemma": "bleu",
+  "expectedForm": "bleu",
+  "grade": "CE1",
+  "category": "ADJ",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 362.35
+  }
+ },
+ {
+  "id": "fr-ce1-010",
+  "lemma": "cacher",
+  "expectedForm": "cacher",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 478.93
+  }
+ },
+ {
+  "id": "fr-ce1-011",
+  "lemma": "chanter",
+  "expectedForm": "chanter",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 427.84
+  }
+ },
+ {
+  "id": "fr-ce1-012",
+  "lemma": "chaque",
+  "expectedForm": "chaque",
+  "grade": "CE1",
+  "category": "ADJ",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 1370.92
+  }
+ },
+ {
+  "id": "fr-ce1-013",
+  "lemma": "choisir",
+  "expectedForm": "choisir",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 420.27
+  }
+ },
+ {
+  "id": "fr-ce1-014",
+  "lemma": "ciel",
+  "expectedForm": "ciel",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 496.23
+  }
+ },
+ {
+  "id": "fr-ce1-015",
+  "lemma": "couleur",
+  "expectedForm": "couleur",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 492.2
+  }
+ },
+ {
+  "id": "fr-ce1-016",
+  "lemma": "courir",
+  "expectedForm": "courir",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 559.81
+  }
+ },
+ {
+  "id": "fr-ce1-017",
+  "lemma": "crier",
+  "expectedForm": "crier",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 676.13
+  }
+ },
+ {
+  "id": "fr-ce1-018",
+  "lemma": "croire",
+  "expectedForm": "croire",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 449.23
+  }
+ },
+ {
+  "id": "fr-ce1-019",
+  "lemma": "deux",
+  "expectedForm": "deux",
+  "grade": "CE1",
+  "category": "ADJ",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 2335.62
+  }
+ },
+ {
+  "id": "fr-ce1-020",
+  "lemma": "devenir",
+  "expectedForm": "devenir",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 438.48
+  }
+ },
+ {
+  "id": "fr-ce1-021",
+  "lemma": "devoir",
+  "expectedForm": "devoir",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 845.7
+  }
+ },
+ {
+  "id": "fr-ce1-022",
+  "lemma": "donner",
+  "expectedForm": "donner",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 1197.27
+  }
+ },
+ {
+  "id": "fr-ce1-023",
+  "lemma": "dormir",
+  "expectedForm": "dormir",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 518.04
+  }
+ },
+ {
+  "id": "fr-ce1-024",
+  "lemma": "enfant",
+  "expectedForm": "enfant",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 1295.85
+  }
+ },
+ {
+  "id": "fr-ce1-025",
+  "lemma": "entrer",
+  "expectedForm": "entrer",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 417.09
+  }
+ },
+ {
+  "id": "fr-ce1-026",
+  "lemma": "exemple",
+  "expectedForm": "exemple",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 449.66
+  }
+ },
+ {
+  "id": "fr-ce1-027",
+  "lemma": "falloir",
+  "expectedForm": "falloir",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 1079.57
+  }
+ },
+ {
+  "id": "fr-ce1-028",
+  "lemma": "famille",
+  "expectedForm": "famille",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [
+   "double-consonne",
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 396.87
+  }
+ },
+ {
+  "id": "fr-ce1-029",
+  "lemma": "feuille",
+  "expectedForm": "feuille",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 587.82
+  }
+ },
+ {
+  "id": "fr-ce1-030",
+  "lemma": "forêt",
+  "expectedForm": "forêt",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [
+   "accent",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 616.88
+  }
+ },
+ {
+  "id": "fr-ce1-031",
+  "lemma": "garçon",
+  "expectedForm": "garçon",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 537.44
+  }
+ },
+ {
+  "id": "fr-ce1-032",
+  "lemma": "grand",
+  "expectedForm": "grand",
+  "grade": "CE1",
+  "category": "ADJ",
+  "tags": [
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 1872.31
+  }
+ },
+ {
+  "id": "fr-ce1-033",
+  "lemma": "gros",
+  "expectedForm": "gros",
+  "grade": "CE1",
+  "category": "ADJ",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 1031.06
+  }
+ },
+ {
+  "id": "fr-ce1-034",
+  "lemma": "groupe",
+  "expectedForm": "groupe",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 412.08
+  }
+ },
+ {
+  "id": "fr-ce1-035",
+  "lemma": "heure",
+  "expectedForm": "heure",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 693.15
+  }
+ },
+ {
+  "id": "fr-ce1-036",
+  "lemma": "homme",
+  "expectedForm": "homme",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 791.19
+  }
+ },
+ {
+  "id": "fr-ce1-037",
+  "lemma": "joli",
+  "expectedForm": "joli",
+  "grade": "CE1",
+  "category": "ADJ",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 494.14
+  }
+ },
+ {
+  "id": "fr-ce1-038",
+  "lemma": "jouer",
+  "expectedForm": "jouer",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 982.4
+  }
+ },
+ {
+  "id": "fr-ce1-039",
+  "lemma": "laisser",
+  "expectedForm": "laisser",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 455.58
+  }
+ },
+ {
+  "id": "fr-ce1-040",
+  "lemma": "lever",
+  "expectedForm": "lever",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 424.64
+  }
+ },
+ {
+  "id": "fr-ce1-041",
+  "lemma": "lire",
+  "expectedForm": "lire",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 1559.63
+  }
+ },
+ {
+  "id": "fr-ce1-042",
+  "lemma": "long",
+  "expectedForm": "long",
+  "grade": "CE1",
+  "category": "ADJ",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 417.82
+  }
+ },
+ {
+  "id": "fr-ce1-043",
+  "lemma": "manger",
+  "expectedForm": "manger",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 1234.96
+  }
+ },
+ {
+  "id": "fr-ce1-044",
+  "lemma": "marcher",
+  "expectedForm": "marcher",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 476.17
+  }
+ },
+ {
+  "id": "fr-ce1-045",
+  "lemma": "maître",
+  "expectedForm": "maître",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [
+   "accent",
+   "homophone"
+  ],
+  "homophones": [
+   "mettre",
+   "mètre"
+  ],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 431.4
+  }
+ },
+ {
+  "id": "fr-ce1-046",
+  "lemma": "mettre",
+  "expectedForm": "mettre",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [
+   "double-consonne",
+   "homophone"
+  ],
+  "homophones": [
+   "maître",
+   "mètre"
+  ],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 1613.87
+  }
+ },
+ {
+  "id": "fr-ce1-047",
+  "lemma": "moment",
+  "expectedForm": "moment",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 388.47
+  }
+ },
+ {
+  "id": "fr-ce1-048",
+  "lemma": "mère",
+  "expectedForm": "mère",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [
+   "accent",
+   "homophone"
+  ],
+  "homophones": [
+   "mer",
+   "maire"
+  ],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 386.11
+  }
+ },
+ {
+  "id": "fr-ce1-049",
+  "lemma": "noir",
+  "expectedForm": "noir",
+  "grade": "CE1",
+  "category": "ADJ",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 608.43
+  }
+ },
+ {
+  "id": "fr-ce1-050",
+  "lemma": "nouveau",
+  "expectedForm": "nouveau",
+  "grade": "CE1",
+  "category": "ADJ",
+  "tags": [
+   "son-o"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 367.93
+  }
+ },
+ {
+  "id": "fr-ce1-051",
+  "lemma": "ordre",
+  "expectedForm": "ordre",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 520.1
+  }
+ },
+ {
+  "id": "fr-ce1-052",
+  "lemma": "ouvrir",
+  "expectedForm": "ouvrir",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 488.28
+  }
+ },
+ {
+  "id": "fr-ce1-053",
+  "lemma": "page",
+  "expectedForm": "page",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 468.54
+  }
+ },
+ {
+  "id": "fr-ce1-054",
+  "lemma": "parler",
+  "expectedForm": "parler",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 788.24
+  }
+ },
+ {
+  "id": "fr-ce1-055",
+  "lemma": "partir",
+  "expectedForm": "partir",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 654.83
+  }
+ },
+ {
+  "id": "fr-ce1-056",
+  "lemma": "passer",
+  "expectedForm": "passer",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 1145.24
+  }
+ },
+ {
+  "id": "fr-ce1-057",
+  "lemma": "penser",
+  "expectedForm": "penser",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 511.29
+  }
+ },
+ {
+  "id": "fr-ce1-058",
+  "lemma": "perdre",
+  "expectedForm": "perdre",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 368.7
+  }
+ },
+ {
+  "id": "fr-ce1-059",
+  "lemma": "petit",
+  "expectedForm": "petit",
+  "grade": "CE1",
+  "category": "ADJ",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 4821.0
+  }
+ },
+ {
+  "id": "fr-ce1-060",
+  "lemma": "phrase",
+  "expectedForm": "phrase",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 1857.3
+  }
+ },
+ {
+  "id": "fr-ce1-061",
+  "lemma": "poisson",
+  "expectedForm": "poisson",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 487.18
+  }
+ },
+ {
+  "id": "fr-ce1-062",
+  "lemma": "porter",
+  "expectedForm": "porter",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 452.58
+  }
+ },
+ {
+  "id": "fr-ce1-063",
+  "lemma": "poser",
+  "expectedForm": "poser",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 425.47
+  }
+ },
+ {
+  "id": "fr-ce1-064",
+  "lemma": "pouvoir",
+  "expectedForm": "pouvoir",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 2877.94
+  }
+ },
+ {
+  "id": "fr-ce1-065",
+  "lemma": "premier",
+  "expectedForm": "premier",
+  "grade": "CE1",
+  "category": "ADJ",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 666.96
+  }
+ },
+ {
+  "id": "fr-ce1-066",
+  "lemma": "prendre",
+  "expectedForm": "prendre",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 1413.99
+  }
+ },
+ {
+  "id": "fr-ce1-067",
+  "lemma": "quatre",
+  "expectedForm": "quatre",
+  "grade": "CE1",
+  "category": "ADJ",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 465.09
+  }
+ },
+ {
+  "id": "fr-ce1-068",
+  "lemma": "quel",
+  "expectedForm": "quel",
+  "grade": "CE1",
+  "category": "ADJ",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 2259.78
+  }
+ },
+ {
+  "id": "fr-ce1-069",
+  "lemma": "quelque",
+  "expectedForm": "quelque",
+  "grade": "CE1",
+  "category": "ADJ",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 720.58
+  }
+ },
+ {
+  "id": "fr-ce1-070",
+  "lemma": "rester",
+  "expectedForm": "rester",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 489.72
+  }
+ },
+ {
+  "id": "fr-ce1-071",
+  "lemma": "revenir",
+  "expectedForm": "revenir",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 395.84
+  }
+ },
+ {
+  "id": "fr-ce1-072",
+  "lemma": "rire",
+  "expectedForm": "rire",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 418.37
+  }
+ },
+ {
+  "id": "fr-ce1-073",
+  "lemma": "rouge",
+  "expectedForm": "rouge",
+  "grade": "CE1",
+  "category": "ADJ",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 552.56
+  }
+ },
+ {
+  "id": "fr-ce1-074",
+  "lemma": "réponse",
+  "expectedForm": "réponse",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 456.85
+  }
+ },
+ {
+  "id": "fr-ce1-075",
+  "lemma": "sauter",
+  "expectedForm": "sauter",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [
+   "son-o"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 377.04
+  }
+ },
+ {
+  "id": "fr-ce1-076",
+  "lemma": "savoir",
+  "expectedForm": "savoir",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 1094.08
+  }
+ },
+ {
+  "id": "fr-ce1-077",
+  "lemma": "servir",
+  "expectedForm": "servir",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 470.79
+  }
+ },
+ {
+  "id": "fr-ce1-078",
+  "lemma": "seul",
+  "expectedForm": "seul",
+  "grade": "CE1",
+  "category": "ADJ",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 653.54
+  }
+ },
+ {
+  "id": "fr-ce1-079",
+  "lemma": "sortir",
+  "expectedForm": "sortir",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 535.38
+  }
+ },
+ {
+  "id": "fr-ce1-080",
+  "lemma": "suivant",
+  "expectedForm": "suivant",
+  "grade": "CE1",
+  "category": "ADJ",
+  "tags": [
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 587.22
+  }
+ },
+ {
+  "id": "fr-ce1-081",
+  "lemma": "suivre",
+  "expectedForm": "suivre",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 505.41
+  }
+ },
+ {
+  "id": "fr-ce1-082",
+  "lemma": "temps",
+  "expectedForm": "temps",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [
+   "son-an",
+   "lettre-muette",
+   "homophone"
+  ],
+  "homophones": [
+   "tant"
+  ],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 899.3
+  }
+ },
+ {
+  "id": "fr-ce1-083",
+  "lemma": "texte",
+  "expectedForm": "texte",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 1157.85
+  }
+ },
+ {
+  "id": "fr-ce1-084",
+  "lemma": "tomber",
+  "expectedForm": "tomber",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 770.58
+  }
+ },
+ {
+  "id": "fr-ce1-085",
+  "lemma": "tout",
+  "expectedForm": "tout",
+  "grade": "CE1",
+  "category": "ADJ",
+  "tags": [
+   "lettre-muette",
+   "homophone"
+  ],
+  "homophones": [
+   "toux"
+  ],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 3524.55
+  }
+ },
+ {
+  "id": "fr-ce1-086",
+  "lemma": "trois",
+  "expectedForm": "trois",
+  "grade": "CE1",
+  "category": "ADJ",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 1149.01
+  }
+ },
+ {
+  "id": "fr-ce1-087",
+  "lemma": "trouver",
+  "expectedForm": "trouver",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 2171.7
+  }
+ },
+ {
+  "id": "fr-ce1-088",
+  "lemma": "tête",
+  "expectedForm": "tête",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 904.68
+  }
+ },
+ {
+  "id": "fr-ce1-089",
+  "lemma": "venir",
+  "expectedForm": "venir",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 1351.08
+  }
+ },
+ {
+  "id": "fr-ce1-090",
+  "lemma": "verbe",
+  "expectedForm": "verbe",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 716.15
+  }
+ },
+ {
+  "id": "fr-ce1-091",
+  "lemma": "vert",
+  "expectedForm": "vert",
+  "grade": "CE1",
+  "category": "ADJ",
+  "tags": [
+   "lettre-muette",
+   "homophone"
+  ],
+  "homophones": [
+   "vers",
+   "verre",
+   "ver"
+  ],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 708.87
+  }
+ },
+ {
+  "id": "fr-ce1-092",
+  "lemma": "vieux",
+  "expectedForm": "vieux",
+  "grade": "CE1",
+  "category": "ADJ",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 552.58
+  }
+ },
+ {
+  "id": "fr-ce1-093",
+  "lemma": "vivre",
+  "expectedForm": "vivre",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 595.03
+  }
+ },
+ {
+  "id": "fr-ce1-094",
+  "lemma": "voir",
+  "expectedForm": "voir",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 2560.24
+  }
+ },
+ {
+  "id": "fr-ce1-095",
+  "lemma": "voiture",
+  "expectedForm": "voiture",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 486.68
+  }
+ },
+ {
+  "id": "fr-ce1-096",
+  "lemma": "voler",
+  "expectedForm": "voler",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 394.25
+  }
+ },
+ {
+  "id": "fr-ce1-097",
+  "lemma": "vouloir",
+  "expectedForm": "vouloir",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 1896.46
+  }
+ },
+ {
+  "id": "fr-ce1-098",
+  "lemma": "vrai",
+  "expectedForm": "vrai",
+  "grade": "CE1",
+  "category": "ADJ",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 645.59
+  }
+ },
+ {
+  "id": "fr-ce1-099",
+  "lemma": "écouter",
+  "expectedForm": "écouter",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 381.38
+  }
+ },
+ {
+  "id": "fr-ce1-100",
+  "lemma": "écrire",
+  "expectedForm": "écrire",
+  "grade": "CE1",
+  "category": "VER",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE1",
+   "frequencyPerMillion": 1699.81
+  }
+ },
+ {
+  "id": "fr-ce2-001",
+  "lemma": "acheter",
+  "expectedForm": "acheter",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 261.99
+  }
+ },
+ {
+  "id": "fr-ce2-002",
+  "lemma": "adjectif",
+  "expectedForm": "adjectif",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 292.49
+  }
+ },
+ {
+  "id": "fr-ce2-003",
+  "lemma": "ainsi",
+  "expectedForm": "ainsi",
+  "grade": "CE2",
+  "category": "ADV",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 418.68
+  }
+ },
+ {
+  "id": "fr-ce2-004",
+  "lemma": "ajouter",
+  "expectedForm": "ajouter",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 246.02
+  }
+ },
+ {
+  "id": "fr-ce2-005",
+  "lemma": "alors",
+  "expectedForm": "alors",
+  "grade": "CE2",
+  "category": "ADV",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 994.77
+  }
+ },
+ {
+  "id": "fr-ce2-006",
+  "lemma": "année",
+  "expectedForm": "année",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [
+   "accent",
+   "double-consonne",
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 309.78
+  }
+ },
+ {
+  "id": "fr-ce2-007",
+  "lemma": "argent",
+  "expectedForm": "argent",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 237.92
+  }
+ },
+ {
+  "id": "fr-ce2-008",
+  "lemma": "asseoir",
+  "expectedForm": "asseoir",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 289.65
+  }
+ },
+ {
+  "id": "fr-ce2-009",
+  "lemma": "assez",
+  "expectedForm": "assez",
+  "grade": "CE2",
+  "category": "ADV",
+  "tags": [
+   "double-consonne",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 254.26
+  }
+ },
+ {
+  "id": "fr-ce2-010",
+  "lemma": "attendre",
+  "expectedForm": "attendre",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [
+   "double-consonne",
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 510.82
+  }
+ },
+ {
+  "id": "fr-ce2-011",
+  "lemma": "aussi",
+  "expectedForm": "aussi",
+  "grade": "CE2",
+  "category": "ADV",
+  "tags": [
+   "double-consonne",
+   "son-o"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 945.56
+  }
+ },
+ {
+  "id": "fr-ce2-012",
+  "lemma": "autour",
+  "expectedForm": "autour",
+  "grade": "CE2",
+  "category": "ADV",
+  "tags": [
+   "son-o"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 324.89
+  }
+ },
+ {
+  "id": "fr-ce2-013",
+  "lemma": "avancer",
+  "expectedForm": "avancer",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 235.76
+  }
+ },
+ {
+  "id": "fr-ce2-014",
+  "lemma": "bateau",
+  "expectedForm": "bateau",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [
+   "son-o"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 345.4
+  }
+ },
+ {
+  "id": "fr-ce2-015",
+  "lemma": "beaucoup",
+  "expectedForm": "beaucoup",
+  "grade": "CE2",
+  "category": "ADV",
+  "tags": [
+   "son-o",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 521.16
+  }
+ },
+ {
+  "id": "fr-ce2-016",
+  "lemma": "boire",
+  "expectedForm": "boire",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 267.88
+  }
+ },
+ {
+  "id": "fr-ce2-017",
+  "lemma": "certain",
+  "expectedForm": "certain",
+  "grade": "CE2",
+  "category": "ADJ",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 301.74
+  }
+ },
+ {
+  "id": "fr-ce2-018",
+  "lemma": "chambre",
+  "expectedForm": "chambre",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 254.88
+  }
+ },
+ {
+  "id": "fr-ce2-019",
+  "lemma": "changer",
+  "expectedForm": "changer",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 272.6
+  }
+ },
+ {
+  "id": "fr-ce2-020",
+  "lemma": "chercher",
+  "expectedForm": "chercher",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 681.69
+  }
+ },
+ {
+  "id": "fr-ce2-021",
+  "lemma": "combien",
+  "expectedForm": "combien",
+  "grade": "CE2",
+  "category": "ADV",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 255.62
+  }
+ },
+ {
+  "id": "fr-ce2-022",
+  "lemma": "comme",
+  "expectedForm": "comme",
+  "grade": "CE2",
+  "category": "ADV",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 350.16
+  }
+ },
+ {
+  "id": "fr-ce2-023",
+  "lemma": "comment",
+  "expectedForm": "comment",
+  "grade": "CE2",
+  "category": "ADV",
+  "tags": [
+   "double-consonne",
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 542.99
+  }
+ },
+ {
+  "id": "fr-ce2-024",
+  "lemma": "compter",
+  "expectedForm": "compter",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [
+   "homophone"
+  ],
+  "homophones": [
+   "comté"
+  ],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 290.75
+  }
+ },
+ {
+  "id": "fr-ce2-025",
+  "lemma": "convenir",
+  "expectedForm": "convenir",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 270.06
+  }
+ },
+ {
+  "id": "fr-ce2-026",
+  "lemma": "demander",
+  "expectedForm": "demander",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 840.76
+  }
+ },
+ {
+  "id": "fr-ce2-027",
+  "lemma": "dernier",
+  "expectedForm": "dernier",
+  "grade": "CE2",
+  "category": "ADJ",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 346.47
+  }
+ },
+ {
+  "id": "fr-ce2-028",
+  "lemma": "dessiner",
+  "expectedForm": "dessiner",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 261.14
+  }
+ },
+ {
+  "id": "fr-ce2-029",
+  "lemma": "début",
+  "expectedForm": "début",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [
+   "accent",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 269.35
+  }
+ },
+ {
+  "id": "fr-ce2-030",
+  "lemma": "décider",
+  "expectedForm": "décider",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 283.24
+  }
+ },
+ {
+  "id": "fr-ce2-031",
+  "lemma": "encore",
+  "expectedForm": "encore",
+  "grade": "CE2",
+  "category": "ADV",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 856.09
+  }
+ },
+ {
+  "id": "fr-ce2-032",
+  "lemma": "enfin",
+  "expectedForm": "enfin",
+  "grade": "CE2",
+  "category": "ADV",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 342.9
+  }
+ },
+ {
+  "id": "fr-ce2-033",
+  "lemma": "entendre",
+  "expectedForm": "entendre",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 738.16
+  }
+ },
+ {
+  "id": "fr-ce2-034",
+  "lemma": "essayer",
+  "expectedForm": "essayer",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 350.65
+  }
+ },
+ {
+  "id": "fr-ce2-035",
+  "lemma": "exercice",
+  "expectedForm": "exercice",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 407.46
+  }
+ },
+ {
+  "id": "fr-ce2-036",
+  "lemma": "femme",
+  "expectedForm": "femme",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [
+   "double-consonne",
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 323.05
+  }
+ },
+ {
+  "id": "fr-ce2-037",
+  "lemma": "finir",
+  "expectedForm": "finir",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 337.71
+  }
+ },
+ {
+  "id": "fr-ce2-038",
+  "lemma": "forme",
+  "expectedForm": "forme",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 309.34
+  }
+ },
+ {
+  "id": "fr-ce2-039",
+  "lemma": "former",
+  "expectedForm": "former",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 280.47
+  }
+ },
+ {
+  "id": "fr-ce2-040",
+  "lemma": "frère",
+  "expectedForm": "frère",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 340.35
+  }
+ },
+ {
+  "id": "fr-ce2-041",
+  "lemma": "histoire",
+  "expectedForm": "histoire",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 800.92
+  }
+ },
+ {
+  "id": "fr-ce2-042",
+  "lemma": "imaginer",
+  "expectedForm": "imaginer",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 264.71
+  }
+ },
+ {
+  "id": "fr-ce2-043",
+  "lemma": "indiquer",
+  "expectedForm": "indiquer",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 437.87
+  }
+ },
+ {
+  "id": "fr-ce2-044",
+  "lemma": "jamais",
+  "expectedForm": "jamais",
+  "grade": "CE2",
+  "category": "ADV",
+  "tags": [
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 627.79
+  }
+ },
+ {
+  "id": "fr-ce2-045",
+  "lemma": "jeter",
+  "expectedForm": "jeter",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 284.16
+  }
+ },
+ {
+  "id": "fr-ce2-046",
+  "lemma": "jeune",
+  "expectedForm": "jeune",
+  "grade": "CE2",
+  "category": "ADJ",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 399.64
+  }
+ },
+ {
+  "id": "fr-ce2-047",
+  "lemma": "journal",
+  "expectedForm": "journal",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 263.85
+  }
+ },
+ {
+  "id": "fr-ce2-048",
+  "lemma": "ligne",
+  "expectedForm": "ligne",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 312.7
+  }
+ },
+ {
+  "id": "fr-ce2-049",
+  "lemma": "mieux",
+  "expectedForm": "mieux",
+  "grade": "CE2",
+  "category": "ADV",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 323.47
+  }
+ },
+ {
+  "id": "fr-ce2-050",
+  "lemma": "milieu",
+  "expectedForm": "milieu",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 245.72
+  }
+ },
+ {
+  "id": "fr-ce2-051",
+  "lemma": "minute",
+  "expectedForm": "minute",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 240.68
+  }
+ },
+ {
+  "id": "fr-ce2-052",
+  "lemma": "moins",
+  "expectedForm": "moins",
+  "grade": "CE2",
+  "category": "ADV",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 351.94
+  }
+ },
+ {
+  "id": "fr-ce2-053",
+  "lemma": "montagne",
+  "expectedForm": "montagne",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 233.82
+  }
+ },
+ {
+  "id": "fr-ce2-054",
+  "lemma": "monter",
+  "expectedForm": "monter",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 400.8
+  }
+ },
+ {
+  "id": "fr-ce2-055",
+  "lemma": "montrer",
+  "expectedForm": "montrer",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 315.13
+  }
+ },
+ {
+  "id": "fr-ce2-056",
+  "lemma": "nombre",
+  "expectedForm": "nombre",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 239.41
+  }
+ },
+ {
+  "id": "fr-ce2-057",
+  "lemma": "objet",
+  "expectedForm": "objet",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 300.13
+  }
+ },
+ {
+  "id": "fr-ce2-058",
+  "lemma": "observer",
+  "expectedForm": "observer",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 337.65
+  }
+ },
+ {
+  "id": "fr-ce2-059",
+  "lemma": "oreille",
+  "expectedForm": "oreille",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 289.67
+  }
+ },
+ {
+  "id": "fr-ce2-060",
+  "lemma": "oublier",
+  "expectedForm": "oublier",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 308.25
+  }
+ },
+ {
+  "id": "fr-ce2-061",
+  "lemma": "paraître",
+  "expectedForm": "paraître",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 270.48
+  }
+ },
+ {
+  "id": "fr-ce2-062",
+  "lemma": "partie",
+  "expectedForm": "partie",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [
+   "homophone"
+  ],
+  "homophones": [
+   "parti"
+  ],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 392.63
+  }
+ },
+ {
+  "id": "fr-ce2-063",
+  "lemma": "passé",
+  "expectedForm": "passé",
+  "grade": "CE2",
+  "category": "ADJ",
+  "tags": [
+   "accent",
+   "double-consonne",
+   "homophone"
+  ],
+  "homophones": [
+   "passer"
+  ],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 247.99
+  }
+ },
+ {
+  "id": "fr-ce2-064",
+  "lemma": "peine",
+  "expectedForm": "peine",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 237.33
+  }
+ },
+ {
+  "id": "fr-ce2-065",
+  "lemma": "personne",
+  "expectedForm": "personne",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 601.0
+  }
+ },
+ {
+  "id": "fr-ce2-066",
+  "lemma": "pièce",
+  "expectedForm": "pièce",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 328.76
+  }
+ },
+ {
+  "id": "fr-ce2-067",
+  "lemma": "placer",
+  "expectedForm": "placer",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 283.34
+  }
+ },
+ {
+  "id": "fr-ce2-068",
+  "lemma": "plein",
+  "expectedForm": "plein",
+  "grade": "CE2",
+  "category": "ADJ",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 292.9
+  }
+ },
+ {
+  "id": "fr-ce2-069",
+  "lemma": "possible",
+  "expectedForm": "possible",
+  "grade": "CE2",
+  "category": "ADJ",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 336.63
+  }
+ },
+ {
+  "id": "fr-ce2-070",
+  "lemma": "pourquoi",
+  "expectedForm": "pourquoi",
+  "grade": "CE2",
+  "category": "ADV",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 524.35
+  }
+ },
+ {
+  "id": "fr-ce2-071",
+  "lemma": "pousser",
+  "expectedForm": "pousser",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 336.32
+  }
+ },
+ {
+  "id": "fr-ce2-072",
+  "lemma": "presque",
+  "expectedForm": "presque",
+  "grade": "CE2",
+  "category": "ADV",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 232.54
+  }
+ },
+ {
+  "id": "fr-ce2-073",
+  "lemma": "préparer",
+  "expectedForm": "préparer",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 284.5
+  }
+ },
+ {
+  "id": "fr-ce2-074",
+  "lemma": "présent",
+  "expectedForm": "présent",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [
+   "accent",
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 325.7
+  }
+ },
+ {
+  "id": "fr-ce2-075",
+  "lemma": "question",
+  "expectedForm": "question",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 708.09
+  }
+ },
+ {
+  "id": "fr-ce2-076",
+  "lemma": "queue",
+  "expectedForm": "queue",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 245.66
+  }
+ },
+ {
+  "id": "fr-ce2-077",
+  "lemma": "raconter",
+  "expectedForm": "raconter",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 392.73
+  }
+ },
+ {
+  "id": "fr-ce2-078",
+  "lemma": "recopier",
+  "expectedForm": "recopier",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 296.0
+  }
+ },
+ {
+  "id": "fr-ce2-079",
+  "lemma": "regarder",
+  "expectedForm": "regarder",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 945.48
+  }
+ },
+ {
+  "id": "fr-ce2-080",
+  "lemma": "relever",
+  "expectedForm": "relever",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 383.36
+  }
+ },
+ {
+  "id": "fr-ce2-081",
+  "lemma": "rendre",
+  "expectedForm": "rendre",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 430.35
+  }
+ },
+ {
+  "id": "fr-ce2-082",
+  "lemma": "rentrer",
+  "expectedForm": "rentrer",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 285.99
+  }
+ },
+ {
+  "id": "fr-ce2-083",
+  "lemma": "répondre",
+  "expectedForm": "répondre",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 790.78
+  }
+ },
+ {
+  "id": "fr-ce2-084",
+  "lemma": "sembler",
+  "expectedForm": "sembler",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 296.74
+  }
+ },
+ {
+  "id": "fr-ce2-085",
+  "lemma": "sentir",
+  "expectedForm": "sentir",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 346.61
+  }
+ },
+ {
+  "id": "fr-ce2-086",
+  "lemma": "simple",
+  "expectedForm": "simple",
+  "grade": "CE2",
+  "category": "ADJ",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 234.08
+  }
+ },
+ {
+  "id": "fr-ce2-087",
+  "lemma": "souvent",
+  "expectedForm": "souvent",
+  "grade": "CE2",
+  "category": "ADV",
+  "tags": [
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 365.09
+  }
+ },
+ {
+  "id": "fr-ce2-088",
+  "lemma": "suite",
+  "expectedForm": "suite",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 354.25
+  }
+ },
+ {
+  "id": "fr-ce2-089",
+  "lemma": "sujet",
+  "expectedForm": "sujet",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 233.62
+  }
+ },
+ {
+  "id": "fr-ce2-090",
+  "lemma": "tableau",
+  "expectedForm": "tableau",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [
+   "son-o"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 257.14
+  }
+ },
+ {
+  "id": "fr-ce2-091",
+  "lemma": "tenir",
+  "expectedForm": "tenir",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 469.09
+  }
+ },
+ {
+  "id": "fr-ce2-092",
+  "lemma": "terminer",
+  "expectedForm": "terminer",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 318.21
+  }
+ },
+ {
+  "id": "fr-ce2-093",
+  "lemma": "tirer",
+  "expectedForm": "tirer",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 379.95
+  }
+ },
+ {
+  "id": "fr-ce2-094",
+  "lemma": "titre",
+  "expectedForm": "titre",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 258.79
+  }
+ },
+ {
+  "id": "fr-ce2-095",
+  "lemma": "toujours",
+  "expectedForm": "toujours",
+  "grade": "CE2",
+  "category": "ADV",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 766.2
+  }
+ },
+ {
+  "id": "fr-ce2-096",
+  "lemma": "tourner",
+  "expectedForm": "tourner",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 335.38
+  }
+ },
+ {
+  "id": "fr-ce2-097",
+  "lemma": "travail",
+  "expectedForm": "travail",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 339.4
+  }
+ },
+ {
+  "id": "fr-ce2-098",
+  "lemma": "utiliser",
+  "expectedForm": "utiliser",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 411.65
+  }
+ },
+ {
+  "id": "fr-ce2-099",
+  "lemma": "village",
+  "expectedForm": "village",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 300.8
+  }
+ },
+ {
+  "id": "fr-ce2-100",
+  "lemma": "vraiment",
+  "expectedForm": "vraiment",
+  "grade": "CE2",
+  "category": "ADV",
+  "tags": [
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 235.59
+  }
+ },
+ {
+  "id": "fr-cm1-001",
+  "lemma": "accord",
+  "expectedForm": "accord",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [
+   "double-consonne",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 179.16
+  }
+ },
+ {
+  "id": "fr-cm1-002",
+  "lemma": "apporter",
+  "expectedForm": "apporter",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 202.02
+  }
+ },
+ {
+  "id": "fr-cm1-003",
+  "lemma": "apprendre",
+  "expectedForm": "apprendre",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "double-consonne",
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 327.59
+  }
+ },
+ {
+  "id": "fr-cm1-004",
+  "lemma": "approcher",
+  "expectedForm": "approcher",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 261.8
+  }
+ },
+ {
+  "id": "fr-cm1-005",
+  "lemma": "article",
+  "expectedForm": "article",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 206.24
+  }
+ },
+ {
+  "id": "fr-cm1-006",
+  "lemma": "attention",
+  "expectedForm": "attention",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [
+   "double-consonne",
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 205.94
+  }
+ },
+ {
+  "id": "fr-cm1-007",
+  "lemma": "aussitôt",
+  "expectedForm": "aussitôt",
+  "grade": "CM1",
+  "category": "ADV",
+  "tags": [
+   "accent",
+   "double-consonne",
+   "son-o",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 182.47
+  }
+ },
+ {
+  "id": "fr-cm1-008",
+  "lemma": "auteur",
+  "expectedForm": "auteur",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [
+   "son-o",
+   "homophone"
+  ],
+  "homophones": [
+   "hauteur"
+  ],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 169.19
+  }
+ },
+ {
+  "id": "fr-cm1-009",
+  "lemma": "battre",
+  "expectedForm": "battre",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 205.34
+  }
+ },
+ {
+  "id": "fr-cm1-010",
+  "lemma": "besoin",
+  "expectedForm": "besoin",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 178.97
+  }
+ },
+ {
+  "id": "fr-cm1-011",
+  "lemma": "bientôt",
+  "expectedForm": "bientôt",
+  "grade": "CM1",
+  "category": "ADV",
+  "tags": [
+   "accent",
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 220.47
+  }
+ },
+ {
+  "id": "fr-cm1-012",
+  "lemma": "bouche",
+  "expectedForm": "bouche",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 163.48
+  }
+ },
+ {
+  "id": "fr-cm1-013",
+  "lemma": "château",
+  "expectedForm": "château",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [
+   "accent",
+   "son-o"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 200.08
+  }
+ },
+ {
+  "id": "fr-cm1-014",
+  "lemma": "commencer",
+  "expectedForm": "commencer",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "double-consonne",
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 512.1
+  }
+ },
+ {
+  "id": "fr-cm1-015",
+  "lemma": "complet",
+  "expectedForm": "complet",
+  "grade": "CM1",
+  "category": "ADJ",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 168.14
+  }
+ },
+ {
+  "id": "fr-cm1-016",
+  "lemma": "compléter",
+  "expectedForm": "compléter",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 382.31
+  }
+ },
+ {
+  "id": "fr-cm1-017",
+  "lemma": "composer",
+  "expectedForm": "composer",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 169.57
+  }
+ },
+ {
+  "id": "fr-cm1-018",
+  "lemma": "connaître",
+  "expectedForm": "connaître",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "accent",
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 471.49
+  }
+ },
+ {
+  "id": "fr-cm1-019",
+  "lemma": "contenir",
+  "expectedForm": "contenir",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 224.23
+  }
+ },
+ {
+  "id": "fr-cm1-020",
+  "lemma": "content",
+  "expectedForm": "content",
+  "grade": "CM1",
+  "category": "ADJ",
+  "tags": [
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 166.9
+  }
+ },
+ {
+  "id": "fr-cm1-021",
+  "lemma": "continuer",
+  "expectedForm": "continuer",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 213.47
+  }
+ },
+ {
+  "id": "fr-cm1-022",
+  "lemma": "coucher",
+  "expectedForm": "coucher",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 207.73
+  }
+ },
+ {
+  "id": "fr-cm1-023",
+  "lemma": "couper",
+  "expectedForm": "couper",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 202.31
+  }
+ },
+ {
+  "id": "fr-cm1-024",
+  "lemma": "cuisine",
+  "expectedForm": "cuisine",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 191.27
+  }
+ },
+ {
+  "id": "fr-cm1-025",
+  "lemma": "descendre",
+  "expectedForm": "descendre",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 286.21
+  }
+ },
+ {
+  "id": "fr-cm1-026",
+  "lemma": "différent",
+  "expectedForm": "différent",
+  "grade": "CM1",
+  "category": "ADJ",
+  "tags": [
+   "accent",
+   "double-consonne",
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 276.63
+  }
+ },
+ {
+  "id": "fr-cm1-027",
+  "lemma": "découvrir",
+  "expectedForm": "découvrir",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 266.65
+  }
+ },
+ {
+  "id": "fr-cm1-028",
+  "lemma": "départ",
+  "expectedForm": "départ",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [
+   "accent",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 165.31
+  }
+ },
+ {
+  "id": "fr-cm1-029",
+  "lemma": "désigner",
+  "expectedForm": "désigner",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 196.62
+  }
+ },
+ {
+  "id": "fr-cm1-030",
+  "lemma": "employer",
+  "expectedForm": "employer",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 214.42
+  }
+ },
+ {
+  "id": "fr-cm1-031",
+  "lemma": "endroit",
+  "expectedForm": "endroit",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 217.44
+  }
+ },
+ {
+  "id": "fr-cm1-032",
+  "lemma": "ensemble",
+  "expectedForm": "ensemble",
+  "grade": "CM1",
+  "category": "ADV",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 165.22
+  }
+ },
+ {
+  "id": "fr-cm1-033",
+  "lemma": "ensuite",
+  "expectedForm": "ensuite",
+  "grade": "CM1",
+  "category": "ADV",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 201.03
+  }
+ },
+ {
+  "id": "fr-cm1-034",
+  "lemma": "entourer",
+  "expectedForm": "entourer",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 208.24
+  }
+ },
+ {
+  "id": "fr-cm1-035",
+  "lemma": "envoyer",
+  "expectedForm": "envoyer",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 172.6
+  }
+ },
+ {
+  "id": "fr-cm1-036",
+  "lemma": "expliquer",
+  "expectedForm": "expliquer",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 320.02
+  }
+ },
+ {
+  "id": "fr-cm1-037",
+  "lemma": "fenêtre",
+  "expectedForm": "fenêtre",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [
+   "accent",
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 202.48
+  }
+ },
+ {
+  "id": "fr-cm1-038",
+  "lemma": "fermer",
+  "expectedForm": "fermer",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 198.93
+  }
+ },
+ {
+  "id": "fr-cm1-039",
+  "lemma": "frapper",
+  "expectedForm": "frapper",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 170.9
+  }
+ },
+ {
+  "id": "fr-cm1-040",
+  "lemma": "gagner",
+  "expectedForm": "gagner",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 229.59
+  }
+ },
+ {
+  "id": "fr-cm1-041",
+  "lemma": "garder",
+  "expectedForm": "garder",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 206.27
+  }
+ },
+ {
+  "id": "fr-cm1-042",
+  "lemma": "glisser",
+  "expectedForm": "glisser",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 219.23
+  }
+ },
+ {
+  "id": "fr-cm1-043",
+  "lemma": "gâteau",
+  "expectedForm": "gâteau",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [
+   "accent",
+   "son-o"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 164.29
+  }
+ },
+ {
+  "id": "fr-cm1-044",
+  "lemma": "habiter",
+  "expectedForm": "habiter",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 212.28
+  }
+ },
+ {
+  "id": "fr-cm1-045",
+  "lemma": "heureux",
+  "expectedForm": "heureux",
+  "grade": "CM1",
+  "category": "ADJ",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 170.75
+  }
+ },
+ {
+  "id": "fr-cm1-046",
+  "lemma": "installer",
+  "expectedForm": "installer",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 190.39
+  }
+ },
+ {
+  "id": "fr-cm1-047",
+  "lemma": "instant",
+  "expectedForm": "instant",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 195.4
+  }
+ },
+ {
+  "id": "fr-cm1-048",
+  "lemma": "inventer",
+  "expectedForm": "inventer",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 167.75
+  }
+ },
+ {
+  "id": "fr-cm1-049",
+  "lemma": "journée",
+  "expectedForm": "journée",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 221.13
+  }
+ },
+ {
+  "id": "fr-cm1-050",
+  "lemma": "lancer",
+  "expectedForm": "lancer",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 216.41
+  }
+ },
+ {
+  "id": "fr-cm1-051",
+  "lemma": "langue",
+  "expectedForm": "langue",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 181.81
+  }
+ },
+ {
+  "id": "fr-cm1-052",
+  "lemma": "lentement",
+  "expectedForm": "lentement",
+  "grade": "CM1",
+  "category": "ADV",
+  "tags": [
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 169.51
+  }
+ },
+ {
+  "id": "fr-cm1-053",
+  "lemma": "longtemps",
+  "expectedForm": "longtemps",
+  "grade": "CM1",
+  "category": "ADV",
+  "tags": [
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 241.18
+  }
+ },
+ {
+  "id": "fr-cm1-054",
+  "lemma": "lumière",
+  "expectedForm": "lumière",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 212.51
+  }
+ },
+ {
+  "id": "fr-cm1-055",
+  "lemma": "manière",
+  "expectedForm": "manière",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [
+   "accent",
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 216.69
+  }
+ },
+ {
+  "id": "fr-cm1-056",
+  "lemma": "manquer",
+  "expectedForm": "manquer",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 181.99
+  }
+ },
+ {
+  "id": "fr-cm1-057",
+  "lemma": "mauvais",
+  "expectedForm": "mauvais",
+  "grade": "CM1",
+  "category": "ADJ",
+  "tags": [
+   "son-o",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 200.94
+  }
+ },
+ {
+  "id": "fr-cm1-058",
+  "lemma": "morceau",
+  "expectedForm": "morceau",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [
+   "son-o"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 178.39
+  }
+ },
+ {
+  "id": "fr-cm1-059",
+  "lemma": "musique",
+  "expectedForm": "musique",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 180.38
+  }
+ },
+ {
+  "id": "fr-cm1-060",
+  "lemma": "nombreux",
+  "expectedForm": "nombreux",
+  "grade": "CM1",
+  "category": "ADJ",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 172.41
+  }
+ },
+ {
+  "id": "fr-cm1-061",
+  "lemma": "numéro",
+  "expectedForm": "numéro",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 228.3
+  }
+ },
+ {
+  "id": "fr-cm1-062",
+  "lemma": "offrir",
+  "expectedForm": "offrir",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 198.78
+  }
+ },
+ {
+  "id": "fr-cm1-063",
+  "lemma": "parfois",
+  "expectedForm": "parfois",
+  "grade": "CM1",
+  "category": "ADV",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 217.9
+  }
+ },
+ {
+  "id": "fr-cm1-064",
+  "lemma": "participe",
+  "expectedForm": "participe",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 196.37
+  }
+ },
+ {
+  "id": "fr-cm1-065",
+  "lemma": "passage",
+  "expectedForm": "passage",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 194.25
+  }
+ },
+ {
+  "id": "fr-cm1-066",
+  "lemma": "pauvre",
+  "expectedForm": "pauvre",
+  "grade": "CM1",
+  "category": "ADJ",
+  "tags": [
+   "son-o"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 189.7
+  }
+ },
+ {
+  "id": "fr-cm1-067",
+  "lemma": "permettre",
+  "expectedForm": "permettre",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 306.26
+  }
+ },
+ {
+  "id": "fr-cm1-068",
+  "lemma": "pierre",
+  "expectedForm": "pierre",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 170.33
+  }
+ },
+ {
+  "id": "fr-cm1-069",
+  "lemma": "plaire",
+  "expectedForm": "plaire",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 164.71
+  }
+ },
+ {
+  "id": "fr-cm1-070",
+  "lemma": "pleurer",
+  "expectedForm": "pleurer",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 189.58
+  }
+ },
+ {
+  "id": "fr-cm1-071",
+  "lemma": "plusieurs",
+  "expectedForm": "plusieurs",
+  "grade": "CM1",
+  "category": "ADJ",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 346.95
+  }
+ },
+ {
+  "id": "fr-cm1-072",
+  "lemma": "pourtant",
+  "expectedForm": "pourtant",
+  "grade": "CM1",
+  "category": "ADV",
+  "tags": [
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 181.11
+  }
+ },
+ {
+  "id": "fr-cm1-073",
+  "lemma": "prince",
+  "expectedForm": "prince",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 185.62
+  }
+ },
+ {
+  "id": "fr-cm1-074",
+  "lemma": "pronom",
+  "expectedForm": "pronom",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 216.38
+  }
+ },
+ {
+  "id": "fr-cm1-075",
+  "lemma": "proposer",
+  "expectedForm": "proposer",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 186.74
+  }
+ },
+ {
+  "id": "fr-cm1-076",
+  "lemma": "propre",
+  "expectedForm": "propre",
+  "grade": "CM1",
+  "category": "ADJ",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 172.69
+  }
+ },
+ {
+  "id": "fr-cm1-077",
+  "lemma": "présenter",
+  "expectedForm": "présenter",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "accent",
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 195.88
+  }
+ },
+ {
+  "id": "fr-cm1-078",
+  "lemma": "quitter",
+  "expectedForm": "quitter",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 195.87
+  }
+ },
+ {
+  "id": "fr-cm1-079",
+  "lemma": "raison",
+  "expectedForm": "raison",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 176.21
+  }
+ },
+ {
+  "id": "fr-cm1-080",
+  "lemma": "recevoir",
+  "expectedForm": "recevoir",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 230.93
+  }
+ },
+ {
+  "id": "fr-cm1-081",
+  "lemma": "remarquer",
+  "expectedForm": "remarquer",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 162.77
+  }
+ },
+ {
+  "id": "fr-cm1-082",
+  "lemma": "remettre",
+  "expectedForm": "remettre",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "double-consonne",
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 186.88
+  }
+ },
+ {
+  "id": "fr-cm1-083",
+  "lemma": "remplacer",
+  "expectedForm": "remplacer",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 401.41
+  }
+ },
+ {
+  "id": "fr-cm1-084",
+  "lemma": "reprendre",
+  "expectedForm": "reprendre",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 280.26
+  }
+ },
+ {
+  "id": "fr-cm1-085",
+  "lemma": "retourner",
+  "expectedForm": "retourner",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 234.93
+  }
+ },
+ {
+  "id": "fr-cm1-086",
+  "lemma": "retrouver",
+  "expectedForm": "retrouver",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 553.09
+  }
+ },
+ {
+  "id": "fr-cm1-087",
+  "lemma": "rivière",
+  "expectedForm": "rivière",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 191.7
+  }
+ },
+ {
+  "id": "fr-cm1-088",
+  "lemma": "rouler",
+  "expectedForm": "rouler",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 192.08
+  }
+ },
+ {
+  "id": "fr-cm1-089",
+  "lemma": "réussir",
+  "expectedForm": "réussir",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "accent",
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 227.85
+  }
+ },
+ {
+  "id": "fr-cm1-090",
+  "lemma": "sauver",
+  "expectedForm": "sauver",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "son-o"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 167.98
+  }
+ },
+ {
+  "id": "fr-cm1-091",
+  "lemma": "seulement",
+  "expectedForm": "seulement",
+  "grade": "CM1",
+  "category": "ADV",
+  "tags": [
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 192.57
+  }
+ },
+ {
+  "id": "fr-cm1-092",
+  "lemma": "soudain",
+  "expectedForm": "soudain",
+  "grade": "CM1",
+  "category": "ADV",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 186.95
+  }
+ },
+ {
+  "id": "fr-cm1-093",
+  "lemma": "souligner",
+  "expectedForm": "souligner",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 240.69
+  }
+ },
+ {
+  "id": "fr-cm1-094",
+  "lemma": "surtout",
+  "expectedForm": "surtout",
+  "grade": "CM1",
+  "category": "ADV",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 171.95
+  }
+ },
+ {
+  "id": "fr-cm1-095",
+  "lemma": "travers",
+  "expectedForm": "travers",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 191.59
+  }
+ },
+ {
+  "id": "fr-cm1-096",
+  "lemma": "traverser",
+  "expectedForm": "traverser",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 231.77
+  }
+ },
+ {
+  "id": "fr-cm1-097",
+  "lemma": "visage",
+  "expectedForm": "visage",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 198.69
+  }
+ },
+ {
+  "id": "fr-cm1-098",
+  "lemma": "vitesse",
+  "expectedForm": "vitesse",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 169.42
+  }
+ },
+ {
+  "id": "fr-cm1-099",
+  "lemma": "voyage",
+  "expectedForm": "voyage",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 219.45
+  }
+ },
+ {
+  "id": "fr-cm1-100",
+  "lemma": "énorme",
+  "expectedForm": "énorme",
+  "grade": "CM1",
+  "category": "ADJ",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 172.09
+  }
+ },
+ {
+  "id": "fr-cm2-001",
+  "lemma": "accompagner",
+  "expectedForm": "accompagner",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 139.66
+  }
+ },
+ {
+  "id": "fr-cm2-002",
+  "lemma": "accorder",
+  "expectedForm": "accorder",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 119.14
+  }
+ },
+ {
+  "id": "fr-cm2-003",
+  "lemma": "affaire",
+  "expectedForm": "affaire",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 120.29
+  }
+ },
+ {
+  "id": "fr-cm2-004",
+  "lemma": "annoncer",
+  "expectedForm": "annoncer",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "double-consonne",
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 139.91
+  }
+ },
+ {
+  "id": "fr-cm2-005",
+  "lemma": "apercevoir",
+  "expectedForm": "apercevoir",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 294.11
+  }
+ },
+ {
+  "id": "fr-cm2-006",
+  "lemma": "apparaître",
+  "expectedForm": "apparaître",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "accent",
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 184.53
+  }
+ },
+ {
+  "id": "fr-cm2-007",
+  "lemma": "appareil",
+  "expectedForm": "appareil",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 111.46
+  }
+ },
+ {
+  "id": "fr-cm2-008",
+  "lemma": "appartenir",
+  "expectedForm": "appartenir",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "double-consonne",
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 126.67
+  }
+ },
+ {
+  "id": "fr-cm2-009",
+  "lemma": "arrivée",
+  "expectedForm": "arrivée",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [
+   "accent",
+   "double-consonne",
+   "homophone"
+  ],
+  "homophones": [
+   "arriver",
+   "arrivé"
+  ],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 111.45
+  }
+ },
+ {
+  "id": "fr-cm2-010",
+  "lemma": "atteindre",
+  "expectedForm": "atteindre",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 147.21
+  }
+ },
+ {
+  "id": "fr-cm2-011",
+  "lemma": "attraper",
+  "expectedForm": "attraper",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 133.22
+  }
+ },
+ {
+  "id": "fr-cm2-012",
+  "lemma": "aventure",
+  "expectedForm": "aventure",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 159.75
+  }
+ },
+ {
+  "id": "fr-cm2-013",
+  "lemma": "branche",
+  "expectedForm": "branche",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 158.29
+  }
+ },
+ {
+  "id": "fr-cm2-014",
+  "lemma": "camarade",
+  "expectedForm": "camarade",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 134.69
+  }
+ },
+ {
+  "id": "fr-cm2-015",
+  "lemma": "chapeau",
+  "expectedForm": "chapeau",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [
+   "son-o"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 160.73
+  }
+ },
+ {
+  "id": "fr-cm2-016",
+  "lemma": "charger",
+  "expectedForm": "charger",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 129.38
+  }
+ },
+ {
+  "id": "fr-cm2-017",
+  "lemma": "chasser",
+  "expectedForm": "chasser",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 141.16
+  }
+ },
+ {
+  "id": "fr-cm2-018",
+  "lemma": "chasseur",
+  "expectedForm": "chasseur",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 149.95
+  }
+ },
+ {
+  "id": "fr-cm2-019",
+  "lemma": "chocolat",
+  "expectedForm": "chocolat",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 118.28
+  }
+ },
+ {
+  "id": "fr-cm2-020",
+  "lemma": "classer",
+  "expectedForm": "classer",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 124.59
+  }
+ },
+ {
+  "id": "fr-cm2-021",
+  "lemma": "colonne",
+  "expectedForm": "colonne",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 122.89
+  }
+ },
+ {
+  "id": "fr-cm2-022",
+  "lemma": "complément",
+  "expectedForm": "complément",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [
+   "accent",
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 243.67
+  }
+ },
+ {
+  "id": "fr-cm2-023",
+  "lemma": "comprendre",
+  "expectedForm": "comprendre",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 595.78
+  }
+ },
+ {
+  "id": "fr-cm2-024",
+  "lemma": "conduire",
+  "expectedForm": "conduire",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 144.96
+  }
+ },
+ {
+  "id": "fr-cm2-025",
+  "lemma": "conjuguer",
+  "expectedForm": "conjuguer",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 111.17
+  }
+ },
+ {
+  "id": "fr-cm2-026",
+  "lemma": "conseil",
+  "expectedForm": "conseil",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 131.31
+  }
+ },
+ {
+  "id": "fr-cm2-027",
+  "lemma": "construire",
+  "expectedForm": "construire",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 227.87
+  }
+ },
+ {
+  "id": "fr-cm2-028",
+  "lemma": "contraire",
+  "expectedForm": "contraire",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 115.92
+  }
+ },
+ {
+  "id": "fr-cm2-029",
+  "lemma": "correspondre",
+  "expectedForm": "correspondre",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 261.56
+  }
+ },
+ {
+  "id": "fr-cm2-030",
+  "lemma": "couvrir",
+  "expectedForm": "couvrir",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 138.88
+  }
+ },
+ {
+  "id": "fr-cm2-031",
+  "lemma": "dictionnaire",
+  "expectedForm": "dictionnaire",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 195.47
+  }
+ },
+ {
+  "id": "fr-cm2-032",
+  "lemma": "difficile",
+  "expectedForm": "difficile",
+  "grade": "CM2",
+  "category": "ADJ",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 152.19
+  }
+ },
+ {
+  "id": "fr-cm2-033",
+  "lemma": "dimanche",
+  "expectedForm": "dimanche",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 122.24
+  }
+ },
+ {
+  "id": "fr-cm2-034",
+  "lemma": "diriger",
+  "expectedForm": "diriger",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 134.46
+  }
+ },
+ {
+  "id": "fr-cm2-035",
+  "lemma": "disparaître",
+  "expectedForm": "disparaître",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 234.29
+  }
+ },
+ {
+  "id": "fr-cm2-036",
+  "lemma": "docteur",
+  "expectedForm": "docteur",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 135.45
+  }
+ },
+ {
+  "id": "fr-cm2-037",
+  "lemma": "document",
+  "expectedForm": "document",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 142.24
+  }
+ },
+ {
+  "id": "fr-cm2-038",
+  "lemma": "doucement",
+  "expectedForm": "doucement",
+  "grade": "CM2",
+  "category": "ADV",
+  "tags": [
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 137.77
+  }
+ },
+ {
+  "id": "fr-cm2-039",
+  "lemma": "dresser",
+  "expectedForm": "dresser",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 124.3
+  }
+ },
+ {
+  "id": "fr-cm2-040",
+  "lemma": "décrire",
+  "expectedForm": "décrire",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 114.09
+  }
+ },
+ {
+  "id": "fr-cm2-041",
+  "lemma": "emporter",
+  "expectedForm": "emporter",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 162.07
+  }
+ },
+ {
+  "id": "fr-cm2-042",
+  "lemma": "empêcher",
+  "expectedForm": "empêcher",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "accent",
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 119.65
+  }
+ },
+ {
+  "id": "fr-cm2-043",
+  "lemma": "escalier",
+  "expectedForm": "escalier",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 126.94
+  }
+ },
+ {
+  "id": "fr-cm2-044",
+  "lemma": "exister",
+  "expectedForm": "exister",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 136.11
+  }
+ },
+ {
+  "id": "fr-cm2-045",
+  "lemma": "expression",
+  "expectedForm": "expression",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 285.68
+  }
+ },
+ {
+  "id": "fr-cm2-046",
+  "lemma": "fabriquer",
+  "expectedForm": "fabriquer",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 127.18
+  }
+ },
+ {
+  "id": "fr-cm2-047",
+  "lemma": "habitude",
+  "expectedForm": "habitude",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 112.15
+  }
+ },
+ {
+  "id": "fr-cm2-048",
+  "lemma": "important",
+  "expectedForm": "important",
+  "grade": "CM2",
+  "category": "ADJ",
+  "tags": [
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 153.24
+  }
+ },
+ {
+  "id": "fr-cm2-049",
+  "lemma": "indicatif",
+  "expectedForm": "indicatif",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 132.39
+  }
+ },
+ {
+  "id": "fr-cm2-050",
+  "lemma": "infinitif",
+  "expectedForm": "infinitif",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 118.78
+  }
+ },
+ {
+  "id": "fr-cm2-051",
+  "lemma": "information",
+  "expectedForm": "information",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 134.91
+  }
+ },
+ {
+  "id": "fr-cm2-052",
+  "lemma": "lecture",
+  "expectedForm": "lecture",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 151.18
+  }
+ },
+ {
+  "id": "fr-cm2-053",
+  "lemma": "lendemain",
+  "expectedForm": "lendemain",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 132.41
+  }
+ },
+ {
+  "id": "fr-cm2-054",
+  "lemma": "machine",
+  "expectedForm": "machine",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 123.46
+  }
+ },
+ {
+  "id": "fr-cm2-055",
+  "lemma": "maintenant",
+  "expectedForm": "maintenant",
+  "grade": "CM2",
+  "category": "ADV",
+  "tags": [
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 375.48
+  }
+ },
+ {
+  "id": "fr-cm2-056",
+  "lemma": "marquer",
+  "expectedForm": "marquer",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 140.83
+  }
+ },
+ {
+  "id": "fr-cm2-057",
+  "lemma": "médecin",
+  "expectedForm": "médecin",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 135.64
+  }
+ },
+ {
+  "id": "fr-cm2-058",
+  "lemma": "obtenir",
+  "expectedForm": "obtenir",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 133.06
+  }
+ },
+ {
+  "id": "fr-cm2-059",
+  "lemma": "occuper",
+  "expectedForm": "occuper",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 148.73
+  }
+ },
+ {
+  "id": "fr-cm2-060",
+  "lemma": "personnage",
+  "expectedForm": "personnage",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 297.93
+  }
+ },
+ {
+  "id": "fr-cm2-061",
+  "lemma": "plaisir",
+  "expectedForm": "plaisir",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 143.28
+  }
+ },
+ {
+  "id": "fr-cm2-062",
+  "lemma": "planche",
+  "expectedForm": "planche",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 116.0
+  }
+ },
+ {
+  "id": "fr-cm2-063",
+  "lemma": "problème",
+  "expectedForm": "problème",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 146.18
+  }
+ },
+ {
+  "id": "fr-cm2-064",
+  "lemma": "promener",
+  "expectedForm": "promener",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 113.91
+  }
+ },
+ {
+  "id": "fr-cm2-065",
+  "lemma": "prononcer",
+  "expectedForm": "prononcer",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 134.62
+  }
+ },
+ {
+  "id": "fr-cm2-066",
+  "lemma": "proposition",
+  "expectedForm": "proposition",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 145.53
+  }
+ },
+ {
+  "id": "fr-cm2-067",
+  "lemma": "préférer",
+  "expectedForm": "préférer",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 127.42
+  }
+ },
+ {
+  "id": "fr-cm2-068",
+  "lemma": "rapidement",
+  "expectedForm": "rapidement",
+  "grade": "CM2",
+  "category": "ADV",
+  "tags": [
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 166.11
+  }
+ },
+ {
+  "id": "fr-cm2-069",
+  "lemma": "rapporter",
+  "expectedForm": "rapporter",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 121.63
+  }
+ },
+ {
+  "id": "fr-cm2-070",
+  "lemma": "recherche",
+  "expectedForm": "recherche",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 133.92
+  }
+ },
+ {
+  "id": "fr-cm2-071",
+  "lemma": "reconnaître",
+  "expectedForm": "reconnaître",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "accent",
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 195.7
+  }
+ },
+ {
+  "id": "fr-cm2-072",
+  "lemma": "remplir",
+  "expectedForm": "remplir",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 132.31
+  }
+ },
+ {
+  "id": "fr-cm2-073",
+  "lemma": "rencontrer",
+  "expectedForm": "rencontrer",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 218.17
+  }
+ },
+ {
+  "id": "fr-cm2-074",
+  "lemma": "représenter",
+  "expectedForm": "représenter",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "accent",
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 127.56
+  }
+ },
+ {
+  "id": "fr-cm2-075",
+  "lemma": "ressembler",
+  "expectedForm": "ressembler",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "double-consonne",
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 194.01
+  }
+ },
+ {
+  "id": "fr-cm2-076",
+  "lemma": "retenir",
+  "expectedForm": "retenir",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 127.69
+  }
+ },
+ {
+  "id": "fr-cm2-077",
+  "lemma": "réfléchir",
+  "expectedForm": "réfléchir",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 143.09
+  }
+ },
+ {
+  "id": "fr-cm2-078",
+  "lemma": "répéter",
+  "expectedForm": "répéter",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 156.01
+  }
+ },
+ {
+  "id": "fr-cm2-079",
+  "lemma": "réveiller",
+  "expectedForm": "réveiller",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "accent",
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 152.95
+  }
+ },
+ {
+  "id": "fr-cm2-080",
+  "lemma": "sauvage",
+  "expectedForm": "sauvage",
+  "grade": "CM2",
+  "category": "ADJ",
+  "tags": [
+   "son-o"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 124.78
+  }
+ },
+ {
+  "id": "fr-cm2-081",
+  "lemma": "semaine",
+  "expectedForm": "semaine",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 160.17
+  }
+ },
+ {
+  "id": "fr-cm2-082",
+  "lemma": "serpent",
+  "expectedForm": "serpent",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 117.94
+  }
+ },
+ {
+  "id": "fr-cm2-083",
+  "lemma": "service",
+  "expectedForm": "service",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 112.15
+  }
+ },
+ {
+  "id": "fr-cm2-084",
+  "lemma": "silence",
+  "expectedForm": "silence",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 145.69
+  }
+ },
+ {
+  "id": "fr-cm2-085",
+  "lemma": "singulier",
+  "expectedForm": "singulier",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 138.49
+  }
+ },
+ {
+  "id": "fr-cm2-086",
+  "lemma": "souffler",
+  "expectedForm": "souffler",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 143.43
+  }
+ },
+ {
+  "id": "fr-cm2-087",
+  "lemma": "souvenir",
+  "expectedForm": "souvenir",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 123.33
+  }
+ },
+ {
+  "id": "fr-cm2-088",
+  "lemma": "spectacle",
+  "expectedForm": "spectacle",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 117.5
+  }
+ },
+ {
+  "id": "fr-cm2-089",
+  "lemma": "tellement",
+  "expectedForm": "tellement",
+  "grade": "CM2",
+  "category": "ADV",
+  "tags": [
+   "double-consonne",
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 125.78
+  }
+ },
+ {
+  "id": "fr-cm2-090",
+  "lemma": "terrain",
+  "expectedForm": "terrain",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 123.04
+  }
+ },
+ {
+  "id": "fr-cm2-091",
+  "lemma": "terrible",
+  "expectedForm": "terrible",
+  "grade": "CM2",
+  "category": "ADJ",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 134.02
+  }
+ },
+ {
+  "id": "fr-cm2-092",
+  "lemma": "toucher",
+  "expectedForm": "toucher",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 154.33
+  }
+ },
+ {
+  "id": "fr-cm2-093",
+  "lemma": "transformer",
+  "expectedForm": "transformer",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 203.65
+  }
+ },
+ {
+  "id": "fr-cm2-094",
+  "lemma": "travailler",
+  "expectedForm": "travailler",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 231.72
+  }
+ },
+ {
+  "id": "fr-cm2-095",
+  "lemma": "télévision",
+  "expectedForm": "télévision",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 121.82
+  }
+ },
+ {
+  "id": "fr-cm2-096",
+  "lemma": "vêtement",
+  "expectedForm": "vêtement",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [
+   "accent",
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 144.37
+  }
+ },
+ {
+  "id": "fr-cm2-097",
+  "lemma": "échapper",
+  "expectedForm": "échapper",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "accent",
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 152.39
+  }
+ },
+ {
+  "id": "fr-cm2-098",
+  "lemma": "élément",
+  "expectedForm": "élément",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [
+   "accent",
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 119.02
+  }
+ },
+ {
+  "id": "fr-cm2-099",
+  "lemma": "éléphant",
+  "expectedForm": "éléphant",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [
+   "accent",
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 150.3
+  }
+ },
+ {
+  "id": "fr-cm2-100",
+  "lemma": "étrange",
+  "expectedForm": "étrange",
+  "grade": "CM2",
+  "category": "ADJ",
+  "tags": [
+   "accent",
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "Manulex lemmes",
+   "grade": "CE2-CM2",
+   "frequencyPerMillion": 118.49
+  }
+ }
+]
