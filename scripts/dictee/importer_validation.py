@@ -15,6 +15,15 @@ Puis : selectionner_mots.py (seulement s'il y a des retraits), assembler_catalog
 corrigées et nouveaux mots), verifier_audio.py. Un mot n'est montré à un enfant qu'une fois `reviewed`.
 
     python3 scripts/dictee/importer_validation.py dictee-relecture-….json
+
+Validation en bloc, quand l'adulte approuve tout le catalogue sans passer mot par mot sur la page :
+
+    python3 scripts/dictee/importer_validation.py --approuver-tout --par David --note "…"
+
+Elle approuve les quatre relectures de chaque mot du catalogue actuel, pour ses textes et ses versions audio, avec la
+note et `audioNonEcoute: true` : l'écoute n'a pas été faite mot à mot. Les signalements audio gardent leur statut
+d'écoute (`pending`) pour la traçabilité, mais ne bloquent plus ces mots. Un fichier audio régénéré, ou un texte
+changé, fait redescendre le mot en relecture.
 """
 from __future__ import annotations
 
@@ -37,10 +46,33 @@ def nfc(t: str | None) -> str | None:
     return t or None
 
 
+def approuver_tout(qui: str, note: str) -> None:
+    from datetime import date  # noqa: PLC0415
+    relus = json.loads(RELECTURES.read_text(encoding='utf-8')) if RELECTURES.exists() else {}
+    jour = date.today().isoformat()
+    mots = json.loads(CATALOGUE.read_text(encoding='utf-8'))['words']
+    for w in mots:
+        relus[w['lemma']] = {'by': qui, 'at': jour, 'expectedForm': w['expectedForm'], 'contextSentence': w['contextSentence'], 'explanation': w['explanation'],
+                             'review': {k: 'approved' for k in ('orthography', 'pedagogy', 'context', 'audio')},
+                             'wordVersion': w['audio']['wordVersion'], 'contextVersion': w['audio']['contextVersion'], 'audioNonEcoute': True, 'note': note}
+    RELECTURES.write_text(json.dumps(dict(sorted(relus.items())), ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
+    print(f'{len(mots)} mots approuvés par {qui} ({note}) ; relancer assembler_catalogue.py')
+
+
 def main() -> None:
     p = argparse.ArgumentParser()
-    p.add_argument('fichier', type=Path)
+    p.add_argument('fichier', type=Path, nargs='?')
+    p.add_argument('--approuver-tout', action='store_true')
+    p.add_argument('--par')
+    p.add_argument('--note')
     a = p.parse_args()
+    if a.approuver_tout:
+        if not a.par or not a.note:
+            raise SystemExit('--approuver-tout demande --par (qui valide) et --note (comment)')
+        approuver_tout(a.par, a.note)
+        return
+    if not a.fichier:
+        raise SystemExit('fichier de décisions attendu, ou --approuver-tout')
     lot = json.loads(a.fichier.read_text(encoding='utf-8'))
     if lot.get('format') != 'dictee-relecture' or lot.get('version') != 1:
         raise SystemExit('ce fichier ne vient pas de la page de relecture')

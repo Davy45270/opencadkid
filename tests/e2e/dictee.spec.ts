@@ -1,8 +1,8 @@
 import type { Page } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { homedir } from 'node:os';
-import { test, expect, media, prepare } from './helpers';
-import type { Evaluation, Feed, Grade, Word } from '../../src/engines/dictee';
+import { test, expect, media, passGate, prepare } from './helpers';
+import { grades, type Evaluation, type Feed, type Grade, type Word } from '../../src/engines/dictee';
 
 interface Rect { x: number; y: number; width: number; height: number }
 interface Probe { screen: string; grade: Grade | null; feed: Feed | null; typed: string; tiles: string[]; evaluation: Evaluation | null; played: { path: string; rate: number }[]; card: Rect | null; keys: (Rect & { key: string })[] }
@@ -12,13 +12,14 @@ const byId = new Map(shipped.words.map(w => [w.id, w]));
 // The service worker would serve the precached catalogue past the test's route.
 test.use({ serviceWorkers: 'block' });
 
-/** The shipped catalogue holds words waiting for review only: the child sees none. To play, the test serves it with
- * some words approved (the four reviews, a named reviewer), as an adult would after reading and hearing them. */
+/** The test serves the shipped catalogue with the chosen words approved (the four reviews, a named reviewer) and
+ * every other word back to « waiting for review », so that it knows exactly which words may be drawn. */
 async function reviewed(page: Page, pick: (w: Word) => boolean): Promise<void> {
     const approved = { orthography: 'approved', pedagogy: 'approved', context: 'approved', audio: 'approved' };
     await page.route('**/dictee/catalogue.json', route => route.fulfill({ contentType: 'application/json',
         body: JSON.stringify({ ...shipped, words: shipped.words.map(w => pick(w) && (!w.homophones.length || w.contextSentence)
-            ? { ...w, status: 'approved', review: approved, validatedBy: 'relecture de test', audio: { mode: w.audio.mode === 'audio_manual_review' ? 'word_only' : w.audio.mode } } : w) }) }));
+            ? { ...w, status: 'approved', review: approved, validatedBy: 'relecture de test', audio: { ...w.audio, mode: w.audio.mode === 'audio_manual_review' ? 'word_only' : w.audio.mode } }
+            : { ...w, status: 'needs_review', review: { ...approved, audio: 'pending' }, validatedBy: null }) }) }));
 }
 async function open(page: Page): Promise<void> {
     await prepare(page); await page.locator('#back').click();
@@ -41,10 +42,11 @@ async function typeOnScreen(page: Page, text: string): Promise<void> {
     }
 }
 
-test('the shipped drafts never reach the child: every class waits for an adult review', async ({ page }) => {
+test('words waiting for review never reach the child: every class waits for an adult review', async ({ page }) => {
+    await reviewed(page, () => false);
     await open(page);
     await page.locator('[data-dictee-profile="dragon"]').click();
-    await expect(page.locator('[data-dictee-grade]')).toHaveCount(5);
+    await expect(page.locator('[data-dictee-grade]')).toHaveCount(6);
     await expect(page.locator('[data-dictee-grade]:not([disabled])')).toHaveCount(0);
     await expect(page.locator('#dictee-empty')).toBeVisible();
     await expect(page.locator('.dictee-drafts')).toHaveCount(0);
@@ -166,6 +168,119 @@ test('the capital key types one capital letter, then lets go', async ({ page }) 
     await expect(page.locator('#dictee-shift')).toHaveAttribute('aria-pressed', 'false');
     await page.locator('#dictee-validate').click();
     await expect(page.locator('.dictee-card.juste')).toHaveCount(1);
+});
+
+/** Back to the home screen, whatever the dictation screen. */
+async function home(page: Page): Promise<void> {
+    for (let k = 0; k < 5 && !(await page.locator('#parents').isVisible()); k++) await page.locator('#back').click();
+    await expect(page.locator('#parents')).toBeVisible();
+}
+/** Plain words, heard alone, without a capital: typed the same on the screen keyboard in every project. */
+const plain = (w: Word): boolean => w.audio.mode === 'word_only' && /^[a-z]+$/.test(w.expectedForm);
+const wrongAnswer = async (page: Page, w: Word): Promise<void> => {
+    if (w.grade === 'CP' && (await probe(page)).grade === 'CP') {
+        const p = await probe(page); await page.locator(`[data-tile="${p.tiles.indexOf(w.expectedForm[0]!)}"]`).click();
+    } else await typeOnScreen(page, w.expectedForm.slice(0, 1));
+    await page.locator('#dictee-validate').click();
+    await expect(page.locator('#dictee-next')).toBeVisible();
+};
+
+test('all mixed: approved words of several classes, no duplicate, the class of each word in the summary', async ({ page }) => {
+    // Two plain words of each class approved; everything else waits for review.
+    const pool = grades.flatMap(g => shipped.words.filter(w => w.grade === g && plain(w)).slice(0, 2)).map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    await open(page);
+    await page.locator('[data-dictee-profile="licorne"]').click();
+    await expect(page.locator('[data-dictee-grade="mix"]')).toContainText('10');
+    await page.locator('[data-dictee-grade="mix"]').click();
+    await page.locator('[data-dictee-length="5"]').click();
+    await expect(page.locator('.dictee-card')).toHaveCount(1);
+    const seen: string[] = [];
+    for (let k = 0; k < 5; k++) {
+        await expect.poll(async () => (await probe(page)).feed!.index).toBe(k);
+        const w = await word(page); seen.push(w.id);
+        expect(pool).toContain(w.id);
+        // Every class is typed on the big keyboard, first grade words too.
+        await expect(page.locator('[data-tile]')).toHaveCount(0);
+        await typeOnScreen(page, w.expectedForm); await page.locator('#dictee-validate').click();
+        await page.locator('#dictee-next').click();
+    }
+    expect(new Set(seen).size).toBe(5);
+    await expect(page.locator('#dictee-end')).toBeVisible();
+    const items = page.locator('.dictee-list li');
+    await expect(items).toHaveCount(5);
+    for (let k = 0; k < 5; k++) {
+        const g = await items.nth(k).getAttribute('data-grade');
+        await expect(items.nth(k).locator('.dictee-niveau')).toHaveText(g!);
+    }
+    expect(new Set(seen.map(id => byId.get(id)!.grade)).size).toBeGreaterThan(1);
+    // Its own spaced review, apart from the classes.
+    const stored = await page.evaluate(() => JSON.parse(localStorage.getItem('opencadkid.dictee.v1') ?? '{}') as { licorne: Record<string, { session: number }> });
+    expect(stored.licorne.mix?.session).toBe(1);
+    expect(Object.keys(stored.licorne)).toEqual(['mix']);
+});
+
+test('fewer approved words than asked: a clear note, the longer games greyed, no crash', async ({ page }) => {
+    const pool = shipped.words.filter(w => plain(w) && w.grade !== 'CP').slice(0, 3).map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    await open(page);
+    await page.locator('[data-dictee-profile="singe"]').click();
+    await page.locator('[data-dictee-grade="mix"]').click();
+    await expect(page.locator('#dictee-few')).toContainText('3');
+    for (const n of [10, 15, 20]) await expect(page.locator(`[data-dictee-length="${n}"]`)).toBeDisabled();
+    await page.locator('[data-dictee-length="5"]').click();
+    await expect(page.locator('.dictee-card')).toHaveCount(1);
+    expect((await probe(page)).feed!.cards).toHaveLength(3);
+});
+
+test('report a word: absent for a child, in adult mode far from « next », then found in the parents’ list', async ({ page, isMobile }) => {
+    if (isMobile) await page.setViewportSize({ width: 360, height: 740 });
+    const pool = shipped.words.filter(w => w.grade === 'CE1' && plain(w)).slice(0, 6).map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    // Child mode, the default: once checked, no report button in the page at all.
+    await feed(page, 'CE1', 5);
+    await wrongAnswer(page, await word(page));
+    await expect(page.locator('#dictee-report')).toHaveCount(0);
+    await expect(page.locator('#dictee-report-panel')).toHaveCount(0);
+    // Adult mode is switched in the parents' space, behind its gate.
+    await home(page);
+    await page.locator('#parents').click(); await passGate(page);
+    await page.locator('#dictee-adult').check();
+    await page.locator('#close').click();
+    await page.locator('[data-game="dictee"]').click();
+    await page.locator('[data-dictee-profile="licorne"]').click();
+    await page.locator('[data-dictee-grade="CE1"]').click();
+    await page.locator('[data-dictee-length="5"]').click();
+    await expect(page.locator('.dictee-card')).toHaveCount(1);
+    // Not before the answer.
+    await expect(page.locator('#dictee-report')).toHaveCount(0);
+    const w = await word(page);
+    await wrongAnswer(page, w);
+    const flag = page.locator('#dictee-report');
+    await expect(flag).toBeVisible();
+    await expect(flag).toContainText('🚩');
+    const a = (await flag.boundingBox())!, b = (await page.locator('#dictee-next').boundingBox())!;
+    expect(a.width).toBeGreaterThanOrEqual(44); expect(a.height).toBeGreaterThanOrEqual(44);
+    // The gap between the two boxes, at least 48 px (zero if they touch).
+    const gap = Math.hypot(Math.max(0, b.x - (a.x + a.width), a.x - (b.x + b.width)), Math.max(0, b.y - (a.y + a.height), a.y - (b.y + b.height)));
+    expect(gap).toBeGreaterThanOrEqual(48);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(page.viewportSize()!.width);
+    await flag.click();
+    await expect(page.locator('#dictee-report-save')).toBeDisabled();
+    await page.locator('[data-report-kind="audio"]').click();
+    await page.locator('#dictee-report-note').fill('on entend mal la fin');
+    await page.locator('#dictee-report-save').click();
+    await expect(flag).toHaveAttribute('aria-pressed', 'true');
+    // Typing the note never moved the feed on.
+    expect((await probe(page)).feed!.index).toBe(0);
+    const stored = await page.evaluate(() => JSON.parse(localStorage.getItem('opencadkid.dictee.signalements.v1') ?? '[]') as Record<string, unknown>[]);
+    expect(stored).toEqual([{ id: w.id, form: w.expectedForm, grade: 'CE1', kind: 'audio', note: 'on entend mal la fin', audioVersion: w.audio.wordVersion, at: expect.stringMatching(/^\d{4}-\d{2}-\d{2}$/) as unknown }]);
+    // Found in the parents' list, ready to export.
+    await home(page);
+    await page.locator('#parents').click(); await passGate(page);
+    await expect(page.locator(`#dictee-reports [data-report="${w.id}"]`)).toContainText(w.expectedForm);
+    expect(await page.locator('#dictee-reports-text').inputValue()).toContain(`${w.id}\t${w.expectedForm}\tCE1\taudio`);
+    await expect(page.locator('#dictee-reports-export')).toBeVisible();
 });
 
 test('first grade: the letters are shuffled tiles to put back in order', async ({ page }) => {

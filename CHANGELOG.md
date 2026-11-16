@@ -11,6 +11,9 @@
 - Words added by hand to the frequency list for young children: vehicles, toys, clothes, family, colours, numbers, Noël, and two brand names to review (Lego, Playmobil); a capital key on the game's keyboard, for the next letter only.
 - Corrected tips (ainsi, considérer, présence, aimer, question, journal, nécessaire), a more natural sentence for plutôt, and first-grade words chosen among frequent, regular, concrete nouns.
 - The recordings that the automatic check heard wrong are kept as non-regression cases, with the text heard and the audio version, until an adult has listened to them.
+- « Tout mélangé »: a game across every class at once, approved words only, without a duplicate, with its own spaced review and the class of each word in the summary; a clear note when fewer words are approved than the game asked.
+- An adult mode, switched in the parents' space: a 🚩 button, far from « next word », reports a word (the word, its sentence, its tip or its sound, with a note), kept on the device and listed in the parents' space with an export.
+- The 500 words are approved for play (approved at once by the adult, to test in play; the recordings flagged by the automatic check stay listed until heard); école, sac, verre, nez, rouge and voiture are first-grade words.
 - A review page for the adult, made for a phone and kept out of the game: one class at a time, each word with its sentence, its tip and both recordings, and Validate, Correct or Remove. It is served on the local network only while reviewing, saves each choice, and its decisions are imported into the catalogue by a script.
 
 ## 1.31.0

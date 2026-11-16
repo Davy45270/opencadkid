@@ -69,6 +69,11 @@ def main() -> None:
         # Un signalement n'est levé que par une écoute humaine « ok » de la version actuelle du fichier.
         a_ecouter = [c for c in signales.get(m['id'], []) if c['listening']['status'] != 'ok'
                      or c['listening'].get('audioVersion') != empreintes.get(c['asset'])]
+        # Validation en bloc sans écoute mot à mot (décision de l'adulte, notée) : les signalements restent « pending »
+        # pour la traçabilité, mais ne bloquent plus le mot tant que ses fichiers audio sont ceux qu'il a approuvés.
+        if a_ecouter and r and r.get('audioNonEcoute') and r.get('wordVersion') == empreintes.get(f"dictee/audio/{m['id']}.ogg") \
+                and r.get('contextVersion') == (empreintes.get(f"dictee/audio/{m['id']}-phrase.ogg") if phrase else None):
+            a_ecouter = []
         nuances = NUANCES.get(m['lemma'], {})
         ambigu = m['lemma'] in CONTEXTE_OBLIGATOIRE or any(h not in nuances for h in m['homophones'])
         if a_ecouter:
@@ -100,6 +105,8 @@ def main() -> None:
             w['review'] = {k: revue.get(k, 'pending') for k in REVUES}
             if all(v == 'approved' for v in w['review'].values()):
                 w['status'], w['validatedBy'] = 'approved', r['by']
+                if r.get('note'):
+                    w['provenance']['validation'] = r['note']
             elif 'rejected' in w['review'].values():
                 w['status'] = 'rejected'
         words.append(w)

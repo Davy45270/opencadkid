@@ -1,6 +1,6 @@
 import { characterSvg } from '../../characters/svg';
 import { characters } from '../../characters/model';
-import { grades, LENGTHS, profiles, type Evaluation, type Grade, type Profile, type SpellingError, type Word } from '../../engines/dictee';
+import { grades, LENGTHS, MIXED, profiles, reportKinds, reportsText, type Choice, type Report, type Evaluation, type Profile, type SpellingError, type Word } from '../../engines/dictee';
 import type { Locale } from '../../shell/i18n';
 import { icon, svg } from '../../ui/svg';
 
@@ -12,7 +12,9 @@ export const labels = {
         writeFirst: 'Écris d’abord le mot, puis valide.', end: 'Fini pour cette fois !', endSaid: (n: number): string => `Bravo, tu as écrit ${n} mots !`,
         firstTry: 'Justes du premier coup', again: 'On les reverra bientôt', more: 'Encore des mots', voiceOff: 'La voix est coupée dans l’espace parents.',
         empty: 'Les mots de cette classe arrivent bientôt : un adulte doit d’abord les relire.', loading: 'Un instant…', card: 'Carte', of: 'sur',
-        keyboard: 'Clavier', letters: 'Lettres à remettre dans l’ordre', drafts: 'Brouillons visibles (développement)', age: '6 ans et +' },
+        keyboard: 'Clavier', letters: 'Lettres à remettre dans l’ordre', drafts: 'Brouillons visibles (développement)', age: '6 ans et +', mixed: 'Tout mélangé', report: 'Signaler ce mot', reported: 'Mot signalé', flag: 'Signaler', flagged: 'Signalé', reportWhat: 'Qu’est-ce qui ne va pas ?', kinds: ['Le mot', 'La phrase', 'L’astuce', 'Le son'], reportNote: 'Précision (facultatif)', reportSave: 'Enregistrer', reportCancel: 'Annuler', adultMode: 'Mode adulte de la dictée (bouton « Signaler ce mot »)',
+        reportsTitle: 'Dictée : mots signalés', reportsNone: 'Aucun mot signalé.', reportsExport: 'Exporter', reportsCopied: 'Liste copiée.', reportsErase: 'Vider la liste',
+        few: (n: number): string => n === 1 ? 'Un seul mot relu pour l’instant : la partie n’aura qu’un mot.' : `Seulement ${n} mots relus pour l’instant : une partie en aura ${n} au plus, les plus longues attendent.` },
     en: { title: 'The magic dictation', who: 'Who is playing?', grade: 'Choose your class', soon: 'Soon', length: 'How many words?', words: 'words',
         start: 'Listen to the word, then write it.', listen: 'Touch the card to listen again. Hold it: more slowly.', sentence: 'In a sentence',
         answer: 'Your answer', validate: 'Check', erase: 'Erase', capital: 'Capital letter', next: 'Next word', swipe: 'Swipe up', back: 'Back', home: 'Home',
@@ -20,7 +22,9 @@ export const labels = {
         writeFirst: 'Write the word first, then check.', end: 'That’s all for now!', endSaid: (n: number): string => `Well done, you wrote ${n} words!`,
         firstTry: 'Right the first time', again: 'We will see these again soon', more: 'More words', voiceOff: 'The voice is off in the parents’ space.',
         empty: 'The words of this class are coming soon: an adult must review them first.', loading: 'One moment…', card: 'Card', of: 'of',
-        keyboard: 'Keyboard', letters: 'Letters to put in order', drafts: 'Drafts shown (development)', age: '6 and up' },
+        keyboard: 'Keyboard', letters: 'Letters to put in order', drafts: 'Drafts shown (development)', age: '6 and up', mixed: 'All mixed', report: 'Report this word', reported: 'Word reported', flag: 'Report', flagged: 'Reported', reportWhat: 'What is wrong?', kinds: ['The word', 'The sentence', 'The tip', 'The sound'], reportNote: 'Details (optional)', reportSave: 'Save', reportCancel: 'Cancel', adultMode: 'Dictation adult mode (« Report this word » button)',
+        reportsTitle: 'Dictation: reported words', reportsNone: 'No word reported.', reportsExport: 'Export', reportsCopied: 'List copied.', reportsErase: 'Empty the list',
+        few: (n: number): string => n === 1 ? 'Only one reviewed word for now: the game will have one word.' : `Only ${n} reviewed words for now: a game will have ${n} at most, the longer ones wait.` },
 } as const;
 
 /** One line for a child, from the kind of mistake. The words are French: the dictation is French. */
@@ -53,18 +57,24 @@ export function profileView(locale: Locale): string {
     const t = labels[locale];
     return `<section class="dictee dictee-menu">${header(t, t.who, t.home)}<div class="dictee-choices dictee-profiles">${profiles.map(p => `<button data-dictee-profile="${p}" aria-label="${characters[p][locale]}">${characterSvg(p, 'joie', 'repos', 'reduce')}</button>`).join('')}</div></section>`;
 }
-export function gradeView(locale: Locale, profile: Profile, counts: Record<Grade, number>, drafts: boolean): string {
+/** The name of a choice: a class, or every class mixed. */
+export const choiceName = (t: typeof labels[Locale], c: Choice): string => c === MIXED ? t.mixed : c;
+export function gradeView(locale: Locale, profile: Profile, counts: Record<Choice, number>, drafts: boolean): string {
     const t = labels[locale];
+    const button = (g: Choice): string => `<button data-dictee-grade="${g}" class="${g === MIXED ? 'dictee-mix' : ''}" ${counts[g] ? '' : 'disabled'}><b>${choiceName(t, g)}</b><span>${counts[g] ? `${counts[g]} ${t.words}` : t.soon}</span></button>`;
     return `<section class="dictee dictee-menu">${header(t, t.grade)}<div class="dictee-guide">${characterSvg(profile, 'joie', 'repos', 'reduce')}</div>`
-        + `<div class="dictee-choices dictee-grades">${grades.map(g => `<button data-dictee-grade="${g}" ${counts[g] ? '' : 'disabled'}><b>${g}</b><span>${counts[g] ? `${counts[g]} ${t.words}` : t.soon}</span></button>`).join('')}</div>`
+        + `<div class="dictee-choices dictee-grades">${grades.map(button).join('')}${button(MIXED)}</div>`
         + (grades.every(g => !counts[g]) ? `<p class="dictee-note" id="dictee-empty">${t.empty}</p>` : '') + (drafts ? `<p class="dictee-note dictee-drafts">${t.drafts}</p>` : '') + `</section>`;
 }
-export function lengthView(locale: Locale, profile: Profile, grade: Grade, available: number): string {
+/** A length longer than the words available is greyed; with fewer than five, the five-word game plays them all, and a
+ * note says so. */
+export function lengthView(locale: Locale, profile: Profile, grade: Choice, available: number): string {
     const t = labels[locale];
-    return `<section class="dictee dictee-menu">${header(t, `${grade} · ${t.length}`)}<div class="dictee-guide">${characterSvg(profile, 'joie', 'repos', 'reduce')}</div>`
-        + `<div class="dictee-choices dictee-lengths">${LENGTHS.map(n => `<button data-dictee-length="${n}" ${n <= Math.max(5, available) ? '' : 'disabled'}><b>${n}</b><span>${t.words}</span></button>`).join('')}</div></section>`;
+    const open = (n: number): boolean => n <= available || (n === LENGTHS[0] && available > 0);
+    return `<section class="dictee dictee-menu">${header(t, `${choiceName(t, grade)} · ${t.length}`)}<div class="dictee-guide">${characterSvg(profile, 'joie', 'repos', 'reduce')}</div>`
+        + `<div class="dictee-choices dictee-lengths">${LENGTHS.map(n => `<button data-dictee-length="${n}" ${open(n) ? '' : 'disabled'}><b>${n}</b><span>${t.words}</span></button>`).join('')}</div>`
+        + (available < LENGTHS[LENGTHS.length - 1]! ? `<p class="dictee-note" id="dictee-few">${available ? t.few(available) : t.empty}</p>` : '') + `</section>`;
 }
-
 /** The big keyboard: AZERTY letters in one list, a capital key for the next letter only (Noël), (the grid makes three rows on a wide screen, four on a phone so that
  * every key keeps 44 px), the accents always visible, and nothing that suggests a word. */
 export const LETTERS = Array.from('azertyuiopqsdfghjklmwxcvbn');
@@ -98,18 +108,40 @@ export function cardView(m: CardModel, locale: Locale, reduce: boolean): string 
         + `<div class="dictee-card-tools">${m.word.contextAsset && m.word.contextSentence ? `<button type="button" id="dictee-sentence" class="dictee-pill">${icon('ear')}<span>${t.sentence}</span></button>` : ''}`
         + (e ? `<button type="button" id="dictee-next" class="dictee-pill dictee-next">${icon('arrow')}<span>${t.next}</span></button>` : '') + `</div></article>`;
 }
-export function feedView(locale: Locale, grade: Grade, index: number, total: number, card: string, input: string): string {
+/** `report`: in adult mode only, once the answer is checked, the report flag sits in the top bar, far from the
+ * « next word » button at the bottom of the card; null otherwise (the button is then not in the page at all). */
+export function feedView(locale: Locale, grade: Choice, index: number, total: number, card: string, input: string, report: { reported: boolean } | null = null): string {
     const t = labels[locale];
+    const flag = report ? `<button type="button" id="dictee-report" class="dictee-flag" aria-label="${t.report}" aria-pressed="${report.reported}"><span aria-hidden="true">🚩</span><span>${report.reported ? t.flagged : t.flag}</span></button>` : '';
     const dots = Array.from({ length: total }, (_, k) => `<i class="${k < index ? 'fait' : k === index ? 'ici' : ''}"></i>`).join('');
-    return `<section class="dictee dictee-feed"><header class="shapes-header dictee-header"><button id="back" class="round" aria-label="${t.back}">${icon('home')}</button><h1>${grade}</h1><div class="dictee-dots" aria-label="${t.card} ${index + 1} ${t.of} ${total}">${dots}</div></header>`
+    return `<section class="dictee dictee-feed"><header class="shapes-header dictee-header"><button id="back" class="round" aria-label="${t.back}">${icon('home')}</button><h1>${choiceName(t, grade)}</h1>${flag}<div class="dictee-dots" aria-label="${t.card} ${index + 1} ${t.of} ${total}">${dots}</div></header>`
         + `<div class="dictee-stage">${card}</div><div class="dictee-input">${answerField(t)}${input}</div></section>`;
 }
-export function endView(locale: Locale, profile: Profile, right: readonly Word[], again: readonly Word[], total: number, reduce: boolean): string {
+export function endView(locale: Locale, profile: Profile, right: readonly Word[], again: readonly Word[], total: number, reduce: boolean, showGrade = false): string {
     const t = labels[locale];
-    const list = (ws: readonly Word[], cls: string): string => `<ul class="dictee-list ${cls}" lang="fr">${ws.map(w => `<li>${w.expectedForm}</li>`).join('')}</ul>`;
+    // Mixed mode: each word says its class.
+    const list = (ws: readonly Word[], cls: string): string => `<ul class="dictee-list ${cls}" lang="fr">${ws.map(w => `<li data-grade="${w.grade}">${w.expectedForm}${showGrade ? ` <small class="dictee-niveau">${w.grade}</small>` : ''}</li>`).join('')}</ul>`;
     return `<section class="dictee dictee-feed"><header class="shapes-header dictee-header"><button id="back" class="round" aria-label="${t.back}">${icon('home')}</button><h1>${t.end}</h1></header>`
         + `<div class="dictee-stage"><article class="dictee-card dictee-end" id="dictee-end"><div class="dictee-mascot">${characterSvg(profile, 'celebration', 'celebration', reduce ? 'reduce' : 'full')}</div>`
         + `<p class="dictee-endsaid">${t.endSaid(total)}</p>${right.length ? `<h2>${t.firstTry}</h2>${list(right, 'liste-juste')}` : ''}${again.length ? `<h2>${t.again}</h2>${list(again, 'liste-revoir')}` : ''}`
         + `<div class="finish-actions"><button id="dictee-more">${icon('replay')}<span>${t.more}</span></button><button id="dictee-home">${icon('home')}<span>${t.home}</span></button></div></article></div></section>`;
+}
+/** For the parents' space: the words reported from the game, and a button to export them (share or copy). */
+export function reportsView(locale: Locale, reports: readonly Report[]): string {
+    const t = labels[locale];
+    const kind = (k: Report['kind']): string => t.kinds[reportKinds.indexOf(k)]!;
+    return `<div class="dictee-reports"><h2>${t.reportsTitle}</h2>` + (reports.length
+        ? `<ul class="dictee-reports-list" id="dictee-reports" lang="fr">${reports.map(r => `<li data-report="${r.id}"><b>${esc(r.form)}</b> · ${r.grade} · ${kind(r.kind)}${r.note ? ` · ${esc(r.note)}` : ''} <small>${r.at}</small></li>`).join('')}</ul>`
+          + `<textarea id="dictee-reports-text" readonly hidden>${esc(reportsText(reports))}</textarea><button id="dictee-reports-export">${t.reportsExport}</button><button id="dictee-reports-erase">${t.reportsErase}</button><p id="dictee-reports-status" role="status"></p>`
+        : `<p>${t.reportsNone}</p>`) + `</div>`;
+}
+const esc = (s: string): string => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+/** The report panel on the corrected card: what is wrong, an optional note, save. */
+export function reportPanel(locale: Locale): string {
+    const t = labels[locale];
+    return `<div class="dictee-report-panel" id="dictee-report-panel" role="group" aria-label="${t.report}"><p>${t.reportWhat}</p><div class="dictee-report-kinds">`
+        + reportKinds.map((k, i) => `<button type="button" data-report-kind="${k}" aria-pressed="false">${t.kinds[i]}</button>`).join('')
+        + `</div><input id="dictee-report-note" type="text" maxlength="200" autocomplete="off" placeholder="${t.reportNote}" aria-label="${t.reportNote}">`
+        + `<div class="dictee-report-actions"><button type="button" id="dictee-report-save" disabled>${t.reportSave}</button><button type="button" id="dictee-report-cancel">${t.reportCancel}</button></div></div>`;
 }
 export { grades };

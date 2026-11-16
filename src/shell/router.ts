@@ -52,8 +52,8 @@ import { mount as mountGrille, readRecords as readGrilleRecords, writeRecords as
 import { labels as grilleLabels } from '../games/grille/view';
 import { mount as mountAutobus, readRecords as readAutobusRecords, writeRecords as writeAutobusRecords, snapshot as autobusSnapshot, type Session as AutobusSession } from '../games/autobus/interaction';
 import { labels as autobusLabels } from '../games/autobus/view';
-import { mount as mountDictee, readRecords as readDicteeRecords, writeRecords as writeDicteeRecords, snapshot as dicteeSnapshot, freshSession as freshDicteeSession, type Session as DicteeSession } from '../games/dictee/interaction';
-import { labels as dicteeLabels } from '../games/dictee/view';
+import { mount as mountDictee, readAdult as readDicteeAdult, writeAdult as writeDicteeAdult, readReports as readDicteeReports, writeReports as writeDicteeReports, readRecords as readDicteeRecords, writeRecords as writeDicteeRecords, snapshot as dicteeSnapshot, freshSession as freshDicteeSession, type Session as DicteeSession } from '../games/dictee/interaction';
+import { labels as dicteeLabels, reportsView as dicteeReportsView } from '../games/dictee/view';
 import * as tambours from '../engines/tambours';
 import * as tamboursView from '../games/tambours/view';
 import { bindDrums } from '../games/tambours/interaction';
@@ -774,10 +774,25 @@ function gate(destination: 'parents' | 'tictac'): void {
 }
 function settings(): void {
     cancel(); screen = 'parents';
-    app.innerHTML = `<section class="parent-panel"><h1>${text(save.locale, 'parents')}</h1><label>${text(save.locale, 'language')}<select id="language"><option value="fr" ${save.locale === 'fr' ? 'selected' : ''}>Français</option><option value="en" ${save.locale === 'en' ? 'selected' : ''}>English</option></select></label><label>${text(save.locale, 'voice')}<input id="voice" type="checkbox" ${save.voice ? 'checked' : ''}></label><label>${text(save.locale, 'sound')}<input id="sound" type="checkbox" ${save.sound ? 'checked' : ''}></label><button id="erase">${text(save.locale, 'erase')}</button><div id="confirmation"></div><button id="erase-gallery">${atelierLabels[save.locale].parentsErase}</button><div id="gallery-confirmation"></div><button id="other-games">${text(save.locale, 'otherGames')}</button>${feedbackLinkHtml(save.locale)}<button id="close">${icon('close')}<span>${text(save.locale, 'close')}</span></button><p class="app-version">Opencadkid ${__APP_VERSION__}</p></section>`;
+    app.innerHTML = `<section class="parent-panel"><h1>${text(save.locale, 'parents')}</h1><label>${text(save.locale, 'language')}<select id="language"><option value="fr" ${save.locale === 'fr' ? 'selected' : ''}>Français</option><option value="en" ${save.locale === 'en' ? 'selected' : ''}>English</option></select></label><label>${text(save.locale, 'voice')}<input id="voice" type="checkbox" ${save.voice ? 'checked' : ''}></label><label>${text(save.locale, 'sound')}<input id="sound" type="checkbox" ${save.sound ? 'checked' : ''}></label><button id="erase">${text(save.locale, 'erase')}</button><div id="confirmation"></div><button id="erase-gallery">${atelierLabels[save.locale].parentsErase}</button><div id="gallery-confirmation"></div><label>${dicteeLabels[save.locale].adultMode}<input id="dictee-adult" type="checkbox" ${readDicteeAdult(storage) ? 'checked' : ''}></label>${dicteeReportsView(save.locale, readDicteeReports(storage))}<button id="other-games">${text(save.locale, 'otherGames')}</button>${feedbackLinkHtml(save.locale)}<button id="close">${icon('close')}<span>${text(save.locale, 'close')}</span></button><p class="app-version">Opencadkid ${__APP_VERSION__}</p></section>`;
     app.querySelector('#language')!.addEventListener('change', event => { save.locale = (event.target as HTMLSelectElement).value === 'en' ? 'en' : 'fr'; persist(); applyLocale(save.locale); settings(); });
     for (const key of ['voice', 'sound'] as const) app.querySelector(`#${key}`)!.addEventListener('change', event => { save[key] = (event.target as HTMLInputElement).checked; persist(); if (key === 'voice') stopSpeech(); else if (!save.sound) stopSound(); else unlockSound(); });
     bind('#other-games', otherGamesPanel);
+    app.querySelector('#dictee-adult')!.addEventListener('change', event => writeDicteeAdult(storage, (event.target as HTMLInputElement).checked));
+    if (app.querySelector('#dictee-reports-export')) {
+        // Export: the phone's share sheet when there is one, the clipboard otherwise.
+        bind('#dictee-reports-export', () => {
+            const text = app.querySelector<HTMLTextAreaElement>('#dictee-reports-text')!.value, status = app.querySelector('#dictee-reports-status')!;
+            const copy = (): void => {
+                // No clipboard outside a secure page: the list is then shown, selected, to copy by hand.
+                const area = app.querySelector<HTMLTextAreaElement>('#dictee-reports-text')!;
+                try { void navigator.clipboard.writeText(text).then(() => { status.textContent = dicteeLabels[save.locale].reportsCopied; }, () => { area.hidden = false; area.select(); }); } catch { area.hidden = false; area.select(); }
+            };
+            if (typeof navigator.share === 'function') navigator.share({ title: dicteeLabels[save.locale].reportsTitle, text }).catch(copy);
+            else copy();
+        });
+        bind('#dictee-reports-erase', () => { writeDicteeReports(storage, []); settings(); });
+    }
     bind('#erase-gallery', () => {
         app.querySelector('#gallery-confirmation')!.innerHTML = `<p>${atelierLabels[save.locale].parentsConfirm}</p><button id="gallery-yes">${text(save.locale, 'yes')}</button><button id="gallery-no">${text(save.locale, 'no')}</button>`;
         bind('#gallery-yes', () => { if (eraseGallery(storage)) { atelierStudio = undefined; settings(); } else app.querySelector('#gallery-confirmation')!.textContent = atelierLabels[save.locale].unsaved; });

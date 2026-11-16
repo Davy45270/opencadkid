@@ -95,6 +95,8 @@ def niveau_ajout(forme: str) -> str:
     return 'CP'
 
 
+# Mots éduscol que David veut au CP (2026-11-16), même si la règle des sons ou la longueur les en écartait.
+FORCES_CP = set('école sac verre nez rouge voiture'.split())
 REPORT_CE1 = set('argent danger espace police prince image nuage genou visage voyage juge ciel vent parent'.split())
 # Revue de niveau du 2026-11-16 : au CP, pas de lettre dont le son change avec la voyelle qui suit (c ou g devant e, i, y :
 # « police », « argent »), ni de son an écrit en (« argent ») ; ces mots passent au CE1 ou plus loin. La règle
@@ -268,6 +270,10 @@ def main() -> None:
         for m in choix:
             if m['mot'] in AJOUTS_DAVID:
                 fixes[m['mot']] = niveau
+    # Décision de David (2026-11-16) : ces mots de la liste éduscol sont au CP, hors règle des sons et de longueur.
+    # Ils prennent la place des derniers mots éduscol du CP, reportés au CE1 ; un mot de David ne sort jamais du CP.
+    for mot in FORCES_CP:
+        fixes[mot] = 'CP'
     mots_eduscol = dict(mots)
     for mot, forme in AJOUTS_DAVID.items():
         if mot not in fixes:

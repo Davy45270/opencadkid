@@ -1,13 +1,22 @@
-import { answer, closeFeed, draw, evaluate, grades, next, parseCatalogue, parseRecords, playable, progressOf, sentenceOnArrival, startFeed, tiles, withProgress, missed, rightFirstTime,
-    type Catalogue, type Evaluation, type Feed, type Grade, type Profile, type Records, type Word } from '../../engines/dictee';
+import { answer, closeFeed, draw, evaluate, grades, next, parseCatalogue, parseRecords, parseReports, addReport, progressOf, wordsOf, MIXED, type Report, type ReportKind, sentenceOnArrival, startFeed, tiles, withProgress, missed, rightFirstTime,
+    type Catalogue, type Choice, type Evaluation, type Feed, type Profile, type Records, type Word } from '../../engines/dictee';
 import { makeRng } from '../../engines/rng';
 import { bindAction, recordActivation } from '../../shell/activation';
 import type { Locale } from '../../shell/i18n';
 import { chime } from '../../shell/sound';
 import type { StoragePort } from '../../shell/storage';
-import { ACCENTS, LETTERS, cardView, endView, feedView, gradeView, keyboard, labels, lengthView, profileView, tileTray } from './view';
+import { ACCENTS, LETTERS, cardView, reportPanel, endView, feedView, gradeView, keyboard, labels, lengthView, profileView, tileTray } from './view';
 
 export const RECORDS_KEY = 'opencadkid.dictee.v1';
+/** Words an adult reported as wrong while playing (word, sentence, tip, sound): kept on the device, listed in the
+ * parents' space to export. Never sent anywhere. */
+export const REPORTS_KEY = 'opencadkid.dictee.signalements.v1';
+/** Adult mode, switched in the parents' space only (behind its gate): it shows the report flag. Off by default. */
+export const ADULT_KEY = 'opencadkid.dictee.adulte.v1';
+export function readAdult(storage?: StoragePort): boolean { try { return storage?.getItem(ADULT_KEY) === '1'; } catch { return false; } }
+export function writeAdult(storage: StoragePort | undefined, on: boolean): void { try { storage?.setItem(ADULT_KEY, on ? '1' : '0'); } catch { /* Ignored. */ } }
+export function readReports(storage?: StoragePort): Report[] { try { return parseReports(storage?.getItem(REPORTS_KEY) ?? null); } catch { return []; } }
+export function writeReports(storage: StoragePort | undefined, reports: readonly Report[]): void { try { storage?.setItem(REPORTS_KEY, JSON.stringify(reports)); } catch { /* Play continues without storage. */ } }
 export function readRecords(storage?: StoragePort): Records { try { return parseRecords(storage?.getItem(RECORDS_KEY) ?? null); } catch { return {}; } }
 export function writeRecords(storage: StoragePort | undefined, records: Records): void { try { storage?.setItem(RECORDS_KEY, JSON.stringify(records)); } catch { /* Play continues without storage. */ } }
 
@@ -19,7 +28,7 @@ export const LONG_PRESS_MS = 550, SLOW_RATE = .75, LEAVE_MS = 260, SWIPE_PX = 70
 export type Screen = 'profils' | 'niveaux' | 'longueur' | 'fil' | 'bilan';
 /** Survives a remount (page hidden then shown). */
 export interface Session {
-    screen: Screen; profile: Profile | null; grade: Grade | null; feed: Feed | null;
+    screen: Screen; profile: Profile | null; grade: Choice | null; feed: Feed | null;
     typed: string; tiles: string[]; used: number[]; evaluation: Evaluation | null; praise: number; records: Records;
 }
 export const freshSession = (records: Records): Session => ({ screen: 'profils', profile: null, grade: null, feed: null, typed: '', tiles: [], used: [], evaluation: null, praise: 0, records });
@@ -102,10 +111,10 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         root.innerHTML = `<p class="dictee-note">${t.loading}</p>`;
         void loadCatalogue().then(c => {
             if (disposed || session.screen !== 'niveaux') return;
-            const counts = Object.fromEntries(grades.map(g => [g, playable(c, g, SHOW_DRAFTS).length])) as Record<Grade, number>;
+            const counts = Object.fromEntries([...grades, MIXED].map(g => [g, wordsOf(c, g, SHOW_DRAFTS).length])) as Record<Choice, number>;
             root.innerHTML = gradeView(locale, session.profile!, counts, SHOW_DRAFTS);
             backTo(profilesScreen, 'dictee:profiles');
-            root.querySelectorAll<HTMLElement>('[data-dictee-grade]').forEach(el => bindAction(el, () => { session.grade = el.dataset.dicteeGrade as Grade; lengthScreen(true); }, () => `dictee:grade:${el.dataset.dicteeGrade!}`));
+            root.querySelectorAll<HTMLElement>('[data-dictee-grade]').forEach(el => bindAction(el, () => { session.grade = el.dataset.dicteeGrade as Choice; lengthScreen(true); }, () => `dictee:grade:${el.dataset.dicteeGrade!}`));
             if (aloud) speak(grades.every(g => !counts[g]) ? [t.grade, t.empty] : [t.grade]);
         });
     };
@@ -113,11 +122,12 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         session.screen = 'longueur'; session.feed = null;
         void loadCatalogue().then(c => {
             if (disposed || session.screen !== 'longueur') return;
-            words = playable(c, session.grade!, SHOW_DRAFTS);
+            words = wordsOf(c, session.grade!, SHOW_DRAFTS);
             root.innerHTML = lengthView(locale, session.profile!, session.grade!, words.length);
             backTo(() => gradesScreen(false), 'dictee:grades');
             root.querySelectorAll<HTMLElement>('[data-dictee-length]').forEach(el => bindAction(el, () => begin(Number(el.dataset.dicteeLength)), () => `dictee:length:${el.dataset.dicteeLength!}`));
-            if (aloud) speak([t.length]);
+            // Fewer approved words than the longest game: the note is said too.
+            if (aloud) speak(words.length && words.length < 20 ? [t.length, t.few(words.length)] : [t.length]);
         });
     };
     const begin = (n: number): void => {
@@ -209,7 +219,7 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
     function draw_(): void {
         if (session.screen === 'bilan') {
             const f = session.feed!;
-            root.innerHTML = endView(locale, session.profile!, rightFirstTime(f).map(wordOf), missed(f).map(wordOf), f.results.length, reduce);
+            root.innerHTML = endView(locale, session.profile!, rightFirstTime(f).map(wordOf), missed(f).map(wordOf), f.results.length, reduce, session.grade === MIXED);
             backTo(() => lengthScreen(false), 'dictee:lengths');
             bindAction(root.querySelector<HTMLElement>('#dictee-more')!, () => lengthScreen(true), 'dictee:more');
             bindAction(root.querySelector<HTMLElement>('#dictee-home')!, home, 'dictee:home-end');
@@ -218,7 +228,8 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         const f = session.feed!, w = current()!, card = f.cards[f.index]!;
         const input = session.grade === 'CP' ? tileTray(t, session.tiles, session.used) : keyboard(t);
         root.innerHTML = feedView(locale, session.grade!, f.index, f.cards.length,
-            cardView({ word: w, index: f.index, total: f.cards.length, again: card.again, evaluation: session.evaluation, praise: t.right[session.praise]!, profile: session.profile!, showTip: true }, locale, reduce), input)
+            cardView({ word: w, index: f.index, total: f.cards.length, again: card.again, evaluation: session.evaluation, praise: t.right[session.praise]!, profile: session.profile!, showTip: true }, locale, reduce), input,
+            session.evaluation && readAdult(storage) ? { reported: readReports(storage).some(r => r.id === w.id) } : null)
             + (voice() ? '' : `<p class="dictee-note">${t.voiceOff}</p>`);
         setTyped(session.typed);
         // Once checked, the keyboard steps aside and the card takes the whole height, like the next card will.
@@ -227,6 +238,27 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         gestures(root.querySelector<HTMLElement>('.dictee-card')!);
         const sentence = root.querySelector<HTMLElement>('#dictee-sentence');
         if (sentence) bindAction(sentence, () => play(current()?.contextAsset ?? null), 'dictee:sentence');
+        // Report this word (once checked): what is wrong, an optional note; saved on the device with the audio version.
+        const report = root.querySelector<HTMLElement>('#dictee-report');
+        if (report) bindAction(report, () => {
+            if (root.querySelector('#dictee-report-panel')) return;
+            root.querySelector('.dictee-feed > header')!.insertAdjacentHTML('afterend', reportPanel(locale));
+            const panel = root.querySelector<HTMLElement>('#dictee-report-panel')!, save = panel.querySelector<HTMLButtonElement>('#dictee-report-save')!;
+            let kind: ReportKind | null = null;
+            panel.querySelectorAll<HTMLElement>('[data-report-kind]').forEach(b => bindAction(b, () => {
+                kind = b.dataset.reportKind as ReportKind;
+                panel.querySelectorAll('[data-report-kind]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+                save.disabled = false;
+            }, `dictee:report-kind:${b.dataset.reportKind!}`));
+            bindAction(save, () => {
+                const w = current(); if (!w || !kind) return;
+                const r: Report = { id: w.id, form: w.expectedForm, grade: w.grade, kind, note: panel.querySelector<HTMLInputElement>('#dictee-report-note')!.value,
+                    audioVersion: (kind === 'phrase' ? w.audio.contextVersion : w.audio.wordVersion) ?? null, at: new Date().toISOString().slice(0, 10) };
+                writeReports(storage, addReport(readReports(storage), r));
+                panel.remove(); report.setAttribute('aria-pressed', 'true'); report.lastElementChild!.textContent = t.flagged;
+            }, 'dictee:report-save');
+            bindAction(panel.querySelector<HTMLElement>('#dictee-report-cancel')!, () => panel.remove(), 'dictee:report-cancel');
+        }, 'dictee:report');
         const nextButton = root.querySelector<HTMLElement>('#dictee-next');
         if (nextButton) { bindAction(nextButton, goNext, () => `dictee:next:${f.index}`); nextButton.focus({ preventScroll: true }); }
         // The capital key applies to the next letter only, then lets go.
@@ -243,7 +275,7 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
      * arrow key goes to the next card. Space hears the word again. */
     const keys = (e: KeyboardEvent): void => {
         if (session.screen !== 'fil' || e.ctrlKey || e.metaKey || e.altKey) return;
-        if (e.target instanceof Element && e.target.closest('#back')) return;
+        if (e.target instanceof Element && (e.target.closest('#back') || e.target.closest('#dictee-report-panel'))) return;
         const k = e.key;
         if (session.evaluation) {
             if (['Enter', 'ArrowUp', 'ArrowDown', 'PageDown', 'ArrowLeft', ' '].includes(k)) { e.preventDefault(); goNext(); }
@@ -258,7 +290,7 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
     observed = { played: [], words: {} };
     void loadCatalogue().then(c => {
         if (disposed) return;
-        if (session.grade) words = playable(c, session.grade, SHOW_DRAFTS);
+        if (session.grade) words = wordsOf(c, session.grade, SHOW_DRAFTS);
         if ((session.screen === 'fil' && session.feed && !session.feed.finished && words.length) || (session.screen === 'bilan' && session.feed)) draw_();
         else if (session.screen === 'longueur' && session.grade) lengthScreen(false);
         else if (session.screen === 'niveaux' && session.profile) gradesScreen(false);
