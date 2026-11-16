@@ -1,0 +1,815 @@
+{
+ "about": "Les 32 signalements audio de la contre-épreuve automatique du 2026-11-16, gardés comme tests de non-régression. La reconnaissance vocale ne vaut pas validation : chaque cas attend l'écoute d'un adulte. Un cas écouté 'ok' ne compte que pour la version audio écoutée (audioVersion) ; un fichier régénéré redevient 'pending'.",
+ "cases": [
+  {
+   "id": "fr-air",
+   "lemma": "air",
+   "grade": "CP",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-air.ogg",
+   "text": "Écris le mot : air.",
+   "observed": "Écris le mot R.",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "ed03f64e5f55f320",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-dame",
+   "lemma": "dame",
+   "grade": "CP",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-dame.ogg",
+   "text": "Écris le mot : dame.",
+   "observed": "Écris le mot « d'âme ».",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "21fc0835f22eccd3",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-fer",
+   "lemma": "fer",
+   "grade": "CP",
+   "kind": "phrase",
+   "asset": "dictee/audio/fr-fer-phrase.ogg",
+   "text": "Le portail est en fer.",
+   "observed": "Le portail est enfer.",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "e38b316d6714811a",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-foule",
+   "lemma": "foule",
+   "grade": "CP",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-foule.ogg",
+   "text": "Écris le mot : foule.",
+   "observed": "Écris le mot « full ».",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "c5fb207b661f38fd",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-genou",
+   "lemma": "genou",
+   "grade": "CP",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-genou.ogg",
+   "text": "Écris le mot : genou.",
+   "observed": "Écris le mot « je-nous ».",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "91311f64abf47f3c",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-jeu",
+   "lemma": "jeu",
+   "grade": "CP",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-jeu.ogg",
+   "text": "Écris le mot : jeu.",
+   "observed": "Écris le mot « je ».",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "f9c7f5ee4f39f55a",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-larme",
+   "lemma": "larme",
+   "grade": "CP",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-larme.ogg",
+   "text": "Écris le mot : larme.",
+   "observed": "Écris le mot, l'arme.",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "9e47150b84eb0847",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-lettre",
+   "lemma": "lettre",
+   "grade": "CP",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-lettre.ogg",
+   "text": "Écris le mot : lettre.",
+   "observed": "Écris le mot « l'être ».",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "93837951e8a1e930",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-lit",
+   "lemma": "lit",
+   "grade": "CP",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-lit.ogg",
+   "text": "Écris le mot : lit.",
+   "observed": "Écris le mot, lis.",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "0ba238f39bbd22db",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-phrase",
+   "lemma": "phrase",
+   "grade": "CP",
+   "kind": "phrase",
+   "asset": "dictee/audio/fr-phrase-phrase.ogg",
+   "text": "Je lis une phrase à voix haute.",
+   "observed": "je lis une fravoie haute",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "209448481868e10b",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-table",
+   "lemma": "table",
+   "grade": "CP",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-table.ogg",
+   "text": "Écris le mot : table.",
+   "observed": "Écris le mot « Hable ».",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "b720520872afbd6d",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-terme",
+   "lemma": "terme",
+   "grade": "CP",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-terme.ogg",
+   "text": "Écris le mot : terme.",
+   "observed": "Écris le mot « herme ».",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "ec6f71c91040830d",
+   "listening": {
+    "status": "not_applicable",
+    "by": null,
+    "date": null,
+    "note": "mot sorti du catalogue à la revue de niveau"
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-verre",
+   "lemma": "verre",
+   "grade": "CP",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-verre.ogg",
+   "text": "Écris le mot : verre.",
+   "observed": "Écris le mot « ver »",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "0bbcd95264356b9c",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-fond",
+   "lemma": "fond",
+   "grade": "CE1",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-fond.ogg",
+   "text": "Écris le mot : fond.",
+   "observed": "Écris le mot « FON »",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "c9fff24db3407152",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-gens",
+   "lemma": "gens",
+   "grade": "CE1",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-gens.ogg",
+   "text": "Écris le mot : gens.",
+   "observed": "Écris le mot « Jean »",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "d53065503238713f",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-noir",
+   "lemma": "noir",
+   "grade": "CE1",
+   "kind": "phrase",
+   "asset": "dictee/audio/fr-noir-phrase.ogg",
+   "text": "Le chat noir dort.",
+   "observed": "le chanoir d'or",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "c7fc413f210aa22b",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-peur",
+   "lemma": "peur",
+   "grade": "CE1",
+   "kind": "phrase",
+   "asset": "dictee/audio/fr-peur-phrase.ogg",
+   "text": "Le petit chat a peur du chien.",
+   "observed": "Le petit chapeur du chien.",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "2700ad2ea09f1c36",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-quel",
+   "lemma": "quel",
+   "grade": "CE1",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-quel.ogg",
+   "text": "Écris le mot : quel.",
+   "observed": "Écris le mot « qu'elle ».",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "a49b8e40d3d5b024",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-sentir",
+   "lemma": "sentir",
+   "grade": "CE1",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-sentir.ogg",
+   "text": "Écris le mot : sentir.",
+   "observed": "Écris le mot «Santir»",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "a9d4fba5334f64b8",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-sorte",
+   "lemma": "sorte",
+   "grade": "CE1",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-sorte.ogg",
+   "text": "Écris le mot : sorte.",
+   "observed": "Écris le mot « sort ».",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "ad751df1dab839c3",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-bout",
+   "lemma": "bout",
+   "grade": "CE2",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-bout.ogg",
+   "text": "Écris le mot : bout.",
+   "observed": "Écris le mot « BOU »",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "c64016d57ab49872",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-mari",
+   "lemma": "mari",
+   "grade": "CE2",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-mari.ogg",
+   "text": "Écris le mot : mari.",
+   "observed": "Écris le mot « Marie ».",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "30bd400c1fe66881",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-point",
+   "lemma": "point",
+   "grade": "CE2",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-point.ogg",
+   "text": "Écris le mot : point.",
+   "observed": "Écris le mot.",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "7d8943a05f2597de",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-surtout",
+   "lemma": "surtout",
+   "grade": "CE2",
+   "kind": "phrase",
+   "asset": "dictee/audio/fr-surtout-phrase.ogg",
+   "text": "J'aime les fruits, surtout les fraises.",
+   "observed": "J'aime les fruits sur tous les fraises.",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "106f4177d306af02",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-travers",
+   "lemma": "travers",
+   "grade": "CE2",
+   "kind": "phrase",
+   "asset": "dictee/audio/fr-travers-phrase.ogg",
+   "text": "Le chat passe à travers la haie.",
+   "observed": "Le chapeau s'attravert la « « « «",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "b187e62701019a29",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-apercevoir",
+   "lemma": "apercevoir",
+   "grade": "CM1",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-apercevoir.ogg",
+   "text": "Écris le mot : apercevoir.",
+   "observed": "Écriz le mot À Percevoir.",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "676c312bd8c546c2",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-journal",
+   "lemma": "journal",
+   "grade": "CM1",
+   "kind": "phrase",
+   "asset": "dictee/audio/fr-journal-phrase.ogg",
+   "text": "Papa lit le journal.",
+   "observed": "Papali Le Journale",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "be688b6cd94fa6a2",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-naitre",
+   "lemma": "naître",
+   "grade": "CM1",
+   "kind": "phrase",
+   "asset": "dictee/audio/fr-naitre-phrase.ogg",
+   "text": "Les poussins vont naître demain.",
+   "observed": "Les poussins vont être demain.",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "7b7c970438f83b13",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-approcher",
+   "lemma": "approcher",
+   "grade": "CM2",
+   "kind": "phrase",
+   "asset": "dictee/audio/fr-approcher-phrase.ogg",
+   "text": "Le chat n'ose pas approcher.",
+   "observed": "Le chat n'ose pas procher.",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "727e81310e48c67e",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-cesser",
+   "lemma": "cesser",
+   "grade": "CM2",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-cesser.ogg",
+   "text": "Écris le mot : cesser.",
+   "observed": "Écris le mot CC.",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "874050620ce65ec8",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-lendemain",
+   "lemma": "lendemain",
+   "grade": "CM2",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-lendemain.ogg",
+   "text": "Écris le mot : lendemain.",
+   "observed": "Écris le mot « l'endemain ».",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "0ed4a91e4a5cfced",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-quelque",
+   "lemma": "quelque",
+   "grade": "CM2",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-quelque.ogg",
+   "text": "Écris le mot : quelque.",
+   "observed": "Écris le mot « quelqu'un ».",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "4456de27af0e13c5",
+   "listening": {
+    "status": "not_applicable",
+    "by": null,
+    "date": null,
+    "note": "mot sorti du catalogue (revue de niveau ou ajouts de David, 2026-11-16)"
+   },
+   "batch": "2026-11-16, contre-épreuve des 500 mots (32 signalements)"
+  },
+  {
+   "id": "fr-gris",
+   "lemma": "gris",
+   "grade": "CP",
+   "kind": "phrase",
+   "asset": "dictee/audio/fr-gris-phrase.ogg",
+   "text": "Le chat gris dort.",
+   "observed": "Le Chagridor",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "e3d3042e6d38c647",
+   "batch": "2026-11-16, contre-épreuve des mots ajoutés et des textes corrigés",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   }
+  },
+  {
+   "id": "fr-jouet",
+   "lemma": "jouet",
+   "grade": "CP",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-jouet.ogg",
+   "text": "Écris le mot : jouet.",
+   "observed": "Écris le mot, jouez.",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "471b558deceb3e6e",
+   "batch": "2026-11-16, contre-épreuve des mots ajoutés et des textes corrigés",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   }
+  },
+  {
+   "id": "fr-lune",
+   "lemma": "lune",
+   "grade": "CP",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-lune.ogg",
+   "text": "Écris le mot : lune.",
+   "observed": "Écrile-moi l'une.",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "dac3ebd796d04c44",
+   "batch": "2026-11-16, contre-épreuve des mots ajoutés et des textes corrigés",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   }
+  },
+  {
+   "id": "fr-poupee",
+   "lemma": "poupée",
+   "grade": "CP",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-poupee.ogg",
+   "text": "Écris le mot : poupée.",
+   "observed": "Écris le mot « poupé ».",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "812af75e3b594078",
+   "batch": "2026-11-16, contre-épreuve des mots ajoutés et des textes corrigés",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   }
+  },
+  {
+   "id": "fr-vert",
+   "lemma": "vert",
+   "grade": "CP",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-vert.ogg",
+   "text": "Écris le mot : vert.",
+   "observed": "Écris le mot « ver »",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "0a868b52a7746598",
+   "batch": "2026-11-16, contre-épreuve des mots ajoutés et des textes corrigés",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   }
+  },
+  {
+   "id": "fr-zero",
+   "lemma": "zéro",
+   "grade": "CP",
+   "kind": "phrase",
+   "asset": "dictee/audio/fr-zero-phrase.ogg",
+   "text": "Avant un, il y a zéro.",
+   "observed": "Avant 1, il y a 0.",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "8d08215f33d8684c",
+   "batch": "2026-11-16, contre-épreuve des mots ajoutés et des textes corrigés",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   }
+  },
+  {
+   "id": "fr-fil",
+   "lemma": "fil",
+   "grade": "CE1",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-fil.ogg",
+   "text": "Écris le mot : fil.",
+   "observed": "Écris le mot « file ».",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "8842d831fcddb29f",
+   "batch": "2026-11-16, contre-épreuve des mots ajoutés et des textes corrigés",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   }
+  },
+  {
+   "id": "fr-lego",
+   "lemma": "lego",
+   "grade": "CE1",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-lego.ogg",
+   "text": "Écris le mot : Lego.",
+   "observed": "Écris le mot « le go ».",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "ce0569a854162eb5",
+   "batch": "2026-11-16, contre-épreuve des mots ajoutés et des textes corrigés",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   }
+  },
+  {
+   "id": "fr-nez",
+   "lemma": "nez",
+   "grade": "CE1",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-nez.ogg",
+   "text": "Écris le mot : nez.",
+   "observed": "Écris le mot « né ».",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "a3a07825cbc1d0a4",
+   "batch": "2026-11-16, contre-épreuve des mots ajoutés et des textes corrigés",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   }
+  },
+  {
+   "id": "fr-nez",
+   "lemma": "nez",
+   "grade": "CE1",
+   "kind": "phrase",
+   "asset": "dictee/audio/fr-nez-phrase.ogg",
+   "text": "Le clown a un nez rouge.",
+   "observed": "Le clou n'a un érouge.",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "4d71209ddcaa3b0c",
+   "batch": "2026-11-16, contre-épreuve des mots ajoutés et des textes corrigés",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   }
+  },
+  {
+   "id": "fr-playmobil",
+   "lemma": "playmobil",
+   "grade": "CE1",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-playmobil.ogg",
+   "text": "Écris le mot : Playmobil.",
+   "observed": "Écris le mot « plémobile ».",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "e68aa48873d67853",
+   "batch": "2026-11-16, contre-épreuve des mots ajoutés et des textes corrigés",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   }
+  },
+  {
+   "id": "fr-playmobil",
+   "lemma": "playmobil",
+   "grade": "CE1",
+   "kind": "phrase",
+   "asset": "dictee/audio/fr-playmobil-phrase.ogg",
+   "text": "Mon château Playmobil a deux tours.",
+   "observed": "Mon château plait mobile à deux tours.",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "eb9657fc42298cf7",
+   "batch": "2026-11-16, contre-épreuve des mots ajoutés et des textes corrigés",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   }
+  },
+  {
+   "id": "fr-pont",
+   "lemma": "pont",
+   "grade": "CE1",
+   "kind": "mot",
+   "asset": "dictee/audio/fr-pont.ogg",
+   "text": "Écris le mot : pont.",
+   "observed": "Écriz le mot PON !",
+   "observedBy": "faster-whisper small (CPU), 2026-11-16",
+   "audioVersion": "786674d3a8576248",
+   "batch": "2026-11-16, contre-épreuve des mots ajoutés et des textes corrigés",
+   "listening": {
+    "status": "pending",
+    "by": null,
+    "date": null,
+    "note": null
+   }
+  }
+ ]
+}

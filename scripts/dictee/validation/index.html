@@ -32,7 +32,7 @@ main{padding:12px 16px 80px;max-width:720px;margin:0 auto}
 .mot{scroll-margin-top:220px;background:var(--carte);border:1px solid var(--bord);border-radius:14px;padding:14px;margin:0 0 12px}
 .mot[data-etat=valider]{border-color:var(--ok);box-shadow:inset 6px 0 0 var(--ok)}
 .mot[data-etat=corriger]{border-color:var(--corr);box-shadow:inset 6px 0 0 var(--corr)}
-.mot[data-etat=retirer]{border-color:var(--ret);box-shadow:inset 6px 0 0 var(--ret);opacity:.8}
+.mot[data-etat=retirer],.mot[data-etat=audio_faux]{border-color:var(--ret);box-shadow:inset 6px 0 0 var(--ret);opacity:.8}
 .tete{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
 .mot h2{font-size:1.6rem;margin:0;letter-spacing:.02em}
 .id{color:var(--doux);font-size:.8rem}
@@ -73,7 +73,7 @@ main{padding:12px 16px 80px;max-width:720px;margin:0 auto}
 'use strict';
 const CLE = 'dictee-relecture-v1';
 const NIVEAUX = ['CP', 'CE1', 'CE2', 'CM1', 'CM2'];
-let mots = [], verif = {}, niveau = 'CP', decisions = {};
+let mots = [], signales = {}, niveau = 'CP', decisions = {};
 const lire = () => { try { return JSON.parse(localStorage.getItem(CLE) || '{}'); } catch { return {}; } };
 let minuterie = 0;
 const lot = () => ({ format: 'dictee-relecture', version: 1, reviewer: 'David', exportedAt: new Date().toISOString(), decisions: Object.fromEntries(Object.entries(decisions).filter(([, d]) => d.action)) });
@@ -137,22 +137,26 @@ function peindre(carte, m) {
   }
 }
 function carte(m) {
-  const v = verif[m.id];
-  const douteux = v && (!v.ok || v.phraseOk === false);
+  const cas = signales[m.id] || [];
+  const douteux = m.audio?.mode === 'audio_manual_review';
+  const modes = { word_only: 'mot seul', word_then_context: 'mot puis phrase', context_required: 'phrase obligatoire', audio_manual_review: 'audio à écouter' };
   const c = el('article', { class: 'mot', id: m.id },
     el('div', { class: 'tete' }, el('h2', {}, m.expectedForm), el('span', { class: 'id' }, m.id)),
     el('p', { class: 'phrase' }, m.contextSentence || '(pas de phrase)'),
     el('p', { class: 'expl' + (m.explanation ? '' : ' vide') }, m.explanation || "(pas d'explication)"),
     el('p', { class: 'meta' },
+      `Lecture : ${modes[m.audio?.mode] || '?'}. `,
       m.homophones?.length ? `Se prononce comme : ${m.homophones.join(', ')}. ` : '',
-      douteux ? el('span', { class: 'alerte' }, `À réécouter : la reconnaissance vocale a entendu « ${!v.ok ? v.entendu : v.phraseEntendue} ».`) : ''),
+      ...Object.entries(m.homophoneNotes || {}).map(([h, n]) => `(${h} : ${n}) `),
+      douteux ? el('span', { class: 'alerte' }, `Écoute obligatoire : ${cas.map(c => `${c.kind === 'mot' ? 'le mot' : 'la phrase'} a été entendu « ${c.observed} » par la machine`).join(' ; ')}. Valider = « j'ai écouté, c'est juste ».`) : ''),
     el('div', { class: 'ecoute' },
       el('button', { type: 'button', onclick: () => jouer(m.pronunciationAsset) }, '▶ Le mot'),
       m.contextAsset ? el('button', { type: 'button', onclick: () => jouer(m.contextAsset) }, '▶ La phrase') : null),
     el('div', { class: 'choix' },
       el('button', { type: 'button', class: 'v', 'data-action': 'valider', 'aria-pressed': 'false', onclick: () => decider(m, 'valider', c) }, 'Valider'),
       el('button', { type: 'button', class: 'c', 'data-action': 'corriger', 'aria-pressed': 'false', onclick: () => decider(m, 'corriger', c) }, 'Corriger'),
-      el('button', { type: 'button', class: 'r', 'data-action': 'retirer', 'aria-pressed': 'false', onclick: () => decider(m, 'retirer', c) }, 'Retirer')),
+      el('button', { type: 'button', class: 'r', 'data-action': 'retirer', 'aria-pressed': 'false', onclick: () => decider(m, 'retirer', c) }, 'Retirer'),
+      douteux ? el('button', { type: 'button', class: 'r', 'data-action': 'audio_faux', 'aria-pressed': 'false', onclick: () => decider(m, 'audio_faux', c) }, 'Audio faux') : null),
     el('div', { class: 'correction' },
       el('label', { for: m.id + '-f' }, 'Mot'), el('input', { id: m.id + '-f', name: 'forme', autocomplete: 'off', autocapitalize: 'none', spellcheck: 'false' }),
       el('label', { for: m.id + '-p' }, 'Phrase'), el('textarea', { id: m.id + '-p', name: 'phrase' }),
@@ -199,7 +203,7 @@ async function demarrer() {
   try { niveau = localStorage.getItem(CLE + '.niveau') || 'CP'; } catch { niveau = 'CP'; }
   const cat = await (await fetch('dictee/catalogue.json', { cache: 'no-store' })).json();
   mots = cat.words;
-  try { for (const r of await (await fetch('verification.json', { cache: 'no-store' })).json()) verif[r.id] = r; } catch { /* facultatif */ }
+  try { for (const c of (await (await fetch('audio-non-regression.json', { cache: 'no-store' })).json()).cases) (signales[c.id] ||= []).push(c); } catch { /* facultatif */ }
   const barre = document.getElementById('niveaux');
   for (const g of NIVEAUX) barre.append(el('button', { type: 'button', 'data-niveau': g, 'aria-pressed': 'false', onclick: () => { niveau = g; afficher(); scrollTo(0, 0); } }, g, el('small', {}, '')));
   document.getElementById('exporter').addEventListener('click', exporter);

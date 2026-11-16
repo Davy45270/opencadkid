@@ -1,4 +1,4 @@
-import { answer, closeFeed, draw, evaluate, grades, next, parseCatalogue, parseRecords, playable, progressOf, startFeed, tiles, withProgress, missed, rightFirstTime,
+import { answer, closeFeed, draw, evaluate, grades, next, parseCatalogue, parseRecords, playable, progressOf, sentenceOnArrival, startFeed, tiles, withProgress, missed, rightFirstTime,
     type Catalogue, type Evaluation, type Feed, type Grade, type Profile, type Records, type Word } from '../../engines/dictee';
 import { makeRng } from '../../engines/rng';
 import { bindAction, recordActivation } from '../../shell/activation';
@@ -66,11 +66,25 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
     const timers = new Set<number>();
     const later = (ms: number, f: () => void): void => { const id = window.setTimeout(() => { timers.delete(id); if (!disposed) f(); }, reduce ? Math.min(ms, 30) : ms); timers.add(id); };
     const audio = typeof Audio === 'function' ? new Audio() : null;
+    /** A sentence waiting for the word to end (a word heard only in context: verre, vert, vers). */
+    let pending: string | null = null;
     const play = (path: string | null, rate = 1): void => {
         if (!path) return;
+        if (path !== pending && path !== current()?.pronunciationAsset) pending = null;
         observed.played.push({ path, rate });
         if (!voice() || !audio) return;
         void source(path).then(src => { if (disposed) return; audio.pause(); audio.src = src; audio.playbackRate = rate; audio.preservesPitch = true; void audio.play().catch(() => undefined); });
+    };
+    audio?.addEventListener('ended', () => { if (pending) { const p = pending; pending = null; play(p); } });
+    /** A card arrives: its word is said; a word that needs its sentence gets it said right after, every time. */
+    const arrive = (): void => {
+        const w = current();
+        if (!w) return;
+        play(w.pronunciationAsset);
+        if (!sentenceOnArrival(w)) return;
+        pending = w.contextAsset;
+        // Without sound (or if the word never reports its end) the sentence still follows.
+        later(3500, () => { if (pending === w.contextAsset && current()?.id === w.id) { const p = pending; pending = null; play(p); } });
     };
     const rng = makeRng(crypto.getRandomValues(new Uint32Array(1))[0]!);
     const wordOf = (id: string): Word => words.find(w => w.id === id)!;
@@ -113,7 +127,7 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         void keep(session.feed.cards.flatMap(c => { const w = wordOf(c.id); return [w.pronunciationAsset, ...(w.contextAsset ? [w.contextAsset] : [])]; }));
         session.screen = 'fil';
         fresh(); speak([t.start]);
-        later(1600, () => play(current()?.pronunciationAsset ?? null));
+        later(1600, arrive);
     };
     /** A new card: nothing typed, the letters of the first grade shuffled. */
     const fresh = (): void => {
@@ -156,7 +170,7 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         later(LEAVE_MS, () => {
             session.feed = next(session.feed!);
             if (session.feed.finished) { end(); return; }
-            fresh(); play(current()!.pronunciationAsset);
+            fresh(); arrive();
         });
     };
     const end = (): void => {
@@ -215,7 +229,12 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         if (sentence) bindAction(sentence, () => play(current()?.contextAsset ?? null), 'dictee:sentence');
         const nextButton = root.querySelector<HTMLElement>('#dictee-next');
         if (nextButton) { bindAction(nextButton, goNext, () => `dictee:next:${f.index}`); nextButton.focus({ preventScroll: true }); }
-        root.querySelectorAll<HTMLElement>('[data-key]').forEach(el => bindAction(el, () => type(el.dataset.key!), () => `dictee:key:${el.dataset.key!}:${Array.from(session.typed).length}`));
+        // The capital key applies to the next letter only, then lets go.
+        let upper = false;
+        const shift = root.querySelector<HTMLElement>('#dictee-shift');
+        const setUpper = (u: boolean): void => { upper = u; shift?.setAttribute('aria-pressed', String(u)); root.querySelector('.dictee-keyboard')?.classList.toggle('dictee-maj', u); };
+        if (shift) bindAction(shift, () => setUpper(!upper), 'dictee:shift');
+        root.querySelectorAll<HTMLElement>('[data-key]').forEach(el => bindAction(el, () => { type(upper ? el.dataset.key!.toUpperCase() : el.dataset.key!); setUpper(false); }, () => `dictee:key:${el.dataset.key!}:${Array.from(session.typed).length}`));
         root.querySelectorAll<HTMLElement>('[data-tile]').forEach(el => bindAction(el, () => type(session.tiles[Number(el.dataset.tile)]!), () => `dictee:tile:${el.dataset.tile!}`));
         bindAction(root.querySelector<HTMLElement>('#dictee-erase')!, erase, () => `dictee:erase:${Array.from(session.typed).length}`);
         bindAction(root.querySelector<HTMLElement>('#dictee-validate')!, validate, () => `dictee:validate:${f.index}`);

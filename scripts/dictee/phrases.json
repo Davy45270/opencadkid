@@ -1,5 +1,16 @@
 [
  {
+  "id": "fr-aile",
+  "lemma": "aile",
+  "contextSentence": "L'oiseau ouvre son aile.",
+  "explanation": "Le son è s'écrit ai ; un e muet à la fin ; « elle », c'est une fille.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 4
+  }
+ },
+ {
   "id": "fr-air",
   "contextSentence": "Le ballon se remplit d'air.",
   "explanation": "Le son è s'écrit ai, comme dans « lait ».",
@@ -33,17 +44,6 @@
   "lemma": "arbre"
  },
  {
-  "id": "fr-argent",
-  "contextSentence": "Je range mon argent dans ma tirelire.",
-  "explanation": "Le son an s'écrit en ; le t muet s'entend dans « argenté ».",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "argent"
- },
- {
   "id": "fr-bois",
   "contextSentence": "On ramasse des branches dans le bois.",
   "explanation": "Le s muet s'entend dans « boisé ».",
@@ -66,6 +66,17 @@
   "lemma": "bord"
  },
  {
+  "id": "fr-bout",
+  "contextSentence": "Je suis allé au bout du chemin.",
+  "explanation": "Un t muet à la fin.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "bout"
+ },
+ {
   "id": "fr-bras",
   "contextSentence": "Papa me porte dans ses bras.",
   "explanation": "Un s muet à la fin, même pour un seul bras.",
@@ -86,6 +97,17 @@
    "version": 3
   },
   "lemma": "bruit"
+ },
+ {
+  "id": "fr-bureau",
+  "lemma": "bureau",
+  "contextSentence": "Mon dessin est sur le bureau.",
+  "explanation": "Le son o s'écrit e-a-u à la fin ; des bureaux, avec un x.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 4
+  }
  },
  {
   "id": "fr-chemin",
@@ -132,17 +154,6 @@
   "lemma": "chien"
  },
  {
-  "id": "fr-ciel",
-  "contextSentence": "Le ciel est tout bleu.",
-  "explanation": "Le c devant i fait le son s.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "ciel"
- },
- {
   "id": "fr-classe",
   "contextSentence": "Les enfants entrent dans la classe.",
   "explanation": "Entre deux voyelles, on écrit deux s pour faire le son s.",
@@ -165,6 +176,17 @@
   "lemma": "coin"
  },
  {
+  "id": "fr-cou",
+  "lemma": "cou",
+  "contextSentence": "La girafe a un long cou.",
+  "explanation": "Le cou, entre la tête et les épaules, s'écrit sans lettre muette ; un coup, c'est quand on tape.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 4
+  }
+ },
+ {
   "id": "fr-cour",
   "contextSentence": "Les enfants jouent dans la cour.",
   "explanation": "La cour de l'école s'écrit sans lettre muette.",
@@ -185,17 +207,6 @@
    "version": 3
   },
   "lemma": "dame"
- },
- {
-  "id": "fr-danger",
-  "contextSentence": "Attention, la route est un danger.",
-  "explanation": "Le son an s'écrit an ; à la fin, er fait le son é.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "danger"
  },
  {
   "id": "fr-doigt",
@@ -231,28 +242,6 @@
   "lemma": "eau"
  },
  {
-  "id": "fr-envie",
-  "contextSentence": "J'ai envie d'une glace.",
-  "explanation": "Le son an s'écrit en ; un e muet à la fin.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "envie"
- },
- {
-  "id": "fr-espace",
-  "contextSentence": "La fusée part dans l'espace.",
-  "explanation": "Le c devant e fait le son s.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "espace"
- },
- {
   "id": "fr-femme",
   "contextSentence": "Cette femme est ma tante.",
   "explanation": "On entend a mais on écrit e, avec deux m.",
@@ -286,6 +275,17 @@
   "lemma": "feu"
  },
  {
+  "id": "fr-fil",
+  "lemma": "fil",
+  "contextSentence": "Je coupe un fil de laine.",
+  "explanation": "Pas de e à la fin ; le l s'entend.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 4
+  }
+ },
+ {
   "id": "fr-fille",
   "contextSentence": "La fille saute à la corde.",
   "explanation": "Les deux l après le i font le son « ye ».",
@@ -306,6 +306,17 @@
    "version": 3
   },
   "lemma": "fils"
+ },
+ {
+  "id": "fr-flamme",
+  "lemma": "flamme",
+  "contextSentence": "La flamme de la bougie danse.",
+  "explanation": "Deux m, puis un e muet à la fin.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 4
+  }
  },
  {
   "id": "fr-fleur",
@@ -330,17 +341,6 @@
   "lemma": "foule"
  },
  {
-  "id": "fr-genou",
-  "contextSentence": "Je me suis cogné le genou.",
-  "explanation": "Le g devant e fait le son j ; des genoux, avec un x.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "genou"
- },
- {
   "id": "fr-herbe",
   "contextSentence": "Le lapin mange de l'herbe.",
   "explanation": "Le h du début ne s'entend pas.",
@@ -361,17 +361,6 @@
    "version": 3
   },
   "lemma": "hiver"
- },
- {
-  "id": "fr-image",
-  "contextSentence": "Je colle une image dans mon cahier.",
-  "explanation": "Le g devant e fait le son j.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "image"
  },
  {
   "id": "fr-jambe",
@@ -416,17 +405,6 @@
    "version": 3
   },
   "lemma": "jour"
- },
- {
-  "id": "fr-juge",
-  "contextSentence": "Le juge écoute les deux équipes.",
-  "explanation": "Le g devant e fait le son j.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "juge"
  },
  {
   "id": "fr-larme",
@@ -482,6 +460,17 @@
    "version": 3
   },
   "lemma": "livre"
+ },
+ {
+  "id": "fr-lune",
+  "lemma": "lune",
+  "contextSentence": "La lune brille dans le ciel.",
+  "explanation": "Un e muet à la fin.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 4
+  }
  },
  {
   "id": "fr-main",
@@ -594,6 +583,17 @@
   "lemma": "mur"
  },
  {
+  "id": "fr-nez",
+  "lemma": "nez",
+  "contextSentence": "Le clown a un nez rouge.",
+  "explanation": "À la fin, ez fait le son é.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 4
+  }
+ },
+ {
   "id": "fr-nom",
   "contextSentence": "J'écris mon nom sur ma feuille.",
   "explanation": "Le nom s'écrit avec un m ; « non », c'est le contraire de oui.",
@@ -614,17 +614,6 @@
    "version": 3
   },
   "lemma": "nombre"
- },
- {
-  "id": "fr-nuage",
-  "contextSentence": "Un gros nuage cache le soleil.",
-  "explanation": "Le g devant e fait le son j.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "nuage"
  },
  {
   "id": "fr-nuit",
@@ -660,6 +649,17 @@
   "lemma": "oiseau"
  },
  {
+  "id": "fr-ombre",
+  "contextSentence": "Le chien se couche à l'ombre.",
+  "explanation": "Devant b, on écrit om et pas on.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "ombre"
+ },
+ {
   "id": "fr-oncle",
   "contextSentence": "Mon oncle habite à la campagne.",
   "explanation": null,
@@ -682,6 +682,17 @@
   "lemma": "pain"
  },
  {
+  "id": "fr-palais",
+  "lemma": "palais",
+  "contextSentence": "Le roi habite dans un palais.",
+  "explanation": "Le son è s'écrit ai ; un s muet à la fin.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 4
+  }
+ },
+ {
   "id": "fr-papa",
   "contextSentence": "Papa prépare le dîner.",
   "explanation": null,
@@ -702,17 +713,6 @@
    "version": 3
   },
   "lemma": "papier"
- },
- {
-  "id": "fr-parent",
-  "contextSentence": "Chaque parent vient chercher son enfant.",
-  "explanation": "Le son an s'écrit en ; un t muet à la fin.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "parent"
  },
  {
   "id": "fr-pays",
@@ -781,15 +781,15 @@
   "lemma": "pluie"
  },
  {
-  "id": "fr-police",
-  "contextSentence": "La voiture de police passe.",
-  "explanation": "Le c devant e fait le son s.",
+  "id": "fr-pont",
+  "lemma": "pont",
+  "contextSentence": "Le train passe sur le pont.",
+  "explanation": "Le son on s'écrit o-n ; un t muet à la fin.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "police"
+   "version": 4
+  }
  },
  {
   "id": "fr-porte",
@@ -803,26 +803,26 @@
   "lemma": "porte"
  },
  {
-  "id": "fr-prince",
-  "contextSentence": "Le prince monte sur son cheval.",
-  "explanation": "Le son in s'écrit i-n ; le c devant e fait le son s.",
+  "id": "fr-rayon",
+  "lemma": "rayon",
+  "contextSentence": "Un rayon de soleil entre par la fenêtre.",
+  "explanation": "Le y fait le son de deux i : « rai-ion ».",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "prince"
+   "version": 4
+  }
  },
  {
-  "id": "fr-retour",
-  "contextSentence": "Au retour, on chante dans la voiture.",
-  "explanation": null,
+  "id": "fr-robe",
+  "lemma": "robe",
+  "contextSentence": "Elle porte une robe bleue.",
+  "explanation": "Un e muet à la fin.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "retour"
+   "version": 4
+  }
  },
  {
   "id": "fr-rocher",
@@ -867,6 +867,17 @@
    "version": 3
   },
   "lemma": "sable"
+ },
+ {
+  "id": "fr-sac",
+  "lemma": "sac",
+  "contextSentence": "Je range mon goûter dans mon sac.",
+  "explanation": "Le son k s'écrit c à la fin.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 4
+  }
  },
  {
   "id": "fr-salle",
@@ -935,17 +946,6 @@
   "lemma": "table"
  },
  {
-  "id": "fr-terme",
-  "contextSentence": "« Souris » est un terme facile.",
-  "explanation": null,
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "terme"
- },
- {
   "id": "fr-terre",
   "contextSentence": "Je plante une graine dans la terre.",
   "explanation": "Deux r, comme dans « terrain ».",
@@ -955,6 +955,28 @@
    "version": 3
   },
   "lemma": "terre"
+ },
+ {
+  "id": "fr-toit",
+  "lemma": "toit",
+  "contextSentence": "Le chat dort sur le toit.",
+  "explanation": "Le son wa s'écrit oi ; un t muet à la fin ; « toi », c'est la personne à qui on parle.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 4
+  }
+ },
+ {
+  "id": "fr-tour",
+  "contextSentence": "La tour du château est haute.",
+  "explanation": "Le son ou s'écrit o-u.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "tour"
  },
  {
   "id": "fr-train",
@@ -968,26 +990,15 @@
   "lemma": "train"
  },
  {
-  "id": "fr-type",
-  "contextSentence": "Quel type de gâteau veux-tu ?",
-  "explanation": "Le y fait le son i.",
+  "id": "fr-trou",
+  "lemma": "trou",
+  "contextSentence": "La souris se cache dans un trou.",
+  "explanation": "Le son ou s'écrit o-u, sans lettre muette.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "type"
- },
- {
-  "id": "fr-vent",
-  "contextSentence": "Le vent fait voler mon cerf-volant.",
-  "explanation": "Le son an s'écrit en ; un t muet à la fin.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "vent"
+   "version": 4
+  }
  },
  {
   "id": "fr-verre",
@@ -1001,17 +1012,6 @@
   "lemma": "verre"
  },
  {
-  "id": "fr-vie",
-  "contextSentence": "Le papillon a une vie courte.",
-  "explanation": "Un e muet à la fin.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "vie"
- },
- {
   "id": "fr-ville",
   "contextSentence": "Paris est une grande ville.",
   "explanation": "Deux l, mais ici ils font le son l.",
@@ -1023,15 +1023,26 @@
   "lemma": "ville"
  },
  {
-  "id": "fr-visage",
-  "contextSentence": "Je lave mon visage.",
-  "explanation": "Le s entre deux voyelles fait le son z.",
+  "id": "fr-voile",
+  "lemma": "voile",
+  "contextSentence": "Le vent gonfle la voile du bateau.",
+  "explanation": "Le son wa s'écrit oi ; un e muet à la fin.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "visage"
+   "version": 4
+  }
+ },
+ {
+  "id": "fr-voisin",
+  "lemma": "voisin",
+  "contextSentence": "Mon voisin a un grand chien.",
+  "explanation": "Le s entre deux voyelles fait le son z ; le son in s'écrit i-n.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 4
+  }
  },
  {
   "id": "fr-voix",
@@ -1045,28 +1056,6 @@
   "lemma": "voix"
  },
  {
-  "id": "fr-voyage",
-  "contextSentence": "Nous partons en voyage.",
-  "explanation": "Le y fait le son de deux i : « voi-iage ».",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "voyage"
- },
- {
-  "id": "fr-vue",
-  "contextSentence": "De ma fenêtre, la vue est belle.",
-  "explanation": "La vue, c'est un nom : il prend un e.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "vue"
- },
- {
   "id": "fr-yeux",
   "contextSentence": "Je ferme les yeux pour dormir.",
   "explanation": "Un x muet à la fin.",
@@ -1076,6 +1065,17 @@
    "version": 3
   },
   "lemma": "yeux"
+ },
+ {
+  "id": "fr-ecole",
+  "lemma": "école",
+  "contextSentence": "Je vais à l'école à pied.",
+  "explanation": "Accent aigu sur le e ; le son k s'écrit c.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 4
+  }
  },
  {
   "id": "fr-epaule",
@@ -1113,11 +1113,12 @@
  {
   "id": "fr-aimer",
   "contextSentence": "Je vais aimer ce nouveau jeu.",
-  "explanation": "Verbe à l'infinitif : il finit par er ; le son è s'écrit ai.",
+  "explanation": "Le début s'écrit ai ; c'est un verbe : il finit par er.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
-   "version": 3
+   "version": 4,
+   "reason": "addendum de revue du 2026-11-16"
   },
   "lemma": "aimer"
  },
@@ -1142,6 +1143,17 @@
    "version": 3
   },
   "lemma": "appeler"
+ },
+ {
+  "id": "fr-argent",
+  "contextSentence": "Je range mon argent dans ma tirelire.",
+  "explanation": "Le son an s'écrit en ; le t muet s'entend dans « argenté ».",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "argent"
  },
  {
   "id": "fr-arriver",
@@ -1210,17 +1222,6 @@
   "lemma": "beau"
  },
  {
-  "id": "fr-besoin",
-  "contextSentence": "J'ai besoin d'une gomme.",
-  "explanation": "Le s entre deux voyelles fait le son z ; le son « oin » s'écrit o-i-n.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "besoin"
- },
- {
   "id": "fr-blanc",
   "contextSentence": "La neige est blanche et le lait est blanc.",
   "explanation": "Un c muet à la fin : il s'entend dans « blanche ».",
@@ -1265,6 +1266,17 @@
   "lemma": "cher"
  },
  {
+  "id": "fr-ciel",
+  "contextSentence": "Le ciel est tout bleu.",
+  "explanation": "Le c devant i fait le son s.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "ciel"
+ },
+ {
   "id": "fr-corps",
   "contextSentence": "Mon corps a deux bras et deux jambes.",
   "explanation": "Deux lettres muettes à la fin : p et s.",
@@ -1296,6 +1308,17 @@
    "version": 3
   },
   "lemma": "croire"
+ },
+ {
+  "id": "fr-danger",
+  "contextSentence": "Attention, la route est un danger.",
+  "explanation": "Le son an s'écrit an ; à la fin, er fait le son é.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "danger"
  },
  {
   "id": "fr-dernier",
@@ -1331,28 +1354,6 @@
   "lemma": "donner"
  },
  {
-  "id": "fr-doute",
-  "contextSentence": "J'ai un doute sur la réponse.",
-  "explanation": "Le son ou s'écrit o-u ; un e muet à la fin.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "doute"
- },
- {
-  "id": "fr-droit",
-  "contextSentence": "Le chemin est tout droit.",
-  "explanation": "Un t muet à la fin : il s'entend dans « droite ».",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "droit"
- },
- {
   "id": "fr-effet",
   "contextSentence": "Ce médicament fait de l'effet.",
   "explanation": "Deux f ; un t muet à la fin.",
@@ -1386,6 +1387,17 @@
   "lemma": "entrer"
  },
  {
+  "id": "fr-espace",
+  "contextSentence": "La fusée part dans l'espace.",
+  "explanation": "Le c devant e fait le son s.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "espace"
+ },
+ {
   "id": "fr-fait",
   "contextSentence": "C'est un fait : le soleil se lève.",
   "explanation": "Le son è s'écrit ai ; un t muet à la fin.",
@@ -1406,39 +1418,6 @@
    "version": 3
   },
   "lemma": "falloir"
- },
- {
-  "id": "fr-famille",
-  "contextSentence": "Toute la famille dîne ensemble.",
-  "explanation": "Les deux l après le i font le son « ye ».",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "famille"
- },
- {
-  "id": "fr-figure",
-  "contextSentence": "Le clown a du maquillage sur la figure.",
-  "explanation": "Un e muet à la fin.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "figure"
- },
- {
-  "id": "fr-finir",
-  "contextSentence": "Je dois finir mon dessin.",
-  "explanation": "Verbe en ir.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "finir"
  },
  {
   "id": "fr-fond",
@@ -1463,17 +1442,6 @@
   "lemma": "force"
  },
  {
-  "id": "fr-front",
-  "contextSentence": "Maman pose la main sur mon front.",
-  "explanation": "Un t muet à la fin.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "front"
- },
- {
   "id": "fr-frere",
   "contextSentence": "Mon frère a sept ans.",
   "explanation": "Accent grave sur le e.",
@@ -1483,6 +1451,17 @@
    "version": 3
   },
   "lemma": "frère"
+ },
+ {
+  "id": "fr-genou",
+  "contextSentence": "Je me suis cogné le genou.",
+  "explanation": "Le g devant e fait le son j ; des genoux, avec un x.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "genou"
  },
  {
   "id": "fr-gens",
@@ -1529,6 +1508,17 @@
   "lemma": "idée"
  },
  {
+  "id": "fr-image",
+  "contextSentence": "Je colle une image dans mon cahier.",
+  "explanation": "Le g devant e fait le son j.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "image"
+ },
+ {
   "id": "fr-jeter",
   "contextSentence": "Il faut jeter les papiers à la poubelle.",
   "explanation": "Un seul t à l'infinitif.",
@@ -1549,6 +1539,17 @@
    "version": 3
   },
   "lemma": "jeune"
+ },
+ {
+  "id": "fr-juge",
+  "contextSentence": "Le juge écoute les deux équipes.",
+  "explanation": "Le g devant e fait le son j.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "juge"
  },
  {
   "id": "fr-lever",
@@ -1661,15 +1662,15 @@
   "lemma": "noir"
  },
  {
-  "id": "fr-ombre",
-  "contextSentence": "Le chien se couche à l'ombre.",
-  "explanation": "Devant b, on écrit om et pas on.",
+  "id": "fr-nuage",
+  "contextSentence": "Un gros nuage cache le soleil.",
+  "explanation": "Le g devant e fait le son j.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "ombre"
+  "lemma": "nuage"
  },
  {
   "id": "fr-ouvrir",
@@ -1681,6 +1682,17 @@
    "version": 3
   },
   "lemma": "ouvrir"
+ },
+ {
+  "id": "fr-parent",
+  "contextSentence": "Chaque parent vient chercher son enfant.",
+  "explanation": "Le son an s'écrit en ; un t muet à la fin.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "parent"
  },
  {
   "id": "fr-parler",
@@ -1703,17 +1715,6 @@
    "version": 3
   },
   "lemma": "parole"
- },
- {
-  "id": "fr-part",
-  "contextSentence": "Je mange une part de gâteau.",
-  "explanation": "Un t muet à la fin ; « par » s'écrit sans t.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "part"
  },
  {
   "id": "fr-partir",
@@ -1747,17 +1748,6 @@
    "version": 3
   },
   "lemma": "pauvre"
- },
- {
-  "id": "fr-peine",
-  "contextSentence": "J'ai de la peine quand mon ami pleure.",
-  "explanation": "Le son è s'écrit ei.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "peine"
  },
  {
   "id": "fr-penser",
@@ -1804,17 +1794,6 @@
   "lemma": "peuple"
  },
  {
-  "id": "fr-peur",
-  "contextSentence": "Le petit chat a peur du chien.",
-  "explanation": "Le son eur s'écrit e-u-r, sans e à la fin.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "peur"
- },
- {
   "id": "fr-place",
   "contextSentence": "Il y a une place libre à côté de moi.",
   "explanation": "Le c devant e fait le son s.",
@@ -1835,6 +1814,17 @@
    "version": 3
   },
   "lemma": "plein"
+ },
+ {
+  "id": "fr-police",
+  "contextSentence": "La voiture de police passe.",
+  "explanation": "Le c devant e fait le son s.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "police"
  },
  {
   "id": "fr-porter",
@@ -1868,6 +1858,17 @@
    "version": 3
   },
   "lemma": "prendre"
+ },
+ {
+  "id": "fr-prince",
+  "contextSentence": "Le prince monte sur son cheval.",
+  "explanation": "Le son in s'écrit i-n ; le c devant e fait le son s.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "prince"
  },
  {
   "id": "fr-pere",
@@ -1947,17 +1948,6 @@
   "lemma": "revenir"
  },
  {
-  "id": "fr-rire",
-  "contextSentence": "Ce clown me fait rire.",
-  "explanation": "Un e muet à la fin.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "rire"
- },
- {
   "id": "fr-sembler",
   "contextSentence": "Le temps va me sembler long.",
   "explanation": "Devant b, on écrit em et pas en.",
@@ -1980,17 +1970,6 @@
   "lemma": "sentir"
  },
  {
-  "id": "fr-servir",
-  "contextSentence": "Je vais servir la soupe.",
-  "explanation": "Verbe en ir.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "servir"
- },
- {
   "id": "fr-seul",
   "contextSentence": "Le chat est seul dans la maison.",
   "explanation": "Le son eu s'écrit e-u ; au féminin : seule.",
@@ -2000,17 +1979,6 @@
    "version": 3
   },
   "lemma": "seul"
- },
- {
-  "id": "fr-sorte",
-  "contextSentence": "Quelle sorte de fruit aimes-tu ?",
-  "explanation": "Un e muet à la fin.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "sorte"
  },
  {
   "id": "fr-sortir",
@@ -2068,17 +2036,6 @@
   "lemma": "tomber"
  },
  {
-  "id": "fr-tour",
-  "contextSentence": "La tour du château est haute.",
-  "explanation": "Le son ou s'écrit o-u.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "tour"
- },
- {
   "id": "fr-travail",
   "contextSentence": "Le maçon fait du bon travail.",
   "explanation": "Le son « aille » s'écrit a-i-l à la fin.",
@@ -2123,6 +2080,28 @@
   "lemma": "venir"
  },
  {
+  "id": "fr-vent",
+  "contextSentence": "Le vent fait voler mon cerf-volant.",
+  "explanation": "Le son an s'écrit en ; un t muet à la fin.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "vent"
+ },
+ {
+  "id": "fr-vie",
+  "contextSentence": "Le papillon a une vie courte.",
+  "explanation": "Un e muet à la fin.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "vie"
+ },
+ {
   "id": "fr-vieux",
   "contextSentence": "Ce vieux chêne est très grand.",
   "explanation": "Un x muet à la fin, même pour un seul.",
@@ -2132,6 +2111,17 @@
    "version": 3
   },
   "lemma": "vieux"
+ },
+ {
+  "id": "fr-visage",
+  "contextSentence": "Je lave mon visage.",
+  "explanation": "Le s entre deux voyelles fait le son z.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "visage"
  },
  {
   "id": "fr-vivre",
@@ -2165,6 +2155,17 @@
    "version": 3
   },
   "lemma": "vouloir"
+ },
+ {
+  "id": "fr-voyage",
+  "contextSentence": "Nous partons en voyage.",
+  "explanation": "Le y fait le son de deux i : « voi-iage ».",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "voyage"
  },
  {
   "id": "fr-vrai",
@@ -2224,11 +2225,12 @@
  {
   "id": "fr-ainsi",
   "contextSentence": "C'est ainsi qu'on plie un avion en papier.",
-  "explanation": "Le son in s'écrit ain puis in.",
+  "explanation": "Le son in s'écrit ain au début ; à la fin, on entend « si ».",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
-   "version": 3
+   "version": 4,
+   "reason": "addendum de revue du 2026-11-16"
   },
   "lemma": "ainsi"
  },
@@ -2321,6 +2323,17 @@
   "lemma": "beaucoup"
  },
  {
+  "id": "fr-besoin",
+  "contextSentence": "J'ai besoin d'une gomme.",
+  "explanation": "Le s entre deux voyelles fait le son z ; le son « oin » s'écrit o-i-n.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "besoin"
+ },
+ {
   "id": "fr-bien",
   "contextSentence": "Tu as bien travaillé.",
   "explanation": "Le son « ien » s'écrit i-e-n.",
@@ -2343,28 +2356,6 @@
   "lemma": "bonheur"
  },
  {
-  "id": "fr-bouche",
-  "contextSentence": "J'ouvre grand la bouche chez le dentiste.",
-  "explanation": "Le son ou s'écrit o-u ; un e muet à la fin.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "bouche"
- },
- {
-  "id": "fr-bout",
-  "contextSentence": "Je suis allé au bout du chemin.",
-  "explanation": "Un t muet à la fin.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "bout"
- },
- {
   "id": "fr-cacher",
   "contextSentence": "Je vais cacher le cadeau.",
   "explanation": "Verbe en er.",
@@ -2385,17 +2376,6 @@
    "version": 3
   },
   "lemma": "cause"
- },
- {
-  "id": "fr-changer",
-  "contextSentence": "Je dois changer de chaussures.",
-  "explanation": "Le son an s'écrit an ; verbe en er.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "changer"
  },
  {
   "id": "fr-chef",
@@ -2508,6 +2488,17 @@
   "lemma": "dormir"
  },
  {
+  "id": "fr-doute",
+  "contextSentence": "J'ai un doute sur la réponse.",
+  "explanation": "Le son ou s'écrit o-u ; un e muet à la fin.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "doute"
+ },
+ {
   "id": "fr-doux",
   "contextSentence": "Le chaton a un pelage doux.",
   "explanation": "Un x muet à la fin ; au féminin : douce.",
@@ -2517,6 +2508,17 @@
    "version": 3
   },
   "lemma": "doux"
+ },
+ {
+  "id": "fr-droit",
+  "contextSentence": "Le chemin est tout droit.",
+  "explanation": "Un t muet à la fin : il s'entend dans « droite ».",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "droit"
  },
  {
   "id": "fr-deja",
@@ -2574,17 +2576,6 @@
   "lemma": "envoyer"
  },
  {
-  "id": "fr-essayer",
-  "contextSentence": "Je vais essayer ce vélo.",
-  "explanation": "Deux s ; le y fait le son de deux i.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "essayer"
- },
- {
   "id": "fr-face",
   "contextSentence": "La boulangerie est en face de l'école.",
   "explanation": "Le c devant e fait le son s.",
@@ -2596,6 +2587,17 @@
   "lemma": "face"
  },
  {
+  "id": "fr-famille",
+  "contextSentence": "Toute la famille dîne ensemble.",
+  "explanation": "Les deux l après le i font le son « ye ».",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "famille"
+ },
+ {
   "id": "fr-facon",
   "contextSentence": "Il range ses jouets de cette façon.",
   "explanation": "Le ç fait le son s devant le o.",
@@ -2605,6 +2607,28 @@
    "version": 3
   },
   "lemma": "façon"
+ },
+ {
+  "id": "fr-figure",
+  "contextSentence": "Le clown a du maquillage sur la figure.",
+  "explanation": "Un e muet à la fin.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "figure"
+ },
+ {
+  "id": "fr-finir",
+  "contextSentence": "Je dois finir mon dessin.",
+  "explanation": "Verbe en ir.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "finir"
  },
  {
   "id": "fr-forme",
@@ -2629,15 +2653,15 @@
   "lemma": "fort"
  },
  {
-  "id": "fr-francais",
-  "contextSentence": "Je parle français.",
-  "explanation": "Le ç fait le son s ; le son è s'écrit ai ; un s muet.",
+  "id": "fr-front",
+  "contextSentence": "Maman pose la main sur mon front.",
+  "explanation": "Un t muet à la fin.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "français"
+  "lemma": "front"
  },
  {
   "id": "fr-garder",
@@ -2660,17 +2684,6 @@
    "version": 3
   },
   "lemma": "gros"
- },
- {
-  "id": "fr-general",
-  "contextSentence": "Le général salue ses soldats.",
-  "explanation": "Deux accents aigus.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "général"
  },
  {
   "id": "fr-haut",
@@ -2750,17 +2763,6 @@
   "lemma": "jamais"
  },
  {
-  "id": "fr-joie",
-  "contextSentence": "Elle saute de joie.",
-  "explanation": "Le son wa s'écrit oi ; un e muet à la fin.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "joie"
- },
- {
   "id": "fr-jouer",
   "contextSentence": "Je vais jouer au ballon.",
   "explanation": "Le son ou s'écrit o-u ; verbe en er.",
@@ -2781,17 +2783,6 @@
    "version": 3
   },
   "lemma": "lieu"
- },
- {
-  "id": "fr-lire",
-  "contextSentence": "J'aime lire des bandes dessinées.",
-  "explanation": "Un e muet à la fin.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "lire"
  },
  {
   "id": "fr-loin",
@@ -2882,17 +2873,6 @@
   "lemma": "même"
  },
  {
-  "id": "fr-nature",
-  "contextSentence": "J'aime me promener dans la nature.",
-  "explanation": "Un e muet à la fin.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "nature"
- },
- {
   "id": "fr-offrir",
   "contextSentence": "Je vais offrir des fleurs à maman.",
   "explanation": "Deux f ; verbe en ir.",
@@ -2948,6 +2928,17 @@
   "lemma": "paraître"
  },
  {
+  "id": "fr-part",
+  "contextSentence": "Je mange une part de gâteau.",
+  "explanation": "Un t muet à la fin ; « par » s'écrit sans t.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "part"
+ },
+ {
   "id": "fr-partie",
   "contextSentence": "Nous faisons une partie de cartes.",
   "explanation": "Un e muet à la fin.",
@@ -2959,6 +2950,17 @@
   "lemma": "partie"
  },
  {
+  "id": "fr-peine",
+  "contextSentence": "J'ai de la peine quand mon ami pleure.",
+  "explanation": "Le son è s'écrit ei.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "peine"
+ },
+ {
   "id": "fr-personne",
   "contextSentence": "Il n'y a personne dans la cour.",
   "explanation": "Deux n et un e muet à la fin.",
@@ -2968,6 +2970,17 @@
    "version": 3
   },
   "lemma": "personne"
+ },
+ {
+  "id": "fr-peur",
+  "contextSentence": "Le petit chat a peur du chien.",
+  "explanation": "Le son eur s'écrit e-u-r, sans e à la fin.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "peur"
  },
  {
   "id": "fr-plaisir",
@@ -3014,17 +3027,6 @@
   "lemma": "poser"
  },
  {
-  "id": "fr-pourtant",
-  "contextSentence": "Il fait froid, pourtant il ne met pas de bonnet.",
-  "explanation": "Le son an s'écrit an ; un t muet à la fin.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "pourtant"
- },
- {
   "id": "fr-pousser",
   "contextSentence": "Les fleurs vont pousser au printemps.",
   "explanation": "Deux s entre deux voyelles pour faire le son s.",
@@ -3060,11 +3062,12 @@
  {
   "id": "fr-question",
   "contextSentence": "Je lève la main pour poser une question.",
-  "explanation": "Ici, ti fait le son « ti » ; le son k s'écrit qu.",
+  "explanation": "Ici, ti se prononce « ti » comme dans « tiens », pas « si » ; le son k s'écrit qu.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
-   "version": 3
+   "version": 4,
+   "reason": "addendum de revue du 2026-11-16"
   },
   "lemma": "question"
  },
@@ -3078,17 +3081,6 @@
    "version": 3
   },
   "lemma": "quitter"
- },
- {
-  "id": "fr-rappeler",
-  "contextSentence": "Je vais rappeler mamie.",
-  "explanation": "Deux p, un seul l à l'infinitif.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "rappeler"
  },
  {
   "id": "fr-recevoir",
@@ -3111,6 +3103,17 @@
    "version": 3
   },
   "lemma": "regarder"
+ },
+ {
+  "id": "fr-rire",
+  "contextSentence": "Ce clown me fait rire.",
+  "explanation": "Un e muet à la fin.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "rire"
  },
  {
   "id": "fr-rouge",
@@ -3146,6 +3149,17 @@
   "lemma": "service"
  },
  {
+  "id": "fr-servir",
+  "contextSentence": "Je vais servir la soupe.",
+  "explanation": "Verbe en ir.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "servir"
+ },
+ {
   "id": "fr-silence",
   "contextSentence": "Le silence règne dans la bibliothèque.",
   "explanation": "Le son an s'écrit en ; le c devant e fait le son s.",
@@ -3155,6 +3169,17 @@
    "version": 3
   },
   "lemma": "silence"
+ },
+ {
+  "id": "fr-sorte",
+  "contextSentence": "Quelle sorte de fruit aimes-tu ?",
+  "explanation": "Un e muet à la fin.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "sorte"
  },
  {
   "id": "fr-souvent",
@@ -3199,17 +3224,6 @@
    "version": 3
   },
   "lemma": "tant"
- },
- {
-  "id": "fr-tard",
-  "contextSentence": "Il est tard, il faut dormir.",
-  "explanation": "Un d muet à la fin : il s'entend dans « tarder ».",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "tard"
  },
  {
   "id": "fr-tirer",
@@ -3289,17 +3303,6 @@
   "lemma": "vite"
  },
  {
-  "id": "fr-voiture",
-  "contextSentence": "La voiture est garée devant la maison.",
-  "explanation": "Le son wa s'écrit oi.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "voiture"
- },
- {
   "id": "fr-accepter",
   "contextSentence": "Je vais accepter ton invitation.",
   "explanation": "Deux c : le premier fait le son k, le second le son s.",
@@ -3377,17 +3380,6 @@
   "lemma": "apprendre"
  },
  {
-  "id": "fr-avancer",
-  "contextSentence": "Il faut avancer d'une case.",
-  "explanation": "Le son an s'écrit an ; le c devant e fait le son s.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "avancer"
- },
- {
   "id": "fr-battre",
   "contextSentence": "Mon cœur se met à battre très fort.",
   "explanation": "Deux t.",
@@ -3419,6 +3411,17 @@
    "version": 3
   },
   "lemma": "boire"
+ },
+ {
+  "id": "fr-bouche",
+  "contextSentence": "J'ouvre grand la bouche chez le dentiste.",
+  "explanation": "Le son ou s'écrit o-u ; un e muet à la fin.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "bouche"
  },
  {
   "id": "fr-causer",
@@ -3463,6 +3466,17 @@
    "version": 3
   },
   "lemma": "champ"
+ },
+ {
+  "id": "fr-changer",
+  "contextSentence": "Je dois changer de chaussures.",
+  "explanation": "Le son an s'écrit an ; verbe en er.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "changer"
  },
  {
   "id": "fr-commencer",
@@ -3575,17 +3589,6 @@
   "lemma": "cours"
  },
  {
-  "id": "fr-debout",
-  "contextSentence": "Le bébé tient debout.",
-  "explanation": "Un t muet à la fin, comme dans « bout ».",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "debout"
- },
- {
   "id": "fr-demeurer",
   "contextSentence": "Le chat aime demeurer près du feu.",
   "explanation": "Le son eu s'écrit e-u ; verbe en er.",
@@ -3628,6 +3631,17 @@
    "version": 3
   },
   "lemma": "espèce"
+ },
+ {
+  "id": "fr-essayer",
+  "contextSentence": "Je vais essayer ce vélo.",
+  "explanation": "Deux s ; le y fait le son de deux i.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "essayer"
  },
  {
   "id": "fr-exemple",
@@ -3696,6 +3710,17 @@
   "lemma": "fortune"
  },
  {
+  "id": "fr-francais",
+  "contextSentence": "Je parle français.",
+  "explanation": "Le ç fait le son s ; le son è s'écrit ai ; un s muet.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "français"
+ },
+ {
   "id": "fr-frapper",
   "contextSentence": "Il faut frapper avant d'entrer.",
   "explanation": "Deux p.",
@@ -3762,6 +3787,17 @@
   "lemma": "groupe"
  },
  {
+  "id": "fr-general",
+  "contextSentence": "Le général salue ses soldats.",
+  "explanation": "Deux accents aigus.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "général"
+ },
+ {
   "id": "fr-honneur",
   "contextSentence": "C'est un honneur de te rencontrer.",
   "explanation": "Un h muet au début, deux n.",
@@ -3786,11 +3822,12 @@
  {
   "id": "fr-journal",
   "contextSentence": "Papa lit le journal.",
-  "explanation": "Le son ou s'écrit o-u ; des journaux.",
+  "explanation": "Le son ou s'écrit o-u et la fin s'écrit al ; des journaux.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
-   "version": 3
+   "version": 4,
+   "reason": "addendum de revue du 2026-11-16"
   },
   "lemma": "journal"
  },
@@ -3839,17 +3876,6 @@
   "lemma": "manquer"
  },
  {
-  "id": "fr-mauvais",
-  "contextSentence": "Ce fruit a un goût mauvais.",
-  "explanation": "Le son o s'écrit au ; un s muet à la fin.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "mauvais"
- },
- {
   "id": "fr-million",
   "contextSentence": "Il y a un million d'étoiles.",
   "explanation": "Deux l : ici ils font le son l.",
@@ -3883,15 +3909,15 @@
   "lemma": "mouvement"
  },
  {
-  "id": "fr-naitre",
-  "contextSentence": "Les poussins vont naître demain.",
-  "explanation": "Accent circonflexe sur le i devant le t.",
+  "id": "fr-nature",
+  "contextSentence": "J'aime me promener dans la nature.",
+  "explanation": "Un e muet à la fin.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "naître"
+  "lemma": "nature"
  },
  {
   "id": "fr-nommer",
@@ -3907,11 +3933,12 @@
  {
   "id": "fr-necessaire",
   "contextSentence": "Une gourde est nécessaire pour la randonnée.",
-  "explanation": "Un c puis deux s.",
+  "explanation": "Un c qui fait s devant e, puis deux s ; la fin s'écrit aire.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
-   "version": 3
+   "version": 4,
+   "reason": "addendum de revue du 2026-11-16"
   },
   "lemma": "nécessaire"
  },
@@ -4037,15 +4064,15 @@
   "lemma": "possible"
  },
  {
-  "id": "fr-probleme",
-  "contextSentence": "J'ai résolu le problème.",
-  "explanation": "Accent grave sur le e.",
+  "id": "fr-pourtant",
+  "contextSentence": "Il fait froid, pourtant il ne met pas de bonnet.",
+  "explanation": "Le son an s'écrit an ; un t muet à la fin.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "problème"
+  "lemma": "pourtant"
  },
  {
   "id": "fr-projet",
@@ -4103,6 +4130,17 @@
   "lemma": "raconter"
  },
  {
+  "id": "fr-rappeler",
+  "contextSentence": "Je vais rappeler mamie.",
+  "explanation": "Deux p, un seul l à l'infinitif.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "rappeler"
+ },
+ {
   "id": "fr-remettre",
   "contextSentence": "Je dois remettre mon manteau.",
   "explanation": "Deux t.",
@@ -4147,17 +4185,6 @@
   "lemma": "reprendre"
  },
  {
-  "id": "fr-reste",
-  "contextSentence": "Je garde le reste pour demain.",
-  "explanation": "Un e muet à la fin.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "reste"
- },
- {
   "id": "fr-retourner",
   "contextSentence": "Je veux retourner à la plage.",
   "explanation": "Le son ou s'écrit o-u ; verbe en er.",
@@ -4200,17 +4227,6 @@
    "version": 3
   },
   "lemma": "saisir"
- },
- {
-  "id": "fr-sauver",
-  "contextSentence": "Le pompier va sauver le chat.",
-  "explanation": "Le son o s'écrit au.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "sauver"
  },
  {
   "id": "fr-sentiment",
@@ -4334,17 +4350,6 @@
   "lemma": "sourire"
  },
  {
-  "id": "fr-tendre",
-  "contextSentence": "La viande est tendre.",
-  "explanation": "Le son an s'écrit en.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "tendre"
- },
- {
   "id": "fr-toucher",
   "contextSentence": "Ne pas toucher le tableau.",
   "explanation": "Verbe en er.",
@@ -4367,15 +4372,15 @@
   "lemma": "travailler"
  },
  {
-  "id": "fr-traverser",
-  "contextSentence": "Je vais traverser la rue.",
-  "explanation": "Verbe en er.",
+  "id": "fr-voiture",
+  "contextSentence": "La voiture est garée devant la maison.",
+  "explanation": "Le son wa s'écrit oi.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "traverser"
+  "lemma": "voiture"
  },
  {
   "id": "fr-vraiment",
@@ -4488,6 +4493,17 @@
   "lemma": "aussitôt"
  },
  {
+  "id": "fr-avancer",
+  "contextSentence": "Il faut avancer d'une case.",
+  "explanation": "Le son an s'écrit an ; le c devant e fait le son s.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "avancer"
+ },
+ {
   "id": "fr-avenir",
   "contextSentence": "Dans l'avenir, je serai vétérinaire.",
   "explanation": null,
@@ -4519,17 +4535,6 @@
    "version": 3
   },
   "lemma": "briller"
- },
- {
-  "id": "fr-caractere",
-  "contextSentence": "Ce chat a mauvais caractère.",
-  "explanation": "Le son k s'écrit c ; accent grave sur le e.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "caractère"
  },
  {
   "id": "fr-certain",
@@ -4587,17 +4592,6 @@
   "lemma": "combien"
  },
  {
-  "id": "fr-condition",
-  "contextSentence": "Je viens, à une condition.",
-  "explanation": "Ici, ti fait le son s : on écrit t-i-o-n.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "condition"
- },
- {
   "id": "fr-conseil",
   "contextSentence": "Je te donne un conseil.",
   "explanation": "Le son « eil » s'écrit e-i-l.",
@@ -4611,11 +4605,12 @@
  {
   "id": "fr-considerer",
   "contextSentence": "Il faut considérer toutes les idées.",
-  "explanation": "Accent aigu sur le deuxième e seulement.",
+  "explanation": "Un seul accent aigu, sur le premier e : consi-dé-rer.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
-   "version": 3
+   "version": 4,
+   "reason": "addendum de revue du 2026-11-16"
   },
   "lemma": "considérer"
  },
@@ -4640,6 +4635,17 @@
    "version": 3
   },
   "lemma": "craindre"
+ },
+ {
+  "id": "fr-debout",
+  "contextSentence": "Le bébé tient debout.",
+  "explanation": "Un t muet à la fin, comme dans « bout ».",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "debout"
  },
  {
   "id": "fr-demain",
@@ -4730,17 +4736,6 @@
   "lemma": "embrasser"
  },
  {
-  "id": "fr-emporter",
-  "contextSentence": "Je vais emporter mon pique-nique.",
-  "explanation": "Devant p, on écrit em et pas en.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "emporter"
- },
- {
   "id": "fr-empecher",
   "contextSentence": "La pluie va nous empêcher de sortir.",
   "explanation": "Devant p, on écrit em ; accent circonflexe sur le e.",
@@ -4763,28 +4758,6 @@
   "lemma": "endroit"
  },
  {
-  "id": "fr-ensemble",
-  "contextSentence": "Nous jouons ensemble.",
-  "explanation": "Le son an s'écrit en, puis em devant b.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "ensemble"
- },
- {
-  "id": "fr-ensuite",
-  "contextSentence": "Je mange, ensuite je joue.",
-  "explanation": "Le son an s'écrit en ; un e muet à la fin.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "ensuite"
- },
- {
   "id": "fr-esperer",
   "contextSentence": "Il faut espérer qu'il fera beau.",
   "explanation": "Accent aigu sur le deuxième e.",
@@ -4794,17 +4767,6 @@
    "version": 3
   },
   "lemma": "espérer"
- },
- {
-  "id": "fr-expression",
-  "contextSentence": "Cette expression me fait rire.",
-  "explanation": "Deux s avant ion.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "expression"
  },
  {
   "id": "fr-feuille",
@@ -4860,17 +4822,6 @@
    "version": 3
   },
   "lemma": "glisser"
- },
- {
-  "id": "fr-hasard",
-  "contextSentence": "J'ai trouvé une pièce par hasard.",
-  "explanation": "Un h muet au début ; un d muet à la fin.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "hasard"
  },
  {
   "id": "fr-hotel",
@@ -5016,6 +4967,17 @@
   "lemma": "mariage"
  },
  {
+  "id": "fr-mauvais",
+  "contextSentence": "Ce fruit a un goût mauvais.",
+  "explanation": "Le son o s'écrit au ; un s muet à la fin.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "mauvais"
+ },
+ {
   "id": "fr-mener",
   "contextSentence": "Ce chemin va nous mener au lac.",
   "explanation": "Un seul n ; pas d'accent à l'infinitif.",
@@ -5071,15 +5033,15 @@
   "lemma": "mêler"
  },
  {
-  "id": "fr-naturel",
-  "contextSentence": "Ce jus est naturel.",
-  "explanation": "Un seul l au masculin : naturel.",
+  "id": "fr-naitre",
+  "contextSentence": "Les poussins vont naître demain.",
+  "explanation": "Accent circonflexe sur le i devant le t.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "naturel"
+  "lemma": "naître"
  },
  {
   "id": "fr-objet",
@@ -5116,12 +5078,13 @@
  },
  {
   "id": "fr-plutot",
-  "contextSentence": "Je préfère plutôt les pommes.",
+  "contextSentence": "Je prendrai plutôt une pomme.",
   "explanation": "Accent circonflexe sur le o ; un t muet.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
-   "version": 3
+   "version": 4,
+   "reason": "addendum de revue du 2026-11-16"
   },
   "lemma": "plutôt"
  },
@@ -5148,6 +5111,17 @@
   "lemma": "prier"
  },
  {
+  "id": "fr-probleme",
+  "contextSentence": "J'ai résolu le problème.",
+  "explanation": "Accent grave sur le e.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "problème"
+ },
+ {
   "id": "fr-produire",
   "contextSentence": "Les abeilles vont produire du miel.",
   "explanation": null,
@@ -5172,24 +5146,14 @@
  {
   "id": "fr-presence",
   "contextSentence": "Le maître note la présence des élèves.",
-  "explanation": "Le s fait le son z ; le c devant e fait le son s.",
+  "explanation": "Entre deux voyelles, le s se prononce z ; le c devant e fait le son s.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
-   "version": 3
+   "version": 4,
+   "reason": "addendum de revue du 2026-11-16"
   },
   "lemma": "présence"
- },
- {
-  "id": "fr-present",
-  "contextSentence": "Il est présent à l'appel.",
-  "explanation": "Le s fait le son z ; un t muet à la fin.",
-  "generatedBy": {
-   "by": "assistant (bot-Claude), written by hand, draft to review",
-   "date": "2026-11-16",
-   "version": 3
-  },
-  "lemma": "présent"
  },
  {
   "id": "fr-qualite",
@@ -5269,6 +5233,17 @@
   "lemma": "ressembler"
  },
  {
+  "id": "fr-reste",
+  "contextSentence": "Je garde le reste pour demain.",
+  "explanation": "Un e muet à la fin.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "reste"
+ },
+ {
   "id": "fr-riche",
   "contextSentence": "Le roi est riche.",
   "explanation": null,
@@ -5289,6 +5264,17 @@
    "version": 3
   },
   "lemma": "résultat"
+ },
+ {
+  "id": "fr-sauver",
+  "contextSentence": "Le pompier va sauver le chat.",
+  "explanation": "Le son o s'écrit au.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "sauver"
  },
  {
   "id": "fr-seigneur",
@@ -5368,6 +5354,17 @@
   "lemma": "système"
  },
  {
+  "id": "fr-tendre",
+  "contextSentence": "La viande est tendre.",
+  "explanation": "Le son an s'écrit en.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "tendre"
+ },
+ {
   "id": "fr-terrible",
   "contextSentence": "Quelle tempête terrible !",
   "explanation": "Deux r.",
@@ -5377,6 +5374,17 @@
    "version": 3
   },
   "lemma": "terrible"
+ },
+ {
+  "id": "fr-traverser",
+  "contextSentence": "Je vais traverser la rue.",
+  "explanation": "Verbe en er.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 3
+  },
+  "lemma": "traverser"
  },
  {
   "id": "fr-triste",
@@ -5498,5 +5506,434 @@
    "version": 3
   },
   "lemma": "étrange"
+ },
+ {
+  "id": "fr-bleu",
+  "lemma": "bleu",
+  "contextSentence": "Le ciel est bleu.",
+  "explanation": "Le son eu s'écrit e-u : bleu.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-cousin",
+  "lemma": "cousin",
+  "contextSentence": "Mon cousin vient jouer chez nous.",
+  "explanation": "Entre deux voyelles, le s fait z ; la fin s'écrit i-n.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-cousine",
+  "lemma": "cousine",
+  "contextSentence": "Ma cousine a un chat.",
+  "explanation": "C'est cousin avec un e à la fin : on entend alors le n.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-deux",
+  "lemma": "deux",
+  "contextSentence": "Après un vient deux.",
+  "explanation": "Le son eu s'écrit e-u, puis un x muet.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-gris",
+  "lemma": "gris",
+  "contextSentence": "Le chat gris dort.",
+  "explanation": "Un s muet à la fin : on l'entend dans grise.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-huit",
+  "lemma": "huit",
+  "contextSentence": "Après sept vient huit.",
+  "explanation": "Un h muet au début ; le t de la fin s'entend.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-jouet",
+  "lemma": "jouet",
+  "contextSentence": "Je range mon jouet.",
+  "explanation": "Le son ou s'écrit o-u ; la fin s'écrit e-t, le t ne s'entend pas.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-judo",
+  "lemma": "judo",
+  "contextSentence": "Je fais du judo le mercredi.",
+  "explanation": "Deux syllabes simples : ju-do.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-jupe",
+  "lemma": "jupe",
+  "contextSentence": "Ma sœur met sa jupe.",
+  "explanation": "Le son u, puis un p et un e muet.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-maman",
+  "lemma": "maman",
+  "contextSentence": "Je fais un câlin à maman.",
+  "explanation": "Deux fois ma ; à la fin, le son an s'écrit a-n.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-montre",
+  "lemma": "montre",
+  "contextSentence": "Ma montre donne l'heure.",
+  "explanation": "Le son on s'écrit o-n ; la fin s'écrit t-r-e.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-moto",
+  "lemma": "moto",
+  "contextSentence": "La moto roule vite.",
+  "explanation": "Deux syllabes simples : mo-to.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-neuf",
+  "lemma": "neuf",
+  "contextSentence": "Après huit vient neuf.",
+  "explanation": "Le son eu s'écrit e-u, puis un f. Ici, c'est le nombre 9.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-pantalon",
+  "lemma": "pantalon",
+  "contextSentence": "Je mets mon pantalon.",
+  "explanation": "Le son an s'écrit a-n, et le son on s'écrit o-n.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-poupee",
+  "lemma": "poupée",
+  "contextSentence": "La poupée dort dans son lit.",
+  "explanation": "Le son ou s'écrit o-u ; la fin s'écrit é-e.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-quatre",
+  "lemma": "quatre",
+  "contextSentence": "Après trois vient quatre.",
+  "explanation": "Le son k s'écrit qu ; la fin s'écrit t-r-e.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-rose",
+  "lemma": "rose",
+  "contextSentence": "Elle porte un pull rose.",
+  "explanation": "Ici, c'est la couleur ; entre deux voyelles, le s fait z.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-sept",
+  "lemma": "sept",
+  "contextSentence": "Après six vient sept.",
+  "explanation": "Le p ne s'entend pas : c'est le nombre 7, pas « cet ».",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-six",
+  "lemma": "six",
+  "contextSentence": "Après cinq vient six.",
+  "explanation": "Le son s à la fin s'écrit x : c'est le nombre 6.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-tomate",
+  "lemma": "tomate",
+  "contextSentence": "Je mange une tomate.",
+  "explanation": "Trois syllabes simples : to-ma-te.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-trois",
+  "lemma": "trois",
+  "contextSentence": "Après deux vient trois.",
+  "explanation": "Le son oi s'écrit o-i, puis un s muet.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-un",
+  "lemma": "un",
+  "contextSentence": "Je compte : un, deux, trois.",
+  "explanation": "Le son un s'écrit u-n. Ici, c'est le nombre 1.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-vert",
+  "lemma": "vert",
+  "contextSentence": "Le sapin est vert.",
+  "explanation": "La couleur finit par un t muet : on l'entend dans verte.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-video",
+  "lemma": "vidéo",
+  "contextSentence": "Nous regardons une vidéo.",
+  "explanation": "Un accent aigu sur le e : vi-dé-o.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-violet",
+  "lemma": "violet",
+  "contextSentence": "Mon crayon violet est cassé.",
+  "explanation": "La fin s'écrit e-t : on entend le t dans violette.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-velo",
+  "lemma": "vélo",
+  "contextSentence": "Je roule à vélo.",
+  "explanation": "Un accent aigu sur le e : vé-lo.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-zero",
+  "lemma": "zéro",
+  "contextSentence": "Avant un, il y a zéro.",
+  "explanation": "Le son z s'écrit z ; un accent aigu sur le e.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-ecran",
+  "lemma": "écran",
+  "contextSentence": "L'écran de la télé est noir.",
+  "explanation": "Un é au début ; le son an s'écrit a-n.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-chaussette",
+  "lemma": "chaussette",
+  "contextSentence": "Il me manque une chaussette.",
+  "explanation": "Le son o s'écrit au ; puis deux s et deux t.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-cinq",
+  "lemma": "cinq",
+  "contextSentence": "Après quatre vient cinq.",
+  "explanation": "Le son in s'écrit i-n ; le son k de la fin s'écrit q.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-jaune",
+  "lemma": "jaune",
+  "contextSentence": "Le citron est jaune.",
+  "explanation": "Le son o s'écrit au : jaune.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-lego",
+  "lemma": "lego",
+  "contextSentence": "Je construis une maison en Lego.",
+  "explanation": "C'est un nom de marque : il prend une majuscule.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-marron",
+  "lemma": "marron",
+  "contextSentence": "Mon chien a les poils marron.",
+  "explanation": "Ici, c'est la couleur : deux r, et la fin s'écrit o-n.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-noel",
+  "lemma": "noël",
+  "contextSentence": "Le sapin de Noël brille.",
+  "explanation": "C'est une fête : une majuscule, et un tréma sur le e pour dire o-èl.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-orange",
+  "lemma": "orange",
+  "contextSentence": "Mon ballon est orange.",
+  "explanation": "Ici, c'est la couleur ; le son an s'écrit a-n et le g devant e fait j.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-ordinateur",
+  "lemma": "ordinateur",
+  "contextSentence": "Papa travaille sur son ordinateur.",
+  "explanation": "La fin s'écrit e-u-r, comme dans moteur.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-piscine",
+  "lemma": "piscine",
+  "contextSentence": "Je nage à la piscine.",
+  "explanation": "Le son s s'écrit s-c devant le i.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-playmobil",
+  "lemma": "playmobil",
+  "contextSentence": "Mon château Playmobil a deux tours.",
+  "explanation": "C'est un nom de marque : une majuscule, et le son è s'écrit a-y.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
+ },
+ {
+  "id": "fr-telephone",
+  "lemma": "téléphone",
+  "contextSentence": "Le téléphone sonne.",
+  "explanation": "Deux accents aigus, et le son f s'écrit p-h.",
+  "generatedBy": {
+   "by": "assistant (bot-Claude), written by hand, draft to review",
+   "date": "2026-11-16",
+   "version": 5
+  }
  }
 ]

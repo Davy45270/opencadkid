@@ -12,11 +12,13 @@ const byId = new Map(shipped.words.map(w => [w.id, w]));
 // The service worker would serve the precached catalogue past the test's route.
 test.use({ serviceWorkers: 'block' });
 
-/** The shipped catalogue holds drafts only: the child sees none. To play, the test serves it with some words marked
- * reviewed, as an adult would after reading them. */
+/** The shipped catalogue holds words waiting for review only: the child sees none. To play, the test serves it with
+ * some words approved (the four reviews, a named reviewer), as an adult would after reading and hearing them. */
 async function reviewed(page: Page, pick: (w: Word) => boolean): Promise<void> {
+    const approved = { orthography: 'approved', pedagogy: 'approved', context: 'approved', audio: 'approved' };
     await page.route('**/dictee/catalogue.json', route => route.fulfill({ contentType: 'application/json',
-        body: JSON.stringify({ ...shipped, words: shipped.words.map(w => pick(w) && (!w.homophones.length || w.contextSentence) ? { ...w, contentStatus: 'reviewed', validatedBy: 'relecture de test' } : w) }) }));
+        body: JSON.stringify({ ...shipped, words: shipped.words.map(w => pick(w) && (!w.homophones.length || w.contextSentence)
+            ? { ...w, status: 'approved', review: approved, validatedBy: 'relecture de test', audio: { mode: w.audio.mode === 'audio_manual_review' ? 'word_only' : w.audio.mode } } : w) }) }));
 }
 async function open(page: Page): Promise<void> {
     await prepare(page); await page.locator('#back').click();
@@ -31,7 +33,13 @@ async function feed(page: Page, grade: Grade, n: number): Promise<void> {
     await expect(page.locator('.dictee-card')).toHaveCount(1);
 }
 const word = async (page: Page): Promise<Word> => { const p = await probe(page); return byId.get(p.feed!.cards[p.feed!.index]!.id)!; };
-async function typeOnScreen(page: Page, text: string): Promise<void> { for (const c of text) await page.locator(`[data-key="${c}"]`).click(); }
+async function typeOnScreen(page: Page, text: string): Promise<void> {
+    for (const c of text) {
+        // A capital letter: the capital key, then the letter.
+        if (c !== c.toLowerCase()) await page.locator('#dictee-shift').click();
+        await page.locator(`[data-key="${c.toLowerCase()}"]`).click();
+    }
+}
 
 test('the shipped drafts never reach the child: every class waits for an adult review', async ({ page }) => {
     await open(page);
@@ -45,7 +53,7 @@ test('the shipped drafts never reach the child: every class waits for an adult r
 test('a finite feed: the word is heard, never shown before checking; right, wrong, again later, and the summary', async ({ page }) => {
     // Six words of one class are reviewed: a feed of five, so one missed word must come back inside the five cards.
     // Plain letters only: Playwright types an accented letter as inserted text, with no keydown, where a real AZERTY keyboard sends one.
-    const pool = shipped.words.filter(w => w.grade === 'CE1' && !w.homophones.length && /^[a-z]+$/.test(w.expectedForm)).slice(0, 6).map(w => w.id);
+    const pool = shipped.words.filter(w => w.grade === 'CE1' && !w.homophones.length && w.audio.mode === 'word_only' && /^[a-z]+$/.test(w.expectedForm)).slice(0, 6).map(w => w.id);
     await reviewed(page, w => pool.includes(w.id));
     await feed(page, 'CE1', 5);
     const first = await word(page);
@@ -85,6 +93,8 @@ test('a finite feed: the word is heard, never shown before checking; right, wron
     for (let k = 2; k < 5; k++) {
         await expect.poll(async () => (await probe(page)).feed!.index).toBe(k);
         const w = await word(page); seen.push(w.id);
+        // Only approved words are drawn.
+        expect(pool).toContain(w.id);
         await typeOnScreen(page, w.expectedForm); await page.locator('#dictee-validate').click();
         await page.locator('#dictee-next').click();
     }
@@ -108,6 +118,54 @@ test('the context sentence plays on demand', async ({ page }) => {
     const w = await word(page);
     await page.locator('#dictee-sentence').click();
     await expect.poll(async () => (await probe(page)).played.map(p => p.path)).toContain(w.contextAsset);
+});
+
+test('a word heard only in context: its sentence is said on arrival, never shown, and hearing again changes nothing', async ({ page }) => {
+    // The colours and numbers that need their sentence (vert, sept, neuf, rose): "un" is left out, the interface says it too.
+    const pool = shipped.words.filter(w => w.grade === 'CP' && w.audio.mode === 'context_required' && w.expectedForm !== 'un').map(w => w.id);
+    expect(pool.length).toBeGreaterThanOrEqual(3);
+    await reviewed(page, w => pool.includes(w.id));
+    await feed(page, 'CP', 5);
+    const w = await word(page);
+    expect(pool).toContain(w.id);
+    // The word, then its sentence, without a touch.
+    await expect.poll(async () => (await probe(page)).played.map(p => p.path), { timeout: 8000 }).toEqual([w.pronunciationAsset, w.contextAsset]);
+    // Neither the sentence nor the word is on the page before checking; the sentence button shows its label only.
+    const text = await page.locator('#app').innerText();
+    expect(text).not.toContain(w.contextSentence!);
+    expect(text.toLowerCase().split(/[^\p{L}]+/u)).not.toContain(w.expectedForm.toLowerCase());
+    const label = await page.locator('#dictee-sentence').innerText();
+    expect(label).not.toContain(w.contextSentence!);
+    expect(label.toLowerCase().split(/[^\p{L}]+/u)).not.toContain(w.expectedForm.toLowerCase());
+    // Hearing again, word or sentence, keeps the letters typed and checks nothing.
+    const used: number[] = [];
+    const p0 = await probe(page);
+    for (const c of w.expectedForm.slice(0, 2)) { const k = p0.tiles.findIndex((x, i) => x === c && !used.includes(i)); used.push(k); await page.locator(`[data-tile="${k}"]`).click(); }
+    const typed = (await probe(page)).typed;
+    const card = (await probe(page)).card!;
+    await page.mouse.click(card.x + card.width / 2, card.y + 40);
+    await page.locator('#dictee-sentence').click();
+    const after = await probe(page);
+    expect(after.typed).toBe(typed);
+    expect(after.evaluation).toBeNull();
+    // Once checked, hearing the sentence again leaves the score as it was.
+    await page.locator('#dictee-validate').click();
+    const score = (await probe(page)).evaluation;
+    await page.locator('#dictee-sentence').click();
+    expect((await probe(page)).evaluation).toEqual(score);
+    expect((await probe(page)).typed).toBe(typed);
+});
+
+test('the capital key types one capital letter, then lets go', async ({ page }) => {
+    await reviewed(page, w => w.grade === 'CE1' && w.expectedForm === 'Noël');
+    await feed(page, 'CE1', 5);
+    await page.locator('#dictee-shift').click();
+    await expect(page.locator('#dictee-shift')).toHaveAttribute('aria-pressed', 'true');
+    await typeOnScreen(page, 'noël');
+    expect((await probe(page)).typed).toBe('Noël');
+    await expect(page.locator('#dictee-shift')).toHaveAttribute('aria-pressed', 'false');
+    await page.locator('#dictee-validate').click();
+    await expect(page.locator('.dictee-card.juste')).toHaveCount(1);
 });
 
 test('first grade: the letters are shuffled tiles to put back in order', async ({ page }) => {

@@ -43,27 +43,25 @@
   "homophones": [],
   "difficulty": 2,
   "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "list": "ajout de David (2026-11-16)",
    "rank": 215,
-   "frequency": 4070.0
+   "frequency": 4070.0,
+   "alsoIn": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0"
   }
  },
  {
-  "id": "fr-argent",
-  "lemma": "argent",
-  "expectedForm": "argent",
+  "id": "fr-bleu",
+  "lemma": "bleu",
+  "expectedForm": "bleu",
   "grade": "CP",
   "category": "NC",
-  "tags": [
-   "son-an",
-   "lettre-muette"
-  ],
+  "tags": [],
   "homophones": [],
-  "difficulty": 3,
+  "difficulty": 2,
   "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 228,
-   "frequency": 3876.0
+   "list": "ajout de David (2026-11-16)",
+   "rank": 315,
+   "frequency": 2906.0
   }
  },
  {
@@ -98,6 +96,26 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 334,
    "frequency": 2753.0
+  }
+ },
+ {
+  "id": "fr-bout",
+  "lemma": "bout",
+  "expectedForm": "bout",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "lettre-muette",
+   "homophone"
+  ],
+  "homophones": [
+   "boue"
+  ],
+  "difficulty": 3,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 187,
+   "frequency": 4571.0
   }
  },
  {
@@ -197,38 +215,6 @@
   }
  },
  {
-  "id": "fr-ciel",
-  "lemma": "ciel",
-  "expectedForm": "ciel",
-  "grade": "CP",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 1,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 91,
-   "frequency": 7433.0
-  }
- },
- {
-  "id": "fr-classe",
-  "lemma": "classe",
-  "expectedForm": "classe",
-  "grade": "CP",
-  "category": "NC",
-  "tags": [
-   "double-consonne"
-  ],
-  "homophones": [],
-  "difficulty": 4,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 501,
-   "frequency": 1997.0
-  }
- },
- {
   "id": "fr-coin",
   "lemma": "coin",
   "expectedForm": "coin",
@@ -249,13 +235,47 @@
   "expectedForm": "cour",
   "grade": "CP",
   "category": "NC",
-  "tags": [],
-  "homophones": [],
+  "tags": [
+   "homophone"
+  ],
+  "homophones": [
+   "court"
+  ],
   "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 332,
    "frequency": 2776.0
+  }
+ },
+ {
+  "id": "fr-cousin",
+  "lemma": "cousin",
+  "expectedForm": "cousin",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
+  }
+ },
+ {
+  "id": "fr-cousine",
+  "lemma": "cousine",
+  "expectedForm": "cousine",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
   }
  },
  {
@@ -274,20 +294,20 @@
   }
  },
  {
-  "id": "fr-danger",
-  "lemma": "danger",
-  "expectedForm": "danger",
+  "id": "fr-deux",
+  "lemma": "deux",
+  "expectedForm": "deux",
   "grade": "CP",
   "category": "NC",
   "tags": [
-   "son-an"
+   "lettre-muette"
   ],
   "homophones": [],
-  "difficulty": 3,
+  "difficulty": 2,
   "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 589,
-   "frequency": 1717.0
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
   }
  },
  {
@@ -348,38 +368,6 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 67,
    "frequency": 9603.0
-  }
- },
- {
-  "id": "fr-envie",
-  "lemma": "envie",
-  "expectedForm": "envie",
-  "grade": "CP",
-  "category": "NC",
-  "tags": [
-   "son-an"
-  ],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 527,
-   "frequency": 1903.0
-  }
- },
- {
-  "id": "fr-espace",
-  "lemma": "espace",
-  "expectedForm": "espace",
-  "grade": "CP",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 540,
-   "frequency": 1872.0
   }
  },
  {
@@ -475,9 +463,10 @@
   "homophones": [],
   "difficulty": 2,
   "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "list": "ajout de David (2026-11-16)",
    "rank": 252,
-   "frequency": 3516.0
+   "frequency": 3516.0,
+   "alsoIn": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0"
   }
  },
  {
@@ -496,63 +485,35 @@
   }
  },
  {
-  "id": "fr-genou",
-  "lemma": "genou",
-  "expectedForm": "genou",
+  "id": "fr-gris",
+  "lemma": "gris",
+  "expectedForm": "gris",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "ajout de David (2026-11-16)",
+   "rank": 508,
+   "frequency": 1952.0
+  }
+ },
+ {
+  "id": "fr-huit",
+  "lemma": "huit",
+  "expectedForm": "huit",
   "grade": "CP",
   "category": "NC",
   "tags": [],
   "homophones": [],
   "difficulty": 2,
   "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 551,
-   "frequency": 1827.0
-  }
- },
- {
-  "id": "fr-herbe",
-  "lemma": "herbe",
-  "expectedForm": "herbe",
-  "grade": "CP",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 529,
-   "frequency": 1896.0
-  }
- },
- {
-  "id": "fr-hiver",
-  "lemma": "hiver",
-  "expectedForm": "hiver",
-  "grade": "CP",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 577,
-   "frequency": 1745.0
-  }
- },
- {
-  "id": "fr-image",
-  "lemma": "image",
-  "expectedForm": "image",
-  "grade": "CP",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 585,
-   "frequency": 1724.0
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
   }
  },
  {
@@ -603,6 +564,23 @@
   }
  },
  {
+  "id": "fr-jouet",
+  "lemma": "jouet",
+  "expectedForm": "jouet",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
+  }
+ },
+ {
   "id": "fr-jour",
   "lemma": "jour",
   "expectedForm": "jour",
@@ -618,18 +596,33 @@
   }
  },
  {
-  "id": "fr-juge",
-  "lemma": "juge",
-  "expectedForm": "juge",
+  "id": "fr-judo",
+  "lemma": "judo",
+  "expectedForm": "judo",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
+  }
+ },
+ {
+  "id": "fr-jupe",
+  "lemma": "jupe",
+  "expectedForm": "jupe",
   "grade": "CP",
   "category": "NC",
   "tags": [],
   "homophones": [],
   "difficulty": 2,
   "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 550,
-   "frequency": 1832.0
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
   }
  },
  {
@@ -706,9 +699,26 @@
   "homophones": [],
   "difficulty": 2,
   "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "list": "ajout de David (2026-11-16)",
    "rank": 214,
-   "frequency": 4097.0
+   "frequency": 4097.0,
+   "alsoIn": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0"
+  }
+ },
+ {
+  "id": "fr-lune",
+  "lemma": "lune",
+  "expectedForm": "lune",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "ajout de David (2026-11-16)",
+   "rank": 683,
+   "frequency": 1494.0,
+   "alsoIn": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0"
   }
  },
  {
@@ -736,9 +746,27 @@
   "homophones": [],
   "difficulty": 3,
   "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "list": "ajout de David (2026-11-16)",
    "rank": 59,
-   "frequency": 10287.0
+   "frequency": 10287.0,
+   "alsoIn": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0"
+  }
+ },
+ {
+  "id": "fr-maman",
+  "lemma": "maman",
+  "expectedForm": "maman",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
   }
  },
  {
@@ -774,21 +802,6 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 17,
    "frequency": 17166.0
-  }
- },
- {
-  "id": "fr-midi",
-  "lemma": "midi",
-  "expectedForm": "midi",
-  "grade": "CP",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 1,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 528,
-   "frequency": 1902.0
   }
  },
  {
@@ -842,6 +855,21 @@
   }
  },
  {
+  "id": "fr-montre",
+  "lemma": "montre",
+  "expectedForm": "montre",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
+  }
+ },
+ {
   "id": "fr-mot",
   "lemma": "mot",
   "expectedForm": "mot",
@@ -859,6 +887,21 @@
   }
  },
  {
+  "id": "fr-moto",
+  "lemma": "moto",
+  "expectedForm": "moto",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
+  }
+ },
+ {
   "id": "fr-mur",
   "lemma": "mur",
   "expectedForm": "mur",
@@ -871,6 +914,21 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 218,
    "frequency": 4034.0
+  }
+ },
+ {
+  "id": "fr-neuf",
+  "lemma": "neuf",
+  "expectedForm": "neuf",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "ajout de David (2026-11-16)",
+   "rank": 947,
+   "frequency": 1010.0
   }
  },
  {
@@ -908,21 +966,6 @@
   }
  },
  {
-  "id": "fr-nuage",
-  "lemma": "nuage",
-  "expectedForm": "nuage",
-  "grade": "CP",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 446,
-   "frequency": 2190.0
-  }
- },
- {
   "id": "fr-nuit",
   "lemma": "nuit",
   "expectedForm": "nuit",
@@ -937,21 +980,6 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 66,
    "frequency": 9694.0
-  }
- },
- {
-  "id": "fr-odeur",
-  "lemma": "odeur",
-  "expectedForm": "odeur",
-  "grade": "CP",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 519,
-   "frequency": 1913.0
   }
  },
  {
@@ -972,9 +1000,9 @@
   }
  },
  {
-  "id": "fr-oncle",
-  "lemma": "oncle",
-  "expectedForm": "oncle",
+  "id": "fr-ombre",
+  "lemma": "ombre",
+  "expectedForm": "ombre",
   "grade": "CP",
   "category": "NC",
   "tags": [],
@@ -982,23 +1010,25 @@
   "difficulty": 3,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 522,
-   "frequency": 1909.0
+   "rank": 166,
+   "frequency": 4939.0
   }
  },
  {
-  "id": "fr-pain",
-  "lemma": "pain",
-  "expectedForm": "pain",
+  "id": "fr-pantalon",
+  "lemma": "pantalon",
+  "expectedForm": "pantalon",
   "grade": "CP",
   "category": "NC",
-  "tags": [],
+  "tags": [
+   "son-an"
+  ],
   "homophones": [],
-  "difficulty": 2,
+  "difficulty": 4,
   "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 595,
-   "frequency": 1700.0
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
   }
  },
  {
@@ -1011,9 +1041,10 @@
   "homophones": [],
   "difficulty": 1,
   "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "list": "ajout de David (2026-11-16)",
    "rank": 428,
-   "frequency": 2256.0
+   "frequency": 2256.0,
+   "alsoIn": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0"
   }
  },
  {
@@ -1029,24 +1060,6 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 320,
    "frequency": 2875.0
-  }
- },
- {
-  "id": "fr-parent",
-  "lemma": "parent",
-  "expectedForm": "parent",
-  "grade": "CP",
-  "category": "NC",
-  "tags": [
-   "son-an",
-   "lettre-muette"
-  ],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 561,
-   "frequency": 1792.0
   }
  },
  {
@@ -1087,21 +1100,6 @@
   }
  },
  {
-  "id": "fr-phrase",
-  "lemma": "phrase",
-  "expectedForm": "phrase",
-  "grade": "CP",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 596,
-   "frequency": 1697.0
-  }
- },
- {
   "id": "fr-pied",
   "lemma": "pied",
   "expectedForm": "pied",
@@ -1136,36 +1134,6 @@
   }
  },
  {
-  "id": "fr-pluie",
-  "lemma": "pluie",
-  "expectedForm": "pluie",
-  "grade": "CP",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 530,
-   "frequency": 1895.0
-  }
- },
- {
-  "id": "fr-police",
-  "lemma": "police",
-  "expectedForm": "police",
-  "grade": "CP",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 603,
-   "frequency": 1678.0
-  }
- },
- {
   "id": "fr-porte",
   "lemma": "porte",
   "expectedForm": "porte",
@@ -1181,48 +1149,66 @@
   }
  },
  {
-  "id": "fr-prince",
-  "lemma": "prince",
-  "expectedForm": "prince",
+  "id": "fr-poupee",
+  "lemma": "poupée",
+  "expectedForm": "poupée",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
+  }
+ },
+ {
+  "id": "fr-quatre",
+  "lemma": "quatre",
+  "expectedForm": "quatre",
   "grade": "CP",
   "category": "NC",
   "tags": [],
   "homophones": [],
   "difficulty": 3,
   "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 470,
-   "frequency": 2108.0
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
   }
  },
  {
-  "id": "fr-retour",
-  "lemma": "retour",
-  "expectedForm": "retour",
+  "id": "fr-robe",
+  "lemma": "robe",
+  "expectedForm": "robe",
   "grade": "CP",
   "category": "NC",
   "tags": [],
   "homophones": [],
   "difficulty": 2,
   "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 578,
-   "frequency": 1744.0
+   "list": "ajout de David (2026-11-16)",
+   "rank": 687,
+   "frequency": 1489.0,
+   "alsoIn": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0"
   }
  },
  {
-  "id": "fr-rocher",
-  "lemma": "rocher",
-  "expectedForm": "rocher",
+  "id": "fr-rose",
+  "lemma": "rose",
+  "expectedForm": "rose",
   "grade": "CP",
   "category": "NC",
   "tags": [],
   "homophones": [],
-  "difficulty": 3,
+  "difficulty": 2,
   "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 604,
-   "frequency": 1678.0
+   "list": "ajout de David (2026-11-16)",
+   "rank": 942,
+   "frequency": 1019.0
   }
  },
  {
@@ -1253,21 +1239,6 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 101,
    "frequency": 6923.0
-  }
- },
- {
-  "id": "fr-sable",
-  "lemma": "sable",
-  "expectedForm": "sable",
-  "grade": "CP",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 571,
-   "frequency": 1754.0
   }
  },
  {
@@ -1305,6 +1276,43 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 434,
    "frequency": 2234.0
+  }
+ },
+ {
+  "id": "fr-sept",
+  "lemma": "sept",
+  "expectedForm": "sept",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "homophone"
+  ],
+  "homophones": [
+   "cette",
+   "cet"
+  ],
+  "difficulty": 2,
+  "source": {
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
+  }
+ },
+ {
+  "id": "fr-six",
+  "lemma": "six",
+  "expectedForm": "six",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
   }
  },
  {
@@ -1347,9 +1355,10 @@
   "homophones": [],
   "difficulty": 2,
   "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "list": "ajout de David (2026-11-16)",
    "rank": 106,
-   "frequency": 6692.0
+   "frequency": 6692.0,
+   "alsoIn": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0"
   }
  },
  {
@@ -1365,21 +1374,6 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 256,
    "frequency": 3472.0
-  }
- },
- {
-  "id": "fr-terme",
-  "lemma": "terme",
-  "expectedForm": "terme",
-  "grade": "CP",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 600,
-   "frequency": 1687.0
   }
  },
  {
@@ -1403,6 +1397,36 @@
   }
  },
  {
+  "id": "fr-tomate",
+  "lemma": "tomate",
+  "expectedForm": "tomate",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
+  }
+ },
+ {
+  "id": "fr-tour",
+  "lemma": "tour",
+  "expectedForm": "tour",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 175,
+   "frequency": 4836.0
+  }
+ },
+ {
   "id": "fr-train",
   "lemma": "train",
   "expectedForm": "train",
@@ -1412,78 +1436,80 @@
   "homophones": [],
   "difficulty": 3,
   "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "list": "ajout de David (2026-11-16)",
    "rank": 427,
-   "frequency": 2259.0
+   "frequency": 2259.0,
+   "alsoIn": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0"
   }
  },
  {
-  "id": "fr-type",
-  "lemma": "type",
-  "expectedForm": "type",
-  "grade": "CP",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 610,
-   "frequency": 1667.0
-  }
- },
- {
-  "id": "fr-vent",
-  "lemma": "vent",
-  "expectedForm": "vent",
+  "id": "fr-trois",
+  "lemma": "trois",
+  "expectedForm": "trois",
   "grade": "CP",
   "category": "NC",
   "tags": [
-   "son-an",
    "lettre-muette"
   ],
   "homophones": [],
   "difficulty": 2,
   "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 163,
-   "frequency": 5002.0
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
   }
  },
  {
-  "id": "fr-verre",
-  "lemma": "verre",
-  "expectedForm": "verre",
-  "grade": "CP",
-  "category": "NC",
-  "tags": [
-   "double-consonne",
-   "homophone"
-  ],
-  "homophones": [
-   "vers",
-   "vert"
-  ],
-  "difficulty": 4,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 548,
-   "frequency": 1845.0
-  }
- },
- {
-  "id": "fr-vie",
-  "lemma": "vie",
-  "expectedForm": "vie",
+  "id": "fr-un",
+  "lemma": "un",
+  "expectedForm": "un",
   "grade": "CP",
   "category": "NC",
   "tags": [],
   "homophones": [],
   "difficulty": 1,
   "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 27,
-   "frequency": 15241.0
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
+  }
+ },
+ {
+  "id": "fr-vert",
+  "lemma": "vert",
+  "expectedForm": "vert",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "lettre-muette",
+   "homophone"
+  ],
+  "homophones": [
+   "vers",
+   "verre"
+  ],
+  "difficulty": 2,
+  "source": {
+   "list": "ajout de David (2026-11-16)",
+   "rank": 478,
+   "frequency": 2081.0
+  }
+ },
+ {
+  "id": "fr-video",
+  "lemma": "vidéo",
+  "expectedForm": "vidéo",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
   }
  },
  {
@@ -1504,18 +1530,20 @@
   }
  },
  {
-  "id": "fr-visage",
-  "lemma": "visage",
-  "expectedForm": "visage",
+  "id": "fr-violet",
+  "lemma": "violet",
+  "expectedForm": "violet",
   "grade": "CP",
   "category": "NC",
-  "tags": [],
+  "tags": [
+   "lettre-muette"
+  ],
   "homophones": [],
   "difficulty": 2,
   "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 124,
-   "frequency": 5954.0
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
   }
  },
  {
@@ -1539,37 +1567,20 @@
   }
  },
  {
-  "id": "fr-voyage",
-  "lemma": "voyage",
-  "expectedForm": "voyage",
-  "grade": "CP",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 502,
-   "frequency": 1996.0
-  }
- },
- {
-  "id": "fr-vue",
-  "lemma": "vue",
-  "expectedForm": "vue",
+  "id": "fr-velo",
+  "lemma": "vélo",
+  "expectedForm": "vélo",
   "grade": "CP",
   "category": "NC",
   "tags": [
-   "homophone"
+   "accent"
   ],
-  "homophones": [
-   "vu"
-  ],
-  "difficulty": 2,
+  "homophones": [],
+  "difficulty": 1,
   "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 380,
-   "frequency": 2502.0
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
   }
  },
  {
@@ -1587,6 +1598,41 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 28,
    "frequency": 14981.0
+  }
+ },
+ {
+  "id": "fr-zero",
+  "lemma": "zéro",
+  "expectedForm": "zéro",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
+  }
+ },
+ {
+  "id": "fr-ecran",
+  "lemma": "écran",
+  "expectedForm": "écran",
+  "grade": "CP",
+  "category": "NC",
+  "tags": [
+   "accent",
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
   }
  },
  {
@@ -1608,37 +1654,23 @@
   }
  },
  {
-  "id": "fr-etoile",
-  "lemma": "étoile",
-  "expectedForm": "étoile",
-  "grade": "CP",
-  "category": "NC",
-  "tags": [
-   "accent"
-  ],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 562,
-   "frequency": 1788.0
-  }
- },
- {
-  "id": "fr-affaire",
-  "lemma": "affaire",
-  "expectedForm": "affaire",
+  "id": "fr-aile",
+  "lemma": "aile",
+  "expectedForm": "aile",
   "grade": "CE1",
   "category": "NC",
   "tags": [
-   "double-consonne"
+   "homophone"
   ],
-  "homophones": [],
-  "difficulty": 5,
+  "homophones": [
+   "elle",
+   "elles"
+  ],
+  "difficulty": 3,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 158,
-   "frequency": 5179.0
+   "rank": 716,
+   "frequency": 1426.0
   }
  },
  {
@@ -1657,38 +1689,21 @@
   }
  },
  {
-  "id": "fr-annee",
-  "lemma": "année",
-  "expectedForm": "année",
+  "id": "fr-argent",
+  "lemma": "argent",
+  "expectedForm": "argent",
   "grade": "CE1",
   "category": "NC",
   "tags": [
-   "accent",
-   "double-consonne"
+   "son-an",
+   "lettre-muette"
   ],
   "homophones": [],
-  "difficulty": 4,
+  "difficulty": 3,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 121,
-   "frequency": 6004.0
-  }
- },
- {
-  "id": "fr-appeler",
-  "lemma": "appeler",
-  "expectedForm": "appeler",
-  "grade": "CE1",
-  "category": "VER",
-  "tags": [
-   "double-consonne"
-  ],
-  "homophones": [],
-  "difficulty": 4,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 102,
-   "frequency": 6892.0
+   "rank": 228,
+   "frequency": 3876.0
   }
  },
  {
@@ -1709,41 +1724,6 @@
   }
  },
  {
-  "id": "fr-arreter",
-  "lemma": "arrêter",
-  "expectedForm": "arrêter",
-  "grade": "CE1",
-  "category": "VER",
-  "tags": [
-   "accent",
-   "double-consonne"
-  ],
-  "homophones": [],
-  "difficulty": 5,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 130,
-   "frequency": 5812.0
-  }
- },
- {
-  "id": "fr-asseoir",
-  "lemma": "asseoir",
-  "expectedForm": "asseoir",
-  "grade": "CE1",
-  "category": "VER",
-  "tags": [
-   "double-consonne"
-  ],
-  "homophones": [],
-  "difficulty": 4,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 149,
-   "frequency": 5417.0
-  }
- },
- {
   "id": "fr-autre",
   "lemma": "autre",
   "expectedForm": "autre",
@@ -1758,26 +1738,6 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 30,
    "frequency": 14688.0
-  }
- },
- {
-  "id": "fr-bas",
-  "lemma": "bas",
-  "expectedForm": "bas",
-  "grade": "CE1",
-  "category": "ADJ",
-  "tags": [
-   "lettre-muette",
-   "homophone"
-  ],
-  "homophones": [
-   "bah"
-  ],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 162,
-   "frequency": 5087.0
   }
  },
  {
@@ -1798,21 +1758,6 @@
   }
  },
  {
-  "id": "fr-besoin",
-  "lemma": "besoin",
-  "expectedForm": "besoin",
-  "grade": "CE1",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 169,
-   "frequency": 4908.0
-  }
- },
- {
   "id": "fr-blanc",
   "lemma": "blanc",
   "expectedForm": "blanc",
@@ -1824,9 +1769,10 @@
   "homophones": [],
   "difficulty": 3,
   "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "list": "ajout de David (2026-11-16)",
    "rank": 114,
-   "frequency": 6246.0
+   "frequency": 6246.0,
+   "alsoIn": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0"
   }
  },
  {
@@ -1835,9 +1781,13 @@
   "expectedForm": "bon",
   "grade": "CE1",
   "category": "ADJ",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 1,
+  "tags": [
+   "homophone"
+  ],
+  "homophones": [
+   "bond"
+  ],
+  "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 51,
@@ -1845,56 +1795,104 @@
   }
  },
  {
-  "id": "fr-chambre",
-  "lemma": "chambre",
-  "expectedForm": "chambre",
+  "id": "fr-bureau",
+  "lemma": "bureau",
+  "expectedForm": "bureau",
   "grade": "CE1",
   "category": "NC",
   "tags": [
-   "son-an"
-  ],
-  "homophones": [],
-  "difficulty": 4,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 104,
-   "frequency": 6835.0
-  }
- },
- {
-  "id": "fr-cher",
-  "lemma": "cher",
-  "expectedForm": "cher",
-  "grade": "CE1",
-  "category": "ADJ",
-  "tags": [
-   "homophone"
-  ],
-  "homophones": [
-   "chair"
-  ],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 120,
-   "frequency": 6059.0
-  }
- },
- {
-  "id": "fr-corps",
-  "lemma": "corps",
-  "expectedForm": "corps",
-  "grade": "CE1",
-  "category": "NC",
-  "tags": [
-   "lettre-muette"
+   "son-o"
   ],
   "homophones": [],
   "difficulty": 3,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 109,
-   "frequency": 6425.0
+   "rank": 750,
+   "frequency": 1367.0
+  }
+ },
+ {
+  "id": "fr-chaussette",
+  "lemma": "chaussette",
+  "expectedForm": "chaussette",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [
+   "double-consonne",
+   "son-o"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
+  }
+ },
+ {
+  "id": "fr-ciel",
+  "lemma": "ciel",
+  "expectedForm": "ciel",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 91,
+   "frequency": 7433.0
+  }
+ },
+ {
+  "id": "fr-cinq",
+  "lemma": "cinq",
+  "expectedForm": "cinq",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
+  }
+ },
+ {
+  "id": "fr-classe",
+  "lemma": "classe",
+  "expectedForm": "classe",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 501,
+   "frequency": 1997.0
+  }
+ },
+ {
+  "id": "fr-cou",
+  "lemma": "cou",
+  "expectedForm": "cou",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [
+   "homophone"
+  ],
+  "homophones": [
+   "coup"
+  ],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 697,
+   "frequency": 1469.0
   }
  },
  {
@@ -1933,18 +1931,20 @@
   }
  },
  {
-  "id": "fr-dernier",
-  "lemma": "dernier",
-  "expectedForm": "dernier",
+  "id": "fr-danger",
+  "lemma": "danger",
+  "expectedForm": "danger",
   "grade": "CE1",
-  "category": "ADJ",
-  "tags": [],
+  "category": "NC",
+  "tags": [
+   "son-an"
+  ],
   "homophones": [],
   "difficulty": 3,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 107,
-   "frequency": 6650.0
+   "rank": 589,
+   "frequency": 1717.0
   }
  },
  {
@@ -1977,56 +1977,6 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 19,
    "frequency": 16795.0
-  }
- },
- {
-  "id": "fr-doute",
-  "lemma": "doute",
-  "expectedForm": "doute",
-  "grade": "CE1",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 164,
-   "frequency": 4977.0
-  }
- },
- {
-  "id": "fr-droit",
-  "lemma": "droit",
-  "expectedForm": "droit",
-  "grade": "CE1",
-  "category": "NC",
-  "tags": [
-   "lettre-muette"
-  ],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 185,
-   "frequency": 4595.0
-  }
- },
- {
-  "id": "fr-effet",
-  "lemma": "effet",
-  "expectedForm": "effet",
-  "grade": "CE1",
-  "category": "NC",
-  "tags": [
-   "double-consonne",
-   "lettre-muette"
-  ],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 129,
-   "frequency": 5829.0
   }
  },
  {
@@ -2065,20 +2015,18 @@
   }
  },
  {
-  "id": "fr-fait",
-  "lemma": "fait",
-  "expectedForm": "fait",
+  "id": "fr-espace",
+  "lemma": "espace",
+  "expectedForm": "espace",
   "grade": "CE1",
   "category": "NC",
-  "tags": [
-   "lettre-muette"
-  ],
+  "tags": [],
   "homophones": [],
   "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 154,
-   "frequency": 5343.0
+   "rank": 540,
+   "frequency": 1872.0
   }
  },
  {
@@ -2099,9 +2047,24 @@
   }
  },
  {
-  "id": "fr-famille",
-  "lemma": "famille",
-  "expectedForm": "famille",
+  "id": "fr-fil",
+  "lemma": "fil",
+  "expectedForm": "fil",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 702,
+   "frequency": 1457.0
+  }
+ },
+ {
+  "id": "fr-flamme",
+  "lemma": "flamme",
+  "expectedForm": "flamme",
   "grade": "CE1",
   "category": "NC",
   "tags": [
@@ -2111,87 +2074,8 @@
   "difficulty": 4,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 179,
-   "frequency": 4705.0
-  }
- },
- {
-  "id": "fr-figure",
-  "lemma": "figure",
-  "expectedForm": "figure",
-  "grade": "CE1",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 184,
-   "frequency": 4618.0
-  }
- },
- {
-  "id": "fr-finir",
-  "lemma": "finir",
-  "expectedForm": "finir",
-  "grade": "CE1",
-  "category": "VER",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 1,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 178,
-   "frequency": 4709.0
-  }
- },
- {
-  "id": "fr-fond",
-  "lemma": "fond",
-  "expectedForm": "fond",
-  "grade": "CE1",
-  "category": "NC",
-  "tags": [
-   "lettre-muette"
-  ],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 127,
-   "frequency": 5861.0
-  }
- },
- {
-  "id": "fr-force",
-  "lemma": "force",
-  "expectedForm": "force",
-  "grade": "CE1",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 128,
-   "frequency": 5835.0
-  }
- },
- {
-  "id": "fr-front",
-  "lemma": "front",
-  "expectedForm": "front",
-  "grade": "CE1",
-  "category": "NC",
-  "tags": [
-   "lettre-muette"
-  ],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 165,
-   "frequency": 4969.0
+   "rank": 717,
+   "frequency": 1426.0
   }
  },
  {
@@ -2209,6 +2093,21 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 92,
    "frequency": 7415.0
+  }
+ },
+ {
+  "id": "fr-genou",
+  "lemma": "genou",
+  "expectedForm": "genou",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 551,
+   "frequency": 1827.0
   }
  },
  {
@@ -2230,6 +2129,21 @@
   }
  },
  {
+  "id": "fr-herbe",
+  "lemma": "herbe",
+  "expectedForm": "herbe",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 529,
+   "frequency": 1896.0
+  }
+ },
+ {
   "id": "fr-heure",
   "lemma": "heure",
   "expectedForm": "heure",
@@ -2242,6 +2156,21 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 35,
    "frequency": 13940.0
+  }
+ },
+ {
+  "id": "fr-hiver",
+  "lemma": "hiver",
+  "expectedForm": "hiver",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 577,
+   "frequency": 1745.0
   }
  },
  {
@@ -2262,35 +2191,35 @@
   }
  },
  {
-  "id": "fr-idee",
-  "lemma": "idée",
-  "expectedForm": "idée",
+  "id": "fr-image",
+  "lemma": "image",
+  "expectedForm": "image",
   "grade": "CE1",
   "category": "NC",
-  "tags": [
-   "accent"
-  ],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 136,
-   "frequency": 5686.0
-  }
- },
- {
-  "id": "fr-jeter",
-  "lemma": "jeter",
-  "expectedForm": "jeter",
-  "grade": "CE1",
-  "category": "VER",
   "tags": [],
   "homophones": [],
   "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 108,
-   "frequency": 6610.0
+   "rank": 585,
+   "frequency": 1724.0
+  }
+ },
+ {
+  "id": "fr-jaune",
+  "lemma": "jaune",
+  "expectedForm": "jaune",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [
+   "son-o"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "ajout de David (2026-11-16)",
+   "rank": 755,
+   "frequency": 1360.0
   }
  },
  {
@@ -2309,65 +2238,54 @@
   }
  },
  {
-  "id": "fr-lever",
-  "lemma": "lever",
-  "expectedForm": "lever",
+  "id": "fr-juge",
+  "lemma": "juge",
+  "expectedForm": "juge",
   "grade": "CE1",
-  "category": "VER",
+  "category": "NC",
   "tags": [],
   "homophones": [],
   "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 145,
-   "frequency": 5494.0
+   "rank": 550,
+   "frequency": 1832.0
   }
  },
  {
-  "id": "fr-long",
-  "lemma": "long",
-  "expectedForm": "long",
-  "grade": "CE1",
-  "category": "ADJ",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 141,
-   "frequency": 5562.0
-  }
- },
- {
-  "id": "fr-lumiere",
-  "lemma": "lumière",
-  "expectedForm": "lumière",
+  "id": "fr-lego",
+  "lemma": "lego",
+  "expectedForm": "Lego",
   "grade": "CE1",
   "category": "NC",
   "tags": [
-   "accent"
+   "majuscule",
+   "marque"
   ],
   "homophones": [],
-  "difficulty": 3,
+  "difficulty": 1,
   "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 140,
-   "frequency": 5622.0
-  }
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
+  },
+  "note": "nom de marque, graphie attendue avec majuscule : à relire par un adulte"
  },
  {
-  "id": "fr-marcher",
-  "lemma": "marcher",
-  "expectedForm": "marcher",
+  "id": "fr-marron",
+  "lemma": "marron",
+  "expectedForm": "marron",
   "grade": "CE1",
-  "category": "VER",
-  "tags": [],
+  "category": "NC",
+  "tags": [
+   "double-consonne"
+  ],
   "homophones": [],
-  "difficulty": 3,
+  "difficulty": 4,
   "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 134,
-   "frequency": 5747.0
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
   }
  },
  {
@@ -2392,18 +2310,18 @@
   }
  },
  {
-  "id": "fr-milieu",
-  "lemma": "milieu",
-  "expectedForm": "milieu",
+  "id": "fr-midi",
+  "lemma": "midi",
+  "expectedForm": "midi",
   "grade": "CE1",
   "category": "NC",
   "tags": [],
   "homophones": [],
-  "difficulty": 2,
+  "difficulty": 1,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 135,
-   "frequency": 5706.0
+   "rank": 528,
+   "frequency": 1902.0
   }
  },
  {
@@ -2425,33 +2343,20 @@
   }
  },
  {
-  "id": "fr-monter",
-  "lemma": "monter",
-  "expectedForm": "monter",
+  "id": "fr-nez",
+  "lemma": "nez",
+  "expectedForm": "nez",
   "grade": "CE1",
-  "category": "VER",
-  "tags": [],
+  "category": "NC",
+  "tags": [
+   "lettre-muette"
+  ],
   "homophones": [],
-  "difficulty": 3,
+  "difficulty": 1,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 161,
-   "frequency": 5088.0
-  }
- },
- {
-  "id": "fr-montrer",
-  "lemma": "montrer",
-  "expectedForm": "montrer",
-  "grade": "CE1",
-  "category": "VER",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 115,
-   "frequency": 6195.0
+   "rank": 704,
+   "frequency": 1453.0
   }
  },
  {
@@ -2464,15 +2369,64 @@
   "homophones": [],
   "difficulty": 1,
   "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "list": "ajout de David (2026-11-16)",
    "rank": 98,
-   "frequency": 7038.0
+   "frequency": 7038.0,
+   "alsoIn": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0"
   }
  },
  {
-  "id": "fr-ombre",
-  "lemma": "ombre",
-  "expectedForm": "ombre",
+  "id": "fr-noel",
+  "lemma": "noël",
+  "expectedForm": "Noël",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [
+   "accent",
+   "majuscule"
+  ],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
+  }
+ },
+ {
+  "id": "fr-nuage",
+  "lemma": "nuage",
+  "expectedForm": "nuage",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 446,
+   "frequency": 2190.0
+  }
+ },
+ {
+  "id": "fr-odeur",
+  "lemma": "odeur",
+  "expectedForm": "odeur",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 519,
+   "frequency": 1913.0
+  }
+ },
+ {
+  "id": "fr-oncle",
+  "lemma": "oncle",
+  "expectedForm": "oncle",
   "grade": "CE1",
   "category": "NC",
   "tags": [],
@@ -2480,23 +2434,90 @@
   "difficulty": 3,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 166,
-   "frequency": 4939.0
+   "rank": 522,
+   "frequency": 1909.0
   }
  },
  {
-  "id": "fr-ouvrir",
-  "lemma": "ouvrir",
-  "expectedForm": "ouvrir",
+  "id": "fr-orange",
+  "lemma": "orange",
+  "expectedForm": "orange",
   "grade": "CE1",
-  "category": "VER",
+  "category": "NC",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
+  }
+ },
+ {
+  "id": "fr-ordinateur",
+  "lemma": "ordinateur",
+  "expectedForm": "ordinateur",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
+  }
+ },
+ {
+  "id": "fr-pain",
+  "lemma": "pain",
+  "expectedForm": "pain",
+  "grade": "CE1",
+  "category": "NC",
   "tags": [],
   "homophones": [],
   "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 118,
-   "frequency": 6169.0
+   "rank": 595,
+   "frequency": 1700.0
+  }
+ },
+ {
+  "id": "fr-palais",
+  "lemma": "palais",
+  "expectedForm": "palais",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 775,
+   "frequency": 1314.0
+  }
+ },
+ {
+  "id": "fr-parent",
+  "lemma": "parent",
+  "expectedForm": "parent",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 561,
+   "frequency": 1792.0
   }
  },
  {
@@ -2512,56 +2533,6 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 23,
    "frequency": 15814.0
-  }
- },
- {
-  "id": "fr-parole",
-  "lemma": "parole",
-  "expectedForm": "parole",
-  "grade": "CE1",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 155,
-   "frequency": 5295.0
-  }
- },
- {
-  "id": "fr-part",
-  "lemma": "part",
-  "expectedForm": "part",
-  "grade": "CE1",
-  "category": "NC",
-  "tags": [
-   "lettre-muette",
-   "homophone"
-  ],
-  "homophones": [
-   "par"
-  ],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 167,
-   "frequency": 4932.0
-  }
- },
- {
-  "id": "fr-partir",
-  "lemma": "partir",
-  "expectedForm": "partir",
-  "grade": "CE1",
-  "category": "VER",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 105,
-   "frequency": 6726.0
   }
  },
  {
@@ -2582,38 +2553,6 @@
   }
  },
  {
-  "id": "fr-pauvre",
-  "lemma": "pauvre",
-  "expectedForm": "pauvre",
-  "grade": "CE1",
-  "category": "ADJ",
-  "tags": [
-   "son-o"
-  ],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 148,
-   "frequency": 5434.0
-  }
- },
- {
-  "id": "fr-peine",
-  "lemma": "peine",
-  "expectedForm": "peine",
-  "grade": "CE1",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 174,
-   "frequency": 4859.0
-  }
- },
- {
   "id": "fr-penser",
   "lemma": "penser",
   "expectedForm": "penser",
@@ -2631,60 +2570,58 @@
   }
  },
  {
-  "id": "fr-pensee",
-  "lemma": "pensée",
-  "expectedForm": "pensée",
+  "id": "fr-phrase",
+  "lemma": "phrase",
+  "expectedForm": "phrase",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 596,
+   "frequency": 1697.0
+  }
+ },
+ {
+  "id": "fr-piscine",
+  "lemma": "piscine",
+  "expectedForm": "piscine",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
+  }
+ },
+ {
+  "id": "fr-playmobil",
+  "lemma": "playmobil",
+  "expectedForm": "Playmobil",
   "grade": "CE1",
   "category": "NC",
   "tags": [
-   "accent",
-   "son-an",
-   "homophone"
+   "majuscule",
+   "marque"
   ],
-  "homophones": [
-   "penser"
-  ],
-  "difficulty": 4,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 157,
-   "frequency": 5214.0
-  }
- },
- {
-  "id": "fr-perdre",
-  "lemma": "perdre",
-  "expectedForm": "perdre",
-  "grade": "CE1",
-  "category": "VER",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 131,
-   "frequency": 5786.0
-  }
- },
- {
-  "id": "fr-peuple",
-  "lemma": "peuple",
-  "expectedForm": "peuple",
-  "grade": "CE1",
-  "category": "NC",
-  "tags": [],
   "homophones": [],
   "difficulty": 3,
   "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 153,
-   "frequency": 5349.0
-  }
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
+  },
+  "note": "nom de marque, graphie attendue avec majuscule : à relire par un adulte"
  },
  {
-  "id": "fr-peur",
-  "lemma": "peur",
-  "expectedForm": "peur",
+  "id": "fr-pluie",
+  "lemma": "pluie",
+  "expectedForm": "pluie",
   "grade": "CE1",
   "category": "NC",
   "tags": [],
@@ -2692,14 +2629,14 @@
   "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 186,
-   "frequency": 4574.0
+   "rank": 530,
+   "frequency": 1895.0
   }
  },
  {
-  "id": "fr-place",
-  "lemma": "place",
-  "expectedForm": "place",
+  "id": "fr-police",
+  "lemma": "police",
+  "expectedForm": "police",
   "grade": "CE1",
   "category": "NC",
   "tags": [],
@@ -2707,23 +2644,25 @@
   "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 117,
-   "frequency": 6178.0
+   "rank": 603,
+   "frequency": 1678.0
   }
  },
  {
-  "id": "fr-plein",
-  "lemma": "plein",
-  "expectedForm": "plein",
+  "id": "fr-pont",
+  "lemma": "pont",
+  "expectedForm": "pont",
   "grade": "CE1",
-  "category": "ADJ",
-  "tags": [],
+  "category": "NC",
+  "tags": [
+   "lettre-muette"
+  ],
   "homophones": [],
-  "difficulty": 3,
+  "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 150,
-   "frequency": 5413.0
+   "rank": 682,
+   "frequency": 1495.0
   }
  },
  {
@@ -2774,6 +2713,21 @@
   }
  },
  {
+  "id": "fr-prince",
+  "lemma": "prince",
+  "expectedForm": "prince",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 470,
+   "frequency": 2108.0
+  }
+ },
+ {
   "id": "fr-pere",
   "lemma": "père",
   "expectedForm": "père",
@@ -2799,8 +2753,13 @@
   "expectedForm": "quel",
   "grade": "CE1",
   "category": "ADJ",
-  "tags": [],
-  "homophones": [],
+  "tags": [
+   "homophone"
+  ],
+  "homophones": [
+   "quelle",
+   "quelles"
+  ],
   "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -2809,18 +2768,18 @@
   }
  },
  {
-  "id": "fr-raison",
-  "lemma": "raison",
-  "expectedForm": "raison",
+  "id": "fr-rayon",
+  "lemma": "rayon",
+  "expectedForm": "rayon",
   "grade": "CE1",
   "category": "NC",
   "tags": [],
   "homophones": [],
-  "difficulty": 3,
+  "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 146,
-   "frequency": 5481.0
+   "rank": 627,
+   "frequency": 1602.0
   }
  },
  {
@@ -2888,18 +2847,48 @@
   }
  },
  {
-  "id": "fr-rire",
-  "lemma": "rire",
-  "expectedForm": "rire",
+  "id": "fr-rocher",
+  "lemma": "rocher",
+  "expectedForm": "rocher",
   "grade": "CE1",
-  "category": "VER",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 604,
+   "frequency": 1678.0
+  }
+ },
+ {
+  "id": "fr-sable",
+  "lemma": "sable",
+  "expectedForm": "sable",
+  "grade": "CE1",
+  "category": "NC",
   "tags": [],
   "homophones": [],
   "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 181,
-   "frequency": 4662.0
+   "rank": 571,
+   "frequency": 1754.0
+  }
+ },
+ {
+  "id": "fr-sac",
+  "lemma": "sac",
+  "expectedForm": "sac",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 751,
+   "frequency": 1367.0
   }
  },
  {
@@ -2937,21 +2926,6 @@
   }
  },
  {
-  "id": "fr-servir",
-  "lemma": "servir",
-  "expectedForm": "servir",
-  "grade": "CE1",
-  "category": "VER",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 176,
-   "frequency": 4806.0
-  }
- },
- {
   "id": "fr-seul",
   "lemma": "seul",
   "expectedForm": "seul",
@@ -2967,21 +2941,6 @@
   }
  },
  {
-  "id": "fr-sorte",
-  "lemma": "sorte",
-  "expectedForm": "sorte",
-  "grade": "CE1",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 183,
-   "frequency": 4635.0
-  }
- },
- {
   "id": "fr-sortir",
   "lemma": "sortir",
   "expectedForm": "sortir",
@@ -2994,21 +2953,6 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 77,
    "frequency": 8768.0
-  }
- },
- {
-  "id": "fr-suivre",
-  "lemma": "suivre",
-  "expectedForm": "suivre",
-  "grade": "CE1",
-  "category": "VER",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 111,
-   "frequency": 6397.0
   }
  },
  {
@@ -3048,24 +2992,29 @@
   }
  },
  {
-  "id": "fr-tomber",
-  "lemma": "tomber",
-  "expectedForm": "tomber",
+  "id": "fr-toit",
+  "lemma": "toit",
+  "expectedForm": "toit",
   "grade": "CE1",
-  "category": "VER",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 3,
+  "category": "NC",
+  "tags": [
+   "lettre-muette",
+   "homophone"
+  ],
+  "homophones": [
+   "toi"
+  ],
+  "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 116,
-   "frequency": 6182.0
+   "rank": 721,
+   "frequency": 1421.0
   }
  },
  {
-  "id": "fr-tour",
-  "lemma": "tour",
-  "expectedForm": "tour",
+  "id": "fr-trou",
+  "lemma": "trou",
+  "expectedForm": "trou",
   "grade": "CE1",
   "category": "NC",
   "tags": [],
@@ -3073,23 +3022,8 @@
   "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 175,
-   "frequency": 4836.0
-  }
- },
- {
-  "id": "fr-travail",
-  "lemma": "travail",
-  "expectedForm": "travail",
-  "grade": "CE1",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 139,
-   "frequency": 5623.0
+   "rank": 679,
+   "frequency": 1498.0
   }
  },
  {
@@ -3105,6 +3039,23 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 18,
    "frequency": 16833.0
+  }
+ },
+ {
+  "id": "fr-telephone",
+  "lemma": "téléphone",
+  "expectedForm": "téléphone",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "ajout de David (2026-11-16)",
+   "rank": null,
+   "frequency": null
   }
  },
  {
@@ -3140,6 +3091,60 @@
   }
  },
  {
+  "id": "fr-vent",
+  "lemma": "vent",
+  "expectedForm": "vent",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 163,
+   "frequency": 5002.0
+  }
+ },
+ {
+  "id": "fr-verre",
+  "lemma": "verre",
+  "expectedForm": "verre",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [
+   "double-consonne",
+   "homophone"
+  ],
+  "homophones": [
+   "vers",
+   "vert"
+  ],
+  "difficulty": 4,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 548,
+   "frequency": 1845.0
+  }
+ },
+ {
+  "id": "fr-vie",
+  "lemma": "vie",
+  "expectedForm": "vie",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 27,
+   "frequency": 15241.0
+  }
+ },
+ {
   "id": "fr-vieux",
   "lemma": "vieux",
   "expectedForm": "vieux",
@@ -3154,6 +3159,21 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 69,
    "frequency": 9515.0
+  }
+ },
+ {
+  "id": "fr-visage",
+  "lemma": "visage",
+  "expectedForm": "visage",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 124,
+   "frequency": 5954.0
   }
  },
  {
@@ -3172,6 +3192,21 @@
   }
  },
  {
+  "id": "fr-voile",
+  "lemma": "voile",
+  "expectedForm": "voile",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 769,
+   "frequency": 1325.0
+  }
+ },
+ {
   "id": "fr-voir",
   "lemma": "voir",
   "expectedForm": "voir",
@@ -3184,6 +3219,21 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 4,
    "frequency": 39659.0
+  }
+ },
+ {
+  "id": "fr-voisin",
+  "lemma": "voisin",
+  "expectedForm": "voisin",
+  "grade": "CE1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 782,
+   "frequency": 1307.0
   }
  },
  {
@@ -3202,43 +3252,43 @@
   }
  },
  {
-  "id": "fr-vrai",
-  "lemma": "vrai",
-  "expectedForm": "vrai",
+  "id": "fr-voyage",
+  "lemma": "voyage",
+  "expectedForm": "voyage",
   "grade": "CE1",
-  "category": "ADJ",
+  "category": "NC",
   "tags": [],
   "homophones": [],
   "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 152,
-   "frequency": 5385.0
+   "rank": 502,
+   "frequency": 1996.0
   }
  },
  {
-  "id": "fr-ecouter",
-  "lemma": "écouter",
-  "expectedForm": "écouter",
+  "id": "fr-ecole",
+  "lemma": "école",
+  "expectedForm": "école",
   "grade": "CE1",
-  "category": "VER",
+  "category": "NC",
   "tags": [
    "accent"
   ],
   "homophones": [],
-  "difficulty": 4,
+  "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 156,
-   "frequency": 5216.0
+   "rank": 626,
+   "frequency": 1612.0
   }
  },
  {
-  "id": "fr-ecrire",
-  "lemma": "écrire",
-  "expectedForm": "écrire",
+  "id": "fr-etoile",
+  "lemma": "étoile",
+  "expectedForm": "étoile",
   "grade": "CE1",
-  "category": "VER",
+  "category": "NC",
   "tags": [
    "accent"
   ],
@@ -3246,23 +3296,25 @@
   "difficulty": 3,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 113,
-   "frequency": 6256.0
+   "rank": 562,
+   "frequency": 1788.0
   }
  },
  {
-  "id": "fr-agir",
-  "lemma": "agir",
-  "expectedForm": "agir",
+  "id": "fr-affaire",
+  "lemma": "affaire",
+  "expectedForm": "affaire",
   "grade": "CE2",
-  "category": "VER",
-  "tags": [],
+  "category": "NC",
+  "tags": [
+   "double-consonne"
+  ],
   "homophones": [],
-  "difficulty": 1,
+  "difficulty": 5,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 239,
-   "frequency": 3753.0
+   "rank": 158,
+   "frequency": 5179.0
   }
  },
  {
@@ -3299,21 +3351,6 @@
   }
  },
  {
-  "id": "fr-ajouter",
-  "lemma": "ajouter",
-  "expectedForm": "ajouter",
-  "grade": "CE2",
-  "category": "VER",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 238,
-   "frequency": 3755.0
-  }
- },
- {
   "id": "fr-alors",
   "lemma": "alors",
   "expectedForm": "alors",
@@ -3328,6 +3365,76 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 24,
    "frequency": 15639.0
+  }
+ },
+ {
+  "id": "fr-annee",
+  "lemma": "année",
+  "expectedForm": "année",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [
+   "accent",
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 121,
+   "frequency": 6004.0
+  }
+ },
+ {
+  "id": "fr-appeler",
+  "lemma": "appeler",
+  "expectedForm": "appeler",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 102,
+   "frequency": 6892.0
+  }
+ },
+ {
+  "id": "fr-arreter",
+  "lemma": "arrêter",
+  "expectedForm": "arrêter",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [
+   "accent",
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 130,
+   "frequency": 5812.0
+  }
+ },
+ {
+  "id": "fr-asseoir",
+  "lemma": "asseoir",
+  "expectedForm": "asseoir",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 149,
+   "frequency": 5417.0
   }
  },
  {
@@ -3385,25 +3492,6 @@
   }
  },
  {
-  "id": "fr-autant",
-  "lemma": "autant",
-  "expectedForm": "autant",
-  "grade": "CE2",
-  "category": "ADV",
-  "tags": [
-   "son-o",
-   "son-an",
-   "lettre-muette"
-  ],
-  "homophones": [],
-  "difficulty": 4,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 231,
-   "frequency": 3834.0
-  }
- },
- {
   "id": "fr-autour",
   "lemma": "autour",
   "expectedForm": "autour",
@@ -3439,6 +3527,21 @@
   }
  },
  {
+  "id": "fr-besoin",
+  "lemma": "besoin",
+  "expectedForm": "besoin",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 169,
+   "frequency": 4908.0
+  }
+ },
+ {
   "id": "fr-bien",
   "lemma": "bien",
   "expectedForm": "bien",
@@ -3456,93 +3559,11 @@
   }
  },
  {
-  "id": "fr-bonheur",
-  "lemma": "bonheur",
-  "expectedForm": "bonheur",
+  "id": "fr-chambre",
+  "lemma": "chambre",
+  "expectedForm": "chambre",
   "grade": "CE2",
   "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 221,
-   "frequency": 3978.0
-  }
- },
- {
-  "id": "fr-bouche",
-  "lemma": "bouche",
-  "expectedForm": "bouche",
-  "grade": "CE2",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 4,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 274,
-   "frequency": 3266.0
-  }
- },
- {
-  "id": "fr-bout",
-  "lemma": "bout",
-  "expectedForm": "bout",
-  "grade": "CE2",
-  "category": "NC",
-  "tags": [
-   "lettre-muette",
-   "homophone"
-  ],
-  "homophones": [
-   "boue"
-  ],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 187,
-   "frequency": 4571.0
-  }
- },
- {
-  "id": "fr-cacher",
-  "lemma": "cacher",
-  "expectedForm": "cacher",
-  "grade": "CE2",
-  "category": "VER",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 226,
-   "frequency": 3920.0
-  }
- },
- {
-  "id": "fr-cause",
-  "lemma": "cause",
-  "expectedForm": "cause",
-  "grade": "CE2",
-  "category": "NC",
-  "tags": [
-   "son-o"
-  ],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 229,
-   "frequency": 3856.0
-  }
- },
- {
-  "id": "fr-changer",
-  "lemma": "changer",
-  "expectedForm": "changer",
-  "grade": "CE2",
-  "category": "VER",
   "tags": [
    "son-an"
   ],
@@ -3550,8 +3571,8 @@
   "difficulty": 4,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 275,
-   "frequency": 3258.0
+   "rank": 104,
+   "frequency": 6835.0
   }
  },
  {
@@ -3570,6 +3591,25 @@
   }
  },
  {
+  "id": "fr-cher",
+  "lemma": "cher",
+  "expectedForm": "cher",
+  "grade": "CE2",
+  "category": "ADJ",
+  "tags": [
+   "homophone"
+  ],
+  "homophones": [
+   "chair"
+  ],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 120,
+   "frequency": 6059.0
+  }
+ },
+ {
   "id": "fr-chercher",
   "lemma": "chercher",
   "expectedForm": "chercher",
@@ -3585,57 +3625,20 @@
   }
  },
  {
-  "id": "fr-comme",
-  "lemma": "comme",
-  "expectedForm": "comme",
+  "id": "fr-corps",
+  "lemma": "corps",
+  "expectedForm": "corps",
   "grade": "CE2",
-  "category": "ADV",
+  "category": "NC",
   "tags": [
-   "double-consonne",
-   "homophone"
-  ],
-  "homophones": [
-   "com"
-  ],
-  "difficulty": 4,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 203,
-   "frequency": 4324.0
-  }
- },
- {
-  "id": "fr-comment",
-  "lemma": "comment",
-  "expectedForm": "comment",
-  "grade": "CE2",
-  "category": "ADV",
-  "tags": [
-   "double-consonne",
-   "son-an",
    "lettre-muette"
   ],
   "homophones": [],
-  "difficulty": 5,
+  "difficulty": 3,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 211,
-   "frequency": 4163.0
-  }
- },
- {
-  "id": "fr-courir",
-  "lemma": "courir",
-  "expectedForm": "courir",
-  "grade": "CE2",
-  "category": "VER",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 216,
-   "frequency": 4059.0
+   "rank": 109,
+   "frequency": 6425.0
   }
  },
  {
@@ -3688,6 +3691,21 @@
   }
  },
  {
+  "id": "fr-dernier",
+  "lemma": "dernier",
+  "expectedForm": "dernier",
+  "grade": "CE2",
+  "category": "ADJ",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 107,
+   "frequency": 6650.0
+  }
+ },
+ {
   "id": "fr-dessus",
   "lemma": "dessus",
   "expectedForm": "dessus",
@@ -3706,18 +3724,18 @@
   }
  },
  {
-  "id": "fr-dormir",
-  "lemma": "dormir",
-  "expectedForm": "dormir",
+  "id": "fr-doute",
+  "lemma": "doute",
+  "expectedForm": "doute",
   "grade": "CE2",
-  "category": "VER",
+  "category": "NC",
   "tags": [],
   "homophones": [],
-  "difficulty": 2,
+  "difficulty": 3,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 260,
-   "frequency": 3438.0
+   "rank": 164,
+   "frequency": 4977.0
   }
  },
  {
@@ -3738,6 +3756,23 @@
   }
  },
  {
+  "id": "fr-droit",
+  "lemma": "droit",
+  "expectedForm": "droit",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 185,
+   "frequency": 4595.0
+  }
+ },
+ {
   "id": "fr-deja",
   "lemma": "déjà",
   "expectedForm": "déjà",
@@ -3752,6 +3787,24 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 81,
    "frequency": 8170.0
+  }
+ },
+ {
+  "id": "fr-effet",
+  "lemma": "effet",
+  "expectedForm": "effet",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [
+   "double-consonne",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 129,
+   "frequency": 5829.0
   }
  },
  {
@@ -3806,28 +3859,28 @@
   }
  },
  {
-  "id": "fr-envoyer",
-  "lemma": "envoyer",
-  "expectedForm": "envoyer",
+  "id": "fr-fait",
+  "lemma": "fait",
+  "expectedForm": "fait",
   "grade": "CE2",
-  "category": "VER",
+  "category": "NC",
   "tags": [
-   "son-an"
+   "lettre-muette"
   ],
   "homophones": [],
-  "difficulty": 3,
+  "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 255,
-   "frequency": 3482.0
+   "rank": 154,
+   "frequency": 5343.0
   }
  },
  {
-  "id": "fr-essayer",
-  "lemma": "essayer",
-  "expectedForm": "essayer",
+  "id": "fr-famille",
+  "lemma": "famille",
+  "expectedForm": "famille",
   "grade": "CE2",
-  "category": "VER",
+  "category": "NC",
   "tags": [
    "double-consonne"
   ],
@@ -3835,14 +3888,14 @@
   "difficulty": 4,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 276,
-   "frequency": 3254.0
+   "rank": 179,
+   "frequency": 4705.0
   }
  },
  {
-  "id": "fr-face",
-  "lemma": "face",
-  "expectedForm": "face",
+  "id": "fr-figure",
+  "lemma": "figure",
+  "expectedForm": "figure",
   "grade": "CE2",
   "category": "NC",
   "tags": [],
@@ -3850,31 +3903,46 @@
   "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 206,
-   "frequency": 4236.0
+   "rank": 184,
+   "frequency": 4618.0
   }
  },
  {
-  "id": "fr-facon",
-  "lemma": "façon",
-  "expectedForm": "façon",
+  "id": "fr-finir",
+  "lemma": "finir",
+  "expectedForm": "finir",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 1,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 178,
+   "frequency": 4709.0
+  }
+ },
+ {
+  "id": "fr-fond",
+  "lemma": "fond",
+  "expectedForm": "fond",
   "grade": "CE2",
   "category": "NC",
   "tags": [
-   "accent"
+   "lettre-muette"
   ],
   "homophones": [],
   "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 234,
-   "frequency": 3784.0
+   "rank": 127,
+   "frequency": 5861.0
   }
  },
  {
-  "id": "fr-forme",
-  "lemma": "forme",
-  "expectedForm": "forme",
+  "id": "fr-force",
+  "lemma": "force",
+  "expectedForm": "force",
   "grade": "CE2",
   "category": "NC",
   "tags": [],
@@ -3882,8 +3950,8 @@
   "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 236,
-   "frequency": 3763.0
+   "rank": 128,
+   "frequency": 5835.0
   }
  },
  {
@@ -3907,37 +3975,20 @@
   }
  },
  {
-  "id": "fr-francais",
-  "lemma": "français",
-  "expectedForm": "français",
+  "id": "fr-front",
+  "lemma": "front",
+  "expectedForm": "front",
   "grade": "CE2",
-  "category": "ADJ",
+  "category": "NC",
   "tags": [
-   "accent",
-   "son-an",
    "lettre-muette"
   ],
   "homophones": [],
-  "difficulty": 5,
+  "difficulty": 3,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 270,
-   "frequency": 3299.0
-  }
- },
- {
-  "id": "fr-garder",
-  "lemma": "garder",
-  "expectedForm": "garder",
-  "grade": "CE2",
-  "category": "VER",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 204,
-   "frequency": 4272.0
+   "rank": 165,
+   "frequency": 4969.0
   }
  },
  {
@@ -3958,64 +4009,6 @@
   }
  },
  {
-  "id": "fr-general",
-  "lemma": "général",
-  "expectedForm": "général",
-  "grade": "CE2",
-  "category": "ADJ",
-  "tags": [
-   "accent"
-  ],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 267,
-   "frequency": 3337.0
-  }
- },
- {
-  "id": "fr-haut",
-  "lemma": "haut",
-  "expectedForm": "haut",
-  "grade": "CE2",
-  "category": "ADJ",
-  "tags": [
-   "son-o",
-   "lettre-muette",
-   "homophone"
-  ],
-  "homophones": [
-   "au",
-   "aux",
-   "oh",
-   "eau"
-  ],
-  "difficulty": 4,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 224,
-   "frequency": 3953.0
-  }
- },
- {
-  "id": "fr-heureux",
-  "lemma": "heureux",
-  "expectedForm": "heureux",
-  "grade": "CE2",
-  "category": "ADJ",
-  "tags": [
-   "lettre-muette"
-  ],
-  "homophones": [],
-  "difficulty": 5,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 202,
-   "frequency": 4332.0
-  }
- },
- {
   "id": "fr-histoire",
   "lemma": "histoire",
   "expectedForm": "histoire",
@@ -4031,54 +4024,20 @@
   }
  },
  {
-  "id": "fr-humain",
-  "lemma": "humain",
-  "expectedForm": "humain",
-  "grade": "CE2",
-  "category": "ADJ",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 4,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 263,
-   "frequency": 3393.0
-  }
- },
- {
-  "id": "fr-instant",
-  "lemma": "instant",
-  "expectedForm": "instant",
+  "id": "fr-idee",
+  "lemma": "idée",
+  "expectedForm": "idée",
   "grade": "CE2",
   "category": "NC",
   "tags": [
-   "son-an",
-   "lettre-muette"
+   "accent"
   ],
   "homophones": [],
-  "difficulty": 4,
+  "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 233,
-   "frequency": 3807.0
-  }
- },
- {
-  "id": "fr-interet",
-  "lemma": "intérêt",
-  "expectedForm": "intérêt",
-  "grade": "CE2",
-  "category": "NC",
-  "tags": [
-   "accent",
-   "lettre-muette"
-  ],
-  "homophones": [],
-  "difficulty": 4,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 225,
-   "frequency": 3922.0
+   "rank": 136,
+   "frequency": 5686.0
   }
  },
  {
@@ -4099,18 +4058,18 @@
   }
  },
  {
-  "id": "fr-joie",
-  "lemma": "joie",
-  "expectedForm": "joie",
+  "id": "fr-jeter",
+  "lemma": "jeter",
+  "expectedForm": "jeter",
   "grade": "CE2",
-  "category": "NC",
+  "category": "VER",
   "tags": [],
   "homophones": [],
   "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 271,
-   "frequency": 3292.0
+   "rank": 108,
+   "frequency": 6610.0
   }
  },
  {
@@ -4129,6 +4088,21 @@
   }
  },
  {
+  "id": "fr-lever",
+  "lemma": "lever",
+  "expectedForm": "lever",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 145,
+   "frequency": 5494.0
+  }
+ },
+ {
   "id": "fr-lieu",
   "lemma": "lieu",
   "expectedForm": "lieu",
@@ -4141,21 +4115,6 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 188,
    "frequency": 4554.0
-  }
- },
- {
-  "id": "fr-lire",
-  "lemma": "lire",
-  "expectedForm": "lire",
-  "grade": "CE2",
-  "category": "VER",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 266,
-   "frequency": 3340.0
   }
  },
  {
@@ -4174,20 +4133,50 @@
   }
  },
  {
-  "id": "fr-manger",
-  "lemma": "manger",
-  "expectedForm": "manger",
+  "id": "fr-long",
+  "lemma": "long",
+  "expectedForm": "long",
   "grade": "CE2",
-  "category": "VER",
+  "category": "ADJ",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 141,
+   "frequency": 5562.0
+  }
+ },
+ {
+  "id": "fr-lumiere",
+  "lemma": "lumière",
+  "expectedForm": "lumière",
+  "grade": "CE2",
+  "category": "NC",
   "tags": [
-   "son-an"
+   "accent"
   ],
   "homophones": [],
   "difficulty": 3,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 213,
-   "frequency": 4127.0
+   "rank": 140,
+   "frequency": 5622.0
+  }
+ },
+ {
+  "id": "fr-marcher",
+  "lemma": "marcher",
+  "expectedForm": "marcher",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 134,
+   "frequency": 5747.0
   }
  },
  {
@@ -4244,6 +4233,21 @@
   }
  },
  {
+  "id": "fr-milieu",
+  "lemma": "milieu",
+  "expectedForm": "milieu",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 135,
+   "frequency": 5706.0
+  }
+ },
+ {
   "id": "fr-moins",
   "lemma": "moins",
   "expectedForm": "moins",
@@ -4261,20 +4265,33 @@
   }
  },
  {
-  "id": "fr-moyen",
-  "lemma": "moyen",
-  "expectedForm": "moyen",
+  "id": "fr-monter",
+  "lemma": "monter",
+  "expectedForm": "monter",
   "grade": "CE2",
-  "category": "NC",
-  "tags": [
-   "son-an"
-  ],
+  "category": "VER",
+  "tags": [],
   "homophones": [],
-  "difficulty": 1,
+  "difficulty": 3,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 259,
-   "frequency": 3444.0
+   "rank": 161,
+   "frequency": 5088.0
+  }
+ },
+ {
+  "id": "fr-montrer",
+  "lemma": "montrer",
+  "expectedForm": "montrer",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 115,
+   "frequency": 6195.0
   }
  },
  {
@@ -4295,82 +4312,18 @@
   }
  },
  {
-  "id": "fr-nature",
-  "lemma": "nature",
-  "expectedForm": "nature",
-  "grade": "CE2",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 268,
-   "frequency": 3335.0
-  }
- },
- {
-  "id": "fr-offrir",
-  "lemma": "offrir",
-  "expectedForm": "offrir",
-  "grade": "CE2",
-  "category": "VER",
-  "tags": [
-   "double-consonne"
-  ],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 243,
-   "frequency": 3671.0
-  }
- },
- {
-  "id": "fr-ordre",
-  "lemma": "ordre",
-  "expectedForm": "ordre",
-  "grade": "CE2",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 219,
-   "frequency": 4028.0
-  }
- },
- {
-  "id": "fr-oublier",
-  "lemma": "oublier",
-  "expectedForm": "oublier",
+  "id": "fr-ouvrir",
+  "lemma": "ouvrir",
+  "expectedForm": "ouvrir",
   "grade": "CE2",
   "category": "VER",
   "tags": [],
   "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 222,
-   "frequency": 3965.0
-  }
- },
- {
-  "id": "fr-paix",
-  "lemma": "paix",
-  "expectedForm": "paix",
-  "grade": "CE2",
-  "category": "NC",
-  "tags": [
-   "lettre-muette"
-  ],
-  "homophones": [],
   "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 258,
-   "frequency": 3446.0
+   "rank": 118,
+   "frequency": 6169.0
   }
  },
  {
@@ -4391,22 +4344,121 @@
   }
  },
  {
-  "id": "fr-partie",
-  "lemma": "partie",
-  "expectedForm": "partie",
+  "id": "fr-parole",
+  "lemma": "parole",
+  "expectedForm": "parole",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 155,
+   "frequency": 5295.0
+  }
+ },
+ {
+  "id": "fr-part",
+  "lemma": "part",
+  "expectedForm": "part",
   "grade": "CE2",
   "category": "NC",
   "tags": [
+   "lettre-muette",
    "homophone"
   ],
   "homophones": [
-   "parti"
+   "par"
   ],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 167,
+   "frequency": 4932.0
+  }
+ },
+ {
+  "id": "fr-partir",
+  "lemma": "partir",
+  "expectedForm": "partir",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 105,
+   "frequency": 6726.0
+  }
+ },
+ {
+  "id": "fr-pauvre",
+  "lemma": "pauvre",
+  "expectedForm": "pauvre",
+  "grade": "CE2",
+  "category": "ADJ",
+  "tags": [
+   "son-o"
+  ],
+  "homophones": [],
   "difficulty": 3,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 205,
-   "frequency": 4271.0
+   "rank": 148,
+   "frequency": 5434.0
+  }
+ },
+ {
+  "id": "fr-peine",
+  "lemma": "peine",
+  "expectedForm": "peine",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 174,
+   "frequency": 4859.0
+  }
+ },
+ {
+  "id": "fr-pensee",
+  "lemma": "pensée",
+  "expectedForm": "pensée",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [
+   "accent",
+   "son-an",
+   "homophone"
+  ],
+  "homophones": [
+   "penser"
+  ],
+  "difficulty": 4,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 157,
+   "frequency": 5214.0
+  }
+ },
+ {
+  "id": "fr-perdre",
+  "lemma": "perdre",
+  "expectedForm": "perdre",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 131,
+   "frequency": 5786.0
   }
  },
  {
@@ -4427,9 +4479,9 @@
   }
  },
  {
-  "id": "fr-plaisir",
-  "lemma": "plaisir",
-  "expectedForm": "plaisir",
+  "id": "fr-peuple",
+  "lemma": "peuple",
+  "expectedForm": "peuple",
   "grade": "CE2",
   "category": "NC",
   "tags": [],
@@ -4437,8 +4489,53 @@
   "difficulty": 3,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 245,
-   "frequency": 3656.0
+   "rank": 153,
+   "frequency": 5349.0
+  }
+ },
+ {
+  "id": "fr-peur",
+  "lemma": "peur",
+  "expectedForm": "peur",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 186,
+   "frequency": 4574.0
+  }
+ },
+ {
+  "id": "fr-place",
+  "lemma": "place",
+  "expectedForm": "place",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 117,
+   "frequency": 6178.0
+  }
+ },
+ {
+  "id": "fr-plein",
+  "lemma": "plein",
+  "expectedForm": "plein",
+  "grade": "CE2",
+  "category": "ADJ",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 150,
+   "frequency": 5413.0
   }
  },
  {
@@ -4479,56 +4576,6 @@
   }
  },
  {
-  "id": "fr-poser",
-  "lemma": "poser",
-  "expectedForm": "poser",
-  "grade": "CE2",
-  "category": "VER",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 230,
-   "frequency": 3841.0
-  }
- },
- {
-  "id": "fr-pourtant",
-  "lemma": "pourtant",
-  "expectedForm": "pourtant",
-  "grade": "CE2",
-  "category": "ADV",
-  "tags": [
-   "son-an",
-   "lettre-muette"
-  ],
-  "homophones": [],
-  "difficulty": 4,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 273,
-   "frequency": 3271.0
-  }
- },
- {
-  "id": "fr-pousser",
-  "lemma": "pousser",
-  "expectedForm": "pousser",
-  "grade": "CE2",
-  "category": "VER",
-  "tags": [
-   "double-consonne"
-  ],
-  "homophones": [],
-  "difficulty": 5,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 261,
-   "frequency": 3422.0
-  }
- },
- {
   "id": "fr-presque",
   "lemma": "presque",
   "expectedForm": "presque",
@@ -4541,23 +4588,6 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 137,
    "frequency": 5662.0
-  }
- },
- {
-  "id": "fr-profond",
-  "lemma": "profond",
-  "expectedForm": "profond",
-  "grade": "CE2",
-  "category": "ADJ",
-  "tags": [
-   "lettre-muette"
-  ],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 227,
-   "frequency": 3878.0
   }
  },
  {
@@ -4576,37 +4606,18 @@
   }
  },
  {
-  "id": "fr-quitter",
-  "lemma": "quitter",
-  "expectedForm": "quitter",
+  "id": "fr-raison",
+  "lemma": "raison",
+  "expectedForm": "raison",
   "grade": "CE2",
-  "category": "VER",
-  "tags": [
-   "double-consonne"
-  ],
+  "category": "NC",
+  "tags": [],
   "homophones": [],
-  "difficulty": 5,
+  "difficulty": 3,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 210,
-   "frequency": 4180.0
-  }
- },
- {
-  "id": "fr-rappeler",
-  "lemma": "rappeler",
-  "expectedForm": "rappeler",
-  "grade": "CE2",
-  "category": "VER",
-  "tags": [
-   "double-consonne"
-  ],
-  "homophones": [],
-  "difficulty": 4,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 265,
-   "frequency": 3362.0
+   "rank": 146,
+   "frequency": 5481.0
   }
  },
  {
@@ -4640,6 +4651,21 @@
   }
  },
  {
+  "id": "fr-rire",
+  "lemma": "rire",
+  "expectedForm": "rire",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 181,
+   "frequency": 4662.0
+  }
+ },
+ {
   "id": "fr-rouge",
   "lemma": "rouge",
   "expectedForm": "rouge",
@@ -4649,9 +4675,10 @@
   "homophones": [],
   "difficulty": 3,
   "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "list": "ajout de David (2026-11-16)",
    "rank": 248,
-   "frequency": 3576.0
+   "frequency": 3576.0,
+   "alsoIn": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0"
   }
  },
  {
@@ -4672,18 +4699,18 @@
   }
  },
  {
-  "id": "fr-service",
-  "lemma": "service",
-  "expectedForm": "service",
+  "id": "fr-servir",
+  "lemma": "servir",
+  "expectedForm": "servir",
   "grade": "CE2",
-  "category": "NC",
+  "category": "VER",
   "tags": [],
   "homophones": [],
-  "difficulty": 3,
+  "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 254,
-   "frequency": 3498.0
+   "rank": 176,
+   "frequency": 4806.0
   }
  },
  {
@@ -4701,6 +4728,21 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 189,
    "frequency": 4541.0
+  }
+ },
+ {
+  "id": "fr-sorte",
+  "lemma": "sorte",
+  "expectedForm": "sorte",
+  "grade": "CE2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 183,
+   "frequency": 4635.0
   }
  },
  {
@@ -4722,35 +4764,18 @@
   }
  },
  {
-  "id": "fr-suite",
-  "lemma": "suite",
-  "expectedForm": "suite",
+  "id": "fr-suivre",
+  "lemma": "suivre",
+  "expectedForm": "suivre",
   "grade": "CE2",
-  "category": "NC",
+  "category": "VER",
   "tags": [],
   "homophones": [],
   "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 246,
-   "frequency": 3639.0
-  }
- },
- {
-  "id": "fr-surtout",
-  "lemma": "surtout",
-  "expectedForm": "surtout",
-  "grade": "CE2",
-  "category": "ADV",
-  "tags": [
-   "lettre-muette"
-  ],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 244,
-   "frequency": 3669.0
+   "rank": 111,
+   "frequency": 6397.0
   }
  },
  {
@@ -4775,35 +4800,18 @@
   }
  },
  {
-  "id": "fr-tard",
-  "lemma": "tard",
-  "expectedForm": "tard",
-  "grade": "CE2",
-  "category": "ADV",
-  "tags": [
-   "lettre-muette"
-  ],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 272,
-   "frequency": 3281.0
-  }
- },
- {
-  "id": "fr-tirer",
-  "lemma": "tirer",
-  "expectedForm": "tirer",
+  "id": "fr-tomber",
+  "lemma": "tomber",
+  "expectedForm": "tomber",
   "grade": "CE2",
   "category": "VER",
   "tags": [],
   "homophones": [],
-  "difficulty": 2,
+  "difficulty": 3,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 235,
-   "frequency": 3778.0
+   "rank": 116,
+   "frequency": 6182.0
   }
  },
  {
@@ -4839,20 +4847,18 @@
   }
  },
  {
-  "id": "fr-travers",
-  "lemma": "travers",
-  "expectedForm": "travers",
+  "id": "fr-travail",
+  "lemma": "travail",
+  "expectedForm": "travail",
   "grade": "CE2",
   "category": "NC",
-  "tags": [
-   "lettre-muette"
-  ],
+  "tags": [],
   "homophones": [],
   "difficulty": 3,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 232,
-   "frequency": 3825.0
+   "rank": 139,
+   "frequency": 5623.0
   }
  },
  {
@@ -4894,50 +4900,52 @@
   }
  },
  {
-  "id": "fr-vite",
-  "lemma": "vite",
-  "expectedForm": "vite",
+  "id": "fr-vrai",
+  "lemma": "vrai",
+  "expectedForm": "vrai",
   "grade": "CE2",
-  "category": "ADV",
+  "category": "ADJ",
   "tags": [],
   "homophones": [],
   "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 257,
-   "frequency": 3465.0
+   "rank": 152,
+   "frequency": 5385.0
   }
  },
  {
-  "id": "fr-voiture",
-  "lemma": "voiture",
-  "expectedForm": "voiture",
+  "id": "fr-ecouter",
+  "lemma": "écouter",
+  "expectedForm": "écouter",
   "grade": "CE2",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 264,
-   "frequency": 3387.0
-  }
- },
- {
-  "id": "fr-accepter",
-  "lemma": "accepter",
-  "expectedForm": "accepter",
-  "grade": "CM1",
   "category": "VER",
   "tags": [
-   "double-consonne"
+   "accent"
   ],
   "homophones": [],
   "difficulty": 4,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 361,
-   "frequency": 2585.0
+   "rank": 156,
+   "frequency": 5216.0
+  }
+ },
+ {
+  "id": "fr-ecrire",
+  "lemma": "écrire",
+  "expectedForm": "écrire",
+  "grade": "CE2",
+  "category": "VER",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 113,
+   "frequency": 6256.0
   }
  },
  {
@@ -4953,6 +4961,21 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 310,
    "frequency": 2942.0
+  }
+ },
+ {
+  "id": "fr-ajouter",
+  "lemma": "ajouter",
+  "expectedForm": "ajouter",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 238,
+   "frequency": 3755.0
   }
  },
  {
@@ -4985,24 +5008,6 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 171,
    "frequency": 4904.0
-  }
- },
- {
-  "id": "fr-apparaitre",
-  "lemma": "apparaître",
-  "expectedForm": "apparaître",
-  "grade": "CM1",
-  "category": "VER",
-  "tags": [
-   "accent",
-   "double-consonne"
-  ],
-  "homophones": [],
-  "difficulty": 5,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 353,
-   "frequency": 2645.0
   }
  },
  {
@@ -5041,37 +5046,22 @@
   }
  },
  {
-  "id": "fr-avancer",
-  "lemma": "avancer",
-  "expectedForm": "avancer",
+  "id": "fr-autant",
+  "lemma": "autant",
+  "expectedForm": "autant",
   "grade": "CM1",
-  "category": "VER",
+  "category": "ADV",
   "tags": [
-   "son-an"
-  ],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 369,
-   "frequency": 2544.0
-  }
- },
- {
-  "id": "fr-battre",
-  "lemma": "battre",
-  "expectedForm": "battre",
-  "grade": "CM1",
-  "category": "VER",
-  "tags": [
-   "double-consonne"
+   "son-o",
+   "son-an",
+   "lettre-muette"
   ],
   "homophones": [],
   "difficulty": 4,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 347,
-   "frequency": 2678.0
+   "rank": 231,
+   "frequency": 3834.0
   }
  },
  {
@@ -5109,6 +5099,68 @@
   }
  },
  {
+  "id": "fr-bonheur",
+  "lemma": "bonheur",
+  "expectedForm": "bonheur",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 221,
+   "frequency": 3978.0
+  }
+ },
+ {
+  "id": "fr-bouche",
+  "lemma": "bouche",
+  "expectedForm": "bouche",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 274,
+   "frequency": 3266.0
+  }
+ },
+ {
+  "id": "fr-cacher",
+  "lemma": "cacher",
+  "expectedForm": "cacher",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 226,
+   "frequency": 3920.0
+  }
+ },
+ {
+  "id": "fr-cause",
+  "lemma": "cause",
+  "expectedForm": "cause",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [
+   "son-o"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 229,
+   "frequency": 3856.0
+  }
+ },
+ {
   "id": "fr-causer",
   "lemma": "causer",
   "expectedForm": "causer",
@@ -5123,23 +5175,6 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 322,
    "frequency": 2825.0
-  }
- },
- {
-  "id": "fr-centre",
-  "lemma": "centre",
-  "expectedForm": "centre",
-  "grade": "CM1",
-  "category": "NC",
-  "tags": [
-   "son-an"
-  ],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 358,
-   "frequency": 2610.0
   }
  },
  {
@@ -5182,6 +5217,43 @@
   }
  },
  {
+  "id": "fr-changer",
+  "lemma": "changer",
+  "expectedForm": "changer",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 275,
+   "frequency": 3258.0
+  }
+ },
+ {
+  "id": "fr-comme",
+  "lemma": "comme",
+  "expectedForm": "comme",
+  "grade": "CM1",
+  "category": "ADV",
+  "tags": [
+   "double-consonne",
+   "homophone"
+  ],
+  "homophones": [
+   "com"
+  ],
+  "difficulty": 4,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 203,
+   "frequency": 4324.0
+  }
+ },
+ {
   "id": "fr-commencer",
   "lemma": "commencer",
   "expectedForm": "commencer",
@@ -5197,6 +5269,25 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 132,
    "frequency": 5783.0
+  }
+ },
+ {
+  "id": "fr-comment",
+  "lemma": "comment",
+  "expectedForm": "comment",
+  "grade": "CM1",
+  "category": "ADV",
+  "tags": [
+   "double-consonne",
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 211,
+   "frequency": 4163.0
   }
  },
  {
@@ -5248,21 +5339,6 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 278,
    "frequency": 3248.0
-  }
- },
- {
-  "id": "fr-conduire",
-  "lemma": "conduire",
-  "expectedForm": "conduire",
-  "grade": "CM1",
-  "category": "VER",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 4,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 335,
-   "frequency": 2735.0
   }
  },
  {
@@ -5329,56 +5405,18 @@
   }
  },
  {
-  "id": "fr-cours",
-  "lemma": "cours",
-  "expectedForm": "cours",
-  "grade": "CM1",
-  "category": "NC",
-  "tags": [
-   "lettre-muette",
-   "homophone"
-  ],
-  "homophones": [
-   "cour",
-   "court"
-  ],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 327,
-   "frequency": 2797.0
-  }
- },
- {
-  "id": "fr-debout",
-  "lemma": "debout",
-  "expectedForm": "debout",
-  "grade": "CM1",
-  "category": "ADV",
-  "tags": [
-   "lettre-muette"
-  ],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 375,
-   "frequency": 2515.0
-  }
- },
- {
-  "id": "fr-demeurer",
-  "lemma": "demeurer",
-  "expectedForm": "demeurer",
+  "id": "fr-courir",
+  "lemma": "courir",
+  "expectedForm": "courir",
   "grade": "CM1",
   "category": "VER",
   "tags": [],
   "homophones": [],
-  "difficulty": 4,
+  "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 340,
-   "frequency": 2709.0
+   "rank": 216,
+   "frequency": 4059.0
   }
  },
  {
@@ -5399,11 +5437,26 @@
   }
  },
  {
-  "id": "fr-entier",
-  "lemma": "entier",
-  "expectedForm": "entier",
+  "id": "fr-dormir",
+  "lemma": "dormir",
+  "expectedForm": "dormir",
   "grade": "CM1",
-  "category": "ADJ",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 260,
+   "frequency": 3438.0
+  }
+ },
+ {
+  "id": "fr-envoyer",
+  "lemma": "envoyer",
+  "expectedForm": "envoyer",
+  "grade": "CM1",
+  "category": "VER",
   "tags": [
    "son-an"
   ],
@@ -5411,8 +5464,8 @@
   "difficulty": 3,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 338,
-   "frequency": 2717.0
+   "rank": 255,
+   "frequency": 3482.0
   }
  },
  {
@@ -5430,6 +5483,23 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 281,
    "frequency": 3238.0
+  }
+ },
+ {
+  "id": "fr-essayer",
+  "lemma": "essayer",
+  "expectedForm": "essayer",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 276,
+   "frequency": 3254.0
   }
  },
  {
@@ -5480,6 +5550,23 @@
   }
  },
  {
+  "id": "fr-facon",
+  "lemma": "façon",
+  "expectedForm": "façon",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 234,
+   "frequency": 3784.0
+  }
+ },
+ {
   "id": "fr-fenetre",
   "lemma": "fenêtre",
   "expectedForm": "fenêtre",
@@ -5497,18 +5584,18 @@
   }
  },
  {
-  "id": "fr-fermer",
-  "lemma": "fermer",
-  "expectedForm": "fermer",
+  "id": "fr-forme",
+  "lemma": "forme",
+  "expectedForm": "forme",
   "grade": "CM1",
-  "category": "VER",
+  "category": "NC",
   "tags": [],
   "homophones": [],
   "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 360,
-   "frequency": 2590.0
+   "rank": 236,
+   "frequency": 3763.0
   }
  },
  {
@@ -5524,6 +5611,25 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 303,
    "frequency": 3010.0
+  }
+ },
+ {
+  "id": "fr-francais",
+  "lemma": "français",
+  "expectedForm": "français",
+  "grade": "CM1",
+  "category": "ADJ",
+  "tags": [
+   "accent",
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 270,
+   "frequency": 3299.0
   }
  },
  {
@@ -5561,18 +5667,18 @@
   }
  },
  {
-  "id": "fr-garde",
-  "lemma": "garde",
-  "expectedForm": "garde",
+  "id": "fr-garder",
+  "lemma": "garder",
+  "expectedForm": "garder",
   "grade": "CM1",
-  "category": "NC",
+  "category": "VER",
   "tags": [],
   "homophones": [],
   "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 362,
-   "frequency": 2575.0
+   "rank": 204,
+   "frequency": 4272.0
   }
  },
  {
@@ -5593,50 +5699,52 @@
   }
  },
  {
-  "id": "fr-geste",
-  "lemma": "geste",
-  "expectedForm": "geste",
+  "id": "fr-general",
+  "lemma": "général",
+  "expectedForm": "général",
   "grade": "CM1",
-  "category": "NC",
-  "tags": [],
+  "category": "ADJ",
+  "tags": [
+   "accent"
+  ],
   "homophones": [],
   "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 345,
-   "frequency": 2697.0
+   "rank": 267,
+   "frequency": 3337.0
   }
  },
  {
-  "id": "fr-groupe",
-  "lemma": "groupe",
-  "expectedForm": "groupe",
+  "id": "fr-heureux",
+  "lemma": "heureux",
+  "expectedForm": "heureux",
   "grade": "CM1",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 357,
-   "frequency": 2612.0
-  }
- },
- {
-  "id": "fr-honneur",
-  "lemma": "honneur",
-  "expectedForm": "honneur",
-  "grade": "CM1",
-  "category": "NC",
+  "category": "ADJ",
   "tags": [
-   "double-consonne"
+   "lettre-muette"
   ],
   "homophones": [],
   "difficulty": 5,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 359,
-   "frequency": 2602.0
+   "rank": 202,
+   "frequency": 4332.0
+  }
+ },
+ {
+  "id": "fr-humain",
+  "lemma": "humain",
+  "expectedForm": "humain",
+  "grade": "CM1",
+  "category": "ADJ",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 263,
+   "frequency": 3393.0
   }
  },
  {
@@ -5658,18 +5766,39 @@
   }
  },
  {
-  "id": "fr-journal",
-  "lemma": "journal",
-  "expectedForm": "journal",
+  "id": "fr-instant",
+  "lemma": "instant",
+  "expectedForm": "instant",
   "grade": "CM1",
   "category": "NC",
-  "tags": [],
+  "tags": [
+   "son-an",
+   "lettre-muette"
+  ],
   "homophones": [],
-  "difficulty": 3,
+  "difficulty": 4,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 344,
-   "frequency": 2699.0
+   "rank": 233,
+   "frequency": 3807.0
+  }
+ },
+ {
+  "id": "fr-interet",
+  "lemma": "intérêt",
+  "expectedForm": "intérêt",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [
+   "accent",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 225,
+   "frequency": 3922.0
   }
  },
  {
@@ -5709,6 +5838,23 @@
   }
  },
  {
+  "id": "fr-manger",
+  "lemma": "manger",
+  "expectedForm": "manger",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 213,
+   "frequency": 4127.0
+  }
+ },
+ {
   "id": "fr-maniere",
   "lemma": "manière",
   "expectedForm": "manière",
@@ -5723,73 +5869,6 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 306,
    "frequency": 2961.0
-  }
- },
- {
-  "id": "fr-manquer",
-  "lemma": "manquer",
-  "expectedForm": "manquer",
-  "grade": "CM1",
-  "category": "VER",
-  "tags": [
-   "son-an"
-  ],
-  "homophones": [],
-  "difficulty": 4,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 331,
-   "frequency": 2787.0
-  }
- },
- {
-  "id": "fr-mauvais",
-  "lemma": "mauvais",
-  "expectedForm": "mauvais",
-  "grade": "CM1",
-  "category": "ADJ",
-  "tags": [
-   "son-o",
-   "lettre-muette"
-  ],
-  "homophones": [],
-  "difficulty": 4,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 363,
-   "frequency": 2570.0
-  }
- },
- {
-  "id": "fr-million",
-  "lemma": "million",
-  "expectedForm": "million",
-  "grade": "CM1",
-  "category": "NC",
-  "tags": [
-   "double-consonne"
-  ],
-  "homophones": [],
-  "difficulty": 4,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 355,
-   "frequency": 2633.0
-  }
- },
- {
-  "id": "fr-montagne",
-  "lemma": "montagne",
-  "expectedForm": "montagne",
-  "grade": "CM1",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 4,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 324,
-   "frequency": 2818.0
   }
  },
  {
@@ -5811,55 +5890,35 @@
   }
  },
  {
-  "id": "fr-naitre",
-  "lemma": "naître",
-  "expectedForm": "naître",
+  "id": "fr-moyen",
+  "lemma": "moyen",
+  "expectedForm": "moyen",
   "grade": "CM1",
-  "category": "VER",
+  "category": "NC",
   "tags": [
-   "accent"
+   "son-an"
   ],
   "homophones": [],
-  "difficulty": 4,
+  "difficulty": 1,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 365,
-   "frequency": 2555.0
+   "rank": 259,
+   "frequency": 3444.0
   }
  },
  {
-  "id": "fr-nommer",
-  "lemma": "nommer",
-  "expectedForm": "nommer",
+  "id": "fr-nature",
+  "lemma": "nature",
+  "expectedForm": "nature",
   "grade": "CM1",
-  "category": "VER",
-  "tags": [
-   "double-consonne"
-  ],
+  "category": "NC",
+  "tags": [],
   "homophones": [],
-  "difficulty": 4,
+  "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 333,
-   "frequency": 2754.0
-  }
- },
- {
-  "id": "fr-necessaire",
-  "lemma": "nécessaire",
-  "expectedForm": "nécessaire",
-  "grade": "CM1",
-  "category": "ADJ",
-  "tags": [
-   "accent",
-   "double-consonne"
-  ],
-  "homophones": [],
-  "difficulty": 5,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 351,
-   "frequency": 2654.0
+   "rank": 268,
+   "frequency": 3335.0
   }
  },
  {
@@ -5895,6 +5954,38 @@
   }
  },
  {
+  "id": "fr-offrir",
+  "lemma": "offrir",
+  "expectedForm": "offrir",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 243,
+   "frequency": 3671.0
+  }
+ },
+ {
+  "id": "fr-ordre",
+  "lemma": "ordre",
+  "expectedForm": "ordre",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 219,
+   "frequency": 4028.0
+  }
+ },
+ {
   "id": "fr-oreille",
   "lemma": "oreille",
   "expectedForm": "oreille",
@@ -5909,6 +6000,21 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 298,
    "frequency": 3063.0
+  }
+ },
+ {
+  "id": "fr-oublier",
+  "lemma": "oublier",
+  "expectedForm": "oublier",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 222,
+   "frequency": 3965.0
   }
  },
  {
@@ -5944,20 +6050,22 @@
   }
  },
  {
-  "id": "fr-partout",
-  "lemma": "partout",
-  "expectedForm": "partout",
+  "id": "fr-partie",
+  "lemma": "partie",
+  "expectedForm": "partie",
   "grade": "CM1",
-  "category": "ADV",
+  "category": "NC",
   "tags": [
-   "lettre-muette"
+   "homophone"
   ],
-  "homophones": [],
+  "homophones": [
+   "parti"
+  ],
   "difficulty": 3,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 326,
-   "frequency": 2810.0
+   "rank": 205,
+   "frequency": 4271.0
   }
  },
  {
@@ -5993,20 +6101,18 @@
   }
  },
  {
-  "id": "fr-piece",
-  "lemma": "pièce",
-  "expectedForm": "pièce",
+  "id": "fr-plaisir",
+  "lemma": "plaisir",
+  "expectedForm": "plaisir",
   "grade": "CM1",
   "category": "NC",
-  "tags": [
-   "accent"
-  ],
+  "tags": [],
   "homophones": [],
-  "difficulty": 2,
+  "difficulty": 3,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 323,
-   "frequency": 2820.0
+   "rank": 245,
+   "frequency": 3656.0
   }
  },
  {
@@ -6022,6 +6128,21 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 294,
    "frequency": 3096.0
+  }
+ },
+ {
+  "id": "fr-poser",
+  "lemma": "poser",
+  "expectedForm": "poser",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 230,
+   "frequency": 3841.0
   }
  },
  {
@@ -6042,37 +6163,55 @@
   }
  },
  {
-  "id": "fr-probleme",
-  "lemma": "problème",
-  "expectedForm": "problème",
+  "id": "fr-pourtant",
+  "lemma": "pourtant",
+  "expectedForm": "pourtant",
   "grade": "CM1",
-  "category": "NC",
+  "category": "ADV",
   "tags": [
-   "accent"
+   "son-an",
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 273,
+   "frequency": 3271.0
+  }
+ },
+ {
+  "id": "fr-pousser",
+  "lemma": "pousser",
+  "expectedForm": "pousser",
+  "grade": "CM1",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 261,
+   "frequency": 3422.0
+  }
+ },
+ {
+  "id": "fr-profond",
+  "lemma": "profond",
+  "expectedForm": "profond",
+  "grade": "CM1",
+  "category": "ADJ",
+  "tags": [
+   "lettre-muette"
   ],
   "homophones": [],
   "difficulty": 3,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 367,
-   "frequency": 2547.0
-  }
- },
- {
-  "id": "fr-projet",
-  "lemma": "projet",
-  "expectedForm": "projet",
-  "grade": "CM1",
-  "category": "NC",
-  "tags": [
-   "lettre-muette"
-  ],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 339,
-   "frequency": 2715.0
+   "rank": 227,
+   "frequency": 3878.0
   }
  },
  {
@@ -6124,24 +6263,26 @@
   }
  },
  {
-  "id": "fr-raconter",
-  "lemma": "raconter",
-  "expectedForm": "raconter",
+  "id": "fr-quitter",
+  "lemma": "quitter",
+  "expectedForm": "quitter",
   "grade": "CM1",
   "category": "VER",
-  "tags": [],
+  "tags": [
+   "double-consonne"
+  ],
   "homophones": [],
-  "difficulty": 4,
+  "difficulty": 5,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 328,
-   "frequency": 2794.0
+   "rank": 210,
+   "frequency": 4180.0
   }
  },
  {
-  "id": "fr-remettre",
-  "lemma": "remettre",
-  "expectedForm": "remettre",
+  "id": "fr-rappeler",
+  "lemma": "rappeler",
+  "expectedForm": "rappeler",
   "grade": "CM1",
   "category": "VER",
   "tags": [
@@ -6151,8 +6292,8 @@
   "difficulty": 4,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 343,
-   "frequency": 2700.0
+   "rank": 265,
+   "frequency": 3362.0
   }
  },
  {
@@ -6207,21 +6348,6 @@
   }
  },
  {
-  "id": "fr-reste",
-  "lemma": "reste",
-  "expectedForm": "reste",
-  "grade": "CM1",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 372,
-   "frequency": 2530.0
-  }
- },
- {
   "id": "fr-retourner",
   "lemma": "retourner",
   "expectedForm": "retourner",
@@ -6269,38 +6395,6 @@
   }
  },
  {
-  "id": "fr-saisir",
-  "lemma": "saisir",
-  "expectedForm": "saisir",
-  "grade": "CM1",
-  "category": "VER",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 337,
-   "frequency": 2729.0
-  }
- },
- {
-  "id": "fr-sauver",
-  "lemma": "sauver",
-  "expectedForm": "sauver",
-  "grade": "CM1",
-  "category": "VER",
-  "tags": [
-   "son-o"
-  ],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 366,
-   "frequency": 2554.0
-  }
- },
- {
   "id": "fr-sentiment",
   "lemma": "sentiment",
   "expectedForm": "sentiment",
@@ -6319,20 +6413,18 @@
   }
  },
  {
-  "id": "fr-serrer",
-  "lemma": "serrer",
-  "expectedForm": "serrer",
+  "id": "fr-service",
+  "lemma": "service",
+  "expectedForm": "service",
   "grade": "CM1",
-  "category": "VER",
-  "tags": [
-   "double-consonne"
-  ],
+  "category": "NC",
+  "tags": [],
   "homophones": [],
-  "difficulty": 4,
+  "difficulty": 3,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 329,
-   "frequency": 2792.0
+   "rank": 254,
+   "frequency": 3498.0
   }
  },
  {
@@ -6351,53 +6443,6 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 142,
    "frequency": 5544.0
-  }
- },
- {
-  "id": "fr-simple",
-  "lemma": "simple",
-  "expectedForm": "simple",
-  "grade": "CM1",
-  "category": "ADJ",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 341,
-   "frequency": 2704.0
-  }
- },
- {
-  "id": "fr-situation",
-  "lemma": "situation",
-  "expectedForm": "situation",
-  "grade": "CM1",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 349,
-   "frequency": 2664.0
-  }
- },
- {
-  "id": "fr-siecle",
-  "lemma": "siècle",
-  "expectedForm": "siècle",
-  "grade": "CM1",
-  "category": "NC",
-  "tags": [
-   "accent"
-  ],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 352,
-   "frequency": 2647.0
   }
  },
  {
@@ -6433,38 +6478,6 @@
   }
  },
  {
-  "id": "fr-songer",
-  "lemma": "songer",
-  "expectedForm": "songer",
-  "grade": "CM1",
-  "category": "VER",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 330,
-   "frequency": 2792.0
-  }
- },
- {
-  "id": "fr-souffrir",
-  "lemma": "souffrir",
-  "expectedForm": "souffrir",
-  "grade": "CM1",
-  "category": "VER",
-  "tags": [
-   "double-consonne"
-  ],
-  "homophones": [],
-  "difficulty": 4,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 354,
-   "frequency": 2635.0
-  }
- },
- {
   "id": "fr-sourire",
   "lemma": "sourire",
   "expectedForm": "sourire",
@@ -6480,35 +6493,50 @@
   }
  },
  {
-  "id": "fr-tendre",
-  "lemma": "tendre",
-  "expectedForm": "tendre",
+  "id": "fr-suite",
+  "lemma": "suite",
+  "expectedForm": "suite",
   "grade": "CM1",
-  "category": "VER",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 246,
+   "frequency": 3639.0
+  }
+ },
+ {
+  "id": "fr-surtout",
+  "lemma": "surtout",
+  "expectedForm": "surtout",
+  "grade": "CM1",
+  "category": "ADV",
   "tags": [
-   "son-an"
+   "lettre-muette"
   ],
   "homophones": [],
   "difficulty": 3,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 364,
-   "frequency": 2569.0
+   "rank": 244,
+   "frequency": 3669.0
   }
  },
  {
-  "id": "fr-toucher",
-  "lemma": "toucher",
-  "expectedForm": "toucher",
+  "id": "fr-tirer",
+  "lemma": "tirer",
+  "expectedForm": "tirer",
   "grade": "CM1",
   "category": "VER",
   "tags": [],
   "homophones": [],
-  "difficulty": 4,
+  "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 348,
-   "frequency": 2670.0
+   "rank": 235,
+   "frequency": 3778.0
   }
  },
  {
@@ -6529,18 +6557,36 @@
   }
  },
  {
-  "id": "fr-traverser",
-  "lemma": "traverser",
-  "expectedForm": "traverser",
+  "id": "fr-travers",
+  "lemma": "travers",
+  "expectedForm": "travers",
   "grade": "CM1",
-  "category": "VER",
-  "tags": [],
+  "category": "NC",
+  "tags": [
+   "lettre-muette"
+  ],
   "homophones": [],
   "difficulty": 3,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 373,
-   "frequency": 2522.0
+   "rank": 232,
+   "frequency": 3825.0
+  }
+ },
+ {
+  "id": "fr-voiture",
+  "lemma": "voiture",
+  "expectedForm": "voiture",
+  "grade": "CM1",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "ajout de David (2026-11-16)",
+   "rank": 264,
+   "frequency": 3387.0,
+   "alsoIn": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0"
   }
  },
  {
@@ -6562,58 +6608,9 @@
   }
  },
  {
-  "id": "fr-etude",
-  "lemma": "étude",
-  "expectedForm": "étude",
-  "grade": "CM1",
-  "category": "NC",
-  "tags": [
-   "accent"
-  ],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 342,
-   "frequency": 2701.0
-  }
- },
- {
-  "id": "fr-acheter",
-  "lemma": "acheter",
-  "expectedForm": "acheter",
-  "grade": "CM2",
-  "category": "VER",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 460,
-   "frequency": 2134.0
-  }
- },
- {
-  "id": "fr-annoncer",
-  "lemma": "annoncer",
-  "expectedForm": "annoncer",
-  "grade": "CM2",
-  "category": "VER",
-  "tags": [
-   "double-consonne"
-  ],
-  "homophones": [],
-  "difficulty": 5,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 455,
-   "frequency": 2146.0
-  }
- },
- {
-  "id": "fr-appartenir",
-  "lemma": "appartenir",
-  "expectedForm": "appartenir",
+  "id": "fr-accepter",
+  "lemma": "accepter",
+  "expectedForm": "accepter",
   "grade": "CM2",
   "category": "VER",
   "tags": [
@@ -6623,8 +6620,26 @@
   "difficulty": 4,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 483,
-   "frequency": 2069.0
+   "rank": 361,
+   "frequency": 2585.0
+  }
+ },
+ {
+  "id": "fr-apparaitre",
+  "lemma": "apparaître",
+  "expectedForm": "apparaître",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "accent",
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 353,
+   "frequency": 2645.0
   }
  },
  {
@@ -6660,23 +6675,6 @@
   }
  },
  {
-  "id": "fr-assurer",
-  "lemma": "assurer",
-  "expectedForm": "assurer",
-  "grade": "CM2",
-  "category": "VER",
-  "tags": [
-   "double-consonne"
-  ],
-  "homophones": [],
-  "difficulty": 4,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 467,
-   "frequency": 2118.0
-  }
- },
- {
   "id": "fr-atteindre",
   "lemma": "atteindre",
   "expectedForm": "atteindre",
@@ -6694,56 +6692,37 @@
   }
  },
  {
-  "id": "fr-aussitot",
-  "lemma": "aussitôt",
-  "expectedForm": "aussitôt",
+  "id": "fr-avancer",
+  "lemma": "avancer",
+  "expectedForm": "avancer",
   "grade": "CM2",
-  "category": "ADV",
+  "category": "VER",
   "tags": [
-   "accent",
-   "double-consonne",
-   "son-o",
-   "lettre-muette"
+   "son-an"
   ],
   "homophones": [],
-  "difficulty": 5,
+  "difficulty": 3,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 484,
-   "frequency": 2068.0
+   "rank": 369,
+   "frequency": 2544.0
   }
  },
  {
-  "id": "fr-avenir",
-  "lemma": "avenir",
-  "expectedForm": "avenir",
+  "id": "fr-battre",
+  "lemma": "battre",
+  "expectedForm": "battre",
   "grade": "CM2",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 456,
-   "frequency": 2143.0
-  }
- },
- {
-  "id": "fr-beaute",
-  "lemma": "beauté",
-  "expectedForm": "beauté",
-  "grade": "CM2",
-  "category": "NC",
+  "category": "VER",
   "tags": [
-   "accent",
-   "son-o"
+   "double-consonne"
   ],
   "homophones": [],
   "difficulty": 4,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 490,
-   "frequency": 2054.0
+   "rank": 347,
+   "frequency": 2678.0
   }
  },
  {
@@ -6764,20 +6743,20 @@
   }
  },
  {
-  "id": "fr-caractere",
-  "lemma": "caractère",
-  "expectedForm": "caractère",
+  "id": "fr-centre",
+  "lemma": "centre",
+  "expectedForm": "centre",
   "grade": "CM2",
   "category": "NC",
   "tags": [
-   "accent"
+   "son-an"
   ],
   "homophones": [],
-  "difficulty": 4,
+  "difficulty": 3,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 505,
-   "frequency": 1953.0
+   "rank": 358,
+   "frequency": 2610.0
   }
  },
  {
@@ -6862,18 +6841,18 @@
   }
  },
  {
-  "id": "fr-condition",
-  "lemma": "condition",
-  "expectedForm": "condition",
+  "id": "fr-conduire",
+  "lemma": "conduire",
+  "expectedForm": "conduire",
   "grade": "CM2",
-  "category": "NC",
+  "category": "VER",
   "tags": [],
   "homophones": [],
   "difficulty": 4,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 500,
-   "frequency": 2006.0
+   "rank": 335,
+   "frequency": 2735.0
   }
  },
  {
@@ -6892,20 +6871,24 @@
   }
  },
  {
-  "id": "fr-considerer",
-  "lemma": "considérer",
-  "expectedForm": "considérer",
+  "id": "fr-cours",
+  "lemma": "cours",
+  "expectedForm": "cours",
   "grade": "CM2",
-  "category": "VER",
+  "category": "NC",
   "tags": [
-   "accent"
+   "lettre-muette",
+   "homophone"
   ],
-  "homophones": [],
-  "difficulty": 5,
+  "homophones": [
+   "cour",
+   "court"
+  ],
+  "difficulty": 3,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 474,
-   "frequency": 2092.0
+   "rank": 327,
+   "frequency": 2797.0
   }
  },
  {
@@ -6924,9 +6907,26 @@
   }
  },
  {
-  "id": "fr-craindre",
-  "lemma": "craindre",
-  "expectedForm": "craindre",
+  "id": "fr-debout",
+  "lemma": "debout",
+  "expectedForm": "debout",
+  "grade": "CM2",
+  "category": "ADV",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 375,
+   "frequency": 2515.0
+  }
+ },
+ {
+  "id": "fr-demeurer",
+  "lemma": "demeurer",
+  "expectedForm": "demeurer",
   "grade": "CM2",
   "category": "VER",
   "tags": [],
@@ -6934,38 +6934,8 @@
   "difficulty": 4,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 492,
-   "frequency": 2047.0
-  }
- },
- {
-  "id": "fr-demain",
-  "lemma": "demain",
-  "expectedForm": "demain",
-  "grade": "CM2",
-  "category": "ADV",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 481,
-   "frequency": 2076.0
-  }
- },
- {
-  "id": "fr-deviner",
-  "lemma": "deviner",
-  "expectedForm": "deviner",
-  "grade": "CM2",
-  "category": "VER",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 472,
-   "frequency": 2095.0
+   "rank": 340,
+   "frequency": 2709.0
   }
  },
  {
@@ -7074,23 +7044,6 @@
   }
  },
  {
-  "id": "fr-emporter",
-  "lemma": "emporter",
-  "expectedForm": "emporter",
-  "grade": "CM2",
-  "category": "VER",
-  "tags": [
-   "son-an"
-  ],
-  "homophones": [],
-  "difficulty": 4,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 494,
-   "frequency": 2035.0
-  }
- },
- {
   "id": "fr-empecher",
   "lemma": "empêcher",
   "expectedForm": "empêcher",
@@ -7127,28 +7080,11 @@
   }
  },
  {
-  "id": "fr-ensemble",
-  "lemma": "ensemble",
-  "expectedForm": "ensemble",
+  "id": "fr-entier",
+  "lemma": "entier",
+  "expectedForm": "entier",
   "grade": "CM2",
-  "category": "ADV",
-  "tags": [
-   "son-an"
-  ],
-  "homophones": [],
-  "difficulty": 4,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 506,
-   "frequency": 1953.0
-  }
- },
- {
-  "id": "fr-ensuite",
-  "lemma": "ensuite",
-  "expectedForm": "ensuite",
-  "grade": "CM2",
-  "category": "ADV",
+  "category": "ADJ",
   "tags": [
    "son-an"
   ],
@@ -7156,8 +7092,8 @@
   "difficulty": 3,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 495,
-   "frequency": 2032.0
+   "rank": 338,
+   "frequency": 2717.0
   }
  },
  {
@@ -7178,20 +7114,18 @@
   }
  },
  {
-  "id": "fr-expression",
-  "lemma": "expression",
-  "expectedForm": "expression",
+  "id": "fr-fermer",
+  "lemma": "fermer",
+  "expectedForm": "fermer",
   "grade": "CM2",
-  "category": "NC",
-  "tags": [
-   "double-consonne"
-  ],
+  "category": "VER",
+  "tags": [],
   "homophones": [],
-  "difficulty": 4,
+  "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 503,
-   "frequency": 1990.0
+   "rank": 360,
+   "frequency": 2590.0
   }
  },
  {
@@ -7227,24 +7161,6 @@
   }
  },
  {
-  "id": "fr-foret",
-  "lemma": "forêt",
-  "expectedForm": "forêt",
-  "grade": "CM2",
-  "category": "NC",
-  "tags": [
-   "accent",
-   "lettre-muette"
-  ],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 466,
-   "frequency": 2122.0
-  }
- },
- {
   "id": "fr-gagner",
   "lemma": "gagner",
   "expectedForm": "gagner",
@@ -7257,6 +7173,36 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 383,
    "frequency": 2485.0
+  }
+ },
+ {
+  "id": "fr-garde",
+  "lemma": "garde",
+  "expectedForm": "garde",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 362,
+   "frequency": 2575.0
+  }
+ },
+ {
+  "id": "fr-geste",
+  "lemma": "geste",
+  "expectedForm": "geste",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 345,
+   "frequency": 2697.0
   }
  },
  {
@@ -7277,40 +7223,35 @@
   }
  },
  {
-  "id": "fr-hasard",
-  "lemma": "hasard",
-  "expectedForm": "hasard",
+  "id": "fr-groupe",
+  "lemma": "groupe",
+  "expectedForm": "groupe",
   "grade": "CM2",
   "category": "NC",
-  "tags": [
-   "lettre-muette"
-  ],
+  "tags": [],
   "homophones": [],
   "difficulty": 3,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 498,
-   "frequency": 2017.0
+   "rank": 357,
+   "frequency": 2612.0
   }
  },
  {
-  "id": "fr-hotel",
-  "lemma": "hôtel",
-  "expectedForm": "hôtel",
+  "id": "fr-honneur",
+  "lemma": "honneur",
+  "expectedForm": "honneur",
   "grade": "CM2",
   "category": "NC",
   "tags": [
-   "accent",
-   "homophone"
+   "double-consonne"
   ],
-  "homophones": [
-   "autel"
-  ],
-  "difficulty": 3,
+  "homophones": [],
+  "difficulty": 5,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 464,
-   "frequency": 2125.0
+   "rank": 359,
+   "frequency": 2602.0
   }
  },
  {
@@ -7332,20 +7273,18 @@
   }
  },
  {
-  "id": "fr-interieur",
-  "lemma": "intérieur",
-  "expectedForm": "intérieur",
+  "id": "fr-journal",
+  "lemma": "journal",
+  "expectedForm": "journal",
   "grade": "CM2",
   "category": "NC",
-  "tags": [
-   "accent"
-  ],
+  "tags": [],
   "homophones": [],
-  "difficulty": 4,
+  "difficulty": 3,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 488,
-   "frequency": 2061.0
+   "rank": 344,
+   "frequency": 2699.0
   }
  },
  {
@@ -7433,21 +7372,6 @@
   }
  },
  {
-  "id": "fr-libre",
-  "lemma": "libre",
-  "expectedForm": "libre",
-  "grade": "CM2",
-  "category": "ADJ",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 2,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 454,
-   "frequency": 2147.0
-  }
- },
- {
   "id": "fr-levre",
   "lemma": "lèvre",
   "expectedForm": "lèvre",
@@ -7482,6 +7406,23 @@
   }
  },
  {
+  "id": "fr-manquer",
+  "lemma": "manquer",
+  "expectedForm": "manquer",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 331,
+   "frequency": 2787.0
+  }
+ },
+ {
   "id": "fr-marche",
   "lemma": "marche",
   "expectedForm": "marche",
@@ -7512,18 +7453,21 @@
   }
  },
  {
-  "id": "fr-mener",
-  "lemma": "mener",
-  "expectedForm": "mener",
+  "id": "fr-mauvais",
+  "lemma": "mauvais",
+  "expectedForm": "mauvais",
   "grade": "CM2",
-  "category": "VER",
-  "tags": [],
+  "category": "ADJ",
+  "tags": [
+   "son-o",
+   "lettre-muette"
+  ],
   "homophones": [],
-  "difficulty": 2,
+  "difficulty": 4,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 461,
-   "frequency": 2133.0
+   "rank": 363,
+   "frequency": 2570.0
   }
  },
  {
@@ -7542,35 +7486,35 @@
   }
  },
  {
-  "id": "fr-moindre",
-  "lemma": "moindre",
-  "expectedForm": "moindre",
-  "grade": "CM2",
-  "category": "ADJ",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 480,
-   "frequency": 2077.0
-  }
- },
- {
-  "id": "fr-medecin",
-  "lemma": "médecin",
-  "expectedForm": "médecin",
+  "id": "fr-million",
+  "lemma": "million",
+  "expectedForm": "million",
   "grade": "CM2",
   "category": "NC",
   "tags": [
-   "accent"
+   "double-consonne"
   ],
   "homophones": [],
   "difficulty": 4,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 473,
-   "frequency": 2093.0
+   "rank": 355,
+   "frequency": 2633.0
+  }
+ },
+ {
+  "id": "fr-montagne",
+  "lemma": "montagne",
+  "expectedForm": "montagne",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 324,
+   "frequency": 2818.0
   }
  },
  {
@@ -7591,18 +7535,55 @@
   }
  },
  {
-  "id": "fr-naturel",
-  "lemma": "naturel",
-  "expectedForm": "naturel",
+  "id": "fr-naitre",
+  "lemma": "naître",
+  "expectedForm": "naître",
   "grade": "CM2",
-  "category": "ADJ",
-  "tags": [],
+  "category": "VER",
+  "tags": [
+   "accent"
+  ],
   "homophones": [],
-  "difficulty": 2,
+  "difficulty": 4,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 497,
-   "frequency": 2020.0
+   "rank": 365,
+   "frequency": 2555.0
+  }
+ },
+ {
+  "id": "fr-nommer",
+  "lemma": "nommer",
+  "expectedForm": "nommer",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 333,
+   "frequency": 2754.0
+  }
+ },
+ {
+  "id": "fr-necessaire",
+  "lemma": "nécessaire",
+  "expectedForm": "nécessaire",
+  "grade": "CM2",
+  "category": "ADJ",
+  "tags": [
+   "accent",
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 5,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 351,
+   "frequency": 2654.0
   }
  },
  {
@@ -7620,6 +7601,40 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 420,
    "frequency": 2288.0
+  }
+ },
+ {
+  "id": "fr-partout",
+  "lemma": "partout",
+  "expectedForm": "partout",
+  "grade": "CM2",
+  "category": "ADV",
+  "tags": [
+   "lettre-muette"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 326,
+   "frequency": 2810.0
+  }
+ },
+ {
+  "id": "fr-piece",
+  "lemma": "pièce",
+  "expectedForm": "pièce",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 323,
+   "frequency": 2820.0
   }
  },
  {
@@ -7671,21 +7686,6 @@
   }
  },
  {
-  "id": "fr-pourquoi",
-  "lemma": "pourquoi",
-  "expectedForm": "pourquoi",
-  "grade": "CM2",
-  "category": "ADV",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 4,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 463,
-   "frequency": 2131.0
-  }
- },
- {
   "id": "fr-prier",
   "lemma": "prier",
   "expectedForm": "prier",
@@ -7698,6 +7698,23 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 426,
    "frequency": 2265.0
+  }
+ },
+ {
+  "id": "fr-probleme",
+  "lemma": "problème",
+  "expectedForm": "problème",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 367,
+   "frequency": 2547.0
   }
  },
  {
@@ -7716,20 +7733,20 @@
   }
  },
  {
-  "id": "fr-preparer",
-  "lemma": "préparer",
-  "expectedForm": "préparer",
+  "id": "fr-projet",
+  "lemma": "projet",
+  "expectedForm": "projet",
   "grade": "CM2",
-  "category": "VER",
+  "category": "NC",
   "tags": [
-   "accent"
+   "lettre-muette"
   ],
   "homophones": [],
-  "difficulty": 3,
+  "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 462,
-   "frequency": 2133.0
+   "rank": 339,
+   "frequency": 2715.0
   }
  },
  {
@@ -7751,54 +7768,18 @@
   }
  },
  {
-  "id": "fr-present",
-  "lemma": "présent",
-  "expectedForm": "présent",
+  "id": "fr-raconter",
+  "lemma": "raconter",
+  "expectedForm": "raconter",
   "grade": "CM2",
-  "category": "NC",
-  "tags": [
-   "accent",
-   "son-an",
-   "lettre-muette"
-  ],
-  "homophones": [],
-  "difficulty": 4,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 504,
-   "frequency": 1955.0
-  }
- },
- {
-  "id": "fr-qualite",
-  "lemma": "qualité",
-  "expectedForm": "qualité",
-  "grade": "CM2",
-  "category": "NC",
-  "tags": [
-   "accent"
-  ],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 469,
-   "frequency": 2116.0
-  }
- },
- {
-  "id": "fr-quelque",
-  "lemma": "quelque",
-  "expectedForm": "quelque",
-  "grade": "CM2",
-  "category": "ADV",
+  "category": "VER",
   "tags": [],
   "homophones": [],
   "difficulty": 4,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 477,
-   "frequency": 2083.0
+   "rank": 328,
+   "frequency": 2794.0
   }
  },
  {
@@ -7853,21 +7834,20 @@
   }
  },
  {
-  "id": "fr-representer",
-  "lemma": "représenter",
-  "expectedForm": "représenter",
+  "id": "fr-remettre",
+  "lemma": "remettre",
+  "expectedForm": "remettre",
   "grade": "CM2",
   "category": "VER",
   "tags": [
-   "accent",
-   "son-an"
+   "double-consonne"
   ],
   "homophones": [],
-  "difficulty": 5,
+  "difficulty": 4,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 486,
-   "frequency": 2067.0
+   "rank": 343,
+   "frequency": 2700.0
   }
  },
  {
@@ -7889,66 +7869,67 @@
   }
  },
  {
-  "id": "fr-riche",
-  "lemma": "riche",
-  "expectedForm": "riche",
+  "id": "fr-reste",
+  "lemma": "reste",
+  "expectedForm": "reste",
   "grade": "CM2",
-  "category": "ADJ",
+  "category": "NC",
   "tags": [],
   "homophones": [],
-  "difficulty": 3,
+  "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 491,
-   "frequency": 2048.0
+   "rank": 372,
+   "frequency": 2530.0
   }
  },
  {
-  "id": "fr-resultat",
-  "lemma": "résultat",
-  "expectedForm": "résultat",
+  "id": "fr-saisir",
+  "lemma": "saisir",
+  "expectedForm": "saisir",
   "grade": "CM2",
-  "category": "NC",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 2,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 337,
+   "frequency": 2729.0
+  }
+ },
+ {
+  "id": "fr-sauver",
+  "lemma": "sauver",
+  "expectedForm": "sauver",
+  "grade": "CM2",
+  "category": "VER",
   "tags": [
-   "accent",
-   "lettre-muette"
+   "son-o"
   ],
   "homophones": [],
   "difficulty": 3,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 458,
-   "frequency": 2136.0
+   "rank": 366,
+   "frequency": 2554.0
   }
  },
  {
-  "id": "fr-seigneur",
-  "lemma": "seigneur",
-  "expectedForm": "seigneur",
+  "id": "fr-serrer",
+  "lemma": "serrer",
+  "expectedForm": "serrer",
   "grade": "CM2",
-  "category": "NC",
-  "tags": [],
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
   "homophones": [],
   "difficulty": 4,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 476,
-   "frequency": 2086.0
-  }
- },
- {
-  "id": "fr-semaine",
-  "lemma": "semaine",
-  "expectedForm": "semaine",
-  "grade": "CM2",
-  "category": "NC",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 465,
-   "frequency": 2124.0
+   "rank": 329,
+   "frequency": 2792.0
   }
  },
  {
@@ -7967,6 +7948,53 @@
   }
  },
  {
+  "id": "fr-simple",
+  "lemma": "simple",
+  "expectedForm": "simple",
+  "grade": "CM2",
+  "category": "ADJ",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 341,
+   "frequency": 2704.0
+  }
+ },
+ {
+  "id": "fr-situation",
+  "lemma": "situation",
+  "expectedForm": "situation",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 349,
+   "frequency": 2664.0
+  }
+ },
+ {
+  "id": "fr-siecle",
+  "lemma": "siècle",
+  "expectedForm": "siècle",
+  "grade": "CM2",
+  "category": "NC",
+  "tags": [
+   "accent"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 352,
+   "frequency": 2647.0
+  }
+ },
+ {
   "id": "fr-social",
   "lemma": "social",
   "expectedForm": "social",
@@ -7979,6 +8007,38 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 377,
    "frequency": 2510.0
+  }
+ },
+ {
+  "id": "fr-songer",
+  "lemma": "songer",
+  "expectedForm": "songer",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 330,
+   "frequency": 2792.0
+  }
+ },
+ {
+  "id": "fr-souffrir",
+  "lemma": "souffrir",
+  "expectedForm": "souffrir",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "double-consonne"
+  ],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 354,
+   "frequency": 2635.0
   }
  },
  {
@@ -8031,6 +8091,23 @@
   }
  },
  {
+  "id": "fr-tendre",
+  "lemma": "tendre",
+  "expectedForm": "tendre",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [
+   "son-an"
+  ],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 364,
+   "frequency": 2569.0
+  }
+ },
+ {
   "id": "fr-terrible",
   "lemma": "terrible",
   "expectedForm": "terrible",
@@ -8045,6 +8122,36 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 438,
    "frequency": 2218.0
+  }
+ },
+ {
+  "id": "fr-toucher",
+  "lemma": "toucher",
+  "expectedForm": "toucher",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 4,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 348,
+   "frequency": 2670.0
+  }
+ },
+ {
+  "id": "fr-traverser",
+  "lemma": "traverser",
+  "expectedForm": "traverser",
+  "grade": "CM2",
+  "category": "VER",
+  "tags": [],
+  "homophones": [],
+  "difficulty": 3,
+  "source": {
+   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
+   "rank": 373,
+   "frequency": 2522.0
   }
  },
  {
@@ -8063,21 +8170,6 @@
   }
  },
  {
-  "id": "fr-tromper",
-  "lemma": "tromper",
-  "expectedForm": "tromper",
-  "grade": "CM2",
-  "category": "VER",
-  "tags": [],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 487,
-   "frequency": 2065.0
-  }
- },
- {
   "id": "fr-valeur",
   "lemma": "valeur",
   "expectedForm": "valeur",
@@ -8090,23 +8182,6 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 430,
    "frequency": 2252.0
-  }
- },
- {
-  "id": "fr-vendre",
-  "lemma": "vendre",
-  "expectedForm": "vendre",
-  "grade": "CM2",
-  "category": "VER",
-  "tags": [
-   "son-an"
-  ],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 489,
-   "frequency": 2056.0
   }
  },
  {
@@ -8125,23 +8200,6 @@
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
    "rank": 435,
    "frequency": 2226.0
-  }
- },
- {
-  "id": "fr-volonte",
-  "lemma": "volonté",
-  "expectedForm": "volonté",
-  "grade": "CM2",
-  "category": "NC",
-  "tags": [
-   "accent"
-  ],
-  "homophones": [],
-  "difficulty": 3,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 475,
-   "frequency": 2087.0
   }
  },
  {
@@ -8180,57 +8238,20 @@
   }
  },
  {
-  "id": "fr-egalement",
-  "lemma": "également",
-  "expectedForm": "également",
+  "id": "fr-etude",
+  "lemma": "étude",
+  "expectedForm": "étude",
   "grade": "CM2",
-  "category": "ADV",
-  "tags": [
-   "accent",
-   "son-an",
-   "lettre-muette"
-  ],
-  "homophones": [],
-  "difficulty": 4,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 471,
-   "frequency": 2100.0
-  }
- },
- {
-  "id": "fr-elever",
-  "lemma": "élever",
-  "expectedForm": "élever",
-  "grade": "CM2",
-  "category": "VER",
+  "category": "NC",
   "tags": [
    "accent"
   ],
   "homophones": [],
-  "difficulty": 3,
+  "difficulty": 2,
   "source": {
    "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 459,
-   "frequency": 2135.0
-  }
- },
- {
-  "id": "fr-etrange",
-  "lemma": "étrange",
-  "expectedForm": "étrange",
-  "grade": "CM2",
-  "category": "ADJ",
-  "tags": [
-   "accent",
-   "son-an"
-  ],
-  "homophones": [],
-  "difficulty": 4,
-  "source": {
-   "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-   "rank": 493,
-   "frequency": 2046.0
+   "rank": 342,
+   "frequency": 2701.0
   }
  }
 ]

@@ -2,9 +2,13 @@
 """Reporte dans le dépôt les décisions exportées par la page de relecture (scripts/dictee/validation/).
 
 Pour chaque mot :
-- « valider » : la relecture est inscrite dans `relectures.json` avec la forme, la phrase et l'explication vues ;
-- « corriger » : la phrase et l'explication corrigées remplacent celles de `phrases.json`, et la relecture porte ces
-  textes corrigés (une forme corrigée du mot y est aussi gardée) ;
+- « valider » : les quatre relectures (orthographe, pédagogie, contexte, audio) sont approuvées dans
+  `relectures.json`, pour la forme, la phrase, l'astuce et les versions audio que l'adulte a vues et entendues ; les
+  signalements audio du mot (`audio-non-regression.json`) passent à « ok », écoutés par lui, pour cette version ;
+- « corriger » : la phrase et l'explication corrigées remplacent celles de `phrases.json` ; orthographe, pédagogie et
+  contexte sont approuvés ; l'audio ne l'est que si ni le mot ni la phrase n'ont changé (sinon il sera régénéré, puis
+  réécouté) ;
+- « audio_faux » : les signalements du mot passent à « failed » pour la version entendue : à régénérer, puis réécouter ;
 - « retirer » : le mot entre dans `mots-retires.json` ; selectionner_mots.py prend le suivant de la liste.
 
 Puis : selectionner_mots.py (seulement s'il y a des retraits), assembler_catalogue.py, generer_audio.py (phrases
@@ -24,6 +28,7 @@ RACINE = ICI.parents[1]
 PHRASES = ICI / 'phrases.json'
 RELECTURES = ICI / 'relectures.json'
 RETIRES = ICI / 'mots-retires.json'
+SIGNALEMENTS = ICI / 'audio-non-regression.json'
 CATALOGUE = RACINE / 'public/dictee/catalogue.json'
 
 
@@ -45,7 +50,15 @@ def main() -> None:
     par_lemme = {r['lemma']: r for r in phrases}
     relus = json.loads(RELECTURES.read_text(encoding='utf-8')) if RELECTURES.exists() else {}
     retires = set(json.loads(RETIRES.read_text(encoding='utf-8'))) if RETIRES.exists() else set()
-    compte = {'valider': 0, 'corriger': 0, 'retirer': 0, 'inconnu': 0}
+    signalements = json.loads(SIGNALEMENTS.read_text(encoding='utf-8')) if SIGNALEMENTS.exists() else {'cases': []}
+
+    def ecoute(ident: str, statut: str, quand: str) -> None:
+        for cas in signalements['cases']:
+            if cas['id'] == ident:
+                version = mots[ident]['audio']['wordVersion'] if cas['kind'] == 'mot' else mots[ident]['audio']['contextVersion']
+                cas['listening'] = {'status': statut, 'by': qui, 'date': quand[:10], 'audioVersion': version, 'note': None}
+
+    compte = {'valider': 0, 'corriger': 0, 'retirer': 0, 'audio_faux': 0, 'inconnu': 0}
     for ident, d in sorted(lot['decisions'].items()):
         w = mots.get(ident)
         if not w or w['lemma'] != d.get('lemma'):
@@ -56,6 +69,8 @@ def main() -> None:
         if action == 'retirer':
             retires.add(w['lemma'])
             relus.pop(w['lemma'], None)
+        elif action == 'audio_faux':
+            ecoute(ident, 'failed', d.get('at', ''))
         elif action in ('valider', 'corriger'):
             forme, phrase, expl = w['expectedForm'], w['contextSentence'], w['explanation']
             if action == 'corriger':
@@ -65,7 +80,12 @@ def main() -> None:
                 if ph not in phrases:
                     phrases.append(ph)
                 ph.update({'contextSentence': phrase, 'explanation': expl, 'generatedBy': {'by': f'{qui}, corrected at review', 'date': d.get('at', '')[:10]}})
-            relus[w['lemma']] = {'by': qui, 'at': d.get('at', ''), 'expectedForm': forme, 'contextSentence': phrase, 'explanation': expl}
+            audio_inchange = forme == w['expectedForm'] and phrase == w['contextSentence']
+            revue = {'orthography': 'approved', 'pedagogy': 'approved', 'context': 'approved', 'audio': 'approved' if audio_inchange else 'pending'}
+            relus[w['lemma']] = {'by': qui, 'at': d.get('at', ''), 'expectedForm': forme, 'contextSentence': phrase, 'explanation': expl,
+                                 'review': revue, 'wordVersion': w['audio']['wordVersion'], 'contextVersion': w['audio']['contextVersion']}
+            if action == 'valider':
+                ecoute(ident, 'ok', d.get('at', ''))
         else:
             compte['inconnu'] += 1
             continue
@@ -73,7 +93,8 @@ def main() -> None:
     PHRASES.write_text(json.dumps(phrases, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
     RELECTURES.write_text(json.dumps(dict(sorted(relus.items())), ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
     RETIRES.write_text(json.dumps(sorted(retires), ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
-    print(f"{compte['valider']} validés, {compte['corriger']} corrigés, {compte['retirer']} retirés, {compte['inconnu']} ignorés")
+    SIGNALEMENTS.write_text(json.dumps(signalements, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
+    print(f"{compte['valider']} validés, {compte['corriger']} corrigés, {compte['retirer']} retirés, {compte['audio_faux']} audio faux, {compte['inconnu']} ignorés")
     if compte['retirer']:
         print('des mots sont retirés : relancer selectionner_mots.py avant assembler_catalogue.py')
 

@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { existsSync, readFileSync } from 'node:fs';
 import { makeRng } from '../src/engines/rng';
 import {
-    answer, closeFeed, draw, missed, evaluate, freshProgress, grades, mainError, next, normalize, parseCatalogue, parseProgress, parseRecords, playable,
+    answer, closeFeed, draw, missed, evaluate, freshProgress, grades, mainError, next, normalize, parseCatalogue, parseProgress, parseRecords, playable, sentenceOnArrival,
     problems, publishable, startFeed, tiles, withProgress, progressOf, COME_BACK, type Progress, type Word,
 } from '../src/engines/dictee';
 
@@ -66,6 +66,12 @@ describe('the spelling checker', () => {
         expect(evaluate('chat', '').score).toBe(0);
         for (const [e, a] of corpus) expect(evaluate(e, a)).toEqual(evaluate(e, a));
     });
+    it('counts the case: a capital letter is expected and a missing one is named', () => {
+        const r = evaluate('Noël', 'noël');
+        expect(r.exact).toBe(false);
+        expect(r.errors[0]?.type).toBe('casse');
+        expect(evaluate('Noël', 'Noël').exact).toBe(true);
+    });
     it('gives one deterministic alignment for each answer', () => {
         const r = evaluate('bateau', 'bato');
         expect(r.errors).toEqual([{ type: 'son', start: 3, end: 6, expected: 'eau', got: 'o' }]);
@@ -73,7 +79,8 @@ describe('the spelling checker', () => {
 });
 
 const word = (id: string, extra: Partial<Word> = {}): Word => ({ id, lemma: id, expectedForm: id, grade: 'CP', tags: [], homophones: [], contextSentence: null, explanation: null,
-    pronunciationAsset: `dictee/audio/${id}.ogg`, contextAsset: null, difficulty: 1, contentStatus: 'reviewed', validatedBy: 'adulte', version: 1, ...extra });
+    homophoneNotes: {}, pronunciationAsset: `dictee/audio/${id}.ogg`, contextAsset: null, audio: { mode: 'word_only' }, difficulty: 1, status: 'approved',
+    review: { orthography: 'approved', pedagogy: 'approved', context: 'approved', audio: 'approved' }, validatedBy: 'adulte', version: 1, ...extra });
 
 describe('the catalogue', () => {
     it('refuses a homophone without a context sentence: it is never publishable', () => {
@@ -83,29 +90,75 @@ describe('the catalogue', () => {
         expect(publishable({ ...w, contextSentence: 'Je bois un verre de lait.', contextAsset: 'dictee/audio/verre-phrase.ogg' })).toBe(true);
     });
     it('shows the child reviewed words only; drafts only when asked on purpose', () => {
-        const c = parseCatalogue({ schemaVersion: '1.0', version: 1, locale: 'fr-FR', words: [word('chat'), word('loup', { contentStatus: 'draft', validatedBy: null }), { id: 'cassé' }] });
+        const c = parseCatalogue({ schemaVersion: '1.1', version: 1, locale: 'fr-FR', words: [word('chat'), word('loup', { status: 'draft', validatedBy: null }), { id: 'cassé' }] });
         expect(c.words.map(w => w.id)).toEqual(['chat', 'loup']);
         expect(playable(c, 'CP').map(w => w.id)).toEqual(['chat']);
         expect(playable(c, 'CP', true).map(w => w.id)).toEqual(['chat', 'loup']);
         expect(publishable(word('x', { validatedBy: null }))).toBe(false);
         expect(parseCatalogue(null).words).toEqual([]);
+        expect(parseCatalogue({ schemaVersion: '1.0', version: 1, locale: 'fr-FR', words: [word('chat')] }).words).toEqual([]);
+    });
+    it('never draws a word that is not approved: needs_review, draft, rejected, or a review still pending', () => {
+        const pending = { orthography: 'approved', pedagogy: 'approved', context: 'approved', audio: 'pending' } as const;
+        const c = parseCatalogue({ schemaVersion: '1.1', version: 1, locale: 'fr-FR', words: [word('chat'), word('loup', { status: 'needs_review', validatedBy: null }),
+            word('lune', { status: 'rejected', validatedBy: null }), word('robe', { review: pending }), word('rose', { audio: { mode: 'audio_manual_review' } })] });
+        expect(c.words).toHaveLength(5);
+        expect(playable(c, 'CP').map(w => w.id)).toEqual(['chat']);
+        for (let seed = 1; seed <= 50; seed++) expect(draw(playable(c, 'CP').map(w => w.id), freshProgress(), 5, makeRng(seed))).toEqual(['chat']);
+        // A development server shows what waits for review, never a rejected word, an inconsistent approval, nor a recording waiting for an ear.
+        expect(playable(c, 'CP', true).map(w => w.id)).toEqual(['chat', 'loup']);
+        expect(problems(word('rose', { audio: { mode: 'audio_manual_review' } }))).toContain('audio à écouter par un adulte');
+    });
+    it('says the sentence on arrival when the word alone is ambiguous, and requires it', () => {
+        const verre = word('verre', { homophones: ['vert'], contextSentence: 'Je bois dans un verre.', contextAsset: 'dictee/audio/verre-phrase.ogg', audio: { mode: 'context_required' } });
+        expect(sentenceOnArrival(verre)).toBe(true);
+        expect(sentenceOnArrival({ ...verre, audio: { mode: 'word_only' } })).toBe(false);
+        expect(problems({ ...verre, contextSentence: null, contextAsset: null })).toContain('phrase obligatoire absente');
     });
     it('the shipped catalogue keeps the contract: 100 words per grade, unique ids, every audio file present, all drafts for now', () => {
-        const c = parseCatalogue(JSON.parse(readFileSync('public/dictee/catalogue.json', 'utf8')));
+        const raw = JSON.parse(readFileSync('public/dictee/catalogue.json', 'utf8')) as { words: unknown[] };
+        const c = parseCatalogue(raw);
+        expect(c.words).toHaveLength(raw.words.length);
         expect(new Set(c.words.map(w => w.id)).size).toBe(c.words.length);
         for (const g of grades) expect(c.words.filter(w => w.grade === g)).toHaveLength(100);
         for (const w of c.words) {
             expect(existsSync(`public/${w.pronunciationAsset}`), w.pronunciationAsset).toBe(true);
             if (w.contextAsset) expect(existsSync(`public/${w.contextAsset}`), w.contextAsset).toBe(true);
             expect(w.expectedForm).toBe(w.expectedForm.normalize('NFC'));
-            // Nothing is shown to a child until an adult has reviewed it.
-            if (w.contentStatus === 'reviewed') expect(problems(w)).toEqual([]);
+            // Nothing is shown to a child until an adult has approved it; nobody but an adult approves.
+            if (w.status === 'approved') expect(publishable(w)).toBe(true);
             else expect(w.validatedBy).toBeNull();
+            if (w.homophones.some(h => !(h in w.homophoneNotes))) expect(['context_required', 'audio_manual_review']).toContain(w.audio.mode);
         }
     });
 });
 
 const ids = Array.from({ length: 100 }, (_, i) => `fr-cp-${String(i + 1).padStart(3, '0')}`);
+describe('the audio incidents of the automatic check, kept as non-regression cases', () => {
+    const file = JSON.parse(readFileSync('scripts/dictee/audio-non-regression.json', 'utf8')) as { cases: { id: string; grade: string; kind: string; asset: string; observed: string; audioVersion: string; batch: string; listening: { status: string; audioVersion?: string } }[] };
+    const first = file.cases.filter(c => c.batch.includes('32 signalements'));
+    const shipped = new Map(parseCatalogue(JSON.parse(readFileSync('public/dictee/catalogue.json', 'utf8'))).words.map(w => [w.id, w]));
+    const versions = JSON.parse(readFileSync('scripts/dictee/audio-empreintes.json', 'utf8')) as Record<string, string>;
+    it('keeps the 32 cases of 2026-11-16, each traceable: id, text heard, audio version, human listening status', () => {
+        expect(first).toHaveLength(32);
+        const byGrade = Object.fromEntries(grades.map(g => [g, first.filter(c => c.grade === g).length]));
+        expect(byGrade).toEqual({ CP: 13, CE1: 7, CE2: 5, CM1: 3, CM2: 4 });
+        for (const c of file.cases) {
+            expect(c.observed.length).toBeGreaterThan(0);
+            expect(c.audioVersion).toMatch(/^[0-9a-f]{16}$/);
+            expect(['pending', 'ok', 'failed', 'not_applicable']).toContain(c.listening.status);
+        }
+    });
+    it('a case not heard right by an adult, on the current file, keeps its word away from children', () => {
+        for (const c of file.cases) {
+            const w = shipped.get(c.id);
+            if (!w) { expect(c.listening.status).toBe('not_applicable'); continue; }
+            const heard = c.listening.status === 'ok' && c.listening.audioVersion === versions[c.asset];
+            if (!heard) { expect(w.audio.mode).toBe('audio_manual_review'); expect(publishable(w)).toBe(false); }
+        }
+    });
+});
+
 describe('the feed and the spaced review', () => {
     it('draws distinct words, the same for the same seed', () => {
         for (const n of [5, 10, 15, 20]) {

@@ -28,7 +28,7 @@ ICI = Path(__file__).resolve().parent
 RACINE = ICI.parents[1]
 PAGE = ICI / 'validation/index.html'
 PUBLIC = RACINE / 'public'
-AUDIO = re.compile(r'^/dictee/audio/[a-z-]+\.ogg$')
+AUDIO = re.compile(r'^/dictee/audio/[a-z0-9-]+\.ogg$')
 MAX = 1 << 20
 
 
@@ -61,6 +61,8 @@ def main() -> None:
                 return self.envoyer(200, (PUBLIC / 'dictee/catalogue.json').read_bytes(), 'application/json')
             if chemin == '/verification.json' and a.verification and a.verification.exists():
                 return self.envoyer(200, a.verification.read_bytes(), 'application/json')
+            if chemin == '/audio-non-regression.json':
+                return self.envoyer(200, (ICI / 'audio-non-regression.json').read_bytes(), 'application/json')
             if chemin == '/decisions' and (a.sortie / 'dictee-relecture.json').exists():
                 return self.envoyer(200, (a.sortie / 'dictee-relecture.json').read_bytes(), 'application/json')
             if AUDIO.match(chemin) and (PUBLIC / chemin[1:]).is_file():

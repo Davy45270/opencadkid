@@ -1,10 +1,17 @@
 #!/usr/bin/env python3
-"""Assemble le catalogue versionné du jeu (public/dictee/catalogue.json) et la liste de relecture (CSV).
+"""Assemble le catalogue versionné du jeu (public/dictee/catalogue.json, schéma 1.1) et la liste de relecture (CSV).
 
-Entrées : la sélection de mots (selectionner_mots.py) et les propositions de phrases (rediger_phrases.py).
-Les relectures viennent de `scripts/dictee/relectures.json` (écrit par importer_validation.py depuis la page de
-relecture) : un mot est `reviewed` tant que sa forme, sa phrase et son explication sont celles que l'adulte a vues ;
-si l'une change, il redevient brouillon.
+Entrées : la sélection de mots (selectionner_mots.py), les phrases et astuces (phrases.json), les relectures
+(relectures.json, écrit par importer_validation.py depuis la page de relecture), les signalements audio
+(audio-non-regression.json) et les empreintes des fichiers audio (audio-empreintes.json, generer_audio.py).
+
+Pour chaque mot :
+- `status` : `approved` seulement si un adulte a approuvé les quatre relectures (orthographe, pédagogie, contexte,
+  audio) sur la forme, la phrase et l'astuce actuelles ; sinon `needs_review`. Rien d'autre n'approuve un mot.
+- `audio.mode` : `audio_manual_review` tant qu'un signalement audio du mot n'a pas été écouté et jugé bon par un adulte
+  sur la version actuelle du fichier ; sinon `context_required` pour un mot que le son seul ne suffit pas à
+  écrire (homophone, ou mot de CONTEXTE_OBLIGATOIRE) ; `word_then_context` pour un homophone dont la ressemblance
+  n'est pas entendue par tous ; `word_only` sinon.
 
     python3 scripts/dictee/assembler_catalogue.py [--csv relecture.csv]
 """
@@ -16,49 +23,99 @@ import json
 import unicodedata
 from pathlib import Path
 
-RACINE = Path(__file__).resolve().parents[2]
-SELECTION = RACINE / 'scripts/dictee/mots-selection.json'
-PHRASES = RACINE / 'scripts/dictee/phrases.json'
+ICI = Path(__file__).resolve().parent
+RACINE = ICI.parents[1]
+SELECTION = ICI / 'mots-selection.json'
+PHRASES = ICI / 'phrases.json'
+RELECTURES = ICI / 'relectures.json'
+SIGNALEMENTS = ICI / 'audio-non-regression.json'
+EMPREINTES = ICI / 'audio-empreintes.json'
 CATALOGUE = RACINE / 'public/dictee/catalogue.json'
-RELECTURES = RACINE / 'scripts/dictee/relectures.json'
-VERSION = 2
-NOMS = {'CP': 'CP', 'CE1': 'CE1', 'CE2': 'CE2', 'CM1': 'CM1', 'CM2': 'CM2'}
+VERSION = 3
+REVUES = ('orthography', 'pedagogy', 'context', 'audio')
+# Mots que le son seul ne suffit pas à écrire, même sans homophone relevé par Lexique (revue du 2026-11-16) :
+# un article ou une élision s'entend avec (« l'arme » pour larme, « d'âme » pour dame), un nom propre (« Marie »),
+# une ponctuation (« point »), ou une prononciation qui dépend de l'emploi (« plus »). Ajouts de David : vert (verre,
+# vers, ver), sept (cet, set), un (l'article), neuf (le nombre ou l'adjectif), et les couleurs qui sont aussi une fleur
+# ou un fruit (rose, orange, marron) : la phrase dit le sens attendu.
+CONTEXTE_OBLIGATOIRE = set('air dame larme lettre lit verre gens quel point plus mari vert sept un neuf rose orange marron'.split())
+# Homophonies qui ne sont pas entendues par tous : la phrase suit le mot, sans être exigée.
+NUANCES = {'pensée': {'penser': "homophonie non universelle : selon les accents, « pensée » et « penser » s'entendent pareil ou non"}}
+
+
+def lire(chemin: Path, defaut):
+    return json.loads(chemin.read_text(encoding='utf-8')) if chemin.exists() else defaut
 
 
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument('--csv', type=Path)
     a = p.parse_args()
-    mots = json.loads(SELECTION.read_text(encoding='utf-8'))
-    phrases = {r['lemma']: r for r in json.loads(PHRASES.read_text(encoding='utf-8'))} if PHRASES.exists() else {}
-    relus = json.loads(RELECTURES.read_text(encoding='utf-8')) if RELECTURES.exists() else {}
+    mots = lire(SELECTION, [])
+    phrases = {r['lemma']: r for r in lire(PHRASES, [])}
+    relus = lire(RELECTURES, {})
+    empreintes = lire(EMPREINTES, {})
+    signales: dict[str, list[dict]] = {}
+    for cas in lire(SIGNALEMENTS, {'cases': []})['cases']:
+        signales.setdefault(cas['id'], []).append(cas)
     words = []
     for m in mots:
         ph = phrases.get(m['lemma'], {})
         r = relus.get(m['lemma'])
         forme = r.get('expectedForm', m['expectedForm']) if r else m['expectedForm']
         phrase, expl = ph.get('contextSentence'), ph.get('explanation')
+        mot_audio = f"dictee/audio/{m['id']}.ogg"
+        phrase_audio = f"dictee/audio/{m['id']}-phrase.ogg" if phrase else None
+        # Un signalement n'est levé que par une écoute humaine « ok » de la version actuelle du fichier.
+        a_ecouter = [c for c in signales.get(m['id'], []) if c['listening']['status'] != 'ok'
+                     or c['listening'].get('audioVersion') != empreintes.get(c['asset'])]
+        nuances = NUANCES.get(m['lemma'], {})
+        ambigu = m['lemma'] in CONTEXTE_OBLIGATOIRE or any(h not in nuances for h in m['homophones'])
+        if a_ecouter:
+            mode = 'audio_manual_review'
+        elif ambigu:
+            mode = 'context_required'
+        elif m['homophones'] and phrase:
+            mode = 'word_then_context'
+        else:
+            mode = 'word_only'
         w = {
             'id': m['id'], 'lemma': m['lemma'], 'expectedForm': unicodedata.normalize('NFC', forme), 'grade': m['grade'],
-            'tags': m['tags'], 'homophones': m['homophones'], 'contextSentence': phrase, 'explanation': expl,
-            'pronunciationAsset': f"dictee/audio/{m['id']}.ogg", 'contextAsset': f"dictee/audio/{m['id']}-phrase.ogg" if phrase else None,
-            'difficulty': m['difficulty'], 'contentStatus': 'draft', 'validatedBy': None, 'version': VERSION,
+            'tags': m['tags'], 'homophones': m['homophones'], 'homophoneNotes': nuances, 'contextSentence': phrase, 'explanation': expl,
+            'pronunciationAsset': mot_audio, 'contextAsset': phrase_audio,
+            'audio': {'mode': mode, 'wordVersion': empreintes.get(mot_audio), 'contextVersion': empreintes.get(phrase_audio) if phrase_audio else None,
+                      'voice': 'fr_FR-siwis-medium', 'engine': 'piper-tts 1.8.0', 'locale': 'fr-FR'},
+            'difficulty': m['difficulty'], 'status': 'needs_review', 'review': {k: 'pending' for k in REVUES}, 'validatedBy': None, 'version': VERSION,
             'provenance': {'list': m['source']['list'], 'listRank': m['source']['rank'], 'listFrequency': m['source']['frequency'],
-                           'text': ph.get('generatedBy')},
+                           'text': ph.get('generatedBy'), **({'alsoIn': m['source']['alsoIn']} if 'alsoIn' in m['source'] else {}),
+                           **({'note': m['note']} if 'note' in m else {})},
         }
+        # Une relecture ne vaut que pour les textes et l'audio que l'adulte a eus sous les yeux et dans l'oreille.
         if r and all(r.get(k) == w[k] for k in ('expectedForm', 'contextSentence', 'explanation')):
-            w['contentStatus'], w['validatedBy'] = 'reviewed', r['by']
+            revue = dict(r.get('review', {}))
+            if revue.get('audio') == 'approved' and (r.get('wordVersion') != w['audio']['wordVersion'] or r.get('contextVersion') != w['audio']['contextVersion']):
+                revue['audio'] = 'pending'
+            if a_ecouter:
+                revue['audio'] = 'pending'
+            w['review'] = {k: revue.get(k, 'pending') for k in REVUES}
+            if all(v == 'approved' for v in w['review'].values()):
+                w['status'], w['validatedBy'] = 'approved', r['by']
+            elif 'rejected' in w['review'].values():
+                w['status'] = 'rejected'
         words.append(w)
     CATALOGUE.parent.mkdir(parents=True, exist_ok=True)
-    CATALOGUE.write_text(json.dumps({'schemaVersion': '1.0', 'version': VERSION, 'locale': 'fr-FR', 'words': words}, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
-    print(f'{len(words)} mots, {sum(w["contentStatus"] == "reviewed" for w in words)} relus, {sum(not w["contextSentence"] for w in words)} sans phrase')
+    CATALOGUE.write_text(json.dumps({'schemaVersion': '1.1', 'version': VERSION, 'locale': 'fr-FR', 'words': words}, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
+    compte = {s: sum(w['status'] == s for w in words) for s in ('needs_review', 'approved', 'rejected')}
+    modes = {s: sum(w['audio']['mode'] == s for w in words) for s in ('word_only', 'word_then_context', 'context_required', 'audio_manual_review')}
+    print(f'{len(words)} mots ; statuts {compte} ; audio {modes} ; {sum(not w["contextSentence"] for w in words)} sans phrase')
     if a.csv:
         with a.csv.open('w', encoding='utf-8', newline='') as f:
             out = csv.writer(f)
-            out.writerow(['niveau', 'identifiant', 'mot', 'phrase de contexte', 'explication', 'homophones', 'étiquettes', 'difficulté', 'source', 'rang dans la liste', 'statut'])
+            out.writerow(['niveau', 'identifiant', 'mot', 'phrase de contexte', 'explication', 'homophones', 'étiquettes', 'difficulté', 'source', 'rang dans la liste', 'statut', 'mode audio'])
             for w in words:
                 out.writerow([w['grade'], w['id'], w['expectedForm'], w['contextSentence'] or '', w['explanation'] or '', ' '.join(w['homophones']), ' '.join(w['tags']),
-                              w['difficulty'], "liste de fréquence lexicale éduscol (Licence Ouverte 2.0) ; phrase et explication : brouillon à relire", w['provenance']['listRank'], w['contentStatus']])
+                              w['difficulty'], w['provenance']['list'] + ' ; phrase et explication : brouillon à relire' + (' ; ' + w['provenance']['note'] if 'note' in w['provenance'] else ''), w['provenance']['listRank'] or '',
+                              w['status'], w['audio']['mode']])
 
 
 if __name__ == '__main__':

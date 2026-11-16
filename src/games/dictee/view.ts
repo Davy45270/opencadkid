@@ -7,7 +7,7 @@ import { icon, svg } from '../../ui/svg';
 export const labels = {
     fr: { title: 'La dictée magique', who: 'Qui joue ?', grade: 'Choisis ta classe', soon: 'Bientôt', length: 'Combien de mots ?', words: 'mots',
         start: 'Écoute le mot, puis écris-le.', listen: 'Touche la carte pour réécouter. Appuie longtemps : plus lentement.', sentence: 'Dans une phrase',
-        answer: 'Ta réponse', validate: 'Valider', erase: 'Effacer', next: 'Mot suivant', swipe: 'Glisse vers le haut', back: 'Retour', home: 'Accueil',
+        answer: 'Ta réponse', validate: 'Valider', erase: 'Effacer', capital: 'Majuscule', next: 'Mot suivant', swipe: 'Glisse vers le haut', back: 'Retour', home: 'Accueil',
         right: ['Bravo !', 'Super !', 'C’est juste !', 'Magnifique !', 'Exactement !'], look: 'Regarde bien le mot.', wrote: 'Tu as écrit :', tip: 'Astuce :',
         writeFirst: 'Écris d’abord le mot, puis valide.', end: 'Fini pour cette fois !', endSaid: (n: number): string => `Bravo, tu as écrit ${n} mots !`,
         firstTry: 'Justes du premier coup', again: 'On les reverra bientôt', more: 'Encore des mots', voiceOff: 'La voix est coupée dans l’espace parents.',
@@ -15,7 +15,7 @@ export const labels = {
         keyboard: 'Clavier', letters: 'Lettres à remettre dans l’ordre', drafts: 'Brouillons visibles (développement)', age: '6 ans et +' },
     en: { title: 'The magic dictation', who: 'Who is playing?', grade: 'Choose your class', soon: 'Soon', length: 'How many words?', words: 'words',
         start: 'Listen to the word, then write it.', listen: 'Touch the card to listen again. Hold it: more slowly.', sentence: 'In a sentence',
-        answer: 'Your answer', validate: 'Check', erase: 'Erase', next: 'Next word', swipe: 'Swipe up', back: 'Back', home: 'Home',
+        answer: 'Your answer', validate: 'Check', erase: 'Erase', capital: 'Capital letter', next: 'Next word', swipe: 'Swipe up', back: 'Back', home: 'Home',
         right: ['Well done!', 'Great!', 'That’s right!', 'Wonderful!', 'Exactly!'], look: 'Look at the word carefully.', wrote: 'You wrote:', tip: 'Tip:',
         writeFirst: 'Write the word first, then check.', end: 'That’s all for now!', endSaid: (n: number): string => `Well done, you wrote ${n} words!`,
         firstTry: 'Right the first time', again: 'We will see these again soon', more: 'More words', voiceOff: 'The voice is off in the parents’ space.',
@@ -65,14 +65,14 @@ export function lengthView(locale: Locale, profile: Profile, grade: Grade, avail
         + `<div class="dictee-choices dictee-lengths">${LENGTHS.map(n => `<button data-dictee-length="${n}" ${n <= Math.max(5, available) ? '' : 'disabled'}><b>${n}</b><span>${t.words}</span></button>`).join('')}</div></section>`;
 }
 
-/** The big keyboard: AZERTY letters in one list (the grid makes three rows on a wide screen, four on a phone so that
+/** The big keyboard: AZERTY letters in one list, a capital key for the next letter only (Noël), (the grid makes three rows on a wide screen, four on a phone so that
  * every key keeps 44 px), the accents always visible, and nothing that suggests a word. */
 export const LETTERS = Array.from('azertyuiopqsdfghjklmwxcvbn');
 export const ACCENTS = Array.from('éèêàâçùîôëï');
 export function keyboard(t: typeof labels[Locale]): string {
     const key = (c: string): string => `<button type="button" class="dictee-key" data-key="${c}" aria-label="${c}">${c}</button>`;
     return `<div class="dictee-keyboard" role="group" aria-label="${t.keyboard}"><div class="dictee-accents">${ACCENTS.map(key).join('')}</div><div class="dictee-letters">${LETTERS.map(key).join('')}</div>`
-        + `<div class="dictee-actions"><button type="button" id="dictee-erase" class="dictee-key dictee-wide" aria-label="${t.erase}">⌫</button><button type="button" id="dictee-validate" class="dictee-key dictee-ok">${icon('check')}<span>${t.validate}</span></button></div></div>`;
+        + `<div class="dictee-actions dictee-actions-maj"><button type="button" id="dictee-shift" class="dictee-key dictee-wide" aria-pressed="false" aria-label="${t.capital}">⇧</button><button type="button" id="dictee-erase" class="dictee-key dictee-wide" aria-label="${t.erase}">⌫</button><button type="button" id="dictee-validate" class="dictee-key dictee-ok">${icon('check')}<span>${t.validate}</span></button></div></div>`;
 }
 /** First grade: the word's letters, shuffled, to put back in order. */
 export function tileTray(t: typeof labels[Locale], letters: readonly string[], used: readonly number[]): string {

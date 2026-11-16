@@ -22,6 +22,7 @@ import argparse
 import csv
 import hashlib
 import json
+import os
 import re
 import sys
 import unicodedata
@@ -52,13 +53,54 @@ NATURES = {'subst.': 'NC', 'adj.': 'ADJ', 'verbe': 'VER', 'adv.': 'ADV'}
 # « mari » figure deux fois (30 082 et 4 457) : la première fréquence, invraisemblable, est ignorée.
 CORRECTIONS = {'manier': 'manière'}
 DOUBLONS_DOUTEUX = {('mari', 30082.0)}
-# Au CP, on garde des noms concrets : la liste vient de textes d'adultes et ses noms les plus fréquents sont
-# souvent abstraits.
-ABSTRAITS_CP = set('''action besoin cas cause cours doute droit effet fait figure force forme front lieu loi milieu
-moyen nature ordre paix parole part partie peine pensée peuple raison regard sens sorte suite idée fin face fond
-place moment année bout chef mari joie peur ombre tour coup corps gens art avenir beauté foi hasard mesure valeur
-vérité étude soin reste signe projet plan geste groupe effort centre sou garde marche prix objet accord acte
-genre lutte membre'''.split())
+# Au CP, des noms concrets seulement : la liste vient de textes d'adultes et ses noms les plus fréquents sont souvent
+# abstraits (raison, doute, effet). CONCRETS_CP est un tri à la main, fait le 2026-11-16, parmi les noms de la liste
+# éduscol qui passent les règles du CP (3 à 6 lettres, orthographe régulière, pas de c ni de g doux, pas de son an
+# écrit en) : on n'y garde que ce qu'un enfant de six ans peut voir, toucher ou montrer. Le CP prend les 100 plus
+# fréquents. Mots proposés à la revue et absents de la liste éduscol : vélo, moto, tomate (non ajoutés).
+CONCRETS_CP = set('''femme jour mer main yeux monde fille terre voix maison air mot nuit eau ami porte pied nom pays
+ville rue soir soleil bras bruit lettre mois fils matin pierre ombre tour bout bois feu route livre arbre mur chemin
+cheveu fleur table lit cheval papier sol cour bord salle oiseau larme chien peau nombre dos dame coin jardin doigt fer
+train papa jeu secret jambe minute épaule foule ligne classe odeur oncle midi herbe pluie verre étoile sable hiver pain
+phrase rocher école rayon trou pont lune robe cou fil nez aile flamme toit bureau sac voile palais voisin carte animal
+été désert joue poche fruit trésor soirée fumée port faim plaine billet rose toile sommet vol banc course chat barbe
+rideau loup plante repas corde saison tapis clef ferme paquet abri grain'''.split())
+# Mots ajoutés par David le 2026-11-16, hors liste éduscol (et donc hors Licence Ouverte) : le vocabulaire de ses
+# enfants. Graphie attendue (une majuscule pour un nom propre ou une marque) et note éventuelle.
+AJOUTS_DAVID = {
+    'vélo': 'vélo', 'moto': 'moto', 'tomate': 'tomate', 'judo': 'judo', 'piscine': 'piscine', 'train': 'train',
+    'maison': 'maison', 'voiture': 'voiture', 'ordinateur': 'ordinateur', 'téléphone': 'téléphone', 'soleil': 'soleil',
+    'lune': 'lune', 'papa': 'papa', 'maman': 'maman', 'livre': 'livre', 'vidéo': 'vidéo', 'jouet': 'jouet', 'noël': 'Noël',
+    'écran': 'écran', 'montre': 'montre', 'chaussette': 'chaussette', 'pantalon': 'pantalon', 'robe': 'robe',
+    'poupée': 'poupée', 'jupe': 'jupe', 'lego': 'Lego', 'playmobil': 'Playmobil',
+    # Second envoi, le même jour : la famille, les couleurs, les chiffres (fleur et arbre étaient déjà au CP).
+    'cousin': 'cousin', 'cousine': 'cousine', 'fleur': 'fleur', 'arbre': 'arbre',
+    'rouge': 'rouge', 'bleu': 'bleu', 'vert': 'vert', 'jaune': 'jaune', 'orange': 'orange', 'violet': 'violet', 'rose': 'rose',
+    'noir': 'noir', 'blanc': 'blanc', 'gris': 'gris', 'marron': 'marron',
+    'zéro': 'zéro', 'un': 'un', 'deux': 'deux', 'trois': 'trois', 'quatre': 'quatre', 'cinq': 'cinq', 'six': 'six',
+    'sept': 'sept', 'huit': 'huit', 'neuf': 'neuf',
+}
+MARQUES = {'lego', 'playmobil'}
+SOURCE_DAVID = 'ajout de David (2026-11-16)'
+# Règle de niveau des ajouts : CP par défaut ; CE1 si le mot a plus de 8 lettres, une majuscule, ou une graphie que le
+# CP n'a pas encore vue (ph, y, tréma, double consonne, au/eau, c ou g doux, « en »). Ainsi ordinateur (10 lettres),
+# téléphone (ph), chaussette (au, ss, tt), piscine (c doux), Noël (majuscule, tréma), Lego et Playmobil (majuscule ;
+# y pour Playmobil) vont au CE1 ; pantalon (8 lettres, sons an et on réguliers) reste au CP.
+CP_GRAPHIES_AVANCEES = re.compile(r'ph|y|[ëï]|([bcdfglmnprst])\1|e?au')
+
+
+def niveau_ajout(forme: str) -> str:
+    if len(forme) > 8 or forme != forme.lower() or CP_GRAPHIES_AVANCEES.search(forme) or CP_DOUX.search(forme) or CP_AN_EN.search(forme):
+        return 'CE1'
+    return 'CP'
+
+
+REPORT_CE1 = set('argent danger espace police prince image nuage genou visage voyage juge ciel vent parent'.split())
+# Revue de niveau du 2026-11-16 : au CP, pas de lettre dont le son change avec la voyelle qui suit (c ou g devant e, i, y :
+# « police », « argent »), ni de son an écrit en (« argent ») ; ces mots passent au CE1 ou plus loin. La règle
+# s'applique à tous les mots, pas à une liste : ciel, image, nuage… suivent le même chemin.
+CP_DOUX = re.compile(r'[cg][eiyéèê]')
+CP_AN_EN = re.compile(r'(?<!i)e[nm](?![aeiouyéèêàâîôûnm])')
 # Un homophone compte s'il est courant (fréquence Lexique, films + livres, par million) : écarte « ter », « vers » rare…
 SEUIL_HOMOPHONE = 20
 
@@ -108,7 +150,7 @@ def homophones(mot: str, phon: str | None, par_phon: dict[str, list[tuple[str, f
     autres: dict[str, float] = {}
     for ortho, freq in par_phon.get(phon, []):
         # Un homophone compte s'il est courant et n'est pas une forme du mot.
-        if ortho == mot or mot in lemmes.get(ortho, set()) or ortho.startswith(mot) or freq < SEUIL_HOMOPHONE or not set(ortho) <= LETTRES:
+        if ortho == mot or mot in lemmes.get(ortho, set()) or ortho in {mot + f for f in ('e', 's', 'es', 'x')} or freq < SEUIL_HOMOPHONE or not set(ortho) <= LETTRES:
             continue
         autres[ortho] = max(autres.get(ortho, 0), freq)
     return sorted(autres, key=lambda o: (-autres[o], o))[:4]
@@ -176,42 +218,98 @@ def main() -> None:
         mots[mot] = {'mot': mot, 'cat': cat, 'f': float(freq)}
 
     pris: set[str] = set()
+    ajouts: dict[str, list[str]] = {n: [] for n in NIVEAUX}
+    fixes: dict[str, str] = {}
 
     def choisir(niveau: str, cats: tuple[str, ...], lmin: int, lmax: int, saut: int = 0, filtre=lambda m: True) -> list[dict]:
-        cand = [m for m in mots.values() if m['cat'] in cats and lmin <= len(m['mot']) <= lmax and m['mot'] not in pris and filtre(m)]
-        cand.sort(key=lambda m: (-m['f'], m['mot']))
-        choix = cand[saut:saut + 100]
-        if len(choix) < 100:
+        cand = [m for m in mots.values() if (fixes.get(m['mot']) == niveau or (m['mot'] not in fixes and m['cat'] in cats and lmin <= len(m['mot']) <= lmax
+                and filtre(m))) and m['mot'] not in pris]
+        # Un ajout de David déjà à ce niveau y reste ; puis les mots reportés d'un niveau plus bas passent avant les
+        # autres : un report n'est jamais une suppression.
+        cand.sort(key=lambda m: (fixes.get(m['mot']) != niveau, m['mot'] not in reportes, -m['f'], m['mot']))
+        # Les ajouts de David prennent leur place au niveau : les derniers mots éduscol cèdent la leur et sont reportés.
+        places = 100 - len(ajouts[niveau])
+        choix = cand[saut:saut + places]
+        if len(choix) < places:
             sys.exit(f'{niveau} : {len(choix)} mots seulement')
+        reportes.update(m['mot'] for m in cand[saut + places:saut + 100])
         pris.update(m['mot'] for m in choix)
         return choix
+
+    reportes: set[str] = set()
 
     def regulier(m: dict) -> bool:
         phon = phon_de.get(m['mot'])
         return phon is not None and len(m['mot']) - len(phon) <= 2 and not (set(m['mot']) & (ACCENTS - {'é'}))
 
-    selection = {
-        'CP': choisir('CP', ('NC',), 3, 6, filtre=lambda m: regulier(m) and m['mot'] not in ABSTRAITS_CP),
-        'CE1': choisir('CE1', ('NC', 'ADJ', 'VER'), 3, 7, filtre=lambda m: not (set(m['mot']) & (ACCENTS - {'é', 'è', 'ê'}))),
-        'CE2': choisir('CE2', ('NC', 'ADJ', 'VER', 'ADV'), 4, 8),
-        'CM1': choisir('CM1', ('NC', 'ADJ', 'VER', 'ADV'), 5, 10),
-        'CM2': choisir('CM2', ('NC', 'ADJ', 'VER', 'ADV'), 5, 14),
-    }
-    rang_de = {m['mot']: i for i, m in enumerate(sorted(mots.values(), key=lambda m: (-m['f'], m['mot'])), 1)}
+    if os.environ.get('LISTER_CP'):
+        cand = [m for m in mots.values() if m['cat'] == 'NC' and 3 <= len(m['mot']) <= 6 and regulier(m) and not CP_DOUX.search(m['mot']) and not CP_AN_EN.search(m['mot'])]
+        print(' '.join(m['mot'] for m in sorted(cand, key=lambda m: -m['f'])))
+        sys.exit(0)
+    # Noms concrets écartés du CP par la seule règle des sons (c ou g doux, an écrit en) : ils sont reportés au CE1.
+    reportes = {m['mot'] for m in mots.values() if m['cat'] == 'NC' and 3 <= len(m['mot']) <= 7 and regulier(m)
+                and m['mot'] in CONCRETS_CP | REPORT_CE1 and (CP_DOUX.search(m['mot']) or CP_AN_EN.search(m['mot']))}
+    def selectionner() -> dict[str, list[dict]]:
+        pris.clear()
+        return {
+            'CP': choisir('CP', ('NC',), 3, 6, filtre=lambda m: regulier(m) and m['mot'] in CONCRETS_CP
+                         and not CP_DOUX.search(m['mot']) and not CP_AN_EN.search(m['mot'])),
+            'CE1': choisir('CE1', ('NC', 'ADJ', 'VER'), 3, 7, filtre=lambda m: not (set(m['mot']) & (ACCENTS - {'é', 'è', 'ê'}))),
+            'CE2': choisir('CE2', ('NC', 'ADJ', 'VER', 'ADV'), 4, 8),
+            'CM1': choisir('CM1', ('NC', 'ADJ', 'VER', 'ADV'), 5, 10),
+            'CM2': choisir('CM2', ('NC', 'ADJ', 'VER', 'ADV'), 5, 14),
+        }
+
+    # Un ajout de David que la liste éduscol avait déjà choisi reste à son niveau (premier tour, sans ajout) ; les
+    # autres sont placés par niveau_ajout() et poussent en cascade les derniers mots éduscol (second tour).
+    reportes_depart = set(reportes)
+    sans_ajout = selectionner()
+    for niveau, choix in sans_ajout.items():
+        for m in choix:
+            if m['mot'] in AJOUTS_DAVID:
+                fixes[m['mot']] = niveau
+    mots_eduscol = dict(mots)
+    for mot, forme in AJOUTS_DAVID.items():
+        if mot not in fixes:
+            mots.pop(mot, None)
+            ajouts[niveau_ajout(forme)].append(mot)
+    reportes.clear()
+    reportes.update(reportes_depart)
+    selection = selectionner()
+    for niveau in NIVEAUX:
+        for mot in ajouts[niveau]:
+            selection[niveau].append({'mot': mot, 'cat': 'NC', 'f': None, 'david': True})
+    rang_de = {m['mot']: i for i, m in enumerate(sorted(mots_eduscol.values(), key=lambda m: (-m['f'], m['mot'])), 1)}
     sortie = []
     for niveau in NIVEAUX:
         for m in sorted(selection[niveau], key=lambda m: m['mot']):
             phon = phon_de.get(m['mot'])
             homos = homophones(m['mot'], phon, par_phon, lemmes)
-            tags = etiquettes(m['mot'], phon, homos)
+            forme = AJOUTS_DAVID.get(m['mot'], m['mot'])
+            tags = etiquettes(m['mot'], phon, homos) + (['majuscule'] if forme != m['mot'] else []) + (['marque'] if m['mot'] in MARQUES else [])
+            if m.get('david') or m['mot'] in fixes:
+                source = {'list': SOURCE_DAVID, 'rank': rang_de.get(m['mot']), 'frequency': mots_eduscol[m['mot']]['f'] if m['mot'] in mots_eduscol else None}
+                if m['mot'] in fixes:
+                    source['alsoIn'] = 'éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0'
+            else:
+                source = {'list': 'éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0', 'rank': rang_de[m['mot']], 'frequency': m['f']}
             sortie.append({
-                'id': identifiant(m['mot']), 'lemma': m['mot'], 'expectedForm': m['mot'], 'grade': niveau,
-                'category': m['cat'], 'tags': tags, 'homophones': homos, 'difficulty': difficulte(m['mot'], phon, tags),
-                'source': {'list': 'éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0', 'rank': rang_de[m['mot']], 'frequency': m['f']},
+                'id': identifiant(m['mot']), 'lemma': m['mot'], 'expectedForm': forme, 'grade': niveau,
+                'category': m['cat'], 'tags': tags, 'homophones': homos, 'difficulty': difficulte(forme, phon, tags),
+                'source': source,
             })
+            if m['mot'] in MARQUES:
+                sortie[-1]['note'] = "nom de marque, graphie attendue avec majuscule : à relire par un adulte"
+    # Deux mots qui ne diffèrent que par un accent (marche, marché) : le mot accentué prend un suffixe.
+    vus: dict[str, int] = {}
+    for w in sorted(sortie, key=lambda w: (w['id'], w['lemma'] != w['id'][3:].replace('-', ' '), w['lemma'])):
+        n = vus.get(w['id'], 0)
+        vus[w['id']] = n + 1
+        if n:
+            w['id'] = f"{w['id']}-{n + 1}"
     ids = [w['id'] for w in sortie]
     if len(set(ids)) != len(ids):
-        sys.exit('identifiants en double')
+        sys.exit('identifiants en double : ' + ' '.join(sorted({i for i in ids if ids.count(i) > 1})))
     a.sortie.write_text(json.dumps(sortie, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
     print(f'{len(sortie)} mots écrits dans {a.sortie}', file=sys.stderr)
 
