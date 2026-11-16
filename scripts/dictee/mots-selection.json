@@ -24,9 +24,7 @@
   "expectedForm": "ami",
   "grade": "CP",
   "category": "NC",
-  "tags": [
-   "son-an"
-  ],
+  "tags": [],
   "homophones": [],
   "difficulty": 1,
   "source": {
@@ -41,9 +39,7 @@
   "expectedForm": "animal",
   "grade": "CP",
   "category": "NC",
-  "tags": [
-   "son-an"
-  ],
+  "tags": [],
   "homophones": [],
   "difficulty": 2,
   "source": {
@@ -210,9 +206,7 @@
   "expectedForm": "chemin",
   "grade": "CP",
   "category": "NC",
-  "tags": [
-   "son-an"
-  ],
+  "tags": [],
   "homophones": [],
   "difficulty": 3,
   "source": {
@@ -1251,7 +1245,6 @@
   "grade": "CP",
   "category": "NC",
   "tags": [
-   "son-an",
    "lettre-muette"
   ],
   "homophones": [],
@@ -1983,9 +1976,7 @@
   "expectedForm": "devenir",
   "grade": "CE1",
   "category": "VER",
-  "tags": [
-   "son-an"
-  ],
+  "tags": [],
   "homophones": [],
   "difficulty": 2,
   "source": {
@@ -2117,8 +2108,7 @@
   "grade": "CE1",
   "category": "NC",
   "tags": [
-   "double-consonne",
-   "son-an"
+   "double-consonne"
   ],
   "homophones": [],
   "difficulty": 4,
@@ -2723,9 +2713,7 @@
   "expectedForm": "premier",
   "grade": "CE1",
   "category": "ADJ",
-  "tags": [
-   "son-an"
-  ],
+  "tags": [],
   "homophones": [],
   "difficulty": 3,
   "source": {
@@ -2817,9 +2805,7 @@
   "expectedForm": "revenir",
   "grade": "CE1",
   "category": "VER",
-  "tags": [
-   "son-an"
-  ],
+  "tags": [],
   "homophones": [],
   "difficulty": 2,
   "source": {
@@ -3111,9 +3097,7 @@
   "expectedForm": "venir",
   "grade": "CE1",
   "category": "VER",
-  "tags": [
-   "son-an"
-  ],
+  "tags": [],
   "homophones": [],
   "difficulty": 1,
   "source": {
@@ -3385,8 +3369,7 @@
   "category": "NC",
   "tags": [
    "accent",
-   "double-consonne",
-   "son-an"
+   "double-consonne"
   ],
   "homophones": [],
   "difficulty": 4,
@@ -3711,9 +3694,7 @@
   "expectedForm": "convenir",
   "grade": "CE2",
   "category": "VER",
-  "tags": [
-   "son-an"
-  ],
+  "tags": [],
   "homophones": [],
   "difficulty": 3,
   "source": {
@@ -3896,8 +3877,7 @@
   "grade": "CE2",
   "category": "NC",
   "tags": [
-   "double-consonne",
-   "son-an"
+   "double-consonne"
   ],
   "homophones": [],
   "difficulty": 3,
@@ -4021,7 +4001,6 @@
   "grade": "CE2",
   "category": "ADV",
   "tags": [
-   "son-an",
    "lettre-muette"
   ],
   "homophones": [],
@@ -4779,9 +4758,7 @@
   "expectedForm": "tenir",
   "grade": "CE2",
   "category": "VER",
-  "tags": [
-   "son-an"
-  ],
+  "tags": [],
   "homophones": [],
   "difficulty": 1,
   "source": {
@@ -5250,9 +5227,7 @@
   "expectedForm": "contenir",
   "grade": "CM1",
   "category": "VER",
-  "tags": [
-   "son-an"
-  ],
+  "tags": [],
   "homophones": [],
   "difficulty": 3,
   "source": {
@@ -5553,8 +5528,7 @@
   "grade": "CM1",
   "category": "NC",
   "tags": [
-   "accent",
-   "son-an"
+   "accent"
   ],
   "homophones": [],
   "difficulty": 3,
@@ -5856,8 +5830,7 @@
   "grade": "CM1",
   "category": "NC",
   "tags": [
-   "accent",
-   "son-an"
+   "accent"
   ],
   "homophones": [],
   "difficulty": 3,
@@ -6281,9 +6254,7 @@
   "expectedForm": "remarquer",
   "grade": "CM1",
   "category": "VER",
-  "tags": [
-   "son-an"
-  ],
+  "tags": [],
   "homophones": [],
   "difficulty": 4,
   "source": {
@@ -6299,8 +6270,7 @@
   "grade": "CM1",
   "category": "VER",
   "tags": [
-   "double-consonne",
-   "son-an"
+   "double-consonne"
   ],
   "homophones": [],
   "difficulty": 4,
@@ -6660,8 +6630,7 @@
   "grade": "CM2",
   "category": "VER",
   "tags": [
-   "double-consonne",
-   "son-an"
+   "double-consonne"
   ],
   "homophones": [],
   "difficulty": 5,
@@ -6728,8 +6697,7 @@
   "grade": "CM2",
   "category": "VER",
   "tags": [
-   "double-consonne",
-   "son-an"
+   "double-consonne"
   ],
   "homophones": [],
   "difficulty": 4,
@@ -6835,9 +6803,7 @@
   "expectedForm": "camarade",
   "grade": "CM2",
   "category": "NC",
-  "tags": [
-   "son-an"
-  ],
+  "tags": [],
   "homophones": [],
   "difficulty": 3,
   "source": {
@@ -7552,9 +7518,7 @@
   "expectedForm": "obtenir",
   "grade": "CM2",
   "category": "VER",
-  "tags": [
-   "son-an"
-  ],
+  "tags": [],
   "homophones": [],
   "difficulty": 2,
   "source": {
@@ -7652,9 +7616,7 @@
   "expectedForm": "promener",
   "grade": "CM2",
   "category": "VER",
-  "tags": [
-   "son-an"
-  ],
+  "tags": [],
   "homophones": [],
   "difficulty": 4,
   "source": {
@@ -7854,9 +7816,7 @@
   "expectedForm": "retenir",
   "grade": "CM2",
   "category": "VER",
-  "tags": [
-   "son-an"
-  ],
+  "tags": [],
   "homophones": [],
   "difficulty": 2,
   "source": {
@@ -7940,9 +7900,7 @@
   "expectedForm": "semaine",
   "grade": "CM2",
   "category": "NC",
-  "tags": [
-   "son-an"
-  ],
+  "tags": [],
   "homophones": [],
   "difficulty": 3,
   "source": {
@@ -8039,9 +7997,7 @@
   "expectedForm": "souvenir",
   "grade": "CM2",
   "category": "VER",
-  "tags": [
-   "son-an"
-  ],
+  "tags": [],
   "homophones": [],
   "difficulty": 3,
   "source": {

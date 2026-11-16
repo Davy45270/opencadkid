@@ -15,6 +15,7 @@ import argparse
 import csv
 import hashlib
 import json
+import re
 import sys
 import unicodedata
 import urllib.request
@@ -97,7 +98,8 @@ def etiquettes(mot: str, phon: str | None, homos: list[str]) -> list[str]:
         t.append('double-consonne')
     if 'eau' in mot or 'au' in mot:
         t.append('son-o')
-    if any(g in mot for g in ('an', 'en', 'am', 'em')):
+    # an, en, am, em font le son an seulement devant une consonne ou en fin de mot (pas dans « ami », « ennemi »).
+    if re.search(r'[ae][nm](?![aeiouyéèêàâîôûnm])', mot):
         t.append('son-an')
     if phon is not None and mot[-1] in 'tdspxz' and not phon.endswith(mot[-1]):
         t.append('lettre-muette')

@@ -40,9 +40,7 @@
    "lemma": "ami",
    "expectedForm": "ami",
    "grade": "CP",
-   "tags": [
-    "son-an"
-   ],
+   "tags": [],
    "homophones": [],
    "contextSentence": "Mon meilleur ami joue avec moi.",
    "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
@@ -70,9 +68,7 @@
    "lemma": "animal",
    "expectedForm": "animal",
    "grade": "CP",
-   "tags": [
-    "son-an"
-   ],
+   "tags": [],
    "homophones": [],
    "contextSentence": "Le petit animal mange de l'herbe.",
    "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
@@ -369,9 +365,7 @@
    "lemma": "chemin",
    "expectedForm": "chemin",
    "grade": "CP",
-   "tags": [
-    "son-an"
-   ],
+   "tags": [],
    "homophones": [],
    "contextSentence": "Le petit chat marche sur le chemin.",
    "explanation": "Écoute bien chaque son pour ne rien oublier.",
@@ -2216,7 +2210,6 @@
    "expectedForm": "renard",
    "grade": "CP",
    "tags": [
-    "son-an",
     "lettre-muette"
    ],
    "homophones": [],
@@ -3527,9 +3520,7 @@
    "lemma": "devenir",
    "expectedForm": "devenir",
    "grade": "CE1",
-   "tags": [
-    "son-an"
-   ],
+   "tags": [],
    "homophones": [],
    "contextSentence": "Le petit garçon veut devenir un grand pompier.",
    "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
@@ -3765,8 +3756,7 @@
    "expectedForm": "famille",
    "grade": "CE1",
    "tags": [
-    "double-consonne",
-    "son-an"
+    "double-consonne"
    ],
    "homophones": [],
    "contextSentence": "Ma famille mange ensemble au dîner.",
@@ -4852,9 +4842,7 @@
    "lemma": "premier",
    "expectedForm": "premier",
    "grade": "CE1",
-   "tags": [
-    "son-an"
-   ],
+   "tags": [],
    "homophones": [],
    "contextSentence": "C'est le premier jour de l'école.",
    "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
@@ -5024,9 +5012,7 @@
    "lemma": "revenir",
    "expectedForm": "revenir",
    "grade": "CE1",
-   "tags": [
-    "son-an"
-   ],
+   "tags": [],
    "homophones": [],
    "contextSentence": "Tu peux revenir jouer avec moi.",
    "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
@@ -5552,9 +5538,7 @@
    "lemma": "venir",
    "expectedForm": "venir",
    "grade": "CE1",
-   "tags": [
-    "son-an"
-   ],
+   "tags": [],
    "homophones": [],
    "contextSentence": "Tu peux venir jouer avec moi.",
    "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
@@ -6047,8 +6031,7 @@
    "grade": "CE2",
    "tags": [
     "accent",
-    "double-consonne",
-    "son-an"
+    "double-consonne"
    ],
    "homophones": [],
    "contextSentence": "C'est une belle année pour toi.",
@@ -6620,9 +6603,7 @@
    "lemma": "convenir",
    "expectedForm": "convenir",
    "grade": "CE2",
-   "tags": [
-    "son-an"
-   ],
+   "tags": [],
    "homophones": [],
    "contextSentence": "Ce plan est bon pour convenir avec toi.",
    "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
@@ -6948,8 +6929,7 @@
    "expectedForm": "femme",
    "grade": "CE2",
    "tags": [
-    "double-consonne",
-    "son-an"
+    "double-consonne"
    ],
    "homophones": [],
    "contextSentence": "La femme prépare un bon gâteau.",
@@ -7177,7 +7157,6 @@
    "expectedForm": "jamais",
    "grade": "CE2",
    "tags": [
-    "son-an",
     "lettre-muette"
    ],
    "homophones": [],
@@ -8546,9 +8525,7 @@
    "lemma": "tenir",
    "expectedForm": "tenir",
    "grade": "CE2",
-   "tags": [
-    "son-an"
-   ],
+   "tags": [],
    "homophones": [],
    "contextSentence": "Tu peux tenir le ballon avec tes mains.",
    "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
@@ -9381,9 +9358,7 @@
    "lemma": "contenir",
    "expectedForm": "contenir",
    "grade": "CM1",
-   "tags": [
-    "son-an"
-   ],
+   "tags": [],
    "homophones": [],
    "contextSentence": "Ce grand panier peut contenir tous tes jouets.",
    "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
@@ -9918,8 +9893,7 @@
    "expectedForm": "fenêtre",
    "grade": "CM1",
    "tags": [
-    "accent",
-    "son-an"
+    "accent"
    ],
    "homophones": [],
    "contextSentence": "Le chat regarde par la fenêtre.",
@@ -10455,8 +10429,7 @@
    "expectedForm": "manière",
    "grade": "CM1",
    "tags": [
-    "accent",
-    "son-an"
+    "accent"
    ],
    "homophones": [],
    "contextSentence": "Il marche d'une manière très douce.",
@@ -11212,9 +11185,7 @@
    "lemma": "remarquer",
    "expectedForm": "remarquer",
    "grade": "CM1",
-   "tags": [
-    "son-an"
-   ],
+   "tags": [],
    "homophones": [],
    "contextSentence": "Je peux remarquer un petit oiseau bleu.",
    "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
@@ -11243,8 +11214,7 @@
    "expectedForm": "remettre",
    "grade": "CM1",
    "tags": [
-    "double-consonne",
-    "son-an"
+    "double-consonne"
    ],
    "homophones": [],
    "contextSentence": "Tu dois remettre ton livre sur l'étagère.",
@@ -11890,8 +11860,7 @@
    "expectedForm": "annoncer",
    "grade": "CM2",
    "tags": [
-    "double-consonne",
-    "son-an"
+    "double-consonne"
    ],
    "homophones": [],
    "contextSentence": "Je vais annoncer la bonne nouvelle à mes amis.",
@@ -12010,8 +11979,7 @@
    "expectedForm": "appartenir",
    "grade": "CM2",
    "tags": [
-    "double-consonne",
-    "son-an"
+    "double-consonne"
    ],
    "homophones": [],
    "contextSentence": "Ce beau livre doit appartenir à la classe.",
@@ -12195,9 +12163,7 @@
    "lemma": "camarade",
    "expectedForm": "camarade",
    "grade": "CM2",
-   "tags": [
-    "son-an"
-   ],
+   "tags": [],
    "homophones": [],
    "contextSentence": "Mon camarade joue avec moi dans la cour.",
    "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
@@ -13484,9 +13450,7 @@
    "lemma": "obtenir",
    "expectedForm": "obtenir",
    "grade": "CM2",
-   "tags": [
-    "son-an"
-   ],
+   "tags": [],
    "homophones": [],
    "contextSentence": "Tu peux obtenir un beau cadeau.",
    "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
@@ -13662,9 +13626,7 @@
    "lemma": "promener",
    "expectedForm": "promener",
    "grade": "CM2",
-   "tags": [
-    "son-an"
-   ],
+   "tags": [],
    "homophones": [],
    "contextSentence": "J'aime promener mon petit chien dans le parc.",
    "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
@@ -14020,9 +13982,7 @@
    "lemma": "retenir",
    "expectedForm": "retenir",
    "grade": "CM2",
-   "tags": [
-    "son-an"
-   ],
+   "tags": [],
    "homophones": [],
    "contextSentence": "Il faut retenir la leçon pour l'examen.",
    "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
@@ -14171,9 +14131,7 @@
    "lemma": "semaine",
    "expectedForm": "semaine",
    "grade": "CM2",
-   "tags": [
-    "son-an"
-   ],
+   "tags": [],
    "homophones": [],
    "contextSentence": "La semaine commence toujours un lundi matin.",
    "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
@@ -14348,9 +14306,7 @@
    "lemma": "souvenir",
    "expectedForm": "souvenir",
    "grade": "CM2",
-   "tags": [
-    "son-an"
-   ],
+   "tags": [],
    "homophones": [],
    "contextSentence": "Je garde un beau souvenir de nos vacances.",
    "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
