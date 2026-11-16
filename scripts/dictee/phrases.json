@@ -1,0 +1,5492 @@
+[
+ {
+  "id": "fr-cp-001",
+  "contextSentence": "L'air est frais ce matin.",
+  "explanation": "Il s'écrit comme on l'entend, sans lettre muette.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-002",
+  "contextSentence": "Mon meilleur ami joue avec moi.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-003",
+  "contextSentence": "Le petit animal mange de l'herbe.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-004",
+  "contextSentence": "Le petit oiseau chante sur l'arbre vert.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-005",
+  "contextSentence": "Le grand avion vole dans le ciel bleu.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-006",
+  "contextSentence": "Le petit garçon joue avec son ballon.",
+  "explanation": "Il y a deux L pour faire le son [l].",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-007",
+  "contextSentence": "Le petit lapin joue dans le bois.",
+  "explanation": "Le s est muet, comme dans le mot boisée.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-008",
+  "contextSentence": "Le petit bateau est sur le bord de l'eau.",
+  "explanation": "Le d est muet, comme dans le mot bordure.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-009",
+  "contextSentence": "Je mange le bout de mon gâteau.",
+  "explanation": "Le t est muet, comme dans le mot bouton.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-010",
+  "contextSentence": "Le petit chat fait un gros bruit.",
+  "explanation": "Le t est muet à la fin du mot bruit.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-011",
+  "contextSentence": "Le petit bébé dort dans son lit.",
+  "explanation": "N'oublie pas l'accent aigu sur le premier e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-012",
+  "contextSentence": "Le petit chat dort sur le tapis.",
+  "explanation": "Un t muet à la fin, comme dans chaton.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-013",
+  "contextSentence": "Le petit chat marche sur le chemin.",
+  "explanation": "Écoute bien chaque son pour ne rien oublier.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-014",
+  "contextSentence": "Le grand cheval court dans le pré.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-015",
+  "contextSentence": "Le petit garçon a un cheveu sur le front.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-016",
+  "contextSentence": "Le petit chien joue dans le jardin.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-017",
+  "contextSentence": "Les enfants sont dans la classe.",
+  "explanation": "Il y a deux s à la fin pour faire le son s.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-018",
+  "contextSentence": "Le petit chat dort dans le coin.",
+  "explanation": "Écoute bien le son 'in' à la fin du mot.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-019",
+  "contextSentence": "Le petit garçon donne un coup de pied.",
+  "explanation": "Le p est muet, comme dans le mot couper.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-020",
+  "contextSentence": "Le petit lapin fait une course dans le jardin.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-021",
+  "contextSentence": "Le petit enfant a une dent qui bouge.",
+  "explanation": "Le t est muet, comme dans le mot dentiste.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-022",
+  "contextSentence": "Le petit garçon fait un beau dessin.",
+  "explanation": "Il y a deux s pour faire le son s.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-023",
+  "contextSentence": "Le chat porte un sac sur le dos.",
+  "explanation": "Le s est muet, comme dans le mot dosal.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-024",
+  "contextSentence": "Je bois un grand verre d'eau.",
+  "explanation": "Le son o s'écrit eau, comme dans le mot château.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-025",
+  "contextSentence": "Le feu brûle dans la cheminée.",
+  "explanation": "Écoute bien le son [f] au début du mot.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-026",
+  "contextSentence": "Le chat joue avec un fil de laine.",
+  "explanation": "Écoute bien le son [il] à la fin du mot.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-027",
+  "contextSentence": "La petite fille joue dans le jardin.",
+  "explanation": "Il y a deux L pour faire le son L.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-028",
+  "contextSentence": "La jolie fleur est dans le jardin.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-029",
+  "contextSentence": "Je mange une glace à la fraise.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-030",
+  "contextSentence": "Il fait très froid pendant l'hiver.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-031",
+  "contextSentence": "J'ai une idée pour le dessin.",
+  "explanation": "Il y a un accent aigu sur le premier e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-032",
+  "contextSentence": "Le petit chat joue dans le jardin.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-033",
+  "contextSentence": "Le petit garçon joue à un jeu.",
+  "explanation": "Écoute bien le son [j] qui s'écrit avec la lettre j.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-034",
+  "contextSentence": "Le petit chat joue avec une balle.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-035",
+  "contextSentence": "C'est un beau jour de soleil.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-036",
+  "contextSentence": "Le chat boit un bol de lait.",
+  "explanation": "Le t est muet, comme dans le mot laiterie.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-037",
+  "contextSentence": "Le petit lapin mange une carotte.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-038",
+  "contextSentence": "Je reçois une lettre du facteur.",
+  "explanation": "Il y a deux t car on entend le son 'tt'.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-039",
+  "contextSentence": "Le chat dort sur le lit.",
+  "explanation": "Le t est muet, comme dans le mot liture.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-040",
+  "contextSentence": "Je lis un livre sur la table.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-041",
+  "contextSentence": "Le loup gris marche dans la forêt.",
+  "explanation": "Le p est muet, comme dans le mot lupin.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-042",
+  "contextSentence": "La lune brille dans le ciel bleu.",
+  "explanation": "Écoute bien chaque son : l-u-n-e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-043",
+  "contextSentence": "Je tiens mon livre de la main.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-044",
+  "contextSentence": "La petite maison est rouge.",
+  "explanation": "Écoute bien chaque son pour ne rien oublier.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-045",
+  "contextSentence": "Maman prépare un bon gâteau.",
+  "explanation": "Écoute bien chaque son pour bien écrire maman.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-046",
+  "contextSentence": "Je mange mon petit déjeuner le matin.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-047",
+  "contextSentence": "Le petit poisson nage dans la mer bleue.",
+  "explanation": "Écoute bien le son 'e' comme dans le mot 'marin'.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-048",
+  "contextSentence": "Le monde est très grand et beau.",
+  "explanation": "Écoute bien chaque son : m-o-n-d-e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-049",
+  "contextSentence": "Je lis un mot dans mon livre.",
+  "explanation": "Le t est muet à la fin, comme dans motiver.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-050",
+  "contextSentence": "Le papa conduit sa moto bleue.",
+  "explanation": "Écoute bien chaque son : m-o-t-o.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-051",
+  "contextSentence": "Le petit mouton mange de l'herbe verte.",
+  "explanation": "Écoute bien chaque son : m-ou-t-o-n.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-052",
+  "contextSentence": "Le chat dort contre le mur.",
+  "explanation": "Il s'écrit comme il se prononce, écoute bien chaque son.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-053",
+  "contextSentence": "La neige tombe doucement sur le jardin.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-054",
+  "contextSentence": "Le petit chat a un petit nez.",
+  "explanation": "Le z est muet, comme dans le mot nez rouge.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-055",
+  "contextSentence": "Le nom de mon chat est Minou.",
+  "explanation": "Écris bien le m muet comme dans le mot nommé.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-056",
+  "contextSentence": "La lune brille pendant la nuit.",
+  "explanation": "Le t est muet, comme dans le mot nuitée.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-057",
+  "contextSentence": "Le petit oiseau chante dans l'arbre.",
+  "explanation": "Le son o s'écrit eau comme dans le mot eau.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-058",
+  "contextSentence": "Le gros ours mange du miel.",
+  "explanation": "Écoute bien le son 'ou' au début du mot.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-059",
+  "contextSentence": "Maman coupe une tranche de pain frais.",
+  "explanation": "Écris bien le 'ai' pour faire le son 'è'.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-060",
+  "contextSentence": "Papa joue au ballon avec moi.",
+  "explanation": "Écoute bien chaque son : p-a-p-a.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-061",
+  "contextSentence": "Je dessine un soleil sur le papier.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-062",
+  "contextSentence": "Chaque parent aime beaucoup son enfant.",
+  "explanation": "Le t est muet, comme dans le mot parental.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-063",
+  "contextSentence": "Le petit chat a une patte blanche.",
+  "explanation": "Il y a deux t car on entend le son 't' dans patou.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-064",
+  "contextSentence": "Le petit chat n'a pas peur du chien.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-065",
+  "contextSentence": "Je prends une jolie photo de la fleur.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-066",
+  "contextSentence": "Le petit chat a un pied sur la chaise.",
+  "explanation": "Le d est muet, comme dans le mot pédale.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-067",
+  "contextSentence": "Le petit chat joue sur la place.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-068",
+  "contextSentence": "La pluie tombe doucement sur les fleurs.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-069",
+  "contextSentence": "Le point final est sur la page.",
+  "explanation": "Le t est muet, comme dans le mot pointu.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-070",
+  "contextSentence": "Je mange une pomme rouge et sucrée.",
+  "explanation": "Il y a deux lettres m pour faire le son m.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-071",
+  "contextSentence": "La porte de la maison est ouverte.",
+  "explanation": "Écoute bien chaque son : p-o-r-t-e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-072",
+  "contextSentence": "Le petit chat boit de l'eau dans son pot.",
+  "explanation": "Le t est muet, comme dans le mot potager.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-073",
+  "contextSentence": "Le fermier travaille sur le grand pré.",
+  "explanation": "N'oublie pas l'accent aigu sur le e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-074",
+  "contextSentence": "Le petit rat mange du fromage.",
+  "explanation": "Le t est muet, comme dans le mot raton.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-075",
+  "contextSentence": "Le petit renard roux joue dans la forêt.",
+  "explanation": "Le d est muet à la fin, comme dans renardeau.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-076",
+  "contextSentence": "La petite fille porte une jolie robe bleue.",
+  "explanation": "Écoute bien chaque son : r-o-b-e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-077",
+  "contextSentence": "Le petit robot joue avec un ballon.",
+  "explanation": "Le t est muet à la fin du mot robot.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-078",
+  "contextSentence": "La voiture roule sur la route.",
+  "explanation": "Écoute bien chaque son : r-o-u-t-e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-079",
+  "contextSentence": "Le petit chat traverse la rue.",
+  "explanation": "Écoute bien le son 'u' entre le 'r' et le 'e'.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-080",
+  "contextSentence": "Le petit chat a un sac bleu.",
+  "explanation": "Écoute bien chaque son : s, a, c.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-081",
+  "contextSentence": "Maman prépare une bonne salade pour le déjeuner.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-082",
+  "contextSentence": "Le soleil se couche chaque soir.",
+  "explanation": "Écoute bien le son 'oi' qui se prononce comme dans roi.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-083",
+  "contextSentence": "Le soleil brille dans le ciel bleu.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-084",
+  "contextSentence": "La petite souris mange du fromage.",
+  "explanation": "Le s final est muet, comme dans le mot souriceau.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-085",
+  "contextSentence": "Je mets du sucre dans mon thé.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-086",
+  "contextSentence": "Le chat dort sur la table.",
+  "explanation": "Écoute bien chaque son : t-a-b-l-e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-087",
+  "contextSentence": "Maman prépare une tarte aux pommes.",
+  "explanation": "Écoute bien chaque son : t-a-r-t-e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-088",
+  "contextSentence": "Le jardinier plante une fleur dans la terre.",
+  "explanation": "Il y a deux r pour faire le son [r].",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-089",
+  "contextSentence": "La petite tortue marche doucement dans l'herbe.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-090",
+  "contextSentence": "Le petit chat fait une tour sur le tapis.",
+  "explanation": "Écoute bien le son 'ou' qui se prononce comme dans tournesol.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-091",
+  "contextSentence": "Le train roule sur les rails.",
+  "explanation": "Écoute bien chaque son : t-r-a-i-n.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-092",
+  "contextSentence": "Le petit lapin saute dans le trou.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-093",
+  "contextSentence": "Le vent souffle doucement dans les arbres.",
+  "explanation": "Le t est muet, comme dans le mot ventriloque.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-094",
+  "contextSentence": "Je remplis mon verre d'eau fraîche.",
+  "explanation": "Il y a deux r car c'est un objet solide.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-095",
+  "contextSentence": "La ville est grande et très belle.",
+  "explanation": "Il y a deux l car on entend le son l.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-096",
+  "contextSentence": "Elle a une voix très douce.",
+  "explanation": "Le x est muet, comme dans le mot voixer.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-097",
+  "contextSentence": "Le petit garçon roule sur son vélo.",
+  "explanation": "N'oublie pas l'accent aigu sur le e de vélo.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-098",
+  "contextSentence": "Le petit chat ferme ses yeux.",
+  "explanation": "Le x est muet, comme dans le mot yeux.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-099",
+  "contextSentence": "Je vais à l'école avec mon sac.",
+  "explanation": "N'oublie pas l'accent aigu sur le premier e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cp-100",
+  "contextSentence": "Une petite étoile brille dans le ciel.",
+  "explanation": "N'oublie pas l'accent aigu sur le e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-001",
+  "contextSentence": "Je veux aider mon ami à porter son sac.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-002",
+  "contextSentence": "J'aime beaucoup aimer les fleurs du jardin.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-003",
+  "contextSentence": "Je vais appeler mon ami au téléphone.",
+  "explanation": "Il y a deux 'p' pour faire le son [p].",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-004",
+  "contextSentence": "Le petit train va arriver à la gare.",
+  "explanation": "Il y a deux 'r' pour faire le son 'rr'.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-005",
+  "contextSentence": "Il faut arrêter la voiture devant la maison.",
+  "explanation": "Il y a deux r et un accent circonflexe sur le e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-006",
+  "contextSentence": "Je veux un autre biscuit s'il te plaît.",
+  "explanation": "Le son o s'écrit au, comme dans le mot autoriser.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-007",
+  "contextSentence": "C'est un beau jardin avec des fleurs.",
+  "explanation": "Le son o s'écrit eau comme dans le mot eau.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-008",
+  "contextSentence": "Le petit lapin est tout blanc.",
+  "explanation": "Écoute bien le son 'an' avant la lettre 'c' finale.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-009",
+  "contextSentence": "Le petit chat a un collier bleu.",
+  "explanation": "Écris bien le u à la fin pour le son u.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-010",
+  "contextSentence": "Le petit chat veut cacher son jouet.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-011",
+  "contextSentence": "Les oiseaux aiment chanter dans le jardin.",
+  "explanation": "Écoute bien chaque son : ch-a-n-t-e-r.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-012",
+  "contextSentence": "Chaque enfant joue dans la cour.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-013",
+  "contextSentence": "Tu dois choisir un beau fruit.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-014",
+  "contextSentence": "Le ciel est bleu aujourd'hui.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-015",
+  "contextSentence": "Le ciel a une belle couleur bleue.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-016",
+  "contextSentence": "Le petit lapin aime courir dans l'herbe.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-017",
+  "contextSentence": "Le petit oiseau aime crier dans le jardin.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-018",
+  "contextSentence": null,
+  "explanation": null,
+  "error": "mot absent de la phrase"
+ },
+ {
+  "id": "fr-ce1-019",
+  "contextSentence": "Il y a deux chats dans le jardin.",
+  "explanation": "Le x est muet, comme dans le mot douze.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-020",
+  "contextSentence": "Le petit garçon veut devenir un grand pompier.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-021",
+  "contextSentence": "Je dois faire mon devoir de mathématiques.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-022",
+  "contextSentence": "Je veux donner un bonbon à mon ami.",
+  "explanation": "Il y a deux n car on entend le son dans donner.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-023",
+  "contextSentence": "Le petit chat aime dormir sur le canapé.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-024",
+  "contextSentence": "L'enfant joue joyeusement dans le jardin.",
+  "explanation": "Le t est muet, comme dans le mot enfantin.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-025",
+  "contextSentence": "Tu peux entrer dans la grande maison.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-026",
+  "contextSentence": "Voici un exemple de dessin.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-027",
+  "contextSentence": "Il faut falloir être courageux pour réussir.",
+  "explanation": "Il y a deux L comme dans le mot falloir.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-028",
+  "contextSentence": "Ma famille mange ensemble au dîner.",
+  "explanation": "N'oublie pas le double l dans famille.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-029",
+  "contextSentence": "La feuille tombe doucement sur l'herbe.",
+  "explanation": "Il y a deux l pour faire le son [fœj].",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-030",
+  "contextSentence": "Le petit lapin joue dans la forêt.",
+  "explanation": "Il y a un t muet à la fin, comme dans forestier.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-031",
+  "contextSentence": "Le petit garçon joue dans le jardin.",
+  "explanation": "On met une cédille sous le c pour faire le son s.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-032",
+  "contextSentence": "Le grand arbre a des feuilles vertes.",
+  "explanation": "Le d est muet, comme dans le mot grandir.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-033",
+  "contextSentence": "Le gros chat dort sur le tapis.",
+  "explanation": "Le s est muet, comme dans le mot grosbilles.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-034",
+  "contextSentence": "Le groupe d'amis joue dans le jardin.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-035",
+  "contextSentence": "Il est une heure pour le goûter.",
+  "explanation": "Écoute bien chaque son, car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-036",
+  "contextSentence": "C'est un homme avec un grand chapeau.",
+  "explanation": "Il y a deux lettres m pour faire le son m.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-037",
+  "contextSentence": "Le petit jardin est très joli.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-038",
+  "contextSentence": "Les enfants aiment jouer dans le jardin.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-039",
+  "contextSentence": "Je vais laisser le livre sur la table.",
+  "explanation": "Il y a deux s pour faire le son [s].",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-040",
+  "contextSentence": "Je vais lever le drapeau bleu.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-041",
+  "contextSentence": "J'aime lire un livre passionnant.",
+  "explanation": "Écoute bien chaque son : l-i-r-e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-042",
+  "contextSentence": "Le chemin vers la forêt est très long.",
+  "explanation": "Écoute bien le son [on] qui s'écrit avec un g.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-043",
+  "contextSentence": "J'aime manger une pomme rouge.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-044",
+  "contextSentence": "Les enfants aiment marcher dans le parc.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-045",
+  "contextSentence": "Le maître explique la leçon aux élèves.",
+  "explanation": "Il y a un accent circonflexe sur le i.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-046",
+  "contextSentence": "Je vais mettre mon manteau sur le lit.",
+  "explanation": "Il y a deux 't' pour bien marquer le son.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-047",
+  "contextSentence": "C'est le moment de manger un gâteau.",
+  "explanation": "Le t est muet à la fin, comme dans le mot momentané.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-048",
+  "contextSentence": "Ma mère prépare un bon gâteau.",
+  "explanation": "Il y a un accent grave sur le e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-049",
+  "contextSentence": "Le petit chat a un pelage noir.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-050",
+  "contextSentence": "J'ai un nouveau vélo bleu.",
+  "explanation": "Le son o s'écrit eau comme dans le mot eau.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-051",
+  "contextSentence": "L'enfant range ses jouets dans l'ordre.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-052",
+  "contextSentence": "Tu peux ouvrir la porte de la classe.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-053",
+  "contextSentence": "Je tourne la page de mon livre.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-054",
+  "contextSentence": "J'aime parler avec mes amis à l'école.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-055",
+  "contextSentence": "Il est temps de partir à l'école.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-056",
+  "contextSentence": "Je veux passer devant le petit jardin.",
+  "explanation": "Il y a deux s pour faire le son [s].",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-057",
+  "contextSentence": "Il faut bien penser avant de parler.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-058",
+  "contextSentence": "Il ne veut pas perdre son beau ballon.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-059",
+  "contextSentence": "Le petit chat dort sur le tapis.",
+  "explanation": "Le t est muet, comme dans le mot petiton.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-060",
+  "contextSentence": "Je lis une phrase dans mon livre.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-061",
+  "contextSentence": "Le petit poisson nage dans l'eau bleue.",
+  "explanation": "Il y a deux s pour faire le son s.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-062",
+  "contextSentence": "Je vais porter mon sac à dos.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-063",
+  "contextSentence": "Tu peux poser ton sac sur la table.",
+  "explanation": "Écoute bien chaque son : p-o-s-e-r.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-064",
+  "contextSentence": "Tu as le pouvoir de choisir un livre.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-065",
+  "contextSentence": "C'est le premier jour de l'école.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-066",
+  "contextSentence": "Je vais prendre un bon goûter.",
+  "explanation": "Écoute bien chaque son pour ne rien oublier.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-067",
+  "contextSentence": "Il y a quatre pommes sur la table.",
+  "explanation": "Écris bien le 'qu' et le 'u' avant le 'a'.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-068",
+  "contextSentence": "Quel beau cadeau tu reçois !",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-069",
+  "contextSentence": "Il y a quelque fleurs dans le jardin.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-070",
+  "contextSentence": "Tu peux rester ici avec moi.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-071",
+  "contextSentence": "Tu peux revenir jouer avec moi.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-072",
+  "contextSentence": "C'est un plaisir de rire avec ses amis.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-073",
+  "contextSentence": "Le petit camion est tout rouge.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-074",
+  "contextSentence": "Tu donnes une réponse à la question.",
+  "explanation": "N'oublie pas l'accent aigu sur le e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-075",
+  "contextSentence": "Le petit lapin aime sauter dans l'herbe.",
+  "explanation": "Le son o s'écrit au, comme dans le mot saut.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-076",
+  "contextSentence": "Il est important de savoir lire.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-077",
+  "contextSentence": "Le serveur doit servir le repas aux clients.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-078",
+  "contextSentence": "Le petit chat est seul dans le jardin.",
+  "explanation": "Écris bien le l à la fin, comme dans solitude.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-079",
+  "contextSentence": "Il est temps de sortir dans le jardin.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-080",
+  "contextSentence": "Le jour suivant est un jour ensoleillé.",
+  "explanation": "Le t est muet, comme dans le mot suivant.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-081",
+  "contextSentence": "Le petit chien doit suivre son maître.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-082",
+  "contextSentence": "Il fait beau pour passer du temps dehors.",
+  "explanation": "Le s est muet, comme dans le mot tempête.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-083",
+  "contextSentence": "Je lis un texte sur les animaux.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-084",
+  "contextSentence": "Attention, il ne faut pas tomber par terre.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-085",
+  "contextSentence": "Le petit chat mange tout son biscuit.",
+  "explanation": "Le t est muet, comme dans le mot tout court.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-086",
+  "contextSentence": "Il y a trois pommes sur la table.",
+  "explanation": "Le s est muet, mais on l'entend dans le mot trois.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-087",
+  "contextSentence": "Je veux trouver un beau trésor.",
+  "explanation": "Écoute bien chaque son pour ne rien oublier.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-088",
+  "contextSentence": "Le petit chat a une grosse tête.",
+  "explanation": "N'oublie pas l'accent circonflexe sur le e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-089",
+  "contextSentence": "Tu peux venir jouer avec moi.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-090",
+  "contextSentence": "Le verbe est un mot d'action.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-091",
+  "contextSentence": "Le petit jardin a un grand mur vert.",
+  "explanation": "Le t est muet, comme dans le mot vertu.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-092",
+  "contextSentence": "Le vieux livre est sur la table.",
+  "explanation": "Le x est muet, comme dans le mot vieuxon.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-093",
+  "contextSentence": "Il est bon de vivre dans la nature.",
+  "explanation": "Écoute bien chaque son : v-i-v-r-e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-094",
+  "contextSentence": "Je peux voir les oiseaux dans le ciel.",
+  "explanation": "Écoute bien le son 'oi' comme dans le mot roi.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-095",
+  "contextSentence": "La voiture rouge roule sur la route.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-096",
+  "contextSentence": "L'oiseau aime voler dans le ciel bleu.",
+  "explanation": "Écoute bien chaque son : v-o-l-e-r.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-097",
+  "contextSentence": "Je veux vouloir un beau cadeau.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-098",
+  "contextSentence": "C'est un vrai ami pour moi.",
+  "explanation": "Écris bien le 'ai' à la fin du mot.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-099",
+  "contextSentence": "Il faut écouter la musique doucement.",
+  "explanation": "N'oublie pas l'accent aigu sur le premier e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce1-100",
+  "contextSentence": "J'aime écrire une lettre à mon ami.",
+  "explanation": "Il y a un accent aigu sur le premier e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-001",
+  "contextSentence": "Je vais acheter des pommes au marché.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-002",
+  "contextSentence": "Le mot bleu est un adjectif.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-003",
+  "contextSentence": "Il sourit ainsi avec beaucoup de joie.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-004",
+  "contextSentence": "Tu peux ajouter du sucre dans le lait.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-005",
+  "contextSentence": "Il pleut, alors je prends mon parapluie.",
+  "explanation": "Le s est muet à la fin du mot alors.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-006",
+  "contextSentence": "C'est une belle année pour toi.",
+  "explanation": "Écris bien deux 'n' et un accent sur le 'é'.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-007",
+  "contextSentence": "Le petit garçon garde son argent dans sa tirelire.",
+  "explanation": "Le t est muet à la fin, comme dans argentier.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-008",
+  "contextSentence": "Tu peux t'asseoir sur la petite chaise.",
+  "explanation": "N'oublie pas le double s pour faire le son s.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-009",
+  "contextSentence": "Il y a assez de pommes pour tout le monde.",
+  "explanation": "Il y a deux s et un z muet à la fin.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-010",
+  "contextSentence": "Je dois attendre le bus devant l'école.",
+  "explanation": "Il y a deux 't' pour faire le son 'tt'.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-011",
+  "contextSentence": "Il est aussi gentil que son frère.",
+  "explanation": "Attention à la double consonne ss à la fin du mot.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-012",
+  "contextSentence": "Les enfants jouent autour de la grande table.",
+  "explanation": "Le son o s'écrit au, comme dans le mot autoroute.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-013",
+  "contextSentence": "Les petits robots doivent avancer sur le tapis.",
+  "explanation": "Écoute bien chaque son pour ne rien oublier.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-014",
+  "contextSentence": "Le petit bateau flotte sur l'eau bleue.",
+  "explanation": "Le son o s'écrit eau à la fin du mot.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-015",
+  "contextSentence": "Il y a beaucoup de fleurs dans le jardin.",
+  "explanation": "Le son o s'écrit eau et il y a un p muet.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-016",
+  "contextSentence": "Le petit chat veut boire de l'eau.",
+  "explanation": "Écoute bien le son 'oi' comme dans le mot boisson.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-017",
+  "contextSentence": "Un certain garçon joue dans le jardin.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-018",
+  "contextSentence": "Je range mes jouets dans ma chambre.",
+  "explanation": "Écoute bien chaque son pour ne rien oublier.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-019",
+  "contextSentence": "Je veux changer de chaussures pour aller jouer.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-020",
+  "contextSentence": "Je vais chercher mon petit chat.",
+  "explanation": "Écoute bien chaque son pour ne rien oublier.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-021",
+  "contextSentence": "Combien de pommes y a-t-il dans le panier ?",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-022",
+  "contextSentence": "Il est fort comme un lion.",
+  "explanation": "N'oublie pas le double m au milieu du mot.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-023",
+  "contextSentence": "Comment fais-tu pour faire ce joli dessin ?",
+  "explanation": "Il y a deux m et un t muet à la fin.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-024",
+  "contextSentence": "Je vais compter les pommes sur la table.",
+  "explanation": "Écris bien le 'pt' comme dans le mot 'compteur'.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-025",
+  "contextSentence": "Ce plan est bon pour convenir avec toi.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-026",
+  "contextSentence": "Je vais demander un biscuit à maman.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-027",
+  "contextSentence": "C'est le dernier biscuit du paquet.",
+  "explanation": "Écris bien le 'r' muet à la fin comme dans dernier.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-028",
+  "contextSentence": "J'aime dessiner un beau château sur mon papier.",
+  "explanation": "Il y a deux 's' pour faire le son [s].",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-029",
+  "contextSentence": "C'est le début du film.",
+  "explanation": "N'oublie pas l'accent sur le é et le t muet.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-030",
+  "contextSentence": "Tu dois décider quel jeu choisir.",
+  "explanation": "Il y a un accent aigu sur le premier e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-031",
+  "contextSentence": "Tu veux encore un petit biscuit ?",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-032",
+  "contextSentence": "Enfin, nous pouvons aller jouer dehors.",
+  "explanation": "Écoute bien le son 'in' avant le 'f'.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-033",
+  "contextSentence": "Je peux entendre le chant des oiseaux.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-034",
+  "contextSentence": "Je veux essayer de faire un beau dessin.",
+  "explanation": "Il y a deux s car on entend le son 'ss'.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-035",
+  "contextSentence": "Je fais un exercice de sport.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-036",
+  "contextSentence": "La femme prépare un bon gâteau.",
+  "explanation": "Il y a deux lettres m pour faire le son [fam].",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-037",
+  "contextSentence": "Je veux finir mon dessin maintenant.",
+  "explanation": "Écoute bien chaque son : f-i-n-i-r.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-038",
+  "contextSentence": "Leâteau a une forme ronde.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-039",
+  "contextSentence": "Le professeur veut former de nouveaux élèves.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-040",
+  "contextSentence": "Mon frère joue au ballon avec moi.",
+  "explanation": "Il y a un accent grave sur le e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-041",
+  "contextSentence": "Je lis une belle histoire avant de dormir.",
+  "explanation": "Écoute bien chaque son, car chaque lettre se prononce ici.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-042",
+  "contextSentence": "J'aime imaginer des histoires merveilleuses.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-043",
+  "contextSentence": "Le panneau doit indiquer le chemin.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-044",
+  "contextSentence": "Je ne mange jamais de bonbons.",
+  "explanation": "Le s est muet à la fin du mot.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-045",
+  "contextSentence": "Il faut jeter les vieux papiers.",
+  "explanation": "Écoute bien le son 'j' et le 'e' avant le 'tt'.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-046",
+  "contextSentence": "Le jeune chat joue dans le jardin.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-047",
+  "contextSentence": "Papa lit son journal chaque matin.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-048",
+  "contextSentence": "Le petit garçon trace une ligne droite.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-049",
+  "contextSentence": "Tu te sens mieux après ton repos.",
+  "explanation": "Le x est muet, comme dans le mot mieux-disant.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-050",
+  "contextSentence": "Le petit chat joue au milieu du jardin.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-051",
+  "contextSentence": "Le petit chat attend une minute.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-052",
+  "contextSentence": "Il y a moins de pommes dans le panier.",
+  "explanation": "Le s est muet à la fin du mot.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-053",
+  "contextSentence": "La neige recouvre la haute montagne.",
+  "explanation": "Écoute bien chaque son car toutes les lettres se prononcent.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-054",
+  "contextSentence": "Je veux monter sur le grand toboggan.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-055",
+  "contextSentence": "Je veux montrer mon beau dessin.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-056",
+  "contextSentence": "Le nombre de pommes est grand.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-057",
+  "contextSentence": "C'est un bel objet sur la table.",
+  "explanation": "Le t est muet, comme dans le mot objetif.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-058",
+  "contextSentence": "J'aime observer les oiseaux dans le jardin.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-059",
+  "contextSentence": "Le petit lapin a une grande oreille.",
+  "explanation": "Il y a deux L pour faire le son L.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-060",
+  "contextSentence": "Je peux oublier mon sac à l'école.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-061",
+  "contextSentence": "Il faut paraître joyeux devant les autres.",
+  "explanation": "N'oublie pas l'accent circonflexe sur le i.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-062",
+  "contextSentence": "Je joue à une partie de cartes.",
+  "explanation": "Écris bien le 'ie' à la fin du mot.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-063",
+  "contextSentence": "Le train est déjà passé devant la gare.",
+  "explanation": "Écris deux s car on entend le son de passer.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-064",
+  "contextSentence": "Il prend de la peine pour son dessin.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-065",
+  "contextSentence": "Il n'y a personne dans la cour.",
+  "explanation": "Il y a deux n pour faire le son [n].",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-066",
+  "contextSentence": "Ma chambre est une grande pièce.",
+  "explanation": "N'oublie pas l'accent grave sur le e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-067",
+  "contextSentence": "Tu peux placer le vase sur la table.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-068",
+  "contextSentence": "Le verre est plein de jus d'orange.",
+  "explanation": "Écris bien le 'n' muet à la fin du mot.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-069",
+  "contextSentence": "Il est possible de jouer dehors.",
+  "explanation": "N'oublie pas le double s comme dans possiblement.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-070",
+  "contextSentence": "Pourquoi est-ce que tu ris ?",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-071",
+  "contextSentence": "Je vais pousser la porte doucement.",
+  "explanation": "Il y a deux 's' pour faire le son [s] entre deux voyelles.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-072",
+  "contextSentence": "Le petit chat a presque fini son lait.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-073",
+  "contextSentence": "Je vais préparer un bon gâteau au chocolat.",
+  "explanation": "Il y a un accent aigu sur le premier e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-074",
+  "contextSentence": "Le cadeau est un beau présent.",
+  "explanation": "Il y a un accent sur le é et un t muet.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-075",
+  "contextSentence": "Tu poses une question à ton maître.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-076",
+  "contextSentence": "Le petit chat remue sa queue.",
+  "explanation": "Écris bien le 'ue' à la fin du mot.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-077",
+  "contextSentence": "J'aime raconter une belle histoire à mes amis.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-078",
+  "contextSentence": "Tu dois recopier les mots sur ton cahier.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-079",
+  "contextSentence": "J'aime regarder les oiseaux dans le jardin.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-080",
+  "contextSentence": "Il faut relever le stylo par terre.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 2,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-081",
+  "contextSentence": "Tu dois rendre ton livre à la maîtresse.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-082",
+  "contextSentence": "Il est l'heure de rentrer à la maison.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-083",
+  "contextSentence": "Je dois répondre à la question du maître.",
+  "explanation": "N'oublie pas l'accent aigu sur le e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-084",
+  "contextSentence": "Ce nuage peut sembler être un gros coton.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 2
+  }
+ },
+ {
+  "id": "fr-ce2-085",
+  "contextSentence": "Je peux sentir le parfum des fleurs.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-086",
+  "contextSentence": "C'est un jeu très simple.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-087",
+  "contextSentence": "Il mange souvent une pomme rouge.",
+  "explanation": "Le t est muet à la fin du mot.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-088",
+  "contextSentence": "Je lis la suite de l'histoire.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-089",
+  "contextSentence": "Le sujet de la leçon est la forêt.",
+  "explanation": "Le t est muet à la fin du mot sujet.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-090",
+  "contextSentence": "Le professeur écrit sur le grand tableau.",
+  "explanation": "Le son o s'écrit eau comme dans le mot bateau.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-091",
+  "contextSentence": "Tu peux tenir le ballon avec tes mains.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-092",
+  "contextSentence": "Tu dois terminer ton dessin maintenant.",
+  "explanation": "Écoute bien chaque son pour ne rien oublier.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-093",
+  "contextSentence": "Tu peux tirer la corde pour jouer.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-094",
+  "contextSentence": "Le titre du livre est écrit en haut.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-095",
+  "contextSentence": "Tu es toujours mon meilleur ami.",
+  "explanation": "Le s final est muet, comme dans le mot toujours.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-096",
+  "contextSentence": "La petite roue veut tourner vite.",
+  "explanation": "Écoute bien chaque son pour ne rien oublier.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-097",
+  "contextSentence": "Le travail de l'artiste est passionnant.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-098",
+  "contextSentence": "Tu peux utiliser un crayon pour dessiner.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-099",
+  "contextSentence": "Le petit village est calme et très joli.",
+  "explanation": "N'oublie pas le double l au milieu du mot.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-ce2-100",
+  "contextSentence": "Ce gâteau est vraiment délicieux.",
+  "explanation": "Le t est muet, comme dans le mot vrai.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-001",
+  "contextSentence": "Les deux amis signent un accord pour jouer.",
+  "explanation": "Il y a deux c et un d muet à la fin.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-002",
+  "contextSentence": "Tu peux apporter un beau cadeau pour l'anniversaire.",
+  "explanation": "Il y a deux 'p' pour faire le son [p].",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-003",
+  "contextSentence": "J'aime apprendre de nouvelles choses à l'école.",
+  "explanation": "Il y a deux p car on entend le son 'p' bien fort.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-004",
+  "contextSentence": "Le petit chat veut approcher de son bol.",
+  "explanation": "Il y a deux 'p' comme dans appeler.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-005",
+  "contextSentence": "Je lis un article dans le journal.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-006",
+  "contextSentence": "Fais attention quand tu marches sur le tapis.",
+  "explanation": "Il y a deux t car on entend le son 'ti'.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-007",
+  "contextSentence": "Il sourit aussitôt quand il voit le cadeau.",
+  "explanation": "N'oublie pas le double s, l'accent et le t muet.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-008",
+  "contextSentence": "L'auteur écrit une belle histoire pour les enfants.",
+  "explanation": "Le son o s'écrit au, comme dans le mot autorité.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-009",
+  "contextSentence": "Le champion veut battre son record de course.",
+  "explanation": "Il y a deux 't' pour faire le son [t].",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-010",
+  "contextSentence": "J'ai un grand besoin de dormir.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-011",
+  "contextSentence": "Le train arrive bientôt à la gare.",
+  "explanation": "Le t est muet, comme dans le mot bientôt.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-012",
+  "contextSentence": "Le petit enfant a la bouche ouverte.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-013",
+  "contextSentence": "Le grand château a des tours très hautes.",
+  "explanation": "Le son o s'écrit eau et il y a un accent circonflexe.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-014",
+  "contextSentence": "Nous allons commencer le cours de dessin.",
+  "explanation": "Il y a deux 'm' au milieu du mot.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-015",
+  "contextSentence": "Le petit déjeuner est complet.",
+  "explanation": "Le t est muet, comme dans le mot complete.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-016",
+  "contextSentence": "Tu peux compléter ton dessin avec des fleurs.",
+  "explanation": "Il y a un accent aigu sur le premier e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-017",
+  "contextSentence": "Le musicien veut composer une belle mélodie.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-018",
+  "contextSentence": "Il est important de connaître les animaux de la ferme.",
+  "explanation": "Il y a deux n et un accent circonflexe sur le i.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-019",
+  "contextSentence": "Ce grand panier peut contenir tous tes jouets.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-020",
+  "contextSentence": "Le petit garçon est très content.",
+  "explanation": "Le t est muet, mais on l'entend dans le mot contenu.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-021",
+  "contextSentence": "Tu peux continuer à dessiner ton beau château.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-022",
+  "contextSentence": "Je vais coucher le petit chat dans son panier.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-023",
+  "contextSentence": "Je vais couper le papier avec des ciseaux.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-024",
+  "contextSentence": "Maman prépare un bon gâteau dans la cuisine.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-025",
+  "contextSentence": "Il faut descendre l'escalier doucement.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-026",
+  "contextSentence": "Ce petit chat est différent du grand.",
+  "explanation": "Écris deux f et un t muet comme dans différence.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-027",
+  "contextSentence": "J'aime découvrir de nouveaux animaux.",
+  "explanation": "N'oublie pas l'accent aigu sur le premier e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-028",
+  "contextSentence": "Le départ du train est à huit heures.",
+  "explanation": "Le t est muet, comme dans le mot partir.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-029",
+  "contextSentence": "Le professeur peut désigner un élève.",
+  "explanation": "N'oublie pas l'accent aigu sur le premier e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-030",
+  "contextSentence": "Je vais employer un grand pinceau bleu.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-031",
+  "contextSentence": "C'est un bel endroit pour jouer.",
+  "explanation": "Le t est muet à la fin, comme dans le mot endroit.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-032",
+  "contextSentence": "Les enfants jouent ensemble dans la cour.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-033",
+  "contextSentence": "Je mange une pomme, ensuite je bois de l'eau.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-034",
+  "contextSentence": "Tu dois entourer le dessin avec un trait.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-035",
+  "contextSentence": "Je veux envoyer une lettre à mon ami.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-036",
+  "contextSentence": "Le maître veut expliquer la règle de grammaire.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-037",
+  "contextSentence": "Le chat regarde par la fenêtre.",
+  "explanation": "N'oublie pas l'accent circonflexe sur le e de fenêtre.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-038",
+  "contextSentence": "Tu dois fermer la porte de la classe.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-039",
+  "contextSentence": "Il faut frapper à la porte pour entrer.",
+  "explanation": "Il y a deux p car on entend le son [p] bien fort.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-040",
+  "contextSentence": "Je veux gagner le match de foot.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-041",
+  "contextSentence": "Je veux garder mon petit chat.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-042",
+  "contextSentence": "Les enfants aiment glisser sur la neige.",
+  "explanation": "Il y a deux s pour faire le son [s].",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-043",
+  "contextSentence": "Maman prépare un bon gâteau au chocolat.",
+  "explanation": "Le son o s'écrit eau et n'oublie pas l'accent circonflexe.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-044",
+  "contextSentence": "J'aime habiter dans une jolie maison.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-045",
+  "contextSentence": "Le petit garçon est très heureux aujourd'hui.",
+  "explanation": "Le x est muet, comme dans le mot heureux.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-046",
+  "contextSentence": "Je vais installer la tente dans le jardin.",
+  "explanation": "Il y a deux L car on entend le son 'al'.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-047",
+  "contextSentence": "Il profite de cet instant de calme.",
+  "explanation": "Le t final est muet, comme dans le mot instantané.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-048",
+  "contextSentence": "J'aime inventer de nouveaux jeux pour mes amis.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-049",
+  "contextSentence": "C'est une belle journée de soleil.",
+  "explanation": "N'oublie pas l'accent aigu sur le premier e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-050",
+  "contextSentence": "Je veux lancer le ballon dans le jardin.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-051",
+  "contextSentence": "La langue est un muscle dans la bouche.",
+  "explanation": "Écoute bien chaque son pour ne rien oublier.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-052",
+  "contextSentence": "La tortue marche lentement sur l'herbe.",
+  "explanation": "Le t final est muet, comme dans le mot lent.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-053",
+  "contextSentence": "Le petit chat dort longtemps sur le canapé.",
+  "explanation": "Le s est muet à la fin du mot.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-054",
+  "contextSentence": "La lumière du soleil brille dans la chambre.",
+  "explanation": "N'oublie pas l'accent grave sur le e de lumière.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-055",
+  "contextSentence": "Il marche d'une manière très douce.",
+  "explanation": "N'oublie pas l'accent grave sur le e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-056",
+  "contextSentence": "Il ne faut pas manquer le goûter.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-057",
+  "contextSentence": "Ce vieux jouet est mauvais pour toi.",
+  "explanation": "Le son o s'écrit au, comme dans mauvais.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-058",
+  "contextSentence": "Je mange un petit morceau de chocolat.",
+  "explanation": "Le son o s'écrit eau comme dans le mot eau.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-059",
+  "contextSentence": "J'écoute de la musique douce dans ma chambre.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-060",
+  "contextSentence": "Il y a de nombreux arbres dans le parc.",
+  "explanation": "Le x est muet, comme dans le mot nombre.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-061",
+  "contextSentence": "Quel est ton numéro de téléphone ?",
+  "explanation": "N'oublie pas l'accent aigu sur le premier e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-062",
+  "contextSentence": "Je veux offrir un beau cadeau à mon ami.",
+  "explanation": "Il y a deux f car on entend le son 'f' bien fort.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-063",
+  "contextSentence": "Parfois, le soleil brille très fort.",
+  "explanation": "Le s final est muet, comme dans le mot parfaire.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-064",
+  "contextSentence": "Chaque enfant a un participe pour le jeu.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-065",
+  "contextSentence": "Le passage est étroit pour le petit chat.",
+  "explanation": "Il y a deux s pour faire le son [s].",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-066",
+  "contextSentence": "Le pauvre chaton a faim.",
+  "explanation": "Le son o s'écrit au, comme dans pauvreté.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-067",
+  "contextSentence": null,
+  "explanation": null,
+  "error": "mot absent de la phrase"
+ },
+ {
+  "id": "fr-cm1-068",
+  "contextSentence": "Le petit garçon pose une pierre sur le sol.",
+  "explanation": "Il y a deux lettres r pour faire le son rr.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-069",
+  "contextSentence": "Ce joli dessin doit plaire à tout le monde.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-070",
+  "contextSentence": "Le petit bébé commence à pleurer.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-071",
+  "contextSentence": "Il y a plusieurs pommes sur la table.",
+  "explanation": "Le s final est muet, comme dans le mot plusieurs.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-072",
+  "contextSentence": "Il pleut pourtant le soleil brille.",
+  "explanation": "Le t final est muet, comme dans le mot pourtant.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-073",
+  "contextSentence": "Le prince porte une couronne dorée.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-074",
+  "contextSentence": "Le pronom remplace un nom dans la phrase.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-075",
+  "contextSentence": "Je vais proposer un gâteau aux amis.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-076",
+  "contextSentence": "Le petit garçon a un vêtement propre.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-077",
+  "contextSentence": "Je vais présenter mon nouveau jouet.",
+  "explanation": "Il y a un accent aigu sur le premier e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-078",
+  "contextSentence": "Il est temps de quitter la maison.",
+  "explanation": "Il y a deux 't' pour faire le son 't' bien net.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-079",
+  "contextSentence": "Il faut agir avec raison pour être heureux.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-080",
+  "contextSentence": "Je vais recevoir un beau cadeau.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-081",
+  "contextSentence": "Je peux remarquer un petit oiseau bleu.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-082",
+  "contextSentence": "Tu dois remettre ton livre sur l'étagère.",
+  "explanation": "Il y a deux 't' pour faire le son 't' bien court.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-083",
+  "contextSentence": "Je vais remplacer la vieille chaise par une neuve.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-084",
+  "contextSentence": "Tu peux reprendre ton livre de lecture.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-085",
+  "contextSentence": "Je dois retourner dans ma chambre.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-086",
+  "contextSentence": "Je veux retrouver mon petit ballon bleu.",
+  "explanation": "Écoute bien chaque son pour ne rien oublier.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-087",
+  "contextSentence": "L'eau coule doucement dans la rivière.",
+  "explanation": "N'oublie pas l'accent grave sur le e de rivière.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-088",
+  "contextSentence": "Le petit ballon aime rouler sur l'herbe.",
+  "explanation": "Écoute bien chaque son : r-o-u-l-e-r.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-089",
+  "contextSentence": "Tu peux réussir ton examen avec tes efforts.",
+  "explanation": "Il y a deux s pour faire le son s.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-090",
+  "contextSentence": "Le pompier veut sauver le petit chat.",
+  "explanation": "Le son o s'écrit au, comme dans sauvetage.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-091",
+  "contextSentence": "Il y a seulement un gâteau sur la table.",
+  "explanation": "Le t est muet, comme dans le mot « seul ».",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-092",
+  "contextSentence": "Soudain, un petit lapin sort du jardin.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-093",
+  "contextSentence": "Tu dois souligner le titre de ton texte.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-094",
+  "contextSentence": "Il faut surtout bien manger des fruits.",
+  "explanation": "Le t final est muet, comme dans le mot surtout.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-095",
+  "contextSentence": "Le chat passe par le travers de la porte.",
+  "explanation": "Le s final est muet, comme dans le mot traverser.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-096",
+  "contextSentence": "Les enfants veulent traverser la petite rivière.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-097",
+  "contextSentence": "Le bébé a un joli visage.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-098",
+  "contextSentence": "La voiture roule à une grande vitesse.",
+  "explanation": "N'oublie pas le double s à la fin du mot.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-099",
+  "contextSentence": "Le voyage en train est très agréable.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm1-100",
+  "contextSentence": "Le dinosaure a un ventre énorme.",
+  "explanation": "N'oublie pas l'accent aigu sur le e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-001",
+  "contextSentence": "Je vais accompagner mon ami au parc.",
+  "explanation": "Il y a deux 'c' comme dans le mot compagnon.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-002",
+  "contextSentence": "Je vais accorder mon violon pour le concert.",
+  "explanation": "Il y a deux 'c' comme dans le mot accord.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-003",
+  "contextSentence": "C'est une affaire très importante pour l'école.",
+  "explanation": "N'oublie pas le double f au milieu du mot.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-004",
+  "contextSentence": "Je vais annoncer la bonne nouvelle à mes amis.",
+  "explanation": "N'oublie pas le double n comme dans annonce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-005",
+  "contextSentence": "Je peux apercevoir un petit oiseau dans l'arbre.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-006",
+  "contextSentence": "Le lapin va apparaître derrière le buisson.",
+  "explanation": "N'oublie pas le double p et l'accent sur le î.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-007",
+  "contextSentence": "Le petit appareil prend des photos.",
+  "explanation": "N'oublie pas le double p au milieu du mot.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-008",
+  "contextSentence": "Ce beau livre doit appartenir à la classe.",
+  "explanation": "N'oublie pas le double p comme dans appeler.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-009",
+  "contextSentence": "L'arrivée du train est très joyeuse.",
+  "explanation": "Mets un accent sur le é et deux r comme dans arriver.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-010",
+  "contextSentence": "Il veut atteindre le sommet de la montagne.",
+  "explanation": "Il y a deux 't' comme dans le mot atteint.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-011",
+  "contextSentence": "Je veux attraper le ballon rouge.",
+  "explanation": "Il y a deux 't' pour faire le son [t].",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-012",
+  "contextSentence": "Le petit garçon vit une belle aventure.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-013",
+  "contextSentence": "Une petite branche tombe sur le sol.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-014",
+  "contextSentence": "Mon camarade joue avec moi dans la cour.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-015",
+  "contextSentence": "Le petit garçon porte un grand chapeau bleu.",
+  "explanation": "Le son o s'écrit eau à la fin du mot.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-016",
+  "contextSentence": "Je vais charger les batteries du vélo.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-017",
+  "contextSentence": "Le petit chien aime chasser les balles.",
+  "explanation": "Il y a deux s car on entend le son [s] entre deux voyelles.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-018",
+  "contextSentence": "Le chasseur observe les oiseaux dans la forêt.",
+  "explanation": "N'oublie pas le double s comme dans le mot chasse.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-019",
+  "contextSentence": "Je mange un délicieux carré de chocolat.",
+  "explanation": "Le t final est muet, comme dans le mot chocolatier.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-020",
+  "contextSentence": "Je vais classer mes livres par couleur.",
+  "explanation": "Il y a deux s car on entend le son 'ss'.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-021",
+  "contextSentence": "La grande colonne soutient le toit du temple.",
+  "explanation": "N'oublie pas le double n au milieu du mot.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-022",
+  "contextSentence": "Le jus est un bon complément au repas.",
+  "explanation": "Le t final est muet, comme dans le mot complémentaire.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-023",
+  "contextSentence": "Je veux comprendre cette leçon de mathématiques.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-024",
+  "contextSentence": "Mon papa aime conduire la voiture.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-025",
+  "contextSentence": "Tu dois conjuguer les verbes pour ton exercice.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-026",
+  "contextSentence": "Mon grand-père donne un bon conseil.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-027",
+  "contextSentence": "Les ouvriers vont construire une grande maison.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-028",
+  "contextSentence": "Le noir est le contraire du blanc.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-029",
+  "contextSentence": "Les deux pièces doivent correspondre parfaitement.",
+  "explanation": "N'oublie pas le double r comme dans correspondre.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-030",
+  "contextSentence": "Le grand drap sert à couvrir le lit.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-031",
+  "contextSentence": "Je cherche un mot dans le dictionnaire.",
+  "explanation": "N'oublie pas le double n au milieu du mot.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-032",
+  "contextSentence": "Ce puzzle est difficile à terminer.",
+  "explanation": "N'oublie pas le double f pour faire le son [f].",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-033",
+  "contextSentence": "Nous allons au parc ce dimanche.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-034",
+  "contextSentence": "Le chef doit diriger son équipe avec soin.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-035",
+  "contextSentence": "Le château de sable va disparaître dans l'eau.",
+  "explanation": "N'oublie pas l'accent circonflexe sur le i.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-036",
+  "contextSentence": "Le docteur soigne le petit chat.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-037",
+  "contextSentence": "Le professeur montre un document sur le bureau.",
+  "explanation": "Le t final est muet, comme dans le mot documenter.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-038",
+  "contextSentence": "Le petit chat marche doucement sur le tapis.",
+  "explanation": "Le t final est muet, comme dans le mot chat.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-039",
+  "contextSentence": "Le cavalier doit dresser son cheval.",
+  "explanation": "Il y a deux 's' pour faire le son [s].",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-040",
+  "contextSentence": "Je peux décrire le beau paysage.",
+  "explanation": "Il y a un accent aigu sur le premier e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-041",
+  "contextSentence": "Je veux emporter mon goûter au parc.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-042",
+  "contextSentence": "Le verrou sert à empêcher la porte de s'ouvrir.",
+  "explanation": "N'oublie pas l'accent circonflexe sur le e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-043",
+  "contextSentence": "Je monte l'escalier pour aller dans ma chambre.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-044",
+  "contextSentence": "Les fleurs veulent exister dans le jardin.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-045",
+  "contextSentence": "Son expression montre qu'il est très content.",
+  "explanation": "N'oublie pas le double s comme dans expressionnisme.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-046",
+  "contextSentence": "Je vais fabriquer un beau jouet en bois.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-047",
+  "contextSentence": "Se brosser les dents est une bonne habitude.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-048",
+  "contextSentence": "C'est un détail important pour le jeu.",
+  "explanation": "Le t final est muet, comme dans le mot importance.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-049",
+  "contextSentence": "Le mode indicatif sert à raconter des faits réels.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-050",
+  "contextSentence": "L'infinitif est la forme de base du verbe.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-051",
+  "contextSentence": "Je reçois une information importante à la radio.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-052",
+  "contextSentence": "La lecture d'un livre est un plaisir.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-053",
+  "contextSentence": "Nous irons au parc le lendemain.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-054",
+  "contextSentence": "La machine à laver tourne dans la salle.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-055",
+  "contextSentence": "Nous mangeons un bon goûter maintenant.",
+  "explanation": "Le t final est muet, comme dans le mot maintenant.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-056",
+  "contextSentence": "Le joueur veut marquer un but au ballon.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-057",
+  "contextSentence": "Le médecin soigne le petit chat.",
+  "explanation": "N'oublie pas l'accent aigu sur le premier e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-058",
+  "contextSentence": "Tu peux obtenir un beau cadeau.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-059",
+  "contextSentence": "Je vais occuper mon temps avec un livre.",
+  "explanation": "Il y a deux 'c' pour faire le son 'k'.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-060",
+  "contextSentence": "Le personnage du livre est très gentil.",
+  "explanation": "N'oublie pas le double n au milieu du mot.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-061",
+  "contextSentence": "Manger une glace est un grand plaisir.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-062",
+  "contextSentence": "Le petit garçon pose sa planche sur le sol.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-063",
+  "contextSentence": "Ce petit problème est facile à résoudre.",
+  "explanation": "N'oublie pas l'accent grave sur le e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-064",
+  "contextSentence": "J'aime promener mon petit chien dans le parc.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-065",
+  "contextSentence": "Tu dois bien prononcer chaque mot de la phrase.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-066",
+  "contextSentence": "J'accepte ta proposition pour jouer au ballon.",
+  "explanation": "Écoute bien chaque son, car toutes les lettres se prononcent.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-067",
+  "contextSentence": "Je préférer un chocolat chaud au lait.",
+  "explanation": "N'oublie pas l'accent aigu sur le premier e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-068",
+  "contextSentence": "Le petit lapin court rapidement dans le jardin.",
+  "explanation": "Le t final est muet, comme dans le mot rapide.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-069",
+  "contextSentence": "Tu dois rapporter ton livre à la bibliothèque.",
+  "explanation": "Il y a deux 'p' pour faire le son [p].",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-070",
+  "contextSentence": "La recherche de trésors est passionnante.",
+  "explanation": "Écoute bien chaque son, car chaque lettre se prononce ici.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-071",
+  "contextSentence": "Je peux reconnaître mon ami dans la cour.",
+  "explanation": "N'oublie pas le double n et l'accent circonflexe sur le i.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-072",
+  "contextSentence": "Je vais remplir mon verre d'eau.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-073",
+  "contextSentence": "Je vais rencontrer mes amis au parc.",
+  "explanation": "Écoute bien chaque son pour ne rien oublier.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-074",
+  "contextSentence": "Le dessin peut représenter un beau château.",
+  "explanation": "Il y a un accent aigu sur le premier e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-075",
+  "contextSentence": "Tu vas ressembler à ton papa.",
+  "explanation": "N'oublie pas le double s comme dans la famille de ressemble.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-076",
+  "contextSentence": "Il faut retenir la leçon pour l'examen.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-077",
+  "contextSentence": "Il faut bien réfléchir avant de choisir.",
+  "explanation": "N'oublie pas l'accent aigu sur le premier e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-078",
+  "contextSentence": "Tu dois répéter la petite chanson.",
+  "explanation": "Il y a un accent aigu sur le premier e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-079",
+  "contextSentence": "Le soleil vient réveiller les oiseaux.",
+  "explanation": "N'oublie pas l'accent sur le é et le double l.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-080",
+  "contextSentence": "Le petit lion sauvage vit dans la forêt.",
+  "explanation": "Le son o s'écrit au, comme dans le mot sauvage.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-081",
+  "contextSentence": "La semaine commence toujours un lundi matin.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-082",
+  "contextSentence": "Le petit serpent glisse doucement dans l'herbe.",
+  "explanation": "Le t est muet à la fin, comme dans serpentin.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-083",
+  "contextSentence": "Le serveur apporte un bon service aux clients.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-084",
+  "contextSentence": "Le silence règne dans la grande bibliothèque.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-085",
+  "contextSentence": "Ce petit chat est un être singulier.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-086",
+  "contextSentence": "Le vent va souffler sur les feuilles.",
+  "explanation": "Il y a deux 'f' pour faire le son [f].",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-087",
+  "contextSentence": "Je garde un beau souvenir de nos vacances.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-088",
+  "contextSentence": "Le spectacle de cirque est très amusant.",
+  "explanation": "Écoute bien chaque son car il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-089",
+  "contextSentence": "Il est tellement content de voir ses amis.",
+  "explanation": "Il y a deux l et un t muet à la fin.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-090",
+  "contextSentence": "Les enfants jouent sur le grand terrain de sport.",
+  "explanation": "N'oublie pas le double r comme dans le mot terre.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-091",
+  "contextSentence": "Ce petit monstre fait un bruit terrible.",
+  "explanation": "N'oublie pas le double r comme dans le mot terre.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-092",
+  "contextSentence": "Je peux toucher le doux pelage du chat.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-093",
+  "contextSentence": "Le magicien veut transformer la citrouille en carrosse.",
+  "explanation": "Écoute bien chaque son, il s'écrit comme il se prononce.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-094",
+  "contextSentence": "Les élèves aiment travailler ensemble à l'école.",
+  "explanation": "Il y a deux L comme dans le mot travail.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-095",
+  "contextSentence": "Nous regardons un dessin animé à la télévision.",
+  "explanation": "N'oublie pas l'accent aigu sur le premier e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-096",
+  "contextSentence": "Ce vêtement est très doux et chaud.",
+  "explanation": "Le t est muet à la fin, comme dans vêture.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-097",
+  "contextSentence": "Le petit lapin veut échapper au filet.",
+  "explanation": "Il y a deux p car on entend le son 'ap'.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-098",
+  "contextSentence": "Chaque petit élément est important pour le puzzle.",
+  "explanation": "Le t est muet à la fin, comme dans élémentaire.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-099",
+  "contextSentence": "Le grand éléphant mange une banane.",
+  "explanation": "N'oublie pas le t muet à la fin du mot.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ },
+ {
+  "id": "fr-cm2-100",
+  "contextSentence": "C'est un petit objet étrange sur la table.",
+  "explanation": "N'oublie pas l'accent aigu sur le e.",
+  "generatedBy": {
+   "model": "llm-local",
+   "route": "llm-local",
+   "promptVersion": 3,
+   "attempt": 1
+  }
+ }
+]
