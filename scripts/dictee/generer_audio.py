@@ -36,9 +36,12 @@ SORTIE = RACINE / 'public'
 EMPREINTES = RACINE / 'scripts/dictee/audio-empreintes.json'
 MODELE_SHA256 = 'b1d946fd68d0347155fa59bce0a018924abbef3c1561181db45ca463d83963ef'
 # Le mot est dit dans une courte phrase porteuse : la voix prononce mal un mot isolé (mesure du 2026-11-16 avec
-# verifier_audio.py : 2 à 5 mots sur 20 reconnus seuls, 12 sur 20 dans « Écris le mot … », les autres ratés étant
-# surtout des homophones de la reconnaissance elle-même). Le mot est un peu plus lent que la phrase de contexte.
-PORTEUSE = 'Écris le mot {}.'
+# verifier_audio.py : 2 à 5 mots sur 20 reconnus seuls, 12 sur 20 dans « Écris le mot … »). Les deux-points posent
+# une pause avant le mot, qui ne se colle plus à « mot » (« le mot vent » entendu « le mauvais ») : sur les 24 mots
+# encore mal reconnus, 14 avec « Écris le mot X. », 19 avec « Écris le mot : X. » (même jour, même voix).
+PORTEUSE = 'Écris le mot : {}.'
+# Graphie donnée à la voix quand elle prononce mal le mot écrit (le mot affiché et attendu ne change pas).
+PRONONCIATION = {'dos': 'do'}
 REGLAGES = {'mot': {'length_scale': 1.15}, 'phrase': {'length_scale': 1.05}}
 OPUS = ['-c:a', 'libopus', '-b:a', '24k', '-ac', '1', '-ar', '24000', '-map_metadata', '-1', '-fflags', '+bitexact']
 
@@ -61,7 +64,7 @@ def main() -> None:
     mots = json.loads(a.catalogue.read_text(encoding='utf-8'))['words']
     connues = json.loads(EMPREINTES.read_text(encoding='utf-8')) if EMPREINTES.exists() else {}
     faits = 0
-    taches = [(w['pronunciationAsset'], PORTEUSE.format(w['expectedForm']), 'mot') for w in mots]
+    taches = [(w['pronunciationAsset'], PORTEUSE.format(PRONONCIATION.get(w['expectedForm'], w['expectedForm'])), 'mot') for w in mots]
     taches += [(w['contextAsset'], w['contextSentence'], 'phrase') for w in mots if w['contextAsset'] and w['contextSentence']]
     with tempfile.TemporaryDirectory() as tmp:
         for chemin, texte, sorte in taches:

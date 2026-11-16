@@ -3,7 +3,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 const excluded = new Set(['node_modules', 'dist', 'test-results', 'playwright-report', 'blob-report']);
 const allowed = (file: string): boolean => !file.split(/[\\/]/).some(part => part.startsWith('.') || excluded.has(part))
-    && file !== 'package-lock.json' && !/\.(png|ico|jpg|jpeg|webp|woff2?)$/i.test(file);
+    && file !== 'package-lock.json' && !/\.(png|ico|jpg|jpeg|webp|woff2?|ogg|opus|mp3|wav)$/i.test(file);
 function sourceFiles(root: string): string[] {
     const walk = (directory: string): string[] => readdirSync(join(root, directory), { withFileTypes: true }).flatMap(entry => {
         const file = join(directory, entry.name);

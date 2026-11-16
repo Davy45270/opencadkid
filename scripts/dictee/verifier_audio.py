@@ -16,7 +16,12 @@ from pathlib import Path
 RACINE = Path(__file__).resolve().parents[2]
 
 
+# La reconnaissance écrit les nombres en chiffres (« Écris le mot 2. ») : on les remet en lettres.
+NOMBRES = {'1': 'un', '2': 'deux', '3': 'trois', '4': 'quatre', '5': 'cinq', '6': 'six', '7': 'sept', '8': 'huit', '9': 'neuf', '10': 'dix', '100': 'cent', '1000': 'mille'}
+
+
 def simple(t: str) -> str:
+    t = re.sub(r'\d+', lambda m: f' {NOMBRES.get(m.group(), m.group())} ', t)
     t = unicodedata.normalize('NFD', t.lower())
     t = ''.join(c for c in t if unicodedata.category(c) != 'Mn')
     return re.sub(r'[^a-z ]', ' ', t)

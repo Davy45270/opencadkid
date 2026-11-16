@@ -104,10 +104,10 @@ def demander(entree: dict) -> dict:
             continue
         erreur = valide(entree['expectedForm'], r)
         if erreur is None:
-            return {'id': entree['id'], 'contextSentence': unicodedata.normalize('NFC', r['phrase'].strip()),
+            return {'id': entree['id'], 'lemma': entree['lemma'], 'contextSentence': unicodedata.normalize('NFC', r['phrase'].strip()),
                     'explanation': unicodedata.normalize('NFC', r['explication'].strip()),
                     'generatedBy': {'model': donnees.get('model', MODELE), 'route': MODELE, 'promptVersion': VERSION_CONSIGNE, 'attempt': essai + 1}}
-    return {'id': entree['id'], 'contextSentence': None, 'explanation': None, 'error': erreur}
+    return {'id': entree['id'], 'lemma': entree['lemma'], 'contextSentence': None, 'explanation': None, 'error': erreur}
 
 
 def main() -> None:

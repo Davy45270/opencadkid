@@ -44,7 +44,8 @@ test('the shipped drafts never reach the child: every class waits for an adult r
 
 test('a finite feed: the word is heard, never shown before checking; right, wrong, again later, and the summary', async ({ page }) => {
     // Six words of one class are reviewed: a feed of five, so one missed word must come back inside the five cards.
-    const pool = shipped.words.filter(w => w.grade === 'CE1' && !w.homophones.length).slice(0, 6).map(w => w.id);
+    // Plain letters only: Playwright types an accented letter as inserted text, with no keydown, where a real AZERTY keyboard sends one.
+    const pool = shipped.words.filter(w => w.grade === 'CE1' && !w.homophones.length && /^[a-z]+$/.test(w.expectedForm)).slice(0, 6).map(w => w.id);
     await reviewed(page, w => pool.includes(w.id));
     await feed(page, 'CE1', 5);
     const first = await word(page);

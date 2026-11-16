@@ -2,11 +2,18 @@
 """Choisit 100 mots par niveau (CP, CE1, CE2, CM1, CM2) pour la dictée de mots.
 
 Sources (téléchargées, jamais versionnées ; empreintes vérifiées) :
-- Manulex, lemmes (Lété, Sprenger-Charolles et Colé, 2004) : fréquences d'usage dans les manuels
-  scolaires de l'école élémentaire, par niveau (CP, CE1, CE2 à CM2). Diffusé par Openlexicon (lexique.org).
-- Lexique 3.83 (New, Pallier et al.) : la prononciation, pour repérer les homophones. Licence CC BY-SA 4.0.
+- « Liste de fréquence lexicale », ministère de l'Éducation nationale, éduscol (page
+  https://eduscol.education.gouv.fr/6873/liste-de-frequence-lexicale, fichier .xls téléchargé le 2026-11-16) :
+  près de 1 500 mots les plus fréquents du français, établie par Étienne Brunet, ramenés à leur base lexicale,
+  avec leur nature et leur fréquence. Licence : Licence Ouverte / Etalab 2.0 (« Sauf cas particuliers indiqués
+  dans les mentions légales, les contenus de ce site sont sous licence etalab-2.0 »), réutilisation libre avec
+  mention de la source et de la date. Elle ne donne pas de niveau scolaire : le niveau est attribué ici par la
+  fréquence, la longueur et la régularité de l'orthographe (règles ci-dessous).
+- Lexique 3.83 (New, Pallier et al., lexique.org) : la prononciation, pour repérer les lettres muettes et les
+  homophones. Licence CC BY-SA 4.0.
 
-Le tirage est déterministe : mêmes fichiers, même sortie. Usage :
+Le tirage est déterministe : mêmes fichiers, même sortie. Lire le .xls demande `xlrd` (pip install xlrd==2.0.2).
+Usage :
     python3 scripts/dictee/selectionner_mots.py --sources <dossier> --sortie scripts/dictee/mots-selection.json
 """
 from __future__ import annotations
@@ -22,8 +29,8 @@ import urllib.request
 from pathlib import Path
 
 SOURCES = {
-    'Manulex-Lemmes.tsv': ('http://www.lexique.org/databases/Lete_2004_Manulex/Manulex-Lemmes.tsv',
-                           '044aa8e9fe262e56afe91a5a8fa38b47f4238219271896587b6d70f23cdb51d8'),
+    'eduscol-liste-frequence.xls': ('https://eduscol.education.gouv.fr/sites/default/files/document/listefrequencedesmots132918292375xls-76260.xls',
+                                    '5f3e83e190d197c180aff533e1fea030456104ae61a480c394680fa47f164495'),
     'Lexique383.tsv': ('http://www.lexique.org/databases/Lexique383/Lexique383.tsv',
                        '637ba37a767a66679c48371d673ece50cbf541b49a4e40e598963d4f3fbce52b'),
 }
@@ -35,8 +42,25 @@ ECARTES = set('''mort mourir tuer sang fusil arme guerre bombe cadavre poison pr
 bête idiot imbécile stupide sale crotte caca pipi zizi fesse sein nu dieu église messe roi reine madame monsieur
 mademoiselle oh ah eh hé bah ha non oui ok nan tu il elle on je nous vous ils elles le la les un une des du au aux ce
 cet cette ces mon ton son ma ta sa mes tes ses notre votre leur leurs qui que quoi dont où faire être avoir aller dire
-fois chose truc machin nominal vacance'''.split())
+fois chose truc machin nominal vacance gouvernement parti président saint politique député ministre colon
+fusil sein maîtresse amant amour baiser désir passion ivre vin alcool tabac cigarette blessure cri douleur souffrance
+malheur misère crainte angoisse haine colère sexe état franc est grand petit nouveau être pouvoir savoir devoir as
+mine couche drame instinct mensonge ennemi soldat armée combat juif chrétien prêtre âme esprit dieu église'''.split())
 NIVEAUX = ['CP', 'CE1', 'CE2', 'CM1', 'CM2']
+NATURES = {'subst.': 'NC', 'adj.': 'ADJ', 'verbe': 'VER', 'adv.': 'ADV'}
+# Erreurs repérées dans le fichier source (2026-11-16) : « manier » rangé comme nom est « manière » tronqué ;
+# « mari » figure deux fois (30 082 et 4 457) : la première fréquence, invraisemblable, est ignorée.
+CORRECTIONS = {'manier': 'manière'}
+DOUBLONS_DOUTEUX = {('mari', 30082.0)}
+# Au CP, on garde des noms concrets : la liste vient de textes d'adultes et ses noms les plus fréquents sont
+# souvent abstraits.
+ABSTRAITS_CP = set('''action besoin cas cause cours doute droit effet fait figure force forme front lieu loi milieu
+moyen nature ordre paix parole part partie peine pensée peuple raison regard sens sorte suite idée fin face fond
+place moment année bout chef mari joie peur ombre tour coup corps gens art avenir beauté foi hasard mesure valeur
+vérité étude soin reste signe projet plan geste groupe effort centre sou garde marche prix objet accord acte
+genre lutte membre'''.split())
+# Un homophone compte s'il est courant (fréquence Lexique, films + livres, par million) : écarte « ter », « vers » rare…
+SEUIL_HOMOPHONE = 20
 
 
 def nombre(texte: str) -> float:
@@ -77,17 +101,23 @@ def lire_lexique(chemin: Path) -> tuple[dict[str, str], dict[str, list[tuple[str
     return {o: p for o, (p, _) in phon_de.items()}, par_phon, lemmes
 
 
-def homophones(mot: str, phon: str | None, par_phon: dict[str, list[tuple[str, float]]], lemmes: dict[str, set[str]], connus: set[str]) -> list[str]:
+def homophones(mot: str, phon: str | None, par_phon: dict[str, list[tuple[str, float]]], lemmes: dict[str, set[str]]) -> list[str]:
     """Les autres mots courants qui se prononcent pareil (hors formes fléchies du même mot)."""
     if not phon:
         return []
     autres: dict[str, float] = {}
     for ortho, freq in par_phon.get(phon, []):
-        # Un homophone compte s'il figure lui-même dans les manuels (Manulex) et n'est pas une forme du mot.
-        if ortho == mot or mot in lemmes.get(ortho, set()) or ortho.startswith(mot) or freq < 5 or ortho not in connus:
+        # Un homophone compte s'il est courant et n'est pas une forme du mot.
+        if ortho == mot or mot in lemmes.get(ortho, set()) or ortho.startswith(mot) or freq < SEUIL_HOMOPHONE or not set(ortho) <= LETTRES:
             continue
         autres[ortho] = max(autres.get(ortho, 0), freq)
     return sorted(autres, key=lambda o: (-autres[o], o))[:4]
+
+
+def identifiant(mot: str) -> str:
+    """Identifiant stable tiré du mot (« fr-epaule ») : il ne bouge pas quand un autre mot entre ou sort de la liste."""
+    plat = ''.join(c for c in unicodedata.normalize('NFD', mot) if unicodedata.category(c) != 'Mn')
+    return 'fr-' + re.sub(r'[^a-z]', '-', plat)
 
 
 def etiquettes(mot: str, phon: str | None, homos: list[str]) -> list[str]:
@@ -120,28 +150,36 @@ def main() -> None:
     p.add_argument('--sources', type=Path, required=True)
     p.add_argument('--sortie', type=Path, required=True)
     a = p.parse_args()
+    # Les mots qu'un adulte a retirés à la relecture ne reviennent pas ; le suivant de la liste prend la place.
+    retires = Path(__file__).with_name('mots-retires.json')
+    if retires.exists():
+        ECARTES.update(json.loads(retires.read_text(encoding='utf-8')))
     chemins = charger(a.sources)
     phon_de, par_phon, lemmes = lire_lexique(chemins['Lexique383.tsv'])
     mots: dict[str, dict] = {}
-    connus: set[str] = set()
-    with chemins['Manulex-Lemmes.tsv'].open(encoding='utf-8') as f:
-        for ligne in csv.DictReader(f, delimiter='\t', quoting=csv.QUOTE_NONE):
-            mot = unicodedata.normalize('NFC', ligne['Word'].strip())
-            cat = ligne['SYNT']
-            connus.add(mot)
-            if cat not in ('NC', 'ADJ', 'VER', 'ADV') or mot in ECARTES or not set(mot) <= LETTRES or len(mot) < 2:
-                continue
-            u = {'CP': nombre(ligne['CP_U']), 'CE1': nombre(ligne['CE1_U']), 'CE2-CM2': nombre(ligne['CE2-CM2_U'])}
-            # Un même mot peut être nom et adjectif : on garde la catégorie la plus fréquente.
-            if mot in mots and sum(mots[mot]['u'].values()) >= sum(u.values()):
-                continue
-            mots[mot] = {'mot': mot, 'cat': cat, 'u': u}
+    import xlrd  # noqa: PLC0415 — utile seulement ici
+
+    feuille = xlrd.open_workbook(str(chemins['eduscol-liste-frequence.xls'])).sheet_by_index(0)
+    for r in range(1, feuille.nrows):
+        nature, freq, brut = feuille.row_values(r)[:3]
+        mot = unicodedata.normalize('NFC', str(brut).strip())
+        if mot in CORRECTIONS:
+            mot = CORRECTIONS[mot]
+        cat = NATURES.get(str(nature).strip())
+        if (mot, freq) in DOUBLONS_DOUTEUX or mot in ('tout', 'toute'):
+            continue
+        if not cat or mot in ECARTES or not set(mot) <= LETTRES or len(mot) < 2 or 'oe' in mot:
+            continue
+        # Un même mot peut figurer deux fois : on garde la fréquence la plus forte.
+        if mot in mots and mots[mot]['f'] >= freq:
+            continue
+        mots[mot] = {'mot': mot, 'cat': cat, 'f': float(freq)}
 
     pris: set[str] = set()
 
-    def choisir(niveau: str, cle: str, cats: tuple[str, ...], lmin: int, lmax: int, saut: int = 0, filtre=lambda m: True) -> list[dict]:
-        cand = [m for m in mots.values() if m['cat'] in cats and lmin <= len(m['mot']) <= lmax and m['mot'] not in pris and m['u'][cle] > 0 and filtre(m)]
-        cand.sort(key=lambda m: (-m['u'][cle], m['mot']))
+    def choisir(niveau: str, cats: tuple[str, ...], lmin: int, lmax: int, saut: int = 0, filtre=lambda m: True) -> list[dict]:
+        cand = [m for m in mots.values() if m['cat'] in cats and lmin <= len(m['mot']) <= lmax and m['mot'] not in pris and filtre(m)]
+        cand.sort(key=lambda m: (-m['f'], m['mot']))
         choix = cand[saut:saut + 100]
         if len(choix) < 100:
             sys.exit(f'{niveau} : {len(choix)} mots seulement')
@@ -153,24 +191,27 @@ def main() -> None:
         return phon is not None and len(m['mot']) - len(phon) <= 2 and not (set(m['mot']) & (ACCENTS - {'é'}))
 
     selection = {
-        'CP': choisir('CP', 'CP', ('NC',), 3, 6, filtre=regulier),
-        'CE1': choisir('CE1', 'CE1', ('NC', 'ADJ', 'VER'), 4, 7),
-        'CE2': choisir('CE2', 'CE2-CM2', ('NC', 'ADJ', 'VER', 'ADV'), 5, 8),
-        'CM1': choisir('CM1', 'CE2-CM2', ('NC', 'ADJ', 'VER', 'ADV'), 6, 9),
-        'CM2': choisir('CM2', 'CE2-CM2', ('NC', 'ADJ', 'VER', 'ADV'), 7, 12),
+        'CP': choisir('CP', ('NC',), 3, 6, filtre=lambda m: regulier(m) and m['mot'] not in ABSTRAITS_CP),
+        'CE1': choisir('CE1', ('NC', 'ADJ', 'VER'), 3, 7, filtre=lambda m: not (set(m['mot']) & (ACCENTS - {'é', 'è', 'ê'}))),
+        'CE2': choisir('CE2', ('NC', 'ADJ', 'VER', 'ADV'), 4, 8),
+        'CM1': choisir('CM1', ('NC', 'ADJ', 'VER', 'ADV'), 5, 10),
+        'CM2': choisir('CM2', ('NC', 'ADJ', 'VER', 'ADV'), 5, 14),
     }
+    rang_de = {m['mot']: i for i, m in enumerate(sorted(mots.values(), key=lambda m: (-m['f'], m['mot'])), 1)}
     sortie = []
     for niveau in NIVEAUX:
-        for rang, m in enumerate(sorted(selection[niveau], key=lambda m: m['mot']), 1):
+        for m in sorted(selection[niveau], key=lambda m: m['mot']):
             phon = phon_de.get(m['mot'])
-            homos = homophones(m['mot'], phon, par_phon, lemmes, connus)
+            homos = homophones(m['mot'], phon, par_phon, lemmes)
             tags = etiquettes(m['mot'], phon, homos)
             sortie.append({
-                'id': f'fr-{niveau.lower()}-{rang:03d}', 'lemma': m['mot'], 'expectedForm': m['mot'], 'grade': niveau,
+                'id': identifiant(m['mot']), 'lemma': m['mot'], 'expectedForm': m['mot'], 'grade': niveau,
                 'category': m['cat'], 'tags': tags, 'homophones': homos, 'difficulty': difficulte(m['mot'], phon, tags),
-                'source': {'list': 'Manulex lemmes', 'grade': 'CP' if niveau == 'CP' else 'CE1' if niveau == 'CE1' else 'CE2-CM2',
-                           'frequencyPerMillion': round(m['u']['CP' if niveau == 'CP' else 'CE1' if niveau == 'CE1' else 'CE2-CM2'], 2)},
+                'source': {'list': 'éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0', 'rank': rang_de[m['mot']], 'frequency': m['f']},
             })
+    ids = [w['id'] for w in sortie]
+    if len(set(ids)) != len(ids):
+        sys.exit('identifiants en double')
     a.sortie.write_text(json.dumps(sortie, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
     print(f'{len(sortie)} mots écrits dans {a.sortie}', file=sys.stderr)
 

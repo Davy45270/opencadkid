@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Relecture de la dictée</title>
+<!--
+  Page de relecture des mots de « La dictée magique », pour un adulte, sur téléphone.
+  Outil de construction du contenu : elle n'est PAS livrée avec le jeu (hors de public/).
+  Servie à côté de dictee/catalogue.json et dictee/audio/ (voir scripts/dictee/servir_validation.sh).
+  Les décisions sont gardées dans ce navigateur (localStorage) et, quand la page est servie par
+  servir_validation.py, envoyées au serveur qui la sert (POST decisions) après chaque choix. Le bouton
+  « Exporter un fichier » en donne aussi une copie. scripts/dictee/importer_validation.py reporte le
+  fichier dans le catalogue. Aucune requête ne sort vers un autre site.
+-->
+<style>
+:root{--fond:#fbf7ef;--carte:#fff;--texte:#1f2328;--doux:#5b6470;--bord:#e2dccf;--ok:#1a7f37;--ok-fond:#dcf5e3;--corr:#9a6700;--corr-fond:#fff3cd;--ret:#b42318;--ret-fond:#fde4e1;--accent:#3355cc;--alerte:#b42318}
+@media (prefers-color-scheme:dark){:root{--fond:#15171a;--carte:#1f2328;--texte:#eceff3;--doux:#a5adb8;--bord:#343a42;--ok:#4ac26b;--ok-fond:#163322;--corr:#e3b341;--corr-fond:#3a2f12;--ret:#ff7b72;--ret-fond:#3d1a17;--accent:#8fa8ff;--alerte:#ff7b72}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fond);color:var(--texte);font:17px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{position:sticky;top:0;z-index:2;background:var(--fond);border-bottom:1px solid var(--bord);padding:10px 16px}
+h1{font-size:1rem;margin:0 0 6px}
+.niveaux{display:flex;gap:6px;flex-wrap:wrap}
+.niveaux button{min-height:44px;min-width:56px;border:1px solid var(--bord);background:var(--carte);color:var(--texte);border-radius:10px;font-size:1rem;padding:0 10px}
+.niveaux button[aria-pressed=true]{background:var(--accent);color:#fff;border-color:var(--accent)}
+.niveaux small{display:block;font-size:.72rem;opacity:.85}
+.compte{margin:6px 0 0;color:var(--doux);font-size:.95rem}
+.outils{display:flex;gap:8px;margin-top:6px}
+.outils button,.outils label{min-height:44px;border-radius:10px;border:1px solid var(--bord);background:var(--carte);color:var(--texte);padding:0 10px;font-size:.95rem;display:inline-flex;align-items:center;justify-content:center;gap:6px;flex:1 1 0}
+.outils .principal{background:var(--accent);color:#fff;border-color:var(--accent)}
+main{padding:12px 16px 80px;max-width:720px;margin:0 auto}
+.mot{scroll-margin-top:220px;background:var(--carte);border:1px solid var(--bord);border-radius:14px;padding:14px;margin:0 0 12px}
+.mot[data-etat=valider]{border-color:var(--ok);box-shadow:inset 6px 0 0 var(--ok)}
+.mot[data-etat=corriger]{border-color:var(--corr);box-shadow:inset 6px 0 0 var(--corr)}
+.mot[data-etat=retirer]{border-color:var(--ret);box-shadow:inset 6px 0 0 var(--ret);opacity:.8}
+.tete{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.mot h2{font-size:1.6rem;margin:0;letter-spacing:.02em}
+.id{color:var(--doux);font-size:.8rem}
+.phrase{margin:6px 0 2px;font-size:1.05rem}
+.expl{margin:2px 0;color:var(--doux)}
+.expl.vide{font-style:italic}
+.meta{font-size:.82rem;color:var(--doux);margin:4px 0 0}
+.alerte{color:var(--alerte);font-weight:600}
+.ecoute,.choix{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.ecoute button,.choix button{flex:1 1 0;min-height:48px;border-radius:12px;border:1px solid var(--bord);background:var(--carte);color:var(--texte);font-size:1rem}
+.choix .v[aria-pressed=true]{background:var(--ok-fond);border-color:var(--ok);color:var(--ok);font-weight:700}
+.choix .c[aria-pressed=true]{background:var(--corr-fond);border-color:var(--corr);color:var(--corr);font-weight:700}
+.choix .r[aria-pressed=true]{background:var(--ret-fond);border-color:var(--ret);color:var(--ret);font-weight:700}
+.correction{display:none;margin-top:10px;gap:6px;flex-direction:column}
+.mot[data-etat=corriger] .correction{display:flex}
+.correction label{font-size:.85rem;color:var(--doux)}
+.correction input,.correction textarea{width:100%;font:inherit;padding:10px;border-radius:10px;border:1px solid var(--bord);background:var(--fond);color:var(--texte)}
+.correction textarea{min-height:64px;resize:vertical}
+.etat{margin:2px 0 0;min-height:1.2em;font-size:.85rem;color:var(--doux)}
+.etat.ko{color:var(--alerte);font-weight:600}
+.vide-niveau{color:var(--doux);text-align:center;padding:40px 0}
+@media (prefers-reduced-motion:no-preference){.mot{transition:box-shadow .15s,border-color .15s}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Relecture de la dictée</h1>
+  <div class="niveaux" id="niveaux"></div>
+  <p class="compte" id="compte">Chargement…</p>
+  <p class="etat" id="etat" role="status"></p>
+  <div class="outils">
+    <button id="exporter" type="button">Exporter un fichier</button>
+    <button id="suivant" type="button">Prochain à relire</button>
+  </div>
+</header>
+<main id="liste"></main>
+<script>
+'use strict';
+const CLE = 'dictee-relecture-v1';
+const NIVEAUX = ['CP', 'CE1', 'CE2', 'CM1', 'CM2'];
+let mots = [], verif = {}, niveau = 'CP', decisions = {};
+const lire = () => { try { return JSON.parse(localStorage.getItem(CLE) || '{}'); } catch { return {}; } };
+let minuterie = 0;
+const lot = () => ({ format: 'dictee-relecture', version: 1, reviewer: 'David', exportedAt: new Date().toISOString(), decisions: Object.fromEntries(Object.entries(decisions).filter(([, d]) => d.action)) });
+function etat(texte, ko = false) { const e = document.getElementById('etat'); e.textContent = texte; e.classList.toggle('ko', ko); }
+async function envoyer() {
+  try {
+    const r = await fetch('decisions', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(lot()) });
+    if (!r.ok) throw new Error(String(r.status));
+    etat(`Enregistré sur le serveur à ${new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}.`);
+  } catch {
+    etat('Pas de serveur joignable : gardé sur ce téléphone seulement. Exporter un fichier pour ne rien perdre.', true);
+  }
+}
+const ecrire = () => {
+  try { localStorage.setItem(CLE, JSON.stringify(decisions)); } catch { /* navigation privée : les décisions vivent jusqu'à la fermeture */ }
+  clearTimeout(minuterie); minuterie = setTimeout(envoyer, 1200);
+};
+const el = (tag, attrs = {}, ...enfants) => {
+  const n = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) { if (k === 'class') n.className = v; else if (k.startsWith('on')) n.addEventListener(k.slice(2), v); else n.setAttribute(k, v); }
+  for (const e of enfants) if (e != null) n.append(e);
+  return n;
+};
+let lecteur = null;
+function jouer(chemin) {
+  if (!chemin) return;
+  if (lecteur) lecteur.pause();
+  lecteur = new Audio(chemin);
+  lecteur.play().catch(() => {});
+}
+function compter() {
+  const ici = mots.filter(m => m.grade === niveau);
+  const faits = ici.filter(m => decisions[m.id]).length;
+  const n = a => ici.filter(m => decisions[m.id]?.action === a).length;
+  document.getElementById('compte').textContent = `${niveau} : ${faits}/${ici.length} relus — ${n('valider')} validés, ${n('corriger')} corrigés, ${n('retirer')} retirés`;
+  for (const b of document.querySelectorAll('.niveaux button')) {
+    const g = b.dataset.niveau, tous = mots.filter(m => m.grade === g);
+    b.querySelector('small').textContent = `${tous.filter(m => decisions[m.id]).length}/${tous.length}`;
+  }
+}
+function decider(m, action, carte) {
+  const avant = decisions[m.id];
+  if (avant?.action === action && action !== 'corriger') { delete decisions[m.id]; }
+  else {
+    const d = { action, lemma: m.lemma, at: new Date().toISOString() };
+    if (action === 'corriger') Object.assign(d, { expectedForm: avant?.expectedForm ?? m.expectedForm, contextSentence: avant?.contextSentence ?? (m.contextSentence || ''), explanation: avant?.explanation ?? (m.explanation || '') });
+    decisions[m.id] = d;
+  }
+  ecrire();
+  peindre(carte, m);
+  compter();
+}
+function peindre(carte, m) {
+  const d = decisions[m.id];
+  carte.dataset.etat = d ? d.action : '';
+  for (const b of carte.querySelectorAll('.choix button')) b.setAttribute('aria-pressed', String(d?.action === b.dataset.action));
+  if (d?.action === 'corriger') {
+    carte.querySelector('[name=forme]').value = d.expectedForm;
+    carte.querySelector('[name=phrase]').value = d.contextSentence;
+    carte.querySelector('[name=expl]').value = d.explanation;
+  }
+}
+function carte(m) {
+  const v = verif[m.id];
+  const douteux = v && (!v.ok || v.phraseOk === false);
+  const c = el('article', { class: 'mot', id: m.id },
+    el('div', { class: 'tete' }, el('h2', {}, m.expectedForm), el('span', { class: 'id' }, m.id)),
+    el('p', { class: 'phrase' }, m.contextSentence || '(pas de phrase)'),
+    el('p', { class: 'expl' + (m.explanation ? '' : ' vide') }, m.explanation || "(pas d'explication)"),
+    el('p', { class: 'meta' },
+      m.homophones?.length ? `Se prononce comme : ${m.homophones.join(', ')}. ` : '',
+      douteux ? el('span', { class: 'alerte' }, `À réécouter : la reconnaissance vocale a entendu « ${!v.ok ? v.entendu : v.phraseEntendue} ».`) : ''),
+    el('div', { class: 'ecoute' },
+      el('button', { type: 'button', onclick: () => jouer(m.pronunciationAsset) }, '▶ Le mot'),
+      m.contextAsset ? el('button', { type: 'button', onclick: () => jouer(m.contextAsset) }, '▶ La phrase') : null),
+    el('div', { class: 'choix' },
+      el('button', { type: 'button', class: 'v', 'data-action': 'valider', 'aria-pressed': 'false', onclick: () => decider(m, 'valider', c) }, 'Valider'),
+      el('button', { type: 'button', class: 'c', 'data-action': 'corriger', 'aria-pressed': 'false', onclick: () => decider(m, 'corriger', c) }, 'Corriger'),
+      el('button', { type: 'button', class: 'r', 'data-action': 'retirer', 'aria-pressed': 'false', onclick: () => decider(m, 'retirer', c) }, 'Retirer')),
+    el('div', { class: 'correction' },
+      el('label', { for: m.id + '-f' }, 'Mot'), el('input', { id: m.id + '-f', name: 'forme', autocomplete: 'off', autocapitalize: 'none', spellcheck: 'false' }),
+      el('label', { for: m.id + '-p' }, 'Phrase'), el('textarea', { id: m.id + '-p', name: 'phrase' }),
+      el('label', { for: m.id + '-e' }, 'Explication (vide = aucune)'), el('textarea', { id: m.id + '-e', name: 'expl' })));
+  c.querySelector('.correction').addEventListener('input', e => {
+    const d = decisions[m.id]; if (!d) return;
+    const champ = { forme: 'expectedForm', phrase: 'contextSentence', expl: 'explanation' }[e.target.name];
+    d[champ] = e.target.value; d.at = new Date().toISOString(); ecrire();
+  });
+  peindre(c, m);
+  return c;
+}
+function afficher() {
+  const liste = document.getElementById('liste');
+  liste.replaceChildren();
+  const ici = mots.filter(m => m.grade === niveau);
+  if (!ici.length) liste.append(el('p', { class: 'vide-niveau' }, 'Aucun mot à ce niveau.'));
+  for (const m of ici) liste.append(carte(m));
+  for (const b of document.querySelectorAll('.niveaux button')) b.setAttribute('aria-pressed', String(b.dataset.niveau === niveau));
+  compter();
+  try { localStorage.setItem(CLE + '.niveau', niveau); } catch { /* sans effet */ }
+}
+async function exporter() {
+  const corps = JSON.stringify(lot(), null, 1);
+  const nom = `dictee-relecture-${new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-')}.json`;
+  const fichier = new File([corps], nom, { type: 'application/json' });
+  if (navigator.canShare?.({ files: [fichier] })) {
+    try { await navigator.share({ files: [fichier], title: nom }); return; } catch (e) { if (e.name === 'AbortError') return; }
+  }
+  const a = el('a', { href: URL.createObjectURL(fichier), download: nom });
+  document.body.append(a); a.click(); a.remove();
+}
+function prochain() {
+  const m = mots.find(x => x.grade === niveau && !decisions[x.id]);
+  if (m) document.getElementById(m.id).scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+}
+async function demarrer() {
+  decisions = lire();
+  // Le serveur garde la dernière version envoyée : elle complète ce navigateur (la décision la plus récente gagne).
+  try {
+    const r = await fetch('decisions', { cache: 'no-store' });
+    if (r.ok) for (const [id, d] of Object.entries((await r.json()).decisions || {})) if (!decisions[id] || (d.at || '') > (decisions[id].at || '')) decisions[id] = d;
+  } catch { /* page ouverte sans serveur */ }
+  try { niveau = localStorage.getItem(CLE + '.niveau') || 'CP'; } catch { niveau = 'CP'; }
+  const cat = await (await fetch('dictee/catalogue.json', { cache: 'no-store' })).json();
+  mots = cat.words;
+  try { for (const r of await (await fetch('verification.json', { cache: 'no-store' })).json()) verif[r.id] = r; } catch { /* facultatif */ }
+  const barre = document.getElementById('niveaux');
+  for (const g of NIVEAUX) barre.append(el('button', { type: 'button', 'data-niveau': g, 'aria-pressed': 'false', onclick: () => { niveau = g; afficher(); scrollTo(0, 0); } }, g, el('small', {}, '')));
+  document.getElementById('exporter').addEventListener('click', exporter);
+  document.getElementById('suivant').addEventListener('click', prochain);
+  afficher();
+}
+demarrer().catch(e => { document.getElementById('compte').textContent = 'Impossible de charger le catalogue : ' + e.message; });
+</script>
+</body>
+</html>
