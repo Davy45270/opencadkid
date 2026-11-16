@@ -32,7 +32,7 @@ def entendu_dans(mot: str, texte: str, autres: list[str]) -> bool:
     vus = simple(texte).split()
     cibles = {simple(mot).strip()} | {simple(h).strip() for h in autres}
     if mot.endswith('er'):
-        cibles |= {mot[:-2] + 'e', mot[:-2] + 'ez'}
+        cibles |= {simple(mot[:-2] + 'e').strip(), simple(mot[:-2] + 'ez').strip()}
     return any(v in cibles or v.rstrip('sx') in cibles for v in vus)
 
 

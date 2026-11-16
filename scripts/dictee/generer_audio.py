@@ -41,7 +41,7 @@ MODELE_SHA256 = 'b1d946fd68d0347155fa59bce0a018924abbef3c1561181db45ca463d83963e
 # encore mal reconnus, 14 avec « Écris le mot X. », 19 avec « Écris le mot : X. » (même jour, même voix).
 PORTEUSE = 'Écris le mot : {}.'
 # Graphie donnée à la voix quand elle prononce mal le mot écrit (le mot affiché et attendu ne change pas).
-PRONONCIATION = {'dos': 'do'}
+PRONONCIATION = {'dos': 'do', 'fils': 'fisse'}
 REGLAGES = {'mot': {'length_scale': 1.15}, 'phrase': {'length_scale': 1.05}}
 OPUS = ['-c:a', 'libopus', '-b:a', '24k', '-ac', '1', '-ar', '24000', '-map_metadata', '-1', '-fflags', '+bitexact']
 
