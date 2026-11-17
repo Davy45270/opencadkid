@@ -350,7 +350,7 @@ test('the word is heard even when the voice is off in the parents\u2019 space (H
     await page.addInitScript(() => {
         localStorage.setItem('opencadkid-son-2026-11-17', '1');
         const raw = localStorage.getItem('opencadkid.v1');
-        const save = raw ? JSON.parse(raw) : { version: 1, locale: 'fr', voice: false, sound: true, records: {} };
+        const save: Record<string, unknown> = raw ? JSON.parse(raw) as Record<string, unknown> : { version: 1, locale: 'fr', voice: false, sound: true, records: {} };
         localStorage.setItem('opencadkid.v1', JSON.stringify({ ...save, voice: false }));
     });
     const pool = shipped.words.filter(w => w.grade === 'CE1' && w.audio.mode === 'word_only').slice(0, 6).map(w => w.id);
