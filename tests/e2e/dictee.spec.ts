@@ -343,3 +343,20 @@ test('captures for the review', async ({ page, isMobile }) => {
     await page.locator('[data-game="dictee"]').click(); await page.locator('[data-dictee-profile="panda"]').click(); await page.locator('[data-dictee-grade="CP"]').click(); await page.locator('[data-dictee-length="5"]').click();
     await page.screenshot({ path: `${dir}/${tag}-09-cp-lettres.png` });
 });
+
+test('the word is heard even when the voice is off in the parents\u2019 space (HL-532, 2026-11-17)', async ({ page }) => {
+    // A device whose save has the voice off, after the one-time « sound back on »: the parents' choice stands elsewhere,
+    // but a dictation without the heard word is no dictation.
+    await page.addInitScript(() => {
+        localStorage.setItem('opencadkid-son-2026-11-17', '1');
+        const raw = localStorage.getItem('opencadkid.v1');
+        const save = raw ? JSON.parse(raw) : { version: 1, locale: 'fr', voice: false, sound: true, records: {} };
+        localStorage.setItem('opencadkid.v1', JSON.stringify({ ...save, voice: false }));
+    });
+    const pool = shipped.words.filter(w => w.grade === 'CE1' && w.audio.mode === 'word_only').slice(0, 6).map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    await feed(page, 'CE1', 5);
+    const first = await word(page);
+    await expect.poll(async () => (await probe(page)).played.map(p => p.path)).toContain(first.pronunciationAsset);
+    await expect(page.locator('.dictee-note')).toHaveCount(0);
+});

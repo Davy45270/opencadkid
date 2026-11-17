@@ -68,7 +68,7 @@ export function snapshot(session: Session, root: ParentNode): object {
         keys: Array.from(root.querySelectorAll('.dictee-key')).map(el => ({ key: el.getAttribute('data-key') ?? el.getAttribute('data-tile') ?? el.id, ...rect(el)! })) };
 }
 
-export function mount(root: HTMLElement, session: Session, locale: Locale, storage: StoragePort | undefined, speak: (parts: string[]) => void, sound: () => boolean, voice: () => boolean, home: () => void): () => void {
+export function mount(root: HTMLElement, session: Session, locale: Locale, storage: StoragePort | undefined, speak: (parts: string[]) => void, sound: () => boolean, _voice: () => boolean, home: () => void): () => void {
     const t = labels[locale];
     const reduce = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
     let disposed = false, words: Word[] = [];
@@ -80,8 +80,10 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
     const play = (path: string | null, rate = 1): void => {
         if (!path) return;
         if (path !== pending && path !== current()?.pronunciationAsset) pending = null;
+        // La Dictée parle toujours : sans le mot entendu, il n'y a pas de dictée (HL-532, 2026-11-17).
+        if (!audio) return;
+        // Recorded once the sound is really asked for, so a test sees a word that the settings would have silenced.
         observed.played.push({ path, rate });
-        if (!voice() || !audio) return;
         void source(path).then(src => { if (disposed) return; audio.pause(); audio.src = src; audio.playbackRate = rate; audio.preservesPitch = true; void audio.play().catch(() => undefined); });
     };
     audio?.addEventListener('ended', () => { if (pending) { const p = pending; pending = null; play(p); } });
@@ -229,8 +231,7 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         const input = session.grade === 'CP' ? tileTray(t, session.tiles, session.used) : keyboard(t);
         root.innerHTML = feedView(locale, session.grade!, f.index, f.cards.length,
             cardView({ word: w, index: f.index, total: f.cards.length, again: card.again, evaluation: session.evaluation, praise: t.right[session.praise]!, profile: session.profile!, showTip: true }, locale, reduce), input,
-            session.evaluation && readAdult(storage) ? { reported: readReports(storage).some(r => r.id === w.id) } : null)
-            + (voice() ? '' : `<p class="dictee-note">${t.voiceOff}</p>`);
+            session.evaluation && readAdult(storage) ? { reported: readReports(storage).some(r => r.id === w.id) } : null);
         setTyped(session.typed);
         // Once checked, the keyboard steps aside and the card takes the whole height, like the next card will.
         root.querySelector('.dictee-feed')?.classList.toggle('dictee-repondu', session.evaluation !== null);

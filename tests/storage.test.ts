@@ -1,5 +1,5 @@
 import { it, expect } from 'vitest';
-import { readSave, writeSave, fresh, SAVE_KEY } from '../src/shell/storage';
+import { readSave, writeSave, fresh, SAVE_KEY, soundBackOn } from '../src/shell/storage';
 it('missing, corrupt, obsolete and blocked storage return a fresh state', () => {
     for (const value of [null, '', '{', 'null', '[]', '42', '{"version":2}', '{"version":1,"records":[]}']) expect(readSave({ getItem: () => value, setItem: () => undefined })).toEqual(fresh());
     expect(readSave()).toEqual(fresh());
@@ -13,4 +13,15 @@ it('round trips preferences and filters invalid level records', () => {
     writeSave(storage, save); expect(readSave(storage)).toEqual(save);
     raw = JSON.stringify({ ...save, records: { 1: 2, 2: -1, 3: 4, 4: '3', 5: 1.5, 16: 2, 17: 3 } });
     expect(readSave(storage).records).toEqual({ 1: 2, 16: 2 });
+});
+it('turns voice and sounds back on once per device, then respects the parents (HL-532)', () => {
+    const data = new Map<string, string>();
+    const storage = { getItem: (k: string) => data.get(k) ?? null, setItem: (k: string, v: string) => { data.set(k, v); } };
+    writeSave(storage, { ...fresh(), voice: false, sound: false, records: { 1: 3 } });
+    const on = soundBackOn(storage, readSave(storage));
+    expect(on.voice).toBe(true); expect(on.sound).toBe(true); expect(on.records).toEqual({ 1: 3 });
+    expect(readSave(storage).voice).toBe(true);
+    writeSave(storage, { ...on, voice: false });
+    expect(soundBackOn(storage, readSave(storage)).voice).toBe(false);
+    expect(soundBackOn(undefined, { ...fresh(), voice: false }).voice).toBe(false);
 });
