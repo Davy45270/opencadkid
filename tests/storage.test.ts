@@ -14,7 +14,7 @@ it('round trips preferences and filters invalid level records', () => {
     raw = JSON.stringify({ ...save, records: { 1: 2, 2: -1, 3: 4, 4: '3', 5: 1.5, 16: 2, 17: 3 } });
     expect(readSave(storage).records).toEqual({ 1: 2, 16: 2 });
 });
-it('turns voice and sounds back on once per device, then respects the parents (HL-532)', () => {
+it('turns voice and sounds back on once per device, then respects the parents', () => {
     const data = new Map<string, string>();
     const storage = { getItem: (k: string) => data.get(k) ?? null, setItem: (k: string, v: string) => { data.set(k, v); } };
     writeSave(storage, { ...fresh(), voice: false, sound: false, records: { 1: 3 } });

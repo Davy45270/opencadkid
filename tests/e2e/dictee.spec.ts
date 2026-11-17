@@ -344,7 +344,7 @@ test('captures for the review', async ({ page, isMobile }) => {
     await page.screenshot({ path: `${dir}/${tag}-09-cp-lettres.png` });
 });
 
-test('the word is heard even when the voice is off in the parents\u2019 space (HL-532, 2026-11-17)', async ({ page }) => {
+test('the word is heard even when the voice is off in the parents\u2019 space (2026-11-17)', async ({ page }) => {
     // A device whose save has the voice off, after the one-time « sound back on »: the parents' choice stands elsewhere,
     // but a dictation without the heard word is no dictation.
     await page.addInitScript(() => {

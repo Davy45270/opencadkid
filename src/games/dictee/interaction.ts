@@ -80,7 +80,7 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
     const play = (path: string | null, rate = 1): void => {
         if (!path) return;
         if (path !== pending && path !== current()?.pronunciationAsset) pending = null;
-        // La Dictée parle toujours : sans le mot entendu, il n'y a pas de dictée (HL-532, 2026-11-17).
+        // La Dictée parle toujours : sans le mot entendu, il n'y a pas de dictée (2026-11-17).
         if (!audio) return;
         // Recorded once the sound is really asked for, so a test sees a word that the settings would have silenced.
         observed.played.push({ path, rate });

@@ -52,7 +52,7 @@ export function readSave(storage?: StoragePort, locale: Locale = 'fr'): Save {
         return { version: 1, locale: v.locale, voice: v.voice, sound: v.sound, records, pairesRecords, formesRecords, sonsRecords, puzzleRecords, cheminRecords, suitesRecords, rangerRecords, tamboursRecords, cheminMedals };
     } catch { return fresh(locale); }
 }
-/** 2026-11-17 (HL-532, « met le son partout ») : la voix et les sons sont remis à « oui » UNE fois sur chaque appareil.
+/** 2026-11-17 (« met le son partout ») : la voix et les sons sont remis à « oui » UNE fois sur chaque appareil.
  * Une case décochée ensuite dans l'espace parents est respectée (le marqueur empêche de recommencer). */
 export const SOUND_RESET_KEY = 'opencadkid-son-2026-11-17';
 export function soundBackOn(storage: StoragePort | undefined, save: Save): Save {
