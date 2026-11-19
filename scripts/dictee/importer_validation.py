@@ -20,7 +20,13 @@ Validation en bloc, quand l'adulte approuve tout le catalogue sans passer mot pa
 
     python3 scripts/dictee/importer_validation.py --approuver-tout --par David --note "…"
 
-Elle approuve les quatre relectures de chaque mot du catalogue actuel, pour ses textes et ses versions audio, avec la
+Approbation de mots désignés, après une correction (le texte affiché est celui qui sera approuvé ; sans --oui,
+rien n'est écrit) :
+
+    python3 scripts/dictee/importer_validation.py --approuver en-attente --par David --note "…"        # lire
+    python3 scripts/dictee/importer_validation.py --approuver en-attente --par David --note "…" --oui  # approuver
+
+La validation en bloc approuve les quatre relectures de chaque mot du catalogue actuel, pour ses textes et ses versions audio, avec la
 note et `audioNonEcoute: true` : l'écoute n'a pas été faite mot à mot. Les signalements audio gardent leur statut
 d'écoute (`pending`) pour la traçabilité, mais ne bloquent plus ces mots. Un fichier audio régénéré, ou un texte
 changé, fait redescendre le mot en relecture.
@@ -59,13 +65,47 @@ def approuver_tout(qui: str, note: str) -> None:
     print(f'{len(mots)} mots approuvés par {qui} ({note}) ; relancer assembler_catalogue.py')
 
 
+def approuver(ids: list[str], qui: str, note: str, ecrire: bool) -> None:
+    """Approuve des mots désignés (ou « en-attente » : tous ceux qui ne sont pas approuvés), pour leurs textes et leurs
+    versions audio ACTUELS, affichés avant. Sans --oui, rien n'est écrit : on lit d'abord ce qu'on approuve."""
+    from datetime import date  # noqa: PLC0415
+    mots = json.loads(CATALOGUE.read_text(encoding='utf-8'))['words']
+    choisis = [w for w in mots if w['status'] != 'approved'] if ids == ['en-attente'] else [w for w in mots if w['id'] in ids]
+    inconnus = sorted(set(ids) - {w['id'] for w in mots} - {'en-attente'})
+    if inconnus:
+        raise SystemExit(f'identifiants inconnus : {", ".join(inconnus)}')
+    if 'écoute audio non faite' not in note:
+        note += ' ; écoute audio non faite mot à mot'
+    for w in choisis:
+        print(f"{w['grade']:4} {w['id']} — « {w['expectedForm']} »\n     phrase : {w['contextSentence']}\n     astuce : {w['explanation']}"
+              f"\n     homophones : {', '.join(w['homophones']) or '-'} ; audio mot {w['audio']['wordVersion']}, phrase {w['audio']['contextVersion']}")
+    if not ecrire:
+        print(f'{len(choisis)} mots affichés, RIEN écrit : relancer avec --oui pour les approuver tels quels')
+        return
+    relus = json.loads(RELECTURES.read_text(encoding='utf-8')) if RELECTURES.exists() else {}
+    jour = date.today().isoformat()
+    for w in choisis:
+        relus[w['lemma']] = {'by': qui, 'at': jour, 'expectedForm': w['expectedForm'], 'contextSentence': w['contextSentence'], 'explanation': w['explanation'],
+                             'review': {k: 'approved' for k in ('orthography', 'pedagogy', 'context', 'audio')},
+                             'wordVersion': w['audio']['wordVersion'], 'contextVersion': w['audio']['contextVersion'], 'audioNonEcoute': True, 'note': note}
+    RELECTURES.write_text(json.dumps(dict(sorted(relus.items())), ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
+    print(f'{len(choisis)} mots approuvés par {qui} ({note}) ; relancer assembler_catalogue.py')
+
+
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument('fichier', type=Path, nargs='?')
     p.add_argument('--approuver-tout', action='store_true')
     p.add_argument('--par')
     p.add_argument('--note')
+    p.add_argument('--approuver', nargs='+', metavar='ID', help='identifiants (fr-ami …) ou « en-attente »')
+    p.add_argument('--oui', action='store_true', help='avec --approuver : écrire (sinon affichage seul)')
     a = p.parse_args()
+    if a.approuver:
+        if not a.par or not a.note:
+            raise SystemExit('--approuver demande --par (qui valide) et --note (comment)')
+        approuver(a.approuver, a.par, a.note, a.oui)
+        return
     if a.approuver_tout:
         if not a.par or not a.note:
             raise SystemExit('--approuver-tout demande --par (qui valide) et --note (comment)')

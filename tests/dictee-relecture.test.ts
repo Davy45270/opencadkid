@@ -2,8 +2,9 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 
 /** Corrections of the spelling review of 2026-11-19 (two independent proofreaders, then arbitration): each one is pinned,
- * so that an old text never comes back. A word whose text changed waits for an adult again before a child sees it. */
-const words = new Map((JSON.parse(readFileSync('public/dictee/catalogue.json', 'utf8')) as { words: { id: string; contextSentence: string | null; explanation: string | null; homophones: string[]; status: string; provenance: { correction?: string } }[] }).words.map(w => [w.id, w]));
+ * so that an old text never comes back. A word whose text changed waits for an adult again before a child sees it
+ * (scripts/dictee/importer_validation.py --approuver shows the exact text approved). */
+const words = new Map((JSON.parse(readFileSync('public/dictee/catalogue.json', 'utf8')) as { words: { id: string; contextSentence: string | null; explanation: string | null; homophones: string[]; status: string; validatedBy: string | null; provenance: { correction?: string } }[] }).words.map(w => [w.id, w]));
 const texts: [id: string, field: 'contextSentence' | 'explanation', now: string, before: string][] = [
     ["fr-ami", "contextSentence", "Un ami vient jouer avec moi.", "Mon ami joue avec moi."],
     ["fr-lit", "contextSentence", "Je dors dans mon lit.", "Je lis une histoire dans mon lit."],
@@ -77,8 +78,9 @@ describe('the spelling review of 2026-11-19', () => {
             expect(w![field], id).toBe(now);
             expect(w![field], id).not.toBe(before);
             expect(w!.provenance.correction, id).toMatch(/relecture Codex et Google, 19\/11/);
-            // The old approval was for the old text: the corrected word waits for an adult again.
-            expect(w!.status, id).not.toBe('approved');
+            // The old approval was for the old text: the corrected word waits for an adult again, or a new approval names one.
+            if (w!.status === 'approved') expect(w!.validatedBy, id).not.toBeNull();
+            else expect(w!.status, id).toBe('needs_review');
         }
     });
     it('keeps the real homophones found, and drops the false one', () => {
