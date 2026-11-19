@@ -7,11 +7,12 @@ test('home, large targets, responsive widths, local requests and both languages'
     await expect(page.locator('h1')).toHaveText('Opencadkid');
     await expect(page.locator('.cast > svg')).toHaveCount(5);
     await expect(page.locator('[data-game]')).toHaveCount(games.length);
-    await expect(page.locator('#tictac')).toBeVisible();
+    await expect(page.locator('#tictac')).toBeVisible(); await expect(page.locator('#petit-astronome')).toBeVisible();
+    await expect.poll(() => page.locator('[data-direct] img').evaluateAll(images => images.map(image => (image as HTMLImageElement).naturalWidth))).toEqual([96, 96]);
     for (const width of [320, 390, 768, 1280]) {
         await page.setViewportSize({ width, height: 900 });
         for (const rect of (await state(page)).targets) { expect(rect.width).toBeGreaterThanOrEqual(48); expect(rect.height).toBeGreaterThanOrEqual(48); }
-        for (const card of await page.locator('[data-game]').all()) { const rect = await card.boundingBox(); expect(rect!.width).toBeGreaterThanOrEqual(120); expect(rect!.height).toBeGreaterThanOrEqual(120); }
+        for (const card of await page.locator('[data-game], [data-direct]').all()) { const rect = await card.boundingBox(); expect(rect!.width).toBeGreaterThanOrEqual(120); expect(rect!.height).toBeGreaterThanOrEqual(120); }
         expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     }
     await page.locator('#parents').click(); await passGate(page);
