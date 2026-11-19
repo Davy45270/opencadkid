@@ -41,6 +41,20 @@ REVUES = ('orthography', 'pedagogy', 'context', 'audio')
 CONTEXTE_OBLIGATOIRE = set('air dame larme lettre lit verre gens quel point plus mari vert sept un neuf rose orange marron'.split())
 # Homophonies qui ne sont pas entendues par tous : la phrase suit le mot, sans être exigée.
 NUANCES = {'pensée': {'penser': "homophonie non universelle : selon les accents, « pensée » et « penser » s'entendent pareil ou non"}}
+# Relecture orthographique du 2026-11-19 (deux relecteurs indépendants, puis arbitrage) : homophones de forme de base que
+# le filtre de Lexique avait manqués (fréquence, ou mot qui est aussi un participe : « marché »), et un faux (« com »).
+# Les formes conjuguées ou fléchies (aimé, vois, pareille…) restent exclues, comme dans selectionner_mots.py.
+HOMOPHONES_RELUS: dict[str, tuple[list[str], list[str]]] = {
+    'air': (['aire'], []), 'cour': (['cours'], []), 'mur': (['mûr', 'mûre'], []), 'verre': (['ver'], []), 'vert': (['ver'], []),
+    'fil': (['file'], []), 'pain': (['pin'], []), 'père': (['pair'], []), 'corps': (['cor'], []), 'marcher': (['marché'], []),
+    'trop': (['trot'], []), 'compte': (['conte'], []), 'compter': (['conter'], []), 'plutôt': (['plus tôt'], []), 'signe': (['cygne'], []),
+    'comme': ([], ['com']),
+}
+
+
+def homophones_relus(lemme: str, homos: list[str]) -> list[str]:
+    ajouts, retraits = HOMOPHONES_RELUS.get(lemme, ([], []))
+    return [h for h in homos if h not in retraits] + [h for h in ajouts if h not in homos]
 
 
 def lire(chemin: Path, defaut):
@@ -71,29 +85,33 @@ def main() -> None:
                      or c['listening'].get('audioVersion') != empreintes.get(c['asset'])]
         # Validation en bloc sans écoute mot à mot (décision de l'adulte, notée) : les signalements restent « pending »
         # pour la traçabilité, mais ne bloquent plus le mot tant que ses fichiers audio sont ceux qu'il a approuvés.
-        if a_ecouter and r and r.get('audioNonEcoute') and r.get('wordVersion') == empreintes.get(f"dictee/audio/{m['id']}.ogg") \
+        # Elle ne vaut que pour les textes qu'il a approuvés : un texte corrigé depuis fait revenir l'écoute en attente.
+        textes_relus = r and r.get('expectedForm') == forme and r.get('contextSentence') == phrase and r.get('explanation') == expl
+        if a_ecouter and textes_relus and r.get('audioNonEcoute') and r.get('wordVersion') == empreintes.get(f"dictee/audio/{m['id']}.ogg") \
                 and r.get('contextVersion') == (empreintes.get(f"dictee/audio/{m['id']}-phrase.ogg") if phrase else None):
             a_ecouter = []
+        homos = homophones_relus(m['lemma'], m['homophones'])
+        tags = [t for t in m['tags'] if t != 'homophone'] + (['homophone'] if homos else [])
         nuances = NUANCES.get(m['lemma'], {})
-        ambigu = m['lemma'] in CONTEXTE_OBLIGATOIRE or any(h not in nuances for h in m['homophones'])
+        ambigu = m['lemma'] in CONTEXTE_OBLIGATOIRE or any(h not in nuances for h in homos)
         if a_ecouter:
             mode = 'audio_manual_review'
         elif ambigu:
             mode = 'context_required'
-        elif m['homophones'] and phrase:
+        elif homos and phrase:
             mode = 'word_then_context'
         else:
             mode = 'word_only'
         w = {
             'id': m['id'], 'lemma': m['lemma'], 'expectedForm': unicodedata.normalize('NFC', forme), 'grade': m['grade'],
-            'tags': m['tags'], 'homophones': m['homophones'], 'homophoneNotes': nuances, 'contextSentence': phrase, 'explanation': expl,
+            'tags': tags, 'homophones': homos, 'homophoneNotes': nuances, 'contextSentence': phrase, 'explanation': expl,
             'pronunciationAsset': mot_audio, 'contextAsset': phrase_audio,
             'audio': {'mode': mode, 'wordVersion': empreintes.get(mot_audio), 'contextVersion': empreintes.get(phrase_audio) if phrase_audio else None,
                       'voice': 'fr_FR-siwis-medium', 'engine': 'piper-tts 1.8.0', 'locale': 'fr-FR'},
             'difficulty': m['difficulty'], 'status': 'needs_review', 'review': {k: 'pending' for k in REVUES}, 'validatedBy': None, 'version': VERSION,
             'provenance': {'list': m['source']['list'], 'listRank': m['source']['rank'], 'listFrequency': m['source']['frequency'],
                            'text': ph.get('generatedBy'), **({'alsoIn': m['source']['alsoIn']} if 'alsoIn' in m['source'] else {}),
-                           **({'note': m['note']} if 'note' in m else {})},
+                           **({'note': m['note']} if 'note' in m else {}), **({'correction': ph['correction']} if 'correction' in ph else {})},
         }
         # Une relecture ne vaut que pour les textes et l'audio que l'adulte a eus sous les yeux et dans l'oreille.
         if r and all(r.get(k) == w[k] for k in ('expectedForm', 'contextSentence', 'explanation')):

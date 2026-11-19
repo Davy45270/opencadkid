@@ -12,7 +12,8 @@
     "homophone"
    ],
    "homophones": [
-    "ère"
+    "ère",
+    "aire"
    ],
    "homophoneNotes": {},
    "contextSentence": "Le ballon se remplit d'air.",
@@ -57,27 +58,27 @@
    "tags": [],
    "homophones": [],
    "homophoneNotes": {},
-   "contextSentence": "Mon ami joue avec moi.",
+   "contextSentence": "Un ami vient jouer avec moi.",
    "explanation": "Pas de e à la fin : avec un e, « une amie », c'est une fille.",
    "pronunciationAsset": "dictee/audio/fr-ami.ogg",
    "contextAsset": "dictee/audio/fr-ami-phrase.ogg",
    "audio": {
     "mode": "word_only",
     "wordVersion": "8b48aefae622ff5e",
-    "contextVersion": "62da4f942b185c4f",
+    "contextVersion": "bade8fe00b2c0810",
     "voice": "fr_FR-siwis-medium",
     "engine": "piper-tts 1.8.0",
     "locale": "fr-FR"
    },
    "difficulty": 1,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -88,7 +89,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -620,7 +621,8 @@
     "homophone"
    ],
    "homophones": [
-    "court"
+    "court",
+    "cours"
    ],
    "homophoneNotes": {},
    "contextSentence": "Les enfants jouent dans la cour.",
@@ -1282,7 +1284,7 @@
    "homophones": [],
    "homophoneNotes": {},
    "contextSentence": "Après sept vient huit.",
-   "explanation": "Un h muet au début ; le t de la fin s'entend.",
+   "explanation": "Un h au début, qu'on n'entend pas ; le t de la fin s'entend.",
    "pronunciationAsset": "dictee/audio/fr-huit.ogg",
    "contextAsset": "dictee/audio/fr-huit-phrase.ogg",
    "audio": {
@@ -1294,14 +1296,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 2,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "ajout de David (2026-11-16)",
@@ -1312,7 +1314,7 @@
      "date": "2026-11-16",
      "version": 5
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -1665,27 +1667,27 @@
    ],
    "homophones": [],
    "homophoneNotes": {},
-   "contextSentence": "Je lis une histoire dans mon lit.",
+   "contextSentence": "Je dors dans mon lit.",
    "explanation": "Le t muet s'entend dans « literie ».",
    "pronunciationAsset": "dictee/audio/fr-lit.ogg",
    "contextAsset": "dictee/audio/fr-lit-phrase.ogg",
    "audio": {
-    "mode": "context_required",
+    "mode": "audio_manual_review",
     "wordVersion": "0ba238f39bbd22db",
-    "contextVersion": "54db3ae90e224eea",
+    "contextVersion": "aa61bf4e6d5c4f7f",
     "voice": "fr_FR-siwis-medium",
     "engine": "piper-tts 1.8.0",
     "locale": "fr-FR"
    },
    "difficulty": 1,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -1696,7 +1698,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -1881,7 +1883,7 @@
    "homophones": [],
    "homophoneNotes": {},
    "contextSentence": "Je fais un câlin à maman.",
-   "explanation": "Deux fois ma ; à la fin, le son an s'écrit a-n.",
+   "explanation": "On écrit ma, puis man : à la fin, le son an s'écrit a-n.",
    "pronunciationAsset": "dictee/audio/fr-maman.ogg",
    "contextAsset": "dictee/audio/fr-maman-phrase.ogg",
    "audio": {
@@ -1893,14 +1895,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 2,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "ajout de David (2026-11-16)",
@@ -1911,7 +1913,7 @@
      "date": "2026-11-16",
      "version": 5
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -2225,15 +2227,20 @@
    "lemma": "mur",
    "expectedForm": "mur",
    "grade": "CP",
-   "tags": [],
-   "homophones": [],
+   "tags": [
+    "homophone"
+   ],
+   "homophones": [
+    "mûr",
+    "mûre"
+   ],
    "homophoneNotes": {},
    "contextSentence": "Le dessin est accroché au mur.",
    "explanation": "Pas de e à la fin.",
    "pronunciationAsset": "dictee/audio/fr-mur.ogg",
    "contextAsset": "dictee/audio/fr-mur-phrase.ogg",
    "audio": {
-    "mode": "word_only",
+    "mode": "context_required",
     "wordVersion": "dfa55922a8810a13",
     "contextVersion": "23c32868e7135b19",
     "voice": "fr_FR-siwis-medium",
@@ -3836,7 +3843,8 @@
    ],
    "homophones": [
     "vers",
-    "vert"
+    "vert",
+    "ver"
    ],
    "homophoneNotes": {},
    "contextSentence": "Je bois dans un verre.",
@@ -3885,7 +3893,8 @@
    ],
    "homophones": [
     "vers",
-    "verre"
+    "verre",
+    "ver"
    ],
    "homophoneNotes": {},
    "contextSentence": "Le sapin est vert.",
@@ -4287,7 +4296,7 @@
    "homophones": [],
    "homophoneNotes": {},
    "contextSentence": "Je vais à l'école à pied.",
-   "explanation": "Accent aigu sur le e ; le son k s'écrit c.",
+   "explanation": "Accent aigu sur le premier e ; le son k s'écrit c.",
    "pronunciationAsset": "dictee/audio/fr-ecole.ogg",
    "contextAsset": "dictee/audio/fr-ecole-phrase.ogg",
    "audio": {
@@ -4299,14 +4308,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 2,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "ajout de David (2026-11-16)",
@@ -4318,7 +4327,7 @@
      "version": 4
     },
     "alsoIn": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -4380,7 +4389,7 @@
    ],
    "homophoneNotes": {},
    "contextSentence": "L'oiseau ouvre son aile.",
-   "explanation": "Le son è s'écrit ai ; un e muet à la fin ; « elle », c'est une fille.",
+   "explanation": "Le son è s'écrit ai ; un e muet à la fin ; à ne pas confondre avec « elle » (elle joue).",
    "pronunciationAsset": "dictee/audio/fr-aile.ogg",
    "contextAsset": "dictee/audio/fr-aile-phrase.ogg",
    "audio": {
@@ -4392,14 +4401,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 3,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -4410,7 +4419,7 @@
      "date": "2026-11-16",
      "version": 4
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -4422,7 +4431,7 @@
    "homophones": [],
    "homophoneNotes": {},
    "contextSentence": "Je vais aimer ce nouveau jeu.",
-   "explanation": "Le début s'écrit ai ; c'est un verbe : il finit par er.",
+   "explanation": "Le début s'écrit ai ; c'est un verbe en er : il finit par e-r.",
    "pronunciationAsset": "dictee/audio/fr-aimer.ogg",
    "contextAsset": "dictee/audio/fr-aimer-phrase.ogg",
    "audio": {
@@ -4434,14 +4443,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 3,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -4453,7 +4462,7 @@
      "version": 4,
      "reason": "addendum de revue du 2026-11-16"
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -4644,7 +4653,7 @@
    "homophones": [],
    "homophoneNotes": {},
    "contextSentence": "La neige est blanche et le lait est blanc.",
-   "explanation": "Un c muet à la fin : il s'entend dans « blanche ».",
+   "explanation": "Un c muet à la fin : on le retrouve dans « blanche ».",
    "pronunciationAsset": "dictee/audio/fr-blanc.ogg",
    "contextAsset": "dictee/audio/fr-blanc-phrase.ogg",
    "audio": {
@@ -4656,14 +4665,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 3,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "ajout de David (2026-11-16)",
@@ -4675,7 +4684,7 @@
      "version": 3
     },
     "alsoIn": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -5386,15 +5395,19 @@
    "lemma": "fil",
    "expectedForm": "fil",
    "grade": "CE1",
-   "tags": [],
-   "homophones": [],
+   "tags": [
+    "homophone"
+   ],
+   "homophones": [
+    "file"
+   ],
    "homophoneNotes": {},
    "contextSentence": "Je coupe un fil de laine.",
    "explanation": "Pas de e à la fin ; le l s'entend.",
    "pronunciationAsset": "dictee/audio/fr-fil.ogg",
    "contextAsset": "dictee/audio/fr-fil-phrase.ogg",
    "audio": {
-    "mode": "word_only",
+    "mode": "context_required",
     "wordVersion": "8842d831fcddb29f",
     "contextVersion": "1454259ceefe3d39",
     "voice": "fr_FR-siwis-medium",
@@ -5990,27 +6003,27 @@
    "tags": [],
    "homophones": [],
    "homophoneNotes": {},
-   "contextSentence": "Le juge écoute les deux équipes.",
+   "contextSentence": "Le juge écoute les témoins au tribunal.",
    "explanation": "Le g devant e fait le son j.",
    "pronunciationAsset": "dictee/audio/fr-juge.ogg",
    "contextAsset": "dictee/audio/fr-juge-phrase.ogg",
    "audio": {
     "mode": "word_only",
     "wordVersion": "3ba9719f10a8e937",
-    "contextVersion": "93f362ccb2e0f527",
+    "contextVersion": "57461f19298ba5a3",
     "voice": "fr_FR-siwis-medium",
     "engine": "piper-tts 1.8.0",
     "locale": "fr-FR"
    },
    "difficulty": 2,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -6021,7 +6034,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -6036,11 +6049,11 @@
    "homophones": [],
    "homophoneNotes": {},
    "contextSentence": "Je construis une maison en Lego.",
-   "explanation": "C'est un nom de marque : il prend une majuscule.",
+   "explanation": "C'est un nom de marque : il prend une majuscule ; on entend « é », mais le e n'a pas d'accent.",
    "pronunciationAsset": "dictee/audio/fr-lego.ogg",
    "contextAsset": "dictee/audio/fr-lego-phrase.ogg",
    "audio": {
-    "mode": "word_only",
+    "mode": "audio_manual_review",
     "wordVersion": "ce0569a854162eb5",
     "contextVersion": "5f705f004b4cb579",
     "voice": "fr_FR-siwis-medium",
@@ -6048,14 +6061,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 1,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "ajout de David (2026-11-16)",
@@ -6067,7 +6080,7 @@
      "version": 5
     },
     "note": "nom de marque, graphie attendue avec majuscule : à relire par un adulte",
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -6638,15 +6651,19 @@
    "lemma": "pain",
    "expectedForm": "pain",
    "grade": "CE1",
-   "tags": [],
-   "homophones": [],
+   "tags": [
+    "homophone"
+   ],
+   "homophones": [
+    "pin"
+   ],
    "homophoneNotes": {},
    "contextSentence": "Je mange une tartine de pain.",
    "explanation": "Le son in s'écrit ain, comme dans « main ».",
    "pronunciationAsset": "dictee/audio/fr-pain.ogg",
    "contextAsset": "dictee/audio/fr-pain-phrase.ogg",
    "audio": {
-    "mode": "word_only",
+    "mode": "context_required",
     "wordVersion": "61e734cf46404ec9",
     "contextVersion": "c078edd6a19d85e8",
     "voice": "fr_FR-siwis-medium",
@@ -7288,11 +7305,12 @@
     "homophone"
    ],
    "homophones": [
-    "paire"
+    "paire",
+    "pair"
    ],
    "homophoneNotes": {},
    "contextSentence": "Mon père lit le journal.",
-   "explanation": "Accent grave sur le e ; une paire, c'est deux choses.",
+   "explanation": "Accent grave sur le e ; une paire, c'est deux choses qui vont ensemble.",
    "pronunciationAsset": "dictee/audio/fr-pere.ogg",
    "contextAsset": "dictee/audio/fr-pere-phrase.ogg",
    "audio": {
@@ -7304,14 +7322,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 3,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -7322,7 +7340,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -7381,7 +7399,7 @@
    "homophones": [],
    "homophoneNotes": {},
    "contextSentence": "Un rayon de soleil entre par la fenêtre.",
-   "explanation": "Le y fait le son de deux i : « rai-ion ».",
+   "explanation": "Le y entre deux voyelles vaut deux i : « rai-ion ».",
    "pronunciationAsset": "dictee/audio/fr-rayon.ogg",
    "contextAsset": "dictee/audio/fr-rayon-phrase.ogg",
    "audio": {
@@ -7393,14 +7411,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 2,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -7411,7 +7429,7 @@
      "date": "2026-11-16",
      "version": 4
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -7901,7 +7919,7 @@
    ],
    "homophoneNotes": {},
    "contextSentence": "Le temps passe vite pendant les vacances.",
-   "explanation": "Deux lettres muettes à la fin : p et s ; « tant » veut dire « autant ».",
+   "explanation": "Le son an s'écrit e-m ; deux lettres muettes à la fin : p et s ; « tant » veut dire « tellement ».",
    "pronunciationAsset": "dictee/audio/fr-temps.ogg",
    "contextAsset": "dictee/audio/fr-temps-phrase.ogg",
    "audio": {
@@ -7913,14 +7931,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 4,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -7931,7 +7949,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -8376,27 +8394,27 @@
    "tags": [],
    "homophones": [],
    "homophoneNotes": {},
-   "contextSentence": "Je lave mon visage.",
+   "contextSentence": "Je me lave le visage.",
    "explanation": "Le s entre deux voyelles fait le son z.",
    "pronunciationAsset": "dictee/audio/fr-visage.ogg",
    "contextAsset": "dictee/audio/fr-visage-phrase.ogg",
    "audio": {
     "mode": "word_only",
     "wordVersion": "69f743dce961d539",
-    "contextVersion": "0eb4c2778c7bd7a0",
+    "contextVersion": "525c02a0e261d774",
     "voice": "fr_FR-siwis-medium",
     "engine": "piper-tts 1.8.0",
     "locale": "fr-FR"
    },
    "difficulty": 2,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -8407,7 +8425,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -8587,7 +8605,7 @@
    "homophones": [],
    "homophoneNotes": {},
    "contextSentence": "Nous partons en voyage.",
-   "explanation": "Le y fait le son de deux i : « voi-iage ».",
+   "explanation": "Le y entre deux voyelles vaut deux i : « voi-iage ».",
    "pronunciationAsset": "dictee/audio/fr-voyage.ogg",
    "contextAsset": "dictee/audio/fr-voyage-phrase.ogg",
    "audio": {
@@ -8599,14 +8617,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 2,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -8617,7 +8635,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -8719,27 +8737,27 @@
    ],
    "homophones": [],
    "homophoneNotes": {},
-   "contextSentence": "Mon cartable est une bonne affaire.",
+   "contextSentence": "Ce cartable pas cher est une bonne affaire.",
    "explanation": "Deux f après le a ; un e muet à la fin.",
    "pronunciationAsset": "dictee/audio/fr-affaire.ogg",
    "contextAsset": "dictee/audio/fr-affaire-phrase.ogg",
    "audio": {
     "mode": "word_only",
     "wordVersion": "7cde8c0a3f5704c0",
-    "contextVersion": "9dc3a23924e20e90",
+    "contextVersion": "8d340cd22a643bf1",
     "voice": "fr_FR-siwis-medium",
     "engine": "piper-tts 1.8.0",
     "locale": "fr-FR"
    },
    "difficulty": 5,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -8750,7 +8768,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -8986,7 +9004,7 @@
    "homophones": [],
    "homophoneNotes": {},
    "contextSentence": "Il faut arrêter de courir dans le couloir.",
-   "explanation": "Deux r et un accent circonflexe sur le e.",
+   "explanation": "Deux r et un accent circonflexe sur le premier e.",
    "pronunciationAsset": "dictee/audio/fr-arreter.ogg",
    "contextAsset": "dictee/audio/fr-arreter-phrase.ogg",
    "audio": {
@@ -8998,14 +9016,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 5,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -9016,7 +9034,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -9553,16 +9571,19 @@
    "expectedForm": "corps",
    "grade": "CE2",
    "tags": [
-    "lettre-muette"
+    "lettre-muette",
+    "homophone"
    ],
-   "homophones": [],
+   "homophones": [
+    "cor"
+   ],
    "homophoneNotes": {},
    "contextSentence": "Mon corps a deux bras et deux jambes.",
    "explanation": "Deux lettres muettes à la fin : p et s.",
    "pronunciationAsset": "dictee/audio/fr-corps.ogg",
    "contextAsset": "dictee/audio/fr-corps-phrase.ogg",
    "audio": {
-    "mode": "word_only",
+    "mode": "context_required",
     "wordVersion": "e2a001f013b13d39",
     "contextVersion": "a19f6fd8c050035d",
     "voice": "fr_FR-siwis-medium",
@@ -10169,27 +10190,27 @@
    ],
    "homophones": [],
    "homophoneNotes": {},
-   "contextSentence": "C'est un fait : le soleil se lève.",
+   "contextSentence": "J'ai fait un beau dessin.",
    "explanation": "Le son è s'écrit ai ; un t muet à la fin.",
    "pronunciationAsset": "dictee/audio/fr-fait.ogg",
    "contextAsset": "dictee/audio/fr-fait-phrase.ogg",
    "audio": {
     "mode": "word_only",
     "wordVersion": "b6f260d325125de8",
-    "contextVersion": "16a2ac329cd5fa32",
+    "contextVersion": "cbdaa0e00d08e9c0",
     "voice": "fr_FR-siwis-medium",
     "engine": "piper-tts 1.8.0",
     "locale": "fr-FR"
    },
    "difficulty": 2,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -10200,7 +10221,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -10342,11 +10363,11 @@
    "homophones": [],
    "homophoneNotes": {},
    "contextSentence": "La pièce est au fond de la poche.",
-   "explanation": "Un d muet à la fin : il s'entend dans « fondu ».",
+   "explanation": "Un d muet à la fin : il s'entend dans « profonde ».",
    "pronunciationAsset": "dictee/audio/fr-fond.ogg",
    "contextAsset": "dictee/audio/fr-fond-phrase.ogg",
    "audio": {
-    "mode": "word_only",
+    "mode": "audio_manual_review",
     "wordVersion": "c9fff24db3407152",
     "contextVersion": "ea80a53fab54ea8b",
     "voice": "fr_FR-siwis-medium",
@@ -10354,14 +10375,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 2,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -10372,7 +10393,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -10819,7 +10840,7 @@
    "homophones": [],
    "homophoneNotes": {},
    "contextSentence": "Je vais lever la main.",
-   "explanation": "Un seul e après le l, sans accent.",
+   "explanation": "Pas d'accent sur le e après le l ; verbe en er.",
    "pronunciationAsset": "dictee/audio/fr-lever.ogg",
    "contextAsset": "dictee/audio/fr-lever-phrase.ogg",
    "audio": {
@@ -10831,14 +10852,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 2,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -10849,7 +10870,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -10989,7 +11010,7 @@
    "homophones": [],
    "homophoneNotes": {},
    "contextSentence": "J'allume la lumière.",
-   "explanation": "Accent grave sur le e.",
+   "explanation": "Accent grave sur le premier e.",
    "pronunciationAsset": "dictee/audio/fr-lumiere.ogg",
    "contextAsset": "dictee/audio/fr-lumiere-phrase.ogg",
    "audio": {
@@ -11001,14 +11022,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 3,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -11019,7 +11040,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -11027,15 +11048,19 @@
    "lemma": "marcher",
    "expectedForm": "marcher",
    "grade": "CE2",
-   "tags": [],
-   "homophones": [],
+   "tags": [
+    "homophone"
+   ],
+   "homophones": [
+    "marché"
+   ],
    "homophoneNotes": {},
    "contextSentence": "J'aime marcher dans la forêt.",
    "explanation": "Verbe en er.",
    "pronunciationAsset": "dictee/audio/fr-marcher.ogg",
    "contextAsset": "dictee/audio/fr-marcher-phrase.ogg",
    "audio": {
-    "mode": "word_only",
+    "mode": "context_required",
     "wordVersion": "3369e6e266e41837",
     "contextVersion": "4b7f723294ffb256",
     "voice": "fr_FR-siwis-medium",
@@ -11732,7 +11757,7 @@
     "penser": "homophonie non universelle : selon les accents, « pensée » et « penser » s'entendent pareil ou non"
    },
    "contextSentence": "Il a une pensée pour sa mamie.",
-   "explanation": "C'est un nom : il finit par é et un e muet.",
+   "explanation": "Le nom finit par é et un e muet, comme « journée » ; le verbe « penser » finit par e-r.",
    "pronunciationAsset": "dictee/audio/fr-pensee.ogg",
    "contextAsset": "dictee/audio/fr-pensee-phrase.ogg",
    "audio": {
@@ -11744,14 +11769,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 4,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -11762,7 +11787,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -12029,27 +12054,27 @@
    ],
    "homophones": [],
    "homophoneNotes": {},
-   "contextSentence": "Je veux plus de soupe.",
+   "contextSentence": "Je veux encore plus de soupe.",
    "explanation": "Mot invariable : un s à la fin.",
    "pronunciationAsset": "dictee/audio/fr-plus.ogg",
    "contextAsset": "dictee/audio/fr-plus-phrase.ogg",
    "audio": {
     "mode": "context_required",
     "wordVersion": "2154b72867258329",
-    "contextVersion": "2984a7b77ff9f0f9",
+    "contextVersion": "f7ef2fbe41f1e79a",
     "voice": "fr_FR-siwis-medium",
     "engine": "piper-tts 1.8.0",
     "locale": "fr-FR"
    },
    "difficulty": 2,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -12060,7 +12085,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -12374,7 +12399,7 @@
    "homophones": [],
    "homophoneNotes": {},
    "contextSentence": "Je lève le doigt pour répondre.",
-   "explanation": "Accent aigu sur le e ; le son on s'écrit o-n.",
+   "explanation": "Accent aigu sur le premier e ; le son on s'écrit o-n.",
    "pronunciationAsset": "dictee/audio/fr-repondre.ogg",
    "contextAsset": "dictee/audio/fr-repondre-phrase.ogg",
    "audio": {
@@ -12386,14 +12411,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 4,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -12404,7 +12429,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -12846,16 +12871,19 @@
    "expectedForm": "trop",
    "grade": "CE2",
    "tags": [
-    "lettre-muette"
+    "lettre-muette",
+    "homophone"
    ],
-   "homophones": [],
+   "homophones": [
+    "trot"
+   ],
    "homophoneNotes": {},
    "contextSentence": "Cette soupe est trop chaude.",
    "explanation": "Un p muet à la fin.",
    "pronunciationAsset": "dictee/audio/fr-trop.ogg",
    "contextAsset": "dictee/audio/fr-trop-phrase.ogg",
    "audio": {
-    "mode": "word_only",
+    "mode": "context_required",
     "wordVersion": "3f9cb30a13f60b1e",
     "contextVersion": "3caf7f9a0f43d4e4",
     "voice": "fr_FR-siwis-medium",
@@ -13071,7 +13099,7 @@
    "homophones": [],
    "homophoneNotes": {},
    "contextSentence": "Ce film est plein d'action.",
-   "explanation": "Ici, ti fait le son s : on écrit t-i-o-n.",
+   "explanation": "Ici, le t devant i fait le son s : on écrit t-i-o-n.",
    "pronunciationAsset": "dictee/audio/fr-action.ogg",
    "contextAsset": "dictee/audio/fr-action-phrase.ogg",
    "audio": {
@@ -13083,14 +13111,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 2,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -13101,7 +13129,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -13681,7 +13709,7 @@
    "homophones": [],
    "homophoneNotes": {},
    "contextSentence": "Il pleut, cependant nous sortons.",
-   "explanation": "Le son an s'écrit an ; un t muet à la fin.",
+   "explanation": "Le premier son an s'écrit en, le second an ; un t muet à la fin.",
    "pronunciationAsset": "dictee/audio/fr-cependant.ogg",
    "contextAsset": "dictee/audio/fr-cependant-phrase.ogg",
    "audio": {
@@ -13693,14 +13721,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 5,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -13711,7 +13739,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -13812,19 +13840,16 @@
    "expectedForm": "comme",
    "grade": "CM1",
    "tags": [
-    "double-consonne",
-    "homophone"
+    "double-consonne"
    ],
-   "homophones": [
-    "com"
-   ],
+   "homophones": [],
    "homophoneNotes": {},
    "contextSentence": "Il court vite comme le vent.",
    "explanation": "Deux m et un e muet à la fin.",
    "pronunciationAsset": "dictee/audio/fr-comme.ogg",
    "contextAsset": "dictee/audio/fr-comme-phrase.ogg",
    "audio": {
-    "mode": "context_required",
+    "mode": "word_only",
     "wordVersion": "4c5902338e1e03e4",
     "contextVersion": "fb91796145055831",
     "voice": "fr_FR-siwis-medium",
@@ -13997,11 +14022,12 @@
     "homophone"
    ],
    "homophones": [
-    "comte"
+    "comte",
+    "conte"
    ],
    "homophoneNotes": {},
    "contextSentence": "Le compte est bon !",
-   "explanation": "Un p muet avant le t ; le comte est un noble.",
+   "explanation": "Un p muet avant le t ; le comte est un noble, le conte est une histoire.",
    "pronunciationAsset": "dictee/audio/fr-compte.ogg",
    "contextAsset": "dictee/audio/fr-compte-phrase.ogg",
    "audio": {
@@ -14013,14 +14039,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 4,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -14031,7 +14057,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -14039,15 +14065,19 @@
    "lemma": "compter",
    "expectedForm": "compter",
    "grade": "CM1",
-   "tags": [],
-   "homophones": [],
+   "tags": [
+    "homophone"
+   ],
+   "homophones": [
+    "conter"
+   ],
    "homophoneNotes": {},
    "contextSentence": "Je sais compter jusqu'à cent.",
    "explanation": "Un p muet avant le t.",
    "pronunciationAsset": "dictee/audio/fr-compter.ogg",
    "contextAsset": "dictee/audio/fr-compter-phrase.ogg",
    "audio": {
-    "mode": "word_only",
+    "mode": "context_required",
     "wordVersion": "34fd9f08b4b9507d",
     "contextVersion": "0e22041b2523e241",
     "voice": "fr_FR-siwis-medium",
@@ -14386,7 +14416,7 @@
    "homophones": [],
    "homophoneNotes": {},
    "contextSentence": "Je vais envoyer une carte postale.",
-   "explanation": "Le y entre deux voyelles fait le son de deux i.",
+   "explanation": "Le y entre deux voyelles vaut deux i.",
    "pronunciationAsset": "dictee/audio/fr-envoyer.ogg",
    "contextAsset": "dictee/audio/fr-envoyer-phrase.ogg",
    "audio": {
@@ -14398,14 +14428,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 3,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -14416,7 +14446,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -14430,7 +14460,7 @@
    "homophones": [],
    "homophoneNotes": {},
    "contextSentence": "Le loup est une espèce sauvage.",
-   "explanation": "Accent grave ; le c devant e fait le son s.",
+   "explanation": "Accent grave sur le deuxième e ; le c devant e fait le son s.",
    "pronunciationAsset": "dictee/audio/fr-espece.ogg",
    "contextAsset": "dictee/audio/fr-espece-phrase.ogg",
    "audio": {
@@ -14442,14 +14472,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 3,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -14460,7 +14490,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -14474,7 +14504,7 @@
    "homophones": [],
    "homophoneNotes": {},
    "contextSentence": "Je vais essayer ce vélo.",
-   "explanation": "Deux s ; le y fait le son de deux i.",
+   "explanation": "Deux s ; le y entre deux voyelles vaut deux i.",
    "pronunciationAsset": "dictee/audio/fr-essayer.ogg",
    "contextAsset": "dictee/audio/fr-essayer-phrase.ogg",
    "audio": {
@@ -14486,14 +14516,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 4,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -14504,7 +14534,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -14773,27 +14803,27 @@
    "tags": [],
    "homophones": [],
    "homophoneNotes": {},
-   "contextSentence": "Le pirate cherche une fortune.",
+   "contextSentence": "Ce trésor vaut une fortune.",
    "explanation": null,
    "pronunciationAsset": "dictee/audio/fr-fortune.ogg",
    "contextAsset": "dictee/audio/fr-fortune-phrase.ogg",
    "audio": {
     "mode": "word_only",
     "wordVersion": "235dff1cda09633b",
-    "contextVersion": "00f39fde6af7e864",
+    "contextVersion": "5e3e52c909bc0702",
     "voice": "fr_FR-siwis-medium",
     "engine": "piper-tts 1.8.0",
     "locale": "fr-FR"
    },
    "difficulty": 3,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -14804,7 +14834,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -15524,7 +15554,7 @@
    "homophones": [],
    "homophoneNotes": {},
    "contextSentence": "Le vélo est un bon moyen d'aller à l'école.",
-   "explanation": "Le y fait le son de deux i : « moi-ien ».",
+   "explanation": "Le y entre deux voyelles vaut deux i : « moi-ien ».",
    "pronunciationAsset": "dictee/audio/fr-moyen.ogg",
    "contextAsset": "dictee/audio/fr-moyen-phrase.ogg",
    "audio": {
@@ -15536,14 +15566,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 1,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -15554,7 +15584,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -15998,7 +16028,7 @@
    "homophones": [],
    "homophoneNotes": {},
    "contextSentence": "Je vais payer le pain.",
-   "explanation": "Le y fait le son de deux i.",
+   "explanation": "Le y entre deux voyelles vaut deux i.",
    "pronunciationAsset": "dictee/audio/fr-payer.ogg",
    "contextAsset": "dictee/audio/fr-payer-phrase.ogg",
    "audio": {
@@ -16010,14 +16040,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 2,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -16028,7 +16058,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -16430,27 +16460,27 @@
    "tags": [],
    "homophones": [],
    "homophoneNotes": {},
-   "contextSentence": "Mes mains sont propres et mon visage est propre.",
+   "contextSentence": "Mon visage est propre.",
    "explanation": null,
    "pronunciationAsset": "dictee/audio/fr-propre.ogg",
    "contextAsset": "dictee/audio/fr-propre-phrase.ogg",
    "audio": {
     "mode": "word_only",
     "wordVersion": "cd598b45b6a2fe1c",
-    "contextVersion": "c882c80fdbd02124",
+    "contextVersion": "e507ba01c6d3b56b",
     "voice": "fr_FR-siwis-medium",
     "engine": "piper-tts 1.8.0",
     "locale": "fr-FR"
    },
    "difficulty": 2,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -16461,7 +16491,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -17167,27 +17197,27 @@
    "tags": [],
    "homophones": [],
    "homophoneNotes": {},
-   "contextSentence": "La suite de l'histoire est demain.",
+   "contextSentence": "Nous lirons la suite de l'histoire demain.",
    "explanation": null,
    "pronunciationAsset": "dictee/audio/fr-suite.ogg",
    "contextAsset": "dictee/audio/fr-suite-phrase.ogg",
    "audio": {
     "mode": "word_only",
     "wordVersion": "f2ee3774f1e6dde0",
-    "contextVersion": "845776b5bba7fb4a",
+    "contextVersion": "dd6fbf0dd7c11a3d",
     "voice": "fr_FR-siwis-medium",
     "engine": "piper-tts 1.8.0",
     "locale": "fr-FR"
    },
    "difficulty": 2,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -17198,7 +17228,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -17342,11 +17372,11 @@
    "homophones": [],
    "homophoneNotes": {},
    "contextSentence": "Le chat passe à travers la haie.",
-   "explanation": "Mot invariable : un s muet à la fin.",
+   "explanation": "Un s muet à la fin, même pour un seul : « à travers ».",
    "pronunciationAsset": "dictee/audio/fr-travers.ogg",
    "contextAsset": "dictee/audio/fr-travers-phrase.ogg",
    "audio": {
-    "mode": "word_only",
+    "mode": "audio_manual_review",
     "wordVersion": "ba986a33ddaa78ed",
     "contextVersion": "b187e62701019a29",
     "voice": "fr_FR-siwis-medium",
@@ -17354,14 +17384,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 3,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -17372,7 +17402,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -17387,7 +17417,7 @@
    "homophones": [],
    "homophoneNotes": {},
    "contextSentence": "C'est vraiment génial.",
-   "explanation": "Le son è s'écrit ai ; un e qu'on n'entend pas avant ment.",
+   "explanation": "Le son è s'écrit ai ; pas de e entre « vrai » et « ment ».",
    "pronunciationAsset": "dictee/audio/fr-vraiment.ogg",
    "contextAsset": "dictee/audio/fr-vraiment-phrase.ogg",
    "audio": {
@@ -17399,14 +17429,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 4,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -17417,7 +17447,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -18174,7 +18204,7 @@
    ],
    "homophoneNotes": {},
    "contextSentence": "Le cours de musique commence.",
-   "explanation": "Un s muet à la fin ; la cour, c'est la récréation.",
+   "explanation": "Un s muet à la fin ; la cour, c'est le lieu où l'on joue à la récréation.",
    "pronunciationAsset": "dictee/audio/fr-cours.ogg",
    "contextAsset": "dictee/audio/fr-cours-phrase.ogg",
    "audio": {
@@ -18186,14 +18216,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 3,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -18204,7 +18234,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -18614,7 +18644,7 @@
    "homophones": [],
    "homophoneNotes": {},
    "contextSentence": "La pluie va nous empêcher de sortir.",
-   "explanation": "Devant p, on écrit em ; accent circonflexe sur le e.",
+   "explanation": "Devant p, on écrit em ; accent circonflexe sur le deuxième e.",
    "pronunciationAsset": "dictee/audio/fr-empecher.ogg",
    "contextAsset": "dictee/audio/fr-empecher-phrase.ogg",
    "audio": {
@@ -18626,14 +18656,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 5,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -18644,7 +18674,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -19263,7 +19293,7 @@
    "homophones": [],
    "homophoneNotes": {},
    "contextSentence": "Quelle belle journée !",
-   "explanation": "Un é et un e muet à la fin : c'est un nom féminin.",
+   "explanation": "Un é puis un e muet à la fin : -ée, comme dans « soirée ».",
    "pronunciationAsset": "dictee/audio/fr-journee.ogg",
    "contextAsset": "dictee/audio/fr-journee-phrase.ogg",
    "audio": {
@@ -19275,14 +19305,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 4,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -19293,7 +19323,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -19740,27 +19770,27 @@
    ],
    "homophones": [],
    "homophoneNotes": {},
-   "contextSentence": "Ce fruit a un goût mauvais.",
+   "contextSentence": "Ce fruit a mauvais goût.",
    "explanation": "Le son o s'écrit au ; un s muet à la fin.",
    "pronunciationAsset": "dictee/audio/fr-mauvais.ogg",
    "contextAsset": "dictee/audio/fr-mauvais-phrase.ogg",
    "audio": {
     "mode": "word_only",
     "wordVersion": "fe8aac9b57a70a40",
-    "contextVersion": "35a80878d48b141a",
+    "contextVersion": "a9c96780ec6319ba",
     "voice": "fr_FR-siwis-medium",
     "engine": "piper-tts 1.8.0",
     "locale": "fr-FR"
    },
    "difficulty": 4,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -19771,7 +19801,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -20217,16 +20247,19 @@
    "grade": "CM2",
    "tags": [
     "accent",
-    "lettre-muette"
+    "lettre-muette",
+    "homophone"
    ],
-   "homophones": [],
+   "homophones": [
+    "plus tôt"
+   ],
    "homophoneNotes": {},
    "contextSentence": "Je prendrai plutôt une pomme.",
    "explanation": "Accent circonflexe sur le o ; un t muet.",
    "pronunciationAsset": "dictee/audio/fr-plutot.ogg",
    "contextAsset": "dictee/audio/fr-plutot-phrase.ogg",
    "audio": {
-    "mode": "word_only",
+    "mode": "context_required",
     "wordVersion": "def6ab95730965ff",
     "contextVersion": "10a86cb1c7f91c25",
     "voice": "fr_FR-siwis-medium",
@@ -20875,27 +20908,27 @@
    ],
    "homophones": [],
    "homophoneNotes": {},
-   "contextSentence": "Je vais serrer mon doudou.",
+   "contextSentence": "Je vais serrer la main de mon ami.",
    "explanation": "Deux r.",
    "pronunciationAsset": "dictee/audio/fr-serrer.ogg",
    "contextAsset": "dictee/audio/fr-serrer-phrase.ogg",
    "audio": {
     "mode": "word_only",
     "wordVersion": "f10e40bc34a4fe92",
-    "contextVersion": "a7b2aa3253de31dd",
+    "contextVersion": "6328390a69b299c4",
     "voice": "fr_FR-siwis-medium",
     "engine": "piper-tts 1.8.0",
     "locale": "fr-FR"
    },
    "difficulty": 4,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -20906,7 +20939,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -20914,15 +20947,19 @@
    "lemma": "signe",
    "expectedForm": "signe",
    "grade": "CM2",
-   "tags": [],
-   "homophones": [],
+   "tags": [
+    "homophone"
+   ],
+   "homophones": [
+    "cygne"
+   ],
    "homophoneNotes": {},
    "contextSentence": "Il me fait un signe de la main.",
    "explanation": "Le g et le n ensemble font le son « gne ».",
    "pronunciationAsset": "dictee/audio/fr-signe.ogg",
    "contextAsset": "dictee/audio/fr-signe-phrase.ogg",
    "audio": {
-    "mode": "word_only",
+    "mode": "context_required",
     "wordVersion": "b964883a15452ac0",
     "contextVersion": "09234618b1734801",
     "voice": "fr_FR-siwis-medium",
@@ -21002,7 +21039,7 @@
    "homophones": [],
    "homophoneNotes": {},
    "contextSentence": "La situation est sous contrôle.",
-   "explanation": "Ici, ti fait le son s : on écrit t-i-o-n.",
+   "explanation": "Ici, le t devant i fait le son s : on écrit t-i-o-n.",
    "pronunciationAsset": "dictee/audio/fr-situation.ogg",
    "contextAsset": "dictee/audio/fr-situation-phrase.ogg",
    "audio": {
@@ -21014,14 +21051,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 3,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -21032,7 +21069,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -21304,7 +21341,7 @@
    "homophones": [],
    "homophoneNotes": {},
    "contextSentence": "Le système solaire a huit planètes.",
-   "explanation": "Le y fait le son i ; accent grave sur le e.",
+   "explanation": "Le y fait le son i ; accent grave sur le premier e.",
    "pronunciationAsset": "dictee/audio/fr-systeme.ogg",
    "contextAsset": "dictee/audio/fr-systeme-phrase.ogg",
    "audio": {
@@ -21316,14 +21353,14 @@
     "locale": "fr-FR"
    },
    "difficulty": 3,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -21334,7 +21371,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {
@@ -21693,27 +21730,27 @@
    ],
    "homophones": [],
    "homophoneNotes": {},
-   "contextSentence": "Le lapin a réussi à s'échapper.",
+   "contextSentence": "Le lapin a réussi à échapper au renard.",
    "explanation": "Accent aigu ; deux p.",
    "pronunciationAsset": "dictee/audio/fr-echapper.ogg",
    "contextAsset": "dictee/audio/fr-echapper-phrase.ogg",
    "audio": {
     "mode": "word_only",
     "wordVersion": "0cac09ce34ea19aa",
-    "contextVersion": "99b54ef7cab4624b",
+    "contextVersion": "e453239de561f278",
     "voice": "fr_FR-siwis-medium",
     "engine": "piper-tts 1.8.0",
     "locale": "fr-FR"
    },
    "difficulty": 5,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -21724,7 +21761,7 @@
      "date": "2026-11-16",
      "version": 3
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
    }
   },
   {

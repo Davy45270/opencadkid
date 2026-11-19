@@ -3,12 +3,13 @@
   "id": "fr-aile",
   "lemma": "aile",
   "contextSentence": "L'oiseau ouvre son aile.",
-  "explanation": "Le son è s'écrit ai ; un e muet à la fin ; « elle », c'est une fille.",
+  "explanation": "Le son è s'écrit ai ; un e muet à la fin ; à ne pas confondre avec « elle » (elle joue).",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 4
-  }
+  },
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-air",
@@ -23,14 +24,15 @@
  },
  {
   "id": "fr-ami",
-  "contextSentence": "Mon ami joue avec moi.",
+  "contextSentence": "Un ami vient jouer avec moi.",
   "explanation": "Pas de e à la fin : avec un e, « une amie », c'est une fille.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "ami"
+  "lemma": "ami",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-arbre",
@@ -441,14 +443,15 @@
  },
  {
   "id": "fr-lit",
-  "contextSentence": "Je lis une histoire dans mon lit.",
+  "contextSentence": "Je dors dans mon lit.",
   "explanation": "Le t muet s'entend dans « literie ».",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "lit"
+  "lemma": "lit",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-livre",
@@ -806,12 +809,13 @@
   "id": "fr-rayon",
   "lemma": "rayon",
   "contextSentence": "Un rayon de soleil entre par la fenêtre.",
-  "explanation": "Le y fait le son de deux i : « rai-ion ».",
+  "explanation": "Le y entre deux voyelles vaut deux i : « rai-ion ».",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 4
-  }
+  },
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-robe",
@@ -1070,12 +1074,13 @@
   "id": "fr-ecole",
   "lemma": "école",
   "contextSentence": "Je vais à l'école à pied.",
-  "explanation": "Accent aigu sur le e ; le son k s'écrit c.",
+  "explanation": "Accent aigu sur le premier e ; le son k s'écrit c.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 4
-  }
+  },
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-epaule",
@@ -1101,26 +1106,28 @@
  },
  {
   "id": "fr-affaire",
-  "contextSentence": "Mon cartable est une bonne affaire.",
+  "contextSentence": "Ce cartable pas cher est une bonne affaire.",
   "explanation": "Deux f après le a ; un e muet à la fin.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "affaire"
+  "lemma": "affaire",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-aimer",
   "contextSentence": "Je vais aimer ce nouveau jeu.",
-  "explanation": "Le début s'écrit ai ; c'est un verbe : il finit par er.",
+  "explanation": "Le début s'écrit ai ; c'est un verbe en er : il finit par e-r.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 4,
    "reason": "addendum de revue du 2026-11-16"
   },
-  "lemma": "aimer"
+  "lemma": "aimer",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-annee",
@@ -1169,13 +1176,14 @@
  {
   "id": "fr-arreter",
   "contextSentence": "Il faut arrêter de courir dans le couloir.",
-  "explanation": "Deux r et un accent circonflexe sur le e.",
+  "explanation": "Deux r et un accent circonflexe sur le premier e.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "arrêter"
+  "lemma": "arrêter",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-asseoir",
@@ -1224,13 +1232,14 @@
  {
   "id": "fr-blanc",
   "contextSentence": "La neige est blanche et le lait est blanc.",
-  "explanation": "Un c muet à la fin : il s'entend dans « blanche ».",
+  "explanation": "Un c muet à la fin : on le retrouve dans « blanche ».",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "blanc"
+  "lemma": "blanc",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-bon",
@@ -1399,14 +1408,15 @@
  },
  {
   "id": "fr-fait",
-  "contextSentence": "C'est un fait : le soleil se lève.",
+  "contextSentence": "J'ai fait un beau dessin.",
   "explanation": "Le son è s'écrit ai ; un t muet à la fin.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "fait"
+  "lemma": "fait",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-falloir",
@@ -1422,13 +1432,14 @@
  {
   "id": "fr-fond",
   "contextSentence": "La pièce est au fond de la poche.",
-  "explanation": "Un d muet à la fin : il s'entend dans « fondu ».",
+  "explanation": "Un d muet à la fin : il s'entend dans « profonde ».",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "fond"
+  "lemma": "fond",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-force",
@@ -1542,25 +1553,27 @@
  },
  {
   "id": "fr-juge",
-  "contextSentence": "Le juge écoute les deux équipes.",
+  "contextSentence": "Le juge écoute les témoins au tribunal.",
   "explanation": "Le g devant e fait le son j.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "juge"
+  "lemma": "juge",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-lever",
   "contextSentence": "Je vais lever la main.",
-  "explanation": "Un seul e après le l, sans accent.",
+  "explanation": "Pas d'accent sur le e après le l ; verbe en er.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "lever"
+  "lemma": "lever",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-long",
@@ -1576,13 +1589,14 @@
  {
   "id": "fr-lumiere",
   "contextSentence": "J'allume la lumière.",
-  "explanation": "Accent grave sur le e.",
+  "explanation": "Accent grave sur le premier e.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "lumière"
+  "lemma": "lumière",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-marcher",
@@ -1763,13 +1777,14 @@
  {
   "id": "fr-pensee",
   "contextSentence": "Il a une pensée pour sa mamie.",
-  "explanation": "C'est un nom : il finit par é et un e muet.",
+  "explanation": "Le nom finit par é et un e muet, comme « journée » ; le verbe « penser » finit par e-r.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "pensée"
+  "lemma": "pensée",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-perdre",
@@ -1873,13 +1888,14 @@
  {
   "id": "fr-pere",
   "contextSentence": "Mon père lit le journal.",
-  "explanation": "Accent grave sur le e ; une paire, c'est deux choses.",
+  "explanation": "Accent grave sur le e ; une paire, c'est deux choses qui vont ensemble.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "père"
+  "lemma": "père",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-quel",
@@ -2005,13 +2021,14 @@
  {
   "id": "fr-temps",
   "contextSentence": "Le temps passe vite pendant les vacances.",
-  "explanation": "Deux lettres muettes à la fin : p et s ; « tant » veut dire « autant ».",
+  "explanation": "Le son an s'écrit e-m ; deux lettres muettes à la fin : p et s ; « tant » veut dire « tellement ».",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "temps"
+  "lemma": "temps",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-tenir",
@@ -2114,14 +2131,15 @@
  },
  {
   "id": "fr-visage",
-  "contextSentence": "Je lave mon visage.",
+  "contextSentence": "Je me lave le visage.",
   "explanation": "Le s entre deux voyelles fait le son z.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "visage"
+  "lemma": "visage",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-vivre",
@@ -2159,13 +2177,14 @@
  {
   "id": "fr-voyage",
   "contextSentence": "Nous partons en voyage.",
-  "explanation": "Le y fait le son de deux i : « voi-iage ».",
+  "explanation": "Le y entre deux voyelles vaut deux i : « voi-iage ».",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "voyage"
+  "lemma": "voyage",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-vrai",
@@ -2567,13 +2586,14 @@
  {
   "id": "fr-envoyer",
   "contextSentence": "Je vais envoyer une carte postale.",
-  "explanation": "Le y entre deux voyelles fait le son de deux i.",
+  "explanation": "Le y entre deux voyelles vaut deux i.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "envoyer"
+  "lemma": "envoyer",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-face",
@@ -2853,13 +2873,14 @@
  {
   "id": "fr-moyen",
   "contextSentence": "Le vélo est un bon moyen d'aller à l'école.",
-  "explanation": "Le y fait le son de deux i : « moi-ien ».",
+  "explanation": "Le y entre deux voyelles vaut deux i : « moi-ien ».",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "moyen"
+  "lemma": "moyen",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-meme",
@@ -2995,14 +3016,15 @@
  },
  {
   "id": "fr-plus",
-  "contextSentence": "Je veux plus de soupe.",
+  "contextSentence": "Je veux encore plus de soupe.",
   "explanation": "Mot invariable : un s à la fin.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "plus"
+  "lemma": "plus",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-point",
@@ -3129,13 +3151,14 @@
  {
   "id": "fr-repondre",
   "contextSentence": "Je lève le doigt pour répondre.",
-  "explanation": "Accent aigu sur le e ; le son on s'écrit o-n.",
+  "explanation": "Accent aigu sur le premier e ; le son on s'écrit o-n.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "répondre"
+  "lemma": "répondre",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-service",
@@ -3194,14 +3217,15 @@
  },
  {
   "id": "fr-suite",
-  "contextSentence": "La suite de l'histoire est demain.",
+  "contextSentence": "Nous lirons la suite de l'histoire demain.",
   "explanation": null,
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "suite"
+  "lemma": "suite",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-surtout",
@@ -3261,13 +3285,14 @@
  {
   "id": "fr-travers",
   "contextSentence": "Le chat passe à travers la haie.",
-  "explanation": "Mot invariable : un s muet à la fin.",
+  "explanation": "Un s muet à la fin, même pour un seul : « à travers ».",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "travers"
+  "lemma": "travers",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-trop",
@@ -3316,13 +3341,14 @@
  {
   "id": "fr-action",
   "contextSentence": "Ce film est plein d'action.",
-  "explanation": "Ici, ti fait le son s : on écrit t-i-o-n.",
+  "explanation": "Ici, le t devant i fait le son s : on écrit t-i-o-n.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "action"
+  "lemma": "action",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-ancien",
@@ -3448,13 +3474,14 @@
  {
   "id": "fr-cependant",
   "contextSentence": "Il pleut, cependant nous sortons.",
-  "explanation": "Le son an s'écrit an ; un t muet à la fin.",
+  "explanation": "Le premier son an s'écrit en, le second an ; un t muet à la fin.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "cependant"
+  "lemma": "cependant",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-champ",
@@ -3503,13 +3530,14 @@
  {
   "id": "fr-compte",
   "contextSentence": "Le compte est bon !",
-  "explanation": "Un p muet avant le t ; le comte est un noble.",
+  "explanation": "Un p muet avant le t ; le comte est un noble, le conte est une histoire.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "compte"
+  "lemma": "compte",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-compter",
@@ -3580,13 +3608,14 @@
  {
   "id": "fr-cours",
   "contextSentence": "Le cours de musique commence.",
-  "explanation": "Un s muet à la fin ; la cour, c'est la récréation.",
+  "explanation": "Un s muet à la fin ; la cour, c'est le lieu où l'on joue à la récréation.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "cours"
+  "lemma": "cours",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-demeurer",
@@ -3624,24 +3653,26 @@
  {
   "id": "fr-espece",
   "contextSentence": "Le loup est une espèce sauvage.",
-  "explanation": "Accent grave ; le c devant e fait le son s.",
+  "explanation": "Accent grave sur le deuxième e ; le c devant e fait le son s.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "espèce"
+  "lemma": "espèce",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-essayer",
   "contextSentence": "Je vais essayer ce vélo.",
-  "explanation": "Deux s ; le y fait le son de deux i.",
+  "explanation": "Deux s ; le y entre deux voyelles vaut deux i.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "essayer"
+  "lemma": "essayer",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-exemple",
@@ -3700,14 +3731,15 @@
  },
  {
   "id": "fr-fortune",
-  "contextSentence": "Le pirate cherche une fortune.",
+  "contextSentence": "Ce trésor vaut une fortune.",
   "explanation": null,
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "fortune"
+  "lemma": "fortune",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-francais",
@@ -4011,13 +4043,14 @@
  {
   "id": "fr-payer",
   "contextSentence": "Je vais payer le pain.",
-  "explanation": "Le y fait le son de deux i.",
+  "explanation": "Le y entre deux voyelles vaut deux i.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "payer"
+  "lemma": "payer",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-permettre",
@@ -4087,14 +4120,15 @@
  },
  {
   "id": "fr-propre",
-  "contextSentence": "Mes mains sont propres et mon visage est propre.",
+  "contextSentence": "Mon visage est propre.",
   "explanation": null,
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "propre"
+  "lemma": "propre",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-presenter",
@@ -4241,14 +4275,15 @@
  },
  {
   "id": "fr-serrer",
-  "contextSentence": "Je vais serrer mon doudou.",
+  "contextSentence": "Je vais serrer la main de mon ami.",
   "explanation": "Deux r.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "serrer"
+  "lemma": "serrer",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-seulement",
@@ -4275,13 +4310,14 @@
  {
   "id": "fr-situation",
   "contextSentence": "La situation est sous contrôle.",
-  "explanation": "Ici, ti fait le son s : on écrit t-i-o-n.",
+  "explanation": "Ici, le t devant i fait le son s : on écrit t-i-o-n.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "situation"
+  "lemma": "situation",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-siecle",
@@ -4385,13 +4421,14 @@
  {
   "id": "fr-vraiment",
   "contextSentence": "C'est vraiment génial.",
-  "explanation": "Le son è s'écrit ai ; un e qu'on n'entend pas avant ment.",
+  "explanation": "Le son è s'écrit ai ; pas de e entre « vrai » et « ment ».",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "vraiment"
+  "lemma": "vraiment",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-etude",
@@ -4738,13 +4775,14 @@
  {
   "id": "fr-empecher",
   "contextSentence": "La pluie va nous empêcher de sortir.",
-  "explanation": "Devant p, on écrit em ; accent circonflexe sur le e.",
+  "explanation": "Devant p, on écrit em ; accent circonflexe sur le deuxième e.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "empêcher"
+  "lemma": "empêcher",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-endroit",
@@ -4859,13 +4897,14 @@
  {
   "id": "fr-journee",
   "contextSentence": "Quelle belle journée !",
-  "explanation": "Un é et un e muet à la fin : c'est un nom féminin.",
+  "explanation": "Un é puis un e muet à la fin : -ée, comme dans « soirée ».",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "journée"
+  "lemma": "journée",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-juger",
@@ -4968,14 +5007,15 @@
  },
  {
   "id": "fr-mauvais",
-  "contextSentence": "Ce fruit a un goût mauvais.",
+  "contextSentence": "Ce fruit a mauvais goût.",
   "explanation": "Le son o s'écrit au ; un s muet à la fin.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "mauvais"
+  "lemma": "mauvais",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-mener",
@@ -5345,13 +5385,14 @@
  {
   "id": "fr-systeme",
   "contextSentence": "Le système solaire a huit planètes.",
-  "explanation": "Le y fait le son i ; accent grave sur le e.",
+  "explanation": "Le y fait le son i ; accent grave sur le premier e.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "système"
+  "lemma": "système",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-tendre",
@@ -5465,14 +5506,15 @@
  },
  {
   "id": "fr-echapper",
-  "contextSentence": "Le lapin a réussi à s'échapper.",
+  "contextSentence": "Le lapin a réussi à échapper au renard.",
   "explanation": "Accent aigu ; deux p.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 3
   },
-  "lemma": "échapper"
+  "lemma": "échapper",
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-egalement",
@@ -5566,12 +5608,13 @@
   "id": "fr-huit",
   "lemma": "huit",
   "contextSentence": "Après sept vient huit.",
-  "explanation": "Un h muet au début ; le t de la fin s'entend.",
+  "explanation": "Un h au début, qu'on n'entend pas ; le t de la fin s'entend.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 5
-  }
+  },
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-jouet",
@@ -5610,12 +5653,13 @@
   "id": "fr-maman",
   "lemma": "maman",
   "contextSentence": "Je fais un câlin à maman.",
-  "explanation": "Deux fois ma ; à la fin, le son an s'écrit a-n.",
+  "explanation": "On écrit ma, puis man : à la fin, le son an s'écrit a-n.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 5
-  }
+  },
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-montre",
@@ -5852,12 +5896,13 @@
   "id": "fr-lego",
   "lemma": "lego",
   "contextSentence": "Je construis une maison en Lego.",
-  "explanation": "C'est un nom de marque : il prend une majuscule.",
+  "explanation": "C'est un nom de marque : il prend une majuscule ; on entend « é », mais le e n'a pas d'accent.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
    "date": "2026-11-16",
    "version": 5
-  }
+  },
+  "correction": "corrigé après relecture Codex et Google, 19/11 (arbitrage bot-Claude) : à revalider par un adulte"
  },
  {
   "id": "fr-marron",
