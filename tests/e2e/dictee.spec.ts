@@ -14,12 +14,13 @@ test.use({ serviceWorkers: 'block' });
 
 /** The test serves the shipped catalogue with the chosen words approved (the four reviews, a named reviewer) and
  * every other word back to « waiting for review », so that it knows exactly which words may be drawn. */
-async function reviewed(page: Page, pick: (w: Word) => boolean): Promise<void> {
+async function reviewed(page: Page, pick: (w: Word) => boolean, strip = false): Promise<void> {
     const approved = { orthography: 'approved', pedagogy: 'approved', context: 'approved', audio: 'approved' };
     await page.route('**/dictee/catalogue.json', route => route.fulfill({ contentType: 'application/json',
         body: JSON.stringify({ ...shipped, words: shipped.words.map(w => pick(w) && (!w.homophones.length || w.contextSentence)
             ? { ...w, status: 'approved', review: approved, validatedBy: 'relecture de test', audio: { ...w.audio, mode: w.audio.mode === 'audio_manual_review' ? 'word_only' : w.audio.mode } }
-            : { ...w, status: 'needs_review', review: { ...approved, audio: 'pending' }, validatedBy: null }) }) }));
+            : { ...w, status: 'needs_review', review: { ...approved, audio: 'pending' }, validatedBy: null })
+            .map(w => strip ? { ...w, audio: { ...w.audio, wordSha256: undefined, contextSha256: undefined } } : w) }) }));
 }
 async function open(page: Page): Promise<void> {
     await prepare(page); await page.locator('#back').click();
@@ -493,4 +494,43 @@ test('the word_then_context word says its sentence after the word, without a tou
     await feed(page, byId.get(pool[0]!)!.grade, 5);
     const w = await word(page);
     await expect.poll(async () => (await probe(page)).played.map(p => p.path), { timeout: 8000 }).toEqual([w.pronunciationAsset, w.contextAsset]);
+});
+
+test('a slow replay of the word is never cut by its sentence (fifth Codex review of 2026-11-20)', async ({ page }) => {
+    const pool = shipped.words.filter(w => w.grade === 'CP' && w.audio.mode === 'context_required' && w.expectedForm !== 'un').map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    await feed(page, 'CP', 5);
+    const w = await word(page);
+    await expect.poll(async () => (await probe(page)).heard.map(h => h.path)).toContain(w.pronunciationAsset);
+    await page.waitForTimeout(1000);
+    const card = (await probe(page)).card!;
+    await page.mouse.move(card.x + card.width / 2, card.y + 40); await page.mouse.down(); await page.waitForTimeout(700); await page.mouse.up();
+    await expect.poll(async () => (await probe(page)).played.map(p => p.path), { timeout: 10_000 }).toContain(w.contextAsset);
+    const played = (await probe(page)).played;
+    const slow = played.find(p => p.rate === .75)!, sentence = played.find(p => p.path === w.contextAsset)!;
+    // The slow word lasts about 2.6 s: the sentence waits for its end, or for 3.5 s after it, never the first word's safety.
+    expect(sentence.at - slow.at).toBeGreaterThanOrEqual(2300);
+});
+
+test('the delayed replay of a wrong word never plays on the next card (fifth Codex review of 2026-11-20)', async ({ page }) => {
+    const pool = shipped.words.filter(w => w.grade === 'CP' && w.audio.mode === 'word_only').map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    await feed(page, 'CP', 5);
+    const w1 = await word(page);
+    await page.keyboard.type(`${w1.expectedForm}x`);
+    // Checked, then straight on with Enter: the card leaves before the wrong word's replay (700 ms) is due.
+    const moved = await page.evaluate(() => { const t = performance.now(); for (let i = 0; i < 2; i++) document.activeElement?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })); return t; });
+    await expect.poll(async () => (await probe(page)).feed!.index).toBe(1);
+    await page.waitForTimeout(1500);
+    const after = (await probe(page)).played.filter(p => p.at >= moved).map(p => p.path);
+    expect(after).not.toContain(w1.pronunciationAsset);
+});
+
+test('a catalogue without the bytes\' digests gets nothing kept nor played (fifth Codex review of 2026-11-20)', async ({ page }) => {
+    const pool = shipped.words.filter(w => w.grade === 'CP' && w.audio.mode === 'word_only').map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id), true);
+    await feed(page, 'CP', 5);
+    await page.waitForTimeout(2000);
+    expect((await probe(page)).heard).toEqual([]);
+    expect(await page.evaluate(async () => (await (await caches.open('opencadkid-dictee-audio')).keys()).length)).toBe(0);
 });

@@ -65,6 +65,25 @@ describe('the offline scripts of the dictation', { timeout: 30_000 }, () => {
         expect(r.stderr).toContain('fr-huit.ogg');
         expect(readFileSync(join(dir, 'public/dictee/catalogue.json'), 'utf8')).toBe(shipped);
     });
+    it('a recording missing from audio-octets.json stops the assembly too (fifth Codex review of 2026-11-20)', () => {
+        const dir = copy();
+        const ecrits = json(dir, 'audio-octets.json') as Record<string, string>;
+        delete ecrits['dictee/audio/fr-huit-phrase.ogg'];
+        writeFileSync(join(dir, 'scripts/dictee/audio-octets.json'), JSON.stringify(ecrits));
+        const r = run(dir, 'assembler_catalogue.py');
+        expect(r.status).not.toBe(0);
+        expect(r.stderr).toContain('fr-huit-phrase.ogg');
+    });
+    it('generer_audio.py gives other bytes of an already made recipe a new version, so no approval passes to them (fifth Codex review)', () => {
+        const code = `import sys; sys.path.insert(0, 'scripts/dictee'); import generer_audio as g
+print(g.version('a.ogg', 'k1', {'a.ogg': 'k1'}, 'abcdef0123456789'))
+print(g.version('a.ogg', 'k2', {'a.ogg': 'k1'}, 'abcdef0123456789'))
+print(g.version('a.ogg', 'k1', {'a.ogg': 'k1.00000000'}, 'abcdef0123456789'))
+print(g.version('b.ogg', 'k1', {}, 'abcdef0123456789'))`;
+        const r = spawnSync('python3', ['-c', code], { encoding: 'utf8' });
+        expect(r.status, r.stderr).toBe(0);
+        expect(r.stdout.trim().split('\n')).toEqual(['k1.abcdef01', 'k2', 'k1.abcdef01', 'k1']);
+    });
     it('a targeted approval shows the exact text and writes nothing without --oui', () => {
         const dir = copy();
         const relus = readFileSync(join(dir, 'scripts/dictee/relectures.json'), 'utf8');
@@ -74,6 +93,7 @@ describe('the offline scripts of the dictation', { timeout: 30_000 }, () => {
         expect(r.stdout).toContain('RIEN écrit');
         const w = words(dir).get('fr-huit')! as unknown as { homophones: string[]; audio: { wordVersion: string; contextVersion: string | null } };
         expect(r.stdout).toContain(`phrase : ${(w as unknown as { contextSentence: string }).contextSentence}`);
+        expect(r.stdout).toContain('fr-huit — « huit »');
         expect(r.stdout).toContain(`homophones : ${w.homophones.join(', ') || '-'}`);
         expect(r.stdout).toContain(`audio mot ${w.audio.wordVersion}, phrase ${w.audio.contextVersion}`);
         expect(readFileSync(join(dir, 'scripts/dictee/relectures.json'), 'utf8')).toBe(relus);
@@ -137,6 +157,16 @@ describe('the offline scripts of the dictation', { timeout: 30_000 }, () => {
         const after = words(dir);
         expect(after.get(aside)!.status).not.toBe('approved');
         for (const id of waiting.slice(1)) expect(after.get(id)!.status, id).toBe('approved');
+    });
+    it('an adult listening « ok » to an older version of the recording blocks the targeted approval again (fifth Codex review)', () => {
+        const dir = copy();
+        const cases = json(dir, 'audio-non-regression.json') as { cases: Record<string, unknown>[] };
+        cases.cases.push({ id: 'fr-huit', lemma: 'huit', grade: 'CP', kind: 'mot', asset: 'dictee/audio/fr-huit.ogg', text: 'x', observed: 'y', observedBy: 'test',
+            audioVersion: 'ancienne', listening: { status: 'ok', by: 'Test', date: '2026-11-01', note: null, audioVersion: 'ancienne' }, batch: 'test' });
+        writeFileSync(join(dir, 'scripts/dictee/audio-non-regression.json'), JSON.stringify(cases));
+        const r = run(dir, 'importer_validation.py', '--approuver', 'fr-huit', '--par', 'Test', '--note', 'essai', '--oui');
+        expect(r.status).not.toBe(0);
+        expect(r.stderr).toContain('fr-huit');
     });
     it('« en-attente » is given alone: mixed with an id, nothing is shown nor written', () => {
         const dir = copy();
