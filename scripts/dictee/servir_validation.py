@@ -114,7 +114,10 @@ def main() -> None:
             with VERROU:
                 garde = a.sortie / 'dictee-relecture.json'
                 avant = json.loads(garde.read_text(encoding='utf-8')) if garde.exists() else {'format': 'dictee-relecture', 'version': 1, 'decisions': {}}
-                fusion = dict(avant.get('decisions') or {})
+                # Revue Codex de a7c7148 : un fichier écrit par l'ancien serveur ne nomme son adulte qu'en tête ; chaque
+                # décision le reçoit avant la fusion, pour que l'en-tête du prochain envoi ne le remplace pas.
+                fusion = {k: ({**v, 'reviewer': v.get('reviewer') or avant.get('reviewer')} if isinstance(v, dict) else v)
+                          for k, v in (avant.get('decisions') or {}).items()}
                 # Dix-huitième revue : chaque rev reçu garde son sort (« garde » ou « perime »), pour qu'un renvoi après un
                 # accusé perdu reçoive la même réponse que le premier envoi.
                 anciens = avant.get('recus') or {}
@@ -141,8 +144,9 @@ def main() -> None:
                     if isinstance(d.get('rev'), str):
                         recus[d['rev']] = 'garde'
                     # Revue Codex de f08e85c : chaque décision garde l'adulte qui l'a prise ; le fichier consolidé mêle
-                    # plusieurs lots, son `reviewer` de tête n'est que celui du dernier.
-                    fusion[ident] = {**d, 'reviewer': d.get('reviewer') or lot.get('reviewer')}
+                    # plusieurs lots, son `reviewer` de tête n'est que celui du dernier. L'auteur est celui qui envoie : une décision reçue puis éditée sur un autre téléphone ne garde pas
+                    # le nom de l'adulte précédent (revue Codex de a7c7148).
+                    fusion[ident] = {**d, 'reviewer': lot.get('reviewer')}
                 tout = {**lot, 'decisions': dict(sorted(fusion.items())), 'recus': dict(sorted(recus.items()))}
                 ecrire(garde, json.dumps(tout, ensure_ascii=False, indent=1).encode())
                 ecrire(a.sortie / f'dictee-relecture-envoi-{time.time_ns()}.json', json.dumps(lot, ensure_ascii=False, indent=1).encode())
