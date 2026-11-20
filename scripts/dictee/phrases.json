@@ -5118,7 +5118,7 @@
  },
  {
   "id": "fr-plutot",
-  "contextSentence": "Je prendrai plutôt une pomme.",
+  "contextSentence": "Je préfère le chocolat plutôt que la vanille.",
   "explanation": "Accent circonflexe sur le o ; un t muet.",
   "generatedBy": {
    "by": "assistant (bot-Claude), written by hand, draft to review",
@@ -5126,7 +5126,8 @@
    "version": 4,
    "reason": "addendum de revue du 2026-11-16"
   },
-  "lemma": "plutôt"
+  "lemma": "plutôt",
+  "correction": "relecture Codex, 20/11 : « Je prendrai plutôt une pomme » se lisait aussi avec « plus tôt » ; « plutôt que » ne laisse qu'une réponse"
  },
  {
   "id": "fr-pourquoi",

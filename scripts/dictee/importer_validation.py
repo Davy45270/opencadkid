@@ -44,6 +44,7 @@ PHRASES = ICI / 'phrases.json'
 RELECTURES = ICI / 'relectures.json'
 RETIRES = ICI / 'mots-retires.json'
 SIGNALEMENTS = ICI / 'audio-non-regression.json'
+EMPREINTES = ICI / 'audio-empreintes.json'
 CATALOGUE = RACINE / 'public/dictee/catalogue.json'
 
 
@@ -80,10 +81,16 @@ def approuver(ids: list[str], qui: str, note: str, ecrire: bool) -> None:
     # ou écoute validée) ; une approbation de texte ne le lève pas. « en-attente » les laisse de côté, un id désigné refuse.
     # Revue Codex (2e passe) : l'approbation ciblée n'écrit jamais `audioNonEcoute` — un signalement ajouté depuis le dernier
     # assemblage reste bloquant ; seule la validation en bloc, décidée et notée par l'adulte, porte cette exemption.
-    a_ecouter = [w['id'] for w in choisis if w['audio']['mode'] == 'audio_manual_review']
+    # Revue Codex (3e passe) : les signalements se lisent dans leur fichier, pas dans le dernier catalogue assemblé — un cas
+    # ajouté depuis refuse l'id désigné comme les autres. Même règle que l'assembleur : seule une écoute « ok » de la
+    # version actuelle du fichier lève un cas.
+    empreintes = json.loads(EMPREINTES.read_text(encoding='utf-8')) if EMPREINTES.exists() else {}
+    cas = json.loads(SIGNALEMENTS.read_text(encoding='utf-8'))['cases'] if SIGNALEMENTS.exists() else []
+    signales = {c['id'] for c in cas if c['listening']['status'] != 'ok' or c['listening'].get('audioVersion') != empreintes.get(c['asset'])}
+    a_ecouter = [w['id'] for w in choisis if w['audio']['mode'] == 'audio_manual_review' or w['id'] in signales]
     if a_ecouter and ids != ['en-attente']:
         raise SystemExit(f"enregistrement en attente d'écoute, à entendre sur la page de relecture : {', '.join(a_ecouter)}")
-    choisis = [w for w in choisis if w['audio']['mode'] != 'audio_manual_review']
+    choisis = [w for w in choisis if w['id'] not in a_ecouter]
     if 'écoute audio non faite' not in note:
         note += ' ; écoute audio non faite mot à mot'
     for w in choisis:

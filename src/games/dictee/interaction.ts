@@ -45,7 +45,7 @@ const AUDIO_CACHE = 'opencadkid-dictee-audio';
 /** A regenerated recording keeps its file name: the kept copy is tied to the audio version the catalogue names
  * (`?v=`), so a device never replays an older recording than the one the adult approved (Codex review, 2026-11-20). */
 const versions = new Map<string, string>();
-/** The SHA-256 of the bytes the catalogue ships for each file: a response with other bytes (a catalogue and recordings from
+/** The sha256 digest of the bytes the catalogue ships for each file: a response with other bytes (a catalogue and recordings from
  * two states of a deployment) is played but never kept, so it cannot pass for the version it was asked under. */
 const digests = new Map<string, string>();
 const versioned = (path: string): string => { const v = versions.get(path); return v ? `${path}?v=${encodeURIComponent(v)}` : path; };
@@ -72,26 +72,29 @@ async function shipped(path: string, r: Response): Promise<boolean> {
     const want = digests.get(path);
     if (!want) return true;
     if (typeof crypto === 'undefined' || typeof crypto.subtle === 'undefined') return false; // an insecure context has no SubtleCrypto: keep nothing
-    const got = [...new Uint8Array(await crypto.subtle.digest('SHA-256', await r.arrayBuffer()))].map(b => b.toString(16).padStart(2, '0')).join('');
+    const got = [...new Uint8Array(await crypto.subtle.digest('sha-256', await r.arrayBuffer()))].map(b => b.toString(16).padStart(2, '0')).join('');
     return got === want;
 }
 const blobs = new Map<string, string>();
-async function source(path: string): Promise<string> {
+/** The bytes to play for a file, as an object URL, from the cache or else the network. Only bytes whose sha256 digest is the
+ * catalogue's are ever played: a recording left over from a half-done deployment, served under the new version or kept
+ * under it, is never heard (third Codex review, 2026-11-20). null: nothing may be played. */
+async function source(path: string): Promise<string | null> {
     const key = versioned(path);
     const known = blobs.get(key); if (known) return known;
+    let r: Response | undefined;
+    try { if (typeof caches !== 'undefined') r = await (await caches.open(AUDIO_CACHE)).match(key); } catch { r = undefined; }
     try {
-        if (typeof caches !== 'undefined') {
-            const r = await (await caches.open(AUDIO_CACHE)).match(key);
-            if (r) { const url = URL.createObjectURL(await r.blob()); blobs.set(key, url); return url; }
-        }
-    } catch { /* Fall back to the file itself. */ }
-    return key;
+        if (!r || !await shipped(path, r.clone())) r = await fetch(key);
+        if (!r.ok || !await shipped(path, r.clone())) return null;
+        const url = URL.createObjectURL(await r.blob()); blobs.set(key, url); return url;
+    } catch { return null; }
 }
 
-let observed: { played: { path: string; rate: number }[]; words: Record<string, string> } = { played: [], words: {} };
+let observed: { played: { path: string; rate: number; at: number }[]; heard: { path: string; at: number }[]; words: Record<string, string> } = { played: [], heard: [], words: {} };
 export function snapshot(session: Session, root: ParentNode): object {
     const rect = (el: Element | null): { x: number; y: number; width: number; height: number } | null => { if (!el) return null; const r = el.getBoundingClientRect(); return { x: r.x, y: r.y, width: r.width, height: r.height }; };
-    return { ...session, played: Array.from(observed.played), card: rect(root.querySelector('.dictee-card')),
+    return { ...session, played: Array.from(observed.played), heard: Array.from(observed.heard), card: rect(root.querySelector('.dictee-card')),
         keys: Array.from(root.querySelectorAll('.dictee-key')).map(el => ({ key: el.getAttribute('data-key') ?? el.getAttribute('data-tile') ?? el.id, ...rect(el)! })) };
 }
 
@@ -105,25 +108,36 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
     const audio = typeof Audio === 'function' ? new Audio() : null;
     /** A sentence waiting for the word to end (a word heard only in context: verre, vert, vers). */
     let pending: string | null = null;
-    const play = (path: string | null, rate = 1): void => {
+    /** `settled` runs once the file's turn has come: its bytes are in the player, or were refused. */
+    const play = (path: string | null, rate = 1, settled?: () => void): void => {
         if (!path) return;
         if (path !== pending && path !== current()?.pronunciationAsset) pending = null;
         // La Dictée parle toujours : sans le mot entendu, il n'y a pas de dictée (2026-11-17).
-        if (!audio) return;
+        if (!audio) { settled?.(); return; }
         // Recorded once the sound is really asked for, so a test sees a word that the settings would have silenced.
-        observed.played.push({ path, rate });
-        void source(path).then(src => { if (disposed) return; audio.pause(); audio.src = src; audio.playbackRate = rate; audio.preservesPitch = true; void audio.play().catch(() => undefined); });
+        observed.played.push({ path, rate, at: performance.now() });
+        // Stopped now, not once the file arrives: the end of the previous sound must not release a waiting sentence.
+        audio.pause();
+        void source(path).then(src => {
+            if (disposed) return;
+            if (src) {
+                audio.pause(); audio.src = src; audio.playbackRate = rate; audio.preservesPitch = true;
+                observed.heard.push({ path, at: performance.now() });
+                void audio.play().catch(() => undefined);
+            }
+            settled?.();
+        });
     };
     audio?.addEventListener('ended', () => { if (pending) { const p = pending; pending = null; play(p); } });
     /** A card arrives: its word is said; a word that needs its sentence gets it said right after, every time. */
     const arrive = (): void => {
         const w = current();
         if (!w) return;
-        play(w.pronunciationAsset);
-        if (!sentenceOnArrival(w)) return;
+        if (!sentenceOnArrival(w)) { play(w.pronunciationAsset); return; }
         pending = w.contextAsset;
-        // Without sound (or if the word never reports its end) the sentence still follows.
-        later(3500, () => { if (pending === w.contextAsset && current()?.id === w.id) { const p = pending; pending = null; play(p); } }, true);
+        // Without sound (or if the word never reports its end) the sentence still follows, 3.5 s after the word's turn came:
+        // counted from its file's arrival, never from the request, so a slow word is never overtaken (third Codex review).
+        play(w.pronunciationAsset, 1, () => later(3500, () => { if (pending === w.contextAsset && current()?.id === w.id) { const p = pending; pending = null; play(p); } }, true));
     };
     const rng = makeRng(crypto.getRandomValues(new Uint32Array(1))[0]!);
     const wordOf = (id: string): Word => words.find(w => w.id === id)!;
@@ -316,7 +330,7 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         else if (k.length === 1 && (LETTERS.includes(k.toLowerCase()) || ACCENTS.includes(k.toLowerCase()) || /^[A-Z]$/.test(k))) { e.preventDefault(); type(k); }
     };
     document.addEventListener('keydown', keys);
-    observed = { played: [], words: {} };
+    observed = { played: [], heard: [], words: {} };
     void loadCatalogue().then(c => {
         if (disposed) return;
         if (session.grade) words = wordsOf(c, session.grade, SHOW_DRAFTS);

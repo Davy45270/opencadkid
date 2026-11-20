@@ -21186,29 +21186,29 @@
     "plus tôt"
    ],
    "homophoneNotes": {},
-   "contextSentence": "Je prendrai plutôt une pomme.",
+   "contextSentence": "Je préfère le chocolat plutôt que la vanille.",
    "explanation": "Accent circonflexe sur le o ; un t muet.",
    "pronunciationAsset": "dictee/audio/fr-plutot.ogg",
    "contextAsset": "dictee/audio/fr-plutot-phrase.ogg",
    "audio": {
     "mode": "context_required",
     "wordVersion": "def6ab95730965ff",
-    "contextVersion": "10a86cb1c7f91c25",
+    "contextVersion": "0dad720257e9208d",
     "wordSha256": "3f79d08b2092015e39705015964f7586ad32c1b007edbcf305bfafd1b75b811b",
-    "contextSha256": "3864cc471cc97e08630b4e3844389d77e787c23c40c02334463c0db7bd57d3c5",
+    "contextSha256": "e7d3c023cde3045333be68c83236f79104c65443bca18a7f5266cd94a9321408",
     "voice": "fr_FR-siwis-medium",
     "engine": "piper-tts 1.8.0",
     "locale": "fr-FR"
    },
    "difficulty": 3,
-   "status": "approved",
+   "status": "needs_review",
    "review": {
-    "orthography": "approved",
-    "pedagogy": "approved",
-    "context": "approved",
-    "audio": "approved"
+    "orthography": "pending",
+    "pedagogy": "pending",
+    "context": "pending",
+    "audio": "pending"
    },
-   "validatedBy": "David",
+   "validatedBy": null,
    "version": 3,
    "provenance": {
     "list": "éduscol, liste de fréquence lexicale (É. Brunet), Licence Ouverte 2.0",
@@ -21220,7 +21220,7 @@
      "version": 4,
      "reason": "addendum de revue du 2026-11-16"
     },
-    "validation": "validé en bloc par David le 2026-11-16, test en jeu réel ; écoute audio non faite mot à mot"
+    "correction": "relecture Codex, 20/11 : « Je prendrai plutôt une pomme » se lisait aussi avec « plus tôt » ; « plutôt que » ne laisse qu'une réponse"
    }
   },
   {

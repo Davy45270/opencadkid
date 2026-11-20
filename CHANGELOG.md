@@ -17,7 +17,8 @@
 - A review page for the adult, made for a phone and kept out of the game: one class at a time, each word with its sentence, its tip and both recordings, and Validate, Correct or Remove. It is served on the local network only while reviewing, saves each choice, and its decisions are imported into the catalogue by a script.
 - TicTac and Petit Astronome each have a card on the home page, after the games, that opens the sister app directly in the same tab, without the adult question; the parents' gear still asks it.
 - Spelling review of the 500 words (2026-11-19): 12 mistakes and 48 awkward sentences or tips corrected, 13 sentences recorded again; a corrected word waits for an adult again, « sol » is now heard in its sentence (« sole » sounds the same).
-- A kept recording is tied to its audio version: a regenerated sentence is never replayed in its older version.
+- A kept recording is tied to its audio version and to the exact bytes the catalogue names (sha256): a regenerated or half-deployed recording is never kept nor played in another version. A slow word is never overtaken by its sentence, in reduced motion too.
+- « plutôt » is said in « Je préfère le chocolat plutôt que la vanille. », where « plus tôt » cannot be read; it waits for an adult again. A targeted approval reads the audio cases themselves and refuses a word flagged since the last assembly.
 - Puzzle: a guide drawn in a piece keeps the size and place it has in the model; the home landscape fills its whole banner on phones.
 
 ## 1.31.0
