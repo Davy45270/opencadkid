@@ -1,4 +1,4 @@
-import { expect, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { newPuzzle, drop, hint, stars, complete, isUnlocked, levels, edgePoints, sceneIds, vectorSceneIds, paintedSceneIds, type Piece } from '../src/engines/puzzle';
 import { gameView } from '../src/games/puzzle/view';
 import { characterSvg } from '../src/characters/svg';
@@ -204,7 +204,7 @@ it('each scene contains the requested characters, including both picnic and vall
     const subjects = { castle: ['dragon'], bamboo: ['panda'], rainbow: ['licorne'], jungle: ['singe'], autumn: ['pandaroux'], picnic: ['panda', 'dragon'], zen: ['panda'], ardennes: ['pandaroux'], volcano: ['dragon'], islands: ['singe'], galaxy: ['licorne'], valley: ['pandaroux', 'singe'] } as const;
     for (const scene of sceneIds) {
         const embedded = sceneSvg(scene).match(/<svg style="width:240px;height:240px" [\s\S]*?<\/svg>/g) ?? [];
-        const expected = subjects[scene].map(subject => characterSvg(subject, 'joie', 'repos', 'reduce').replace('<svg ', '<svg style="width:240px;height:240px" '));
+        const expected = subjects[scene].map(subject => characterSvg(subject, 'joie', 'repos', 'reduce').replace('<svg ', '<svg style="width:240px;height:240px" width="240" height="240" '));
         expect(embedded.map(canonicalPaintIds)).toEqual(expected.map(canonicalPaintIds));
     }
 });
@@ -220,4 +220,17 @@ it('completion renders the celebration expression and pose in both motion prefer
             expect(idle).not.toContain('puzzle-finished'); expect(finished).toContain('puzzle-finished');
         } finally { vi.unstubAllGlobals(); }
     }
+});
+
+describe('a guide keeps its size wherever it is drawn (Codex review of 2026-11-20)', () => {
+    it('every nested guide carries its 240 px size both as attributes (Chromium) and as an inline style that beats the global svg{width:100%} rule (CSS-geometry browsers)', () => {
+        for (const scene of ['zen', 'ardennes', 'volcano', 'islands', 'galaxy', 'valley'] as const) {
+            const nested = [...sceneSvg(scene).matchAll(/<g transform="translate\([^)]*\) scale\([^)]*\)"><svg ([^>]*)>/g)].map(m => m[1]!);
+            expect(nested.length, scene).toBeGreaterThan(0);
+            for (const attrs of nested) {
+                expect(attrs, scene).toMatch(/\bwidth="240"/); expect(attrs, scene).toMatch(/\bheight="240"/);
+                expect(attrs, scene).toMatch(/style="[^"]*width:240px;height:240px/);
+            }
+        }
+    });
 });

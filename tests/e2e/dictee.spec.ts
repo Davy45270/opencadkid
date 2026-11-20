@@ -386,3 +386,34 @@ test('an audio file kept from an older catalogue is fetched again when its versi
     const kept = (paths: string[]) => page.evaluate(async ps => { const c = await caches.open('opencadkid-dictee-audio'); return Promise.all(ps.map(async p => !!await c.match(p))); }, paths);
     await expect.poll(() => kept(fed.map(w => `${w.pronunciationAsset}?v=${encodeURIComponent(w.audio.wordVersion!)}`))).toEqual(fed.map(() => true));
 });
+
+test('in reduced motion, the sentence of a word heard in context still waits for the word (Codex review of 2026-11-20)', async ({ page }) => {
+    // The audio never arrives here (requests held), so the word never ends: only the 3.5 s safety may bring the sentence,
+    // never the 30 ms that reduced motion gives to animations.
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.route('**/dictee/audio/*.ogg*', () => undefined);
+    const pool = shipped.words.filter(w => w.grade === 'CP' && w.audio.mode === 'context_required' && w.expectedForm !== 'un').map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    await feed(page, 'CP', 5);
+    const w = await word(page);
+    await expect.poll(async () => (await probe(page)).played.map(p => p.path)).toEqual([w.pronunciationAsset]);
+    await page.waitForTimeout(1500);
+    expect((await probe(page)).played.map(p => p.path)).toEqual([w.pronunciationAsset]);
+    await expect.poll(async () => (await probe(page)).played.map(p => p.path), { timeout: 8000 }).toEqual([w.pronunciationAsset, w.contextAsset]);
+});
+
+test('a recording whose bytes are not those of its catalogue version is never kept (Codex review of 2026-11-20)', async ({ page }) => {
+    // Catalogue and recordings from two states of a deployment: the old bytes answer under the new version's address.
+    const pool = shipped.words.filter(w => w.grade === 'CE1' && plain(w) && w.audio.wordVersion).slice(0, 6);
+    await reviewed(page, w => pool.some(p => p.id === w.id));
+    await page.route('**/dictee/audio/*.ogg*', route => route.fulfill({ contentType: 'audio/ogg', body: 'OggS old bytes' }));
+    await open(page);
+    await page.locator('[data-dictee-profile="licorne"]').click();
+    await page.locator('[data-dictee-grade="CE1"]').click();
+    await page.locator('[data-dictee-length="5"]').click();
+    await expect(page.locator('.dictee-card')).toHaveCount(1);
+    const fed = (await probe(page)).feed!.cards.map(c => byId.get(c.id)!);
+    await page.waitForTimeout(2000);
+    const kept = await page.evaluate(async () => (await (await caches.open('opencadkid-dictee-audio')).keys()).length);
+    expect(kept, fed.map(w => w.id).join(',')).toBe(0);
+});

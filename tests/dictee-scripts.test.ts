@@ -80,6 +80,22 @@ describe('the offline scripts of the dictation', { timeout: 30_000 }, () => {
         expect(run(dir, 'assembler_catalogue.py').status).toBe(0);
         expect(words(dir).get('fr-lit')!.audio.mode).toBe('audio_manual_review');
     });
+    it('a targeted approval never lifts an audio case written after the last assembly (Codex review of 2026-11-20)', () => {
+        // The catalogue still says word_only; a pending case was added since. Approving the word's text must leave it blocked.
+        const dir = copy();
+        const w = words(dir).get('fr-huit')!;
+        expect(w.audio.mode).toBe('word_only');
+        const cases = json(dir, 'audio-non-regression.json') as { cases: Record<string, unknown>[] };
+        const versions = json(dir, 'audio-empreintes.json') as Record<string, string>;
+        cases.cases.push({ id: 'fr-huit', lemma: 'huit', grade: w.id ? 'CP' : 'CP', kind: 'mot', asset: 'dictee/audio/fr-huit.ogg', text: 'Écris le mot : huit.', observed: 'Écris le mot nuit.',
+            observedBy: 'test', audioVersion: versions['dictee/audio/fr-huit.ogg'], listening: { status: 'pending', by: null, date: null, note: null }, batch: 'test' });
+        writeFileSync(join(dir, 'scripts/dictee/audio-non-regression.json'), JSON.stringify(cases));
+        expect(run(dir, 'importer_validation.py', '--approuver', 'fr-huit', '--par', 'Test', '--note', 'essai', '--oui').status).toBe(0);
+        expect(run(dir, 'assembler_catalogue.py').status).toBe(0);
+        const after = words(dir).get('fr-huit')!;
+        expect(after.audio.mode).toBe('audio_manual_review');
+        expect(after.status).not.toBe('approved');
+    });
     it('--approuver-tout --par --note keeps the note in provenance.validation and approves without the audio cases blocking', () => {
         const dir = copy();
         expect(run(dir, 'importer_validation.py', '--approuver-tout', '--par', 'Test', '--note', 'bloc').status).toBe(0);
