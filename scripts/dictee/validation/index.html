@@ -86,9 +86,10 @@ const changes = () => Object.fromEntries(Object.entries(decisions).map(([id, d])
 const lot = () => ({ format: 'dictee-relecture', version: 1, reviewer: 'David', exportedAt: new Date().toISOString(), decisions: Object.fromEntries(Object.entries(decisions).filter(([, d]) => d.at)) });
 function etat(texte, ko = false) { const e = document.getElementById('etat'); e.textContent = texte; e.classList.toggle('ko', ko); }
 // Un seul envoi à la fois par téléphone (treizième revue Codex) : un envoi demandé pendant un autre attend sa fin.
-let enVol = false;
+let enVol = false, redemande = false;
 async function envoyer() {
-  if (enVol) return;
+  // Demandé pendant un autre envoi : il repart à la fin de celui-ci, réussi ou non (quinzième revue Codex).
+  if (enVol) { redemande = true; return; }
   const part = changes();
   if (!Object.keys(part).length) return;
   enVol = true;
@@ -104,6 +105,7 @@ async function envoyer() {
     etat('Pas de serveur joignable : gardé sur ce téléphone seulement. Exporter un fichier pour ne rien perdre.', true);
   } finally {
     enVol = false;
+    if (redemande) { redemande = false; ecrire(); }
   }
 }
 const ecrire = () => {
@@ -241,6 +243,8 @@ async function demarrer() {
     if (r.ok) for (const [id, d] of Object.entries((await r.json()).decisions || {})) {
       if (!decisions[id] || JSON.stringify(decisions[id]) === envoyes[id]) { decisions[id] = d; envoyes[id] = JSON.stringify(d); }
     }
+    // Reçu du serveur = déjà envoyé : noté tout de suite, jamais réexpédié après un rechargement (quinzième revue).
+    memoriser();
   } catch { /* page ouverte sans serveur */ }
   try { niveau = localStorage.getItem(CLE + '.niveau') || 'CP'; } catch { niveau = 'CP'; }
   const cat = await (await fetch('dictee/catalogue.json', { cache: 'no-store' })).json();

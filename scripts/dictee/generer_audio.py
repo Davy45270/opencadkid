@@ -23,6 +23,7 @@ c'est le texte, la voix et les réglages qui sont figés et vérifiés.
 from __future__ import annotations
 
 import argparse
+import fcntl
 import hashlib
 import json
 import subprocess
@@ -37,6 +38,21 @@ EMPREINTES = RACINE / 'scripts/dictee/audio-empreintes.json'
 # Octets écrits par CE script (sha256 de chaque fichier) : l'assembleur refuse tout autre fichier sous le même nom
 # (quatrième revue Codex, 2026-11-20), l'approbation d'un enregistrement ne passe donc jamais à d'autres octets.
 OCTETS = RACINE / 'scripts/dictee/audio-octets.json'
+# Quinzième revue Codex : la génération et l'assemblage ne tournent jamais ensemble ; chacun prend ce verrou pour toute
+# sa durée, et s'arrête si l'autre le tient.
+VERROU = RACINE / 'scripts/dictee/.audio.verrou'
+
+
+def prendre_verrou(qui: str):  # noqa: ANN201 — le fichier ouvert tient le verrou jusqu'à la fin du processus
+    f = VERROU.open('w')
+    try:
+        fcntl.flock(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except BlockingIOError:
+        f.close()
+        raise SystemExit(f"{qui} : l'autre script audio tourne (verrou {VERROU.name}), relancer après lui") from None
+    return f
+
+
 MODELE_SHA256 = 'b1d946fd68d0347155fa59bce0a018924abbef3c1561181db45ca463d83963ef'
 # Le mot est dit dans une courte phrase porteuse : la voix prononce mal un mot isolé (mesure du 2026-11-16 avec
 # verifier_audio.py : 2 à 5 mots sur 20 reconnus seuls, 12 sur 20 dans « Écris le mot … »). Les deux-points posent
@@ -82,6 +98,7 @@ def main() -> None:
     p.add_argument('--modele', type=Path, required=True)
     p.add_argument('--catalogue', type=Path, default=CATALOGUE)
     a = p.parse_args()
+    verrou = prendre_verrou('generer_audio.py')  # noqa: F841 — tenu jusqu'à la fin
     vu = hashlib.sha256(a.modele.read_bytes()).hexdigest()
     if vu != MODELE_SHA256:
         raise SystemExit(f'modèle inattendu : {vu}')

@@ -9,3 +9,4 @@ blob-report/
 .DS_Store
 .pwa-fixtures/
 __pycache__/
+scripts/dictee/.audio.verrou

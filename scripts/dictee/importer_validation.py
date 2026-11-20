@@ -59,6 +59,7 @@ def approuver_tout(qui: str, note: str) -> None:
     relus = json.loads(RELECTURES.read_text(encoding='utf-8')) if RELECTURES.exists() else {}
     jour = date.today().isoformat()
     mots = json.loads(CATALOGUE.read_text(encoding='utf-8'))['words']
+    catalogue_a_jour(mots)  # quinzième revue : l'approbation globale aussi
     for w in mots:
         relus[w['lemma']] = {'by': qui, 'at': jour, 'expectedForm': w['expectedForm'], 'contextSentence': w['contextSentence'], 'explanation': w['explanation'],
                              'review': {k: 'approved' for k in ('orthography', 'pedagogy', 'context', 'audio')},

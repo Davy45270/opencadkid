@@ -238,7 +238,10 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         void keep(session.feed.cards.flatMap(c => remember(wordOf(c.id))));
         session.screen = 'fil';
         fresh(); speak([t.start]);
-        later(1600, arrive);
+        // The opening announcement belongs to this feed's first card: answered and gone before 1.6 s, it says nothing
+        // (fifteenth Codex review).
+        const opening = session.feed;
+        later(1600, () => { if (session.feed?.index === 0 && session.feed.cards[0] === opening.cards[0]) arrive(); });
     };
     /** A new card: nothing typed, the letters of the first grade shuffled. */
     const fresh = (): void => {

@@ -24,7 +24,7 @@ import json
 import unicodedata
 from pathlib import Path
 
-from generer_audio import a_regenerer  # même recette que le générateur (sixième revue Codex)
+from generer_audio import a_regenerer, prendre_verrou  # même recette que le générateur (sixième revue Codex)
 
 ICI = Path(__file__).resolve().parent
 RACINE = ICI.parents[1]
@@ -74,8 +74,8 @@ def lecture(asset: str) -> str | None:
 
 
 def octets(asset: str) -> str | None:
-    """Quatorzième revue Codex : chaque fichier est lu une seule fois par assemblage ; la vérification et le catalogue
-    portent les mêmes octets, et un fichier remplacé pendant l'assemblage l'arrête avant toute écriture."""
+    """Quatorzième et quinzième revues Codex : chaque fichier est lu une seule fois par assemblage, la vérification et
+    le catalogue portent les mêmes octets ; generer_audio.py ne peut pas tourner pendant ce temps (verrou partagé)."""
     if asset not in LUS:
         LUS[asset] = lecture(asset)
     return LUS[asset]
@@ -89,6 +89,7 @@ def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument('--csv', type=Path)
     a = p.parse_args()
+    verrou = prendre_verrou('assembler_catalogue.py')  # noqa: F841 — tenu jusqu'à la fin : aucune génération pendant
     mots = lire(SELECTION, [])
     phrases = {r['lemma']: r for r in lire(PHRASES, [])}
     relus = lire(RELECTURES, {})
@@ -104,7 +105,9 @@ def main() -> None:
     anciens = lire(ANCIENS, {})
     def lie(a: str) -> bool:
         h, v = octets(a), empreintes.get(a, '')
-        if h is None and a not in ecrits:
+        # Jamais produit : ni octets écrits, ni recette. Un fichier déjà produit (recette connue) qui disparaît arrête tout
+        # (quinzième revue Codex).
+        if h is None and a not in ecrits and a not in empreintes:
             return True
         if h is None or ecrits.get(a) != h:
             return False
@@ -176,9 +179,6 @@ def main() -> None:
             elif 'rejected' in w['review'].values():
                 w['status'] = 'rejected'
         words.append(w)
-    changes = sorted(a for a, h in LUS.items() if lecture(a) != h)
-    if changes:
-        raise SystemExit(f"fichiers audio remplacés pendant l'assemblage (generer_audio.py tournait ?), relancer : {', '.join(changes)}")
     CATALOGUE.parent.mkdir(parents=True, exist_ok=True)
     CATALOGUE.write_text(json.dumps({'schemaVersion': '1.1', 'version': VERSION, 'locale': 'fr-FR', 'words': words}, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
     compte = {s: sum(w['status'] == s for w in words) for s in ('needs_review', 'approved', 'rejected')}
