@@ -66,7 +66,9 @@ async function keep(paths: readonly string[]): Promise<void> {
             // A kept copy is trusted for its bytes only: a stale one under the current key is replaced (fourth Codex review).
             const kept = await c.match(p);
             if (kept && await shipped(path, kept)) return;
-            const r = await fetch(p);
+            // A wrong answer may sit in the HTTP cache under the current URL: ask the server again once (nineteenth review).
+            let r = await fetch(p);
+            if (!r.ok || !await shipped(path, r.clone())) r = await fetch(p, { cache: 'reload' });
             if (r.ok && await shipped(path, r.clone())) await c.put(p, r);
         }));
     } catch { /* Audio stays available from the network. */ }
@@ -91,6 +93,7 @@ async function source(path: string): Promise<string | null> {
     try {
         if (!r || !await shipped(path, r.clone())) {
             r = await fetch(key);
+            if (!r.ok || !await shipped(path, r.clone())) r = await fetch(key, { cache: 'reload' });
             if (!r.ok || !await shipped(path, r.clone())) return null;
             // The right bytes replace a missing or stale kept copy, so they still play offline after a reload.
             try { if (typeof caches !== 'undefined') await (await caches.open(AUDIO_CACHE)).put(key, r.clone()); } catch { /* Played anyway. */ }
@@ -408,7 +411,12 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
     void loadCatalogue().then(c => {
         if (disposed) return;
         if (session.grade) words = wordsOf(c, session.grade, SHOW_DRAFTS);
-        if ((session.screen === 'fil' && session.feed && !session.feed.finished && words.length) || (session.screen === 'bilan' && session.feed)) draw_();
+        if ((session.screen === 'fil' && session.feed && !session.feed.finished && words.length) || (session.screen === 'bilan' && session.feed)) {
+            draw_();
+            // Back from a hidden page (or a reload): the card arrives again, its word then its required sentence; the
+            // players and timers of the hidden page are gone with it (nineteenth Codex review).
+            if (session.screen === 'fil' && !session.evaluation) arrive();
+        }
         else if (session.screen === 'longueur' && session.grade) lengthScreen(false);
         else if (session.screen === 'niveaux' && session.profile) gradesScreen(false);
     });

@@ -87,6 +87,21 @@ const lot = () => ({ format: 'dictee-relecture', version: 1, reviewer: 'David', 
 function etat(texte, ko = false) { const e = document.getElementById('etat'); e.textContent = texte; e.classList.toggle('ko', ko); }
 // Un seul envoi à la fois par téléphone (treizième revue Codex) : un envoi demandé pendant un autre attend sa fin.
 let enVol = false, redemande = false;
+// Dix-neuvième revue : après un envoi dont l'issue est inconnue (réponse perdue ou illisible), le téléphone relit ce que
+// le serveur a reçu avant tout nouvel envoi, au lieu de renvoyer à l'aveugle.
+let incertain = false;
+const non_enregistres = ids => etat(`Non enregistré : ${ids.join(', ')} a changé depuis le chargement. Recharger la page et relire ce mot.`, true);
+// Ce que le serveur a reçu (rev → garde | perime) : les choix reçus sont notés envoyés ; rend ceux qu'il a écartés.
+function rapprocher(recus) {
+  const sorts = Array.isArray(recus) ? Object.fromEntries(recus.map(r => [r, 'garde'])) : (recus || {});
+  const ecartes = [];
+  for (const [id, d] of Object.entries(decisions)) {
+    if (!d.rev || !sorts[d.rev]) continue;
+    envoyes[id] = JSON.stringify(d);
+    if (sorts[d.rev] === 'perime') ecartes.push(id);
+  }
+  return ecartes;
+}
 // Seizième revue Codex : chaque état d'une décision porte un identifiant ; le serveur liste ceux qu'il a reçus.
 const rev = () => (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`);
 async function envoyer() {
@@ -96,17 +111,33 @@ async function envoyer() {
   if (!Object.keys(part).length) return;
   enVol = true;
   try {
+    if (incertain) {
+      const g = await fetch('decisions', { cache: 'no-store' });
+      if (!g.ok) throw new Error(String(g.status));
+      const ecartes = rapprocher((await g.json()).recus);
+      incertain = false;
+      memoriser();
+      if (ecartes.length) non_enregistres(ecartes);
+      const reste = changes();
+      for (const id of Object.keys(part)) if (!(id in reste)) delete part[id];
+      for (const [id, t] of Object.entries(reste)) part[id] = t;
+      if (!Object.keys(part).length) return;
+    }
     const corps = Object.fromEntries(Object.entries(part).map(([id, t]) => [id, JSON.parse(t)]));
     const r = await fetch('decisions', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...lot(), decisions: corps }) });
     if (!r.ok) throw new Error(String(r.status));
+    // Une réponse illisible ne dit pas ce que le serveur a gardé : issue inconnue, rien n'est annoncé enregistré.
+    const reponse = await r.json();
+    if (!Array.isArray(reponse.perimes)) throw new Error('réponse incomplète');
     for (const [id, t] of Object.entries(part)) envoyes[id] = t;
     // Écartées par le serveur (fiche changée depuis) : dit à l'adulte, jamais annoncé comme enregistré.
-    const perimes = (await r.json().catch(() => ({}))).perimes || [];
+    const perimes = reponse.perimes;
     if (Object.keys(changes()).length) ecrire();  // tapé pendant l'envoi : un nouvel envoi suit
     memoriser();
-    if (perimes.length) etat(`Non enregistré : ${perimes.join(', ')} a changé depuis le chargement. Recharger la page et relire ce mot.`, true);
+    if (perimes.length) non_enregistres(perimes);
     else etat(`Enregistré sur le serveur à ${new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}.`);
   } catch {
+    incertain = true;
     etat('Pas de serveur joignable : gardé sur ce téléphone seulement. Exporter un fichier pour ne rien perdre.', true);
   } finally {
     enVol = false;
@@ -239,6 +270,7 @@ function prochain() {
   const m = mots.find(x => x.grade === niveau && !decisions[x.id]?.action);
   if (m) document.getElementById(m.id).scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
 }
+let ecartesAuChargement = [];
 async function demarrer() {
   decisions = lire();
   try { envoyes = JSON.parse(localStorage.getItem(ENVOYES) || '{}'); } catch { envoyes = {}; }
@@ -249,8 +281,8 @@ async function demarrer() {
     if (r.ok) {
       const corps = await r.json();
       // Reçu par le serveur, même sans accusé (connexion perdue) : déjà envoyé, jamais renvoyé (seizième revue).
-      const recus = new Set(Array.isArray(corps.recus) ? corps.recus : Object.keys(corps.recus || {}));
-      for (const [id, d] of Object.entries(decisions)) if (d.rev && recus.has(d.rev)) envoyes[id] = JSON.stringify(d);
+      // Un choix que le serveur a écarté est dit à l'adulte, même découvert à la réouverture (dix-neuvième revue).
+      ecartesAuChargement = rapprocher(corps.recus);
       for (const [id, d] of Object.entries(corps.decisions || {})) {
         if (!decisions[id] || JSON.stringify(decisions[id]) === envoyes[id]) { decisions[id] = d; envoyes[id] = JSON.stringify(d); }
       }
@@ -279,6 +311,7 @@ async function demarrer() {
   document.getElementById('exporter').addEventListener('click', exporter);
   document.getElementById('suivant').addEventListener('click', prochain);
   afficher();
+  if (ecartesAuChargement.length) non_enregistres(ecartesAuChargement);
 }
 demarrer().catch(e => { document.getElementById('compte').textContent = 'Impossible de charger le catalogue : ' + e.message; });
 </script>
