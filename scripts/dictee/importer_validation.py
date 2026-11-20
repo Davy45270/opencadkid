@@ -218,8 +218,11 @@ def main() -> None:
             revue = {'orthography': 'approved', 'pedagogy': 'approved', 'context': 'approved', 'audio': 'approved' if audio_inchange else 'pending'}
             relus[w['lemma']] = {'by': qui, 'at': d.get('at', ''), 'expectedForm': forme, 'contextSentence': phrase, 'explanation': expl,
                                  'review': revue, 'wordVersion': w['audio']['wordVersion'], 'contextVersion': w['audio']['contextVersion']}
-            if action == 'valider':
+            # Quatorzième revue : l'écoute n'est levée que si la page a lu le mot et la phrase jusqu'au bout.
+            if action == 'valider' and d.get('heard') is True:
                 ecoute(ident, 'ok', d.get('at', ''))
+            elif action == 'valider' and any(c['id'] == ident for c in signalements['cases']):
+                print(f'écoute non faite : {ident} validé, ses enregistrements restent à écouter')
         else:
             compte['inconnu'] += 1
             continue

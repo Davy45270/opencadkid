@@ -65,9 +65,20 @@ def homophones_relus(lemme: str, homos: list[str]) -> list[str]:
     return [h for h in homos if h not in retraits] + [h for h in ajouts if h not in homos]
 
 
-def octets(asset: str) -> str | None:
+LUS: dict[str, str | None] = {}
+
+
+def lecture(asset: str) -> str | None:
     f = RACINE / 'public' / asset
     return hashlib.sha256(f.read_bytes()).hexdigest() if f.is_file() else None
+
+
+def octets(asset: str) -> str | None:
+    """Quatorzième revue Codex : chaque fichier est lu une seule fois par assemblage ; la vérification et le catalogue
+    portent les mêmes octets, et un fichier remplacé pendant l'assemblage l'arrête avant toute écriture."""
+    if asset not in LUS:
+        LUS[asset] = lecture(asset)
+    return LUS[asset]
 
 
 def lire(chemin: Path, defaut):
@@ -165,6 +176,9 @@ def main() -> None:
             elif 'rejected' in w['review'].values():
                 w['status'] = 'rejected'
         words.append(w)
+    changes = sorted(a for a, h in LUS.items() if lecture(a) != h)
+    if changes:
+        raise SystemExit(f"fichiers audio remplacés pendant l'assemblage (generer_audio.py tournait ?), relancer : {', '.join(changes)}")
     CATALOGUE.parent.mkdir(parents=True, exist_ok=True)
     CATALOGUE.write_text(json.dumps({'schemaVersion': '1.1', 'version': VERSION, 'locale': 'fr-FR', 'words': words}, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
     compte = {s: sum(w['status'] == s for w in words) for s in ('needs_review', 'approved', 'rejected')}

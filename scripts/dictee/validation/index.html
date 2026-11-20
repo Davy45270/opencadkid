@@ -119,10 +119,15 @@ const el = (tag, attrs = {}, ...enfants) => {
 let lecteur = null;
 // The file is asked with the digest of the bytes the catalogue (and so the decision) names: the server refuses other
 // bytes, so the adult never hears a recording other than the one the decision records (eighth Codex review).
+// Quatorzième revue Codex : les enregistrements écoutés jusqu'au bout (sous l'empreinte de la fiche) ; seul un mot
+// entendu en entier, mot et phrase, lève une écoute obligatoire.
+const entendus = new Set();
+const entendu = m => [[m.pronunciationAsset, m.audio?.wordSha256], [m.contextAsset, m.audio?.contextSha256]].every(([c, s]) => !c || entendus.has(`${c}|${s}`));
 function jouer(chemin, sha) {
   if (!chemin) return;
   if (lecteur) lecteur.pause();
   lecteur = new Audio(`${chemin}?sha=${encodeURIComponent(sha || '')}`);
+  lecteur.addEventListener('ended', () => entendus.add(`${chemin}|${sha}`));
   lecteur.addEventListener('error', () => etat('Cet enregistrement a changé depuis le chargement de la page : la recharger avant de décider.', true));
   lecteur.play().catch(() => {});
 }
@@ -146,8 +151,12 @@ function decider(m, action, carte) {
   // Undone: kept as a dated empty choice, so the server's merge (latest wins) carries the undo too (ninth Codex review).
   if (avant?.action === action && action !== 'corriger') { decisions[m.id] = { action: null, lemma: m.lemma, at: new Date().toISOString() }; }
   else {
+    if (action === 'valider' && signales[m.id] && !entendu(m)) {
+      etat('Écouter le mot et la phrase jusqu\'au bout avant de valider : leur écoute est demandée.', true);
+      return;
+    }
     // What the adult saw and heard: the import applies the decision only to this very text and these very recordings.
-    const d = { action, lemma: m.lemma, at: new Date().toISOString(), seen: vu(m) };
+    const d = { action, lemma: m.lemma, at: new Date().toISOString(), seen: vu(m), heard: entendu(m) };
     if (action === 'corriger') Object.assign(d, { expectedForm: avant?.expectedForm ?? m.expectedForm, contextSentence: avant?.contextSentence ?? (m.contextSentence || ''), explanation: avant?.explanation ?? (m.explanation || '') });
     decisions[m.id] = d;
   }
@@ -242,6 +251,8 @@ async function demarrer() {
     const d = decisions[m.id];
     if (d?.action && JSON.stringify(d.seen) !== JSON.stringify(vu(m))) delete decisions[m.id];
   }
+  // Un choix gardé sur ce téléphone et jamais envoyé (rechargement avant l'envoi, serveur absent) part maintenant.
+  if (Object.keys(changes()).length) ecrire();
   try { for (const c of (await (await fetch('audio-non-regression.json', { cache: 'no-store' })).json()).cases) (signales[c.id] ||= []).push(c); } catch { /* facultatif */ }
   const barre = document.getElementById('niveaux');
   for (const g of NIVEAUX) barre.append(el('button', { type: 'button', 'data-niveau': g, 'aria-pressed': 'false', onclick: () => { niveau = g; afficher(); scrollTo(0, 0); } }, g, el('small', {}, '')));
