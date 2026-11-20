@@ -840,3 +840,57 @@ test('a hold begun on a card never replays the next one (twelfth Codex review of
     expect(p.feed!.index).toBe(1);
     expect(p.played.filter(x => x.rate < 1)).toEqual([]);
 });
+
+test('one sending at a time from a phone: a correction typed meanwhile leaves after it (thirteenth Codex review of 2026-11-20)', async ({ page }) => {
+    const posted: { decisions: Record<string, { contextSentence?: string }> }[] = [];
+    let flying = 0, most = 0;
+    await page.route('http://relecture.test/**', async route => {
+        const path = new URL(route.request().url()).pathname;
+        if (path === '/') await route.fulfill({ contentType: 'text/html', body: readFileSync('scripts/dictee/validation/index.html', 'utf8') });
+        else if (path === '/dictee/catalogue.json') await route.fulfill({ contentType: 'application/json', body: readFileSync('public/dictee/catalogue.json', 'utf8') });
+        else if (path === '/audio-non-regression.json') await route.fulfill({ contentType: 'application/json', body: readFileSync('scripts/dictee/audio-non-regression.json', 'utf8') });
+        else if (path === '/decisions' && route.request().method() === 'POST') {
+            flying++; most = Math.max(most, flying);
+            posted.push(route.request().postDataJSON() as (typeof posted)[number]);
+            await new Promise(r => setTimeout(r, 3000));
+            flying--;
+            await route.fulfill({ status: 200, body: '{}' });
+        }
+        else if (path === '/decisions') await route.fulfill({ contentType: 'application/json', body: '{"decisions":{}}' });
+        else await route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg"/>' });
+    });
+    await page.goto('http://relecture.test/');
+    const w = shipped.words.find(x => x.grade === 'CP' && x.contextSentence)!;
+    const card = page.locator(`article.mot#${w.id}`);
+    await card.locator('[data-action="corriger"]').click();
+    await expect.poll(() => posted.length, { timeout: 5000 }).toBe(1);
+    await page.waitForTimeout(300);
+    await card.locator('[name=phrase]').fill('Une phrase tapée pendant l\'envoi.');
+    await expect.poll(() => posted.map(p => p.decisions[w.id]?.contextSentence), { timeout: 12_000 }).toContain('Une phrase tapée pendant l\'envoi.');
+    expect(most).toBe(1);
+});
+
+test('the replay of a missed word never plays on its second card (thirteenth Codex review of 2026-11-20)', async ({ page }) => {
+    await page.addInitScript(() => { HTMLMediaElement.prototype.play = function play() { return Promise.resolve(); }; });
+    const pool = shipped.words.filter(w => w.grade === 'CE1' && w.audio.mode === 'word_only' && /^[a-z]+$/.test(w.expectedForm)).map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    await feed(page, 'CE1', 5);
+    for (let k = 0; k < 3; k++) {
+        const w = await word(page);
+        await page.keyboard.type(w.expectedForm); await page.keyboard.press('Enter'); await page.keyboard.press('ArrowDown');
+        await expect.poll(async () => (await probe(page)).feed!.index).toBe(k + 1);
+    }
+    // The fourth card is missed and left at once: its word comes back as the fifth card, answered before 700 ms.
+    const w = await word(page);
+    await page.keyboard.type(`${w.expectedForm}x`);
+    await page.evaluate(() => {
+        const key = (k: string): void => { document.dispatchEvent(new KeyboardEvent('keydown', { key: k, bubbles: true })); };
+        key('Enter'); key('ArrowDown');
+    });
+    await expect.poll(async () => (await probe(page)).feed!.index, { timeout: 2000, intervals: [20] }).toBe(4);
+    expect((await word(page)).id).toBe(w.id);
+    await page.keyboard.type(w.expectedForm); await page.keyboard.press('Enter');
+    const base = (await probe(page)).played.filter(p => p.path === w.pronunciationAsset).length;
+    await page.waitForTimeout(1200);
+    expect((await probe(page)).played.filter(p => p.path === w.pronunciationAsset)).toHaveLength(base);
+});

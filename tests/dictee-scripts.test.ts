@@ -243,6 +243,21 @@ print(g.version('k1', '0123456789abcdef'))`;
             expect(w.expectedForm).toContain('pp');
         }
     });
+    it('a form already corrected, or a word already removed, without reassembling, stops an older batch (thirteenth Codex review)', () => {
+        for (const change of ['forme', 'retire'] as const) {
+            const dir = copy();
+            if (change === 'forme') {
+                const f = join(dir, 'scripts/dictee/relectures.json');
+                const r = JSON.parse(readFileSync(f, 'utf8')) as Record<string, { expectedForm: string }>;
+                r.huit!.expectedForm = 'huitt';
+                writeFileSync(f, JSON.stringify(r));
+            } else writeFileSync(join(dir, 'scripts/dictee/mots-retires.json'), JSON.stringify(['huit']));
+            writeFileSync(join(dir, 'lot.json'), JSON.stringify({ format: 'dictee-relecture', version: 1, reviewer: 'Test', decisions: { 'fr-huit': { action: 'valider', lemma: 'huit', at: '2026-11-20T10:00:00Z', seen: {} } } }));
+            const r = run(dir, 'importer_validation.py', 'lot.json');
+            expect(r.status, change).not.toBe(0);
+            expect(r.stderr).toContain('catalogue en retard');
+        }
+    });
     it('the review server keeps every choice it confirmed: two phones, two words, both kept (ninth Codex review)', async () => {
         const dir = copy();
         const out = join(dir, 'sortie');
