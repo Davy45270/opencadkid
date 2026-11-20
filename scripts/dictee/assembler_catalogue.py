@@ -48,6 +48,7 @@ HOMOPHONES_RELUS: dict[str, tuple[list[str], list[str]]] = {
     'air': (['aire'], []), 'cour': (['cours'], []), 'mur': (['mûr', 'mûre'], []), 'verre': (['ver'], []), 'vert': (['ver'], []),
     'fil': (['file'], []), 'pain': (['pin'], []), 'père': (['pair'], []), 'corps': (['cor'], []), 'marcher': (['marché'], []),
     'trop': (['trot'], []), 'compte': (['conte'], []), 'compter': (['conter'], []), 'plutôt': (['plus tôt'], []), 'signe': (['cygne'], []),
+    'sol': (['sole'], []),  # revue Codex du 2026-11-20 : « sole » s'entend pareil
     'comme': ([], ['com']),
 }
 

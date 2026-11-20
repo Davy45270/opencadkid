@@ -42,23 +42,33 @@ export function loadCatalogue(): Promise<Catalogue> {
 const AUDIO_CACHE = 'opencadkid-dictee-audio';
 /** The audio of a feed is fetched once when the feed starts and kept in the browser cache, so the words still play
  * offline afterwards. Same origin only. */
+/** A regenerated recording keeps its file name: the kept copy is tied to the audio version the catalogue names
+ * (`?v=`), so a device never replays an older recording than the one the adult approved (Codex review, 2026-11-20). */
+const versions = new Map<string, string>();
+const versioned = (path: string): string => { const v = versions.get(path); return v ? `${path}?v=${encodeURIComponent(v)}` : path; };
+function remember(w: Word): string[] {
+    if (w.audio.wordVersion) versions.set(w.pronunciationAsset, w.audio.wordVersion);
+    if (w.contextAsset && w.audio.contextVersion) versions.set(w.contextAsset, w.audio.contextVersion);
+    return [w.pronunciationAsset, ...(w.contextAsset ? [w.contextAsset] : [])];
+}
 async function keep(paths: readonly string[]): Promise<void> {
     try {
         if (typeof caches === 'undefined') return;
         const c = await caches.open(AUDIO_CACHE);
-        await Promise.all(paths.map(async p => { if (!await c.match(p)) { const r = await fetch(p); if (r.ok) await c.put(p, r); } }));
+        await Promise.all(paths.map(versioned).map(async p => { if (!await c.match(p)) { const r = await fetch(p); if (r.ok) await c.put(p, r); } }));
     } catch { /* Audio stays available from the network. */ }
 }
 const blobs = new Map<string, string>();
 async function source(path: string): Promise<string> {
-    const known = blobs.get(path); if (known) return known;
+    const key = versioned(path);
+    const known = blobs.get(key); if (known) return known;
     try {
         if (typeof caches !== 'undefined') {
-            const r = await (await caches.open(AUDIO_CACHE)).match(path);
-            if (r) { const url = URL.createObjectURL(await r.blob()); blobs.set(path, url); return url; }
+            const r = await (await caches.open(AUDIO_CACHE)).match(key);
+            if (r) { const url = URL.createObjectURL(await r.blob()); blobs.set(key, url); return url; }
         }
     } catch { /* Fall back to the file itself. */ }
-    return path;
+    return key;
 }
 
 let observed: { played: { path: string; rate: number }[]; words: Record<string, string> } = { played: [], words: {} };
@@ -136,7 +146,7 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         const p = progressOf(session.records, session.profile!, session.grade!);
         session.feed = startFeed(draw(words.map(w => w.id), p, n, rng));
         observed.words = {};
-        void keep(session.feed.cards.flatMap(c => { const w = wordOf(c.id); return [w.pronunciationAsset, ...(w.contextAsset ? [w.contextAsset] : [])]; }));
+        void keep(session.feed.cards.flatMap(c => remember(wordOf(c.id))));
         session.screen = 'fil';
         fresh(); speak([t.start]);
         later(1600, arrive);

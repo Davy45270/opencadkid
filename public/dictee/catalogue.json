@@ -3450,15 +3450,19 @@
    "lemma": "sol",
    "expectedForm": "sol",
    "grade": "CP",
-   "tags": [],
-   "homophones": [],
+   "tags": [
+    "homophone"
+   ],
+   "homophones": [
+    "sole"
+   ],
    "homophoneNotes": {},
    "contextSentence": "Mon jouet est tombé sur le sol.",
    "explanation": null,
    "pronunciationAsset": "dictee/audio/fr-sol.ogg",
    "contextAsset": "dictee/audio/fr-sol-phrase.ogg",
    "audio": {
-    "mode": "word_only",
+    "mode": "context_required",
     "wordVersion": "76ae109a1f855be9",
     "contextVersion": "acd27a259f878a86",
     "voice": "fr_FR-siwis-medium",

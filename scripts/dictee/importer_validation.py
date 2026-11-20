@@ -74,6 +74,12 @@ def approuver(ids: list[str], qui: str, note: str, ecrire: bool) -> None:
     inconnus = sorted(set(ids) - {w['id'] for w in mots} - {'en-attente'})
     if inconnus:
         raise SystemExit(f'identifiants inconnus : {", ".join(inconnus)}')
+    # Revue Codex du 2026-11-20 : un enregistrement signalé attend une oreille d'adulte (page de relecture, « Audio faux »
+    # ou écoute validée) ; une approbation de texte ne le lève pas. « en-attente » les laisse de côté, un id désigné refuse.
+    a_ecouter = [w['id'] for w in choisis if w['audio']['mode'] == 'audio_manual_review']
+    if a_ecouter and ids != ['en-attente']:
+        raise SystemExit(f"enregistrement en attente d'écoute, à entendre sur la page de relecture : {', '.join(a_ecouter)}")
+    choisis = [w for w in choisis if w['audio']['mode'] != 'audio_manual_review']
     if 'écoute audio non faite' not in note:
         note += ' ; écoute audio non faite mot à mot'
     for w in choisis:
