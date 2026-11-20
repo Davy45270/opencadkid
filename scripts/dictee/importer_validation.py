@@ -80,8 +80,13 @@ def catalogue_a_jour(mots: list[dict]) -> None:
 
     # Dixième revue : une fiche retirée de phrases.json est aussi en retard, et des octets régénérés sans réassemblage
     # (fichier présent qui n'est plus celui que le catalogue nomme) aussi.
+    # Treizième revue : une forme déjà corrigée dans relectures.json, ou un mot déjà retiré, sans réassemblage aussi.
+    relus = json.loads(RELECTURES.read_text(encoding='utf-8')) if RELECTURES.exists() else {}
+    retires = set(json.loads(RETIRES.read_text(encoding='utf-8'))) if RETIRES.exists() else set()
     en_retard = sorted(w['id'] for w in mots
                        if w['id'] not in phrases
+                       or w['lemma'] in retires
+                       or (w['lemma'] in relus and relus[w['lemma']].get('expectedForm') != w['expectedForm'])
                        or phrases[w['id']].get('contextSentence') != w['contextSentence']
                        or (phrases[w['id']].get('explanation') or None) != (w['explanation'] or None)
                        or octets(w.get('pronunciationAsset')) != (w.get('audio') or {}).get('wordSha256')

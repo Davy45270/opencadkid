@@ -273,7 +273,8 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         draw_();
         if (e.exact) { chime(sound()); speak([t.right[session.praise]!]); }
         // Only on its own card: the child may have moved on before the replay is due (fifth Codex review).
-        else later(reduce ? 0 : 700, () => { if (current()?.id === w.id && session.evaluation) play(w.pronunciationAsset); });
+        // The same card, not only the same word: a missed word may come back as the last card (thirteenth review).
+        else { const card = session.feed; later(reduce ? 0 : 700, () => { if (session.feed === card && session.evaluation) play(w.pronunciationAsset); }); }
     };
     /** The card's exit under way: a second « next » during it does nothing (eleventh Codex review). */
     let leaving: number | null = null;
