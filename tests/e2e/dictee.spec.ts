@@ -922,3 +922,77 @@ test('a choice kept on the phone and never sent leaves after a reload; a require
     await page.waitForTimeout(1500);
     expect(posted.flatMap(p => Object.keys(p.decisions))).not.toContain('fr-air');
 });
+
+const reviewServer = async (page: Page, served: { decisions: Record<string, unknown> }, posted: { decisions: Record<string, { contextSentence?: string }> }[]): Promise<void> => {
+    await page.route('http://relecture.test/**', async route => {
+        const path = new URL(route.request().url()).pathname;
+        if (path === '/') await route.fulfill({ contentType: 'text/html', body: readFileSync('scripts/dictee/validation/index.html', 'utf8') });
+        else if (path === '/dictee/catalogue.json') await route.fulfill({ contentType: 'application/json', body: readFileSync('public/dictee/catalogue.json', 'utf8') });
+        else if (path === '/audio-non-regression.json') await route.fulfill({ contentType: 'application/json', body: readFileSync('scripts/dictee/audio-non-regression.json', 'utf8') });
+        else if (path === '/decisions' && route.request().method() === 'POST') {
+            posted.push(route.request().postDataJSON() as (typeof posted)[number]);
+            await route.fulfill({ status: 200, body: '{}' });
+        }
+        else if (path === '/decisions') await route.fulfill({ contentType: 'application/json', body: JSON.stringify(served) });
+        else await route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg"/>' });
+    });
+};
+const seenOf = (w: Word) => ({ expectedForm: w.expectedForm, contextSentence: w.contextSentence ?? null, explanation: w.explanation ?? null,
+    wordVersion: w.audio.wordVersion ?? null, contextVersion: w.audio.contextVersion ?? null, wordSha256: w.audio.wordSha256 ?? null, contextSha256: w.audio.contextSha256 ?? null });
+
+test('a choice received from the server is never sent back after a reload (fifteenth Codex review of 2026-11-20)', async ({ page }) => {
+    const cases = new Set((JSON.parse(readFileSync('scripts/dictee/audio-non-regression.json', 'utf8')) as { cases: { id: string }[] }).cases.map(c => c.id));
+    const [a, b] = shipped.words.filter(w => w.grade === 'CP' && !cases.has(w.id)) as [Word, Word];
+    const served = { decisions: { [a.id]: { action: 'valider', lemma: a.lemma, at: '2026-11-20T09:00:00.000Z', seen: seenOf(a), heard: false } } as Record<string, unknown> };
+    const posted: { decisions: Record<string, { contextSentence?: string }> }[] = [];
+    await reviewServer(page, served, posted);
+    await page.goto('http://relecture.test/');
+    await page.locator(`article.mot#${b.id} [data-action="valider"]`).click();
+    // Reloaded before its sending; meanwhile another phone removed a.
+    served.decisions[a.id] = { action: 'retirer', lemma: a.lemma, at: '2026-11-20T09:05:00.000Z', seen: seenOf(a) };
+    await page.reload();
+    await expect.poll(() => posted.flatMap(p => Object.keys(p.decisions)), { timeout: 5000 }).toContain(b.id);
+    await page.waitForTimeout(1500);
+    expect(posted.flatMap(p => Object.keys(p.decisions))).not.toContain(a.id);
+});
+
+test('a correction typed during a sending that fails leaves after it (fifteenth Codex review of 2026-11-20)', async ({ page }) => {
+    // The first sending hangs 3 s then fails (no network): the console stays clean, the page sees a refusal.
+    await page.addInitScript(() => {
+        const real = window.fetch.bind(window);
+        let first = true;
+        (window as unknown as { __failed: number }).__failed = 0;
+        window.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
+            if (init?.method === 'POST' && first) {
+                first = false;
+                await new Promise(r => setTimeout(r, 3000));
+                (window as unknown as { __failed: number }).__failed++;
+                throw new TypeError('network down');
+            }
+            return real(input, init);
+        };
+    });
+    const posted: { decisions: Record<string, { contextSentence?: string }> }[] = [];
+    await reviewServer(page, { decisions: {} }, posted);
+    await page.goto('http://relecture.test/');
+    const w = shipped.words.find(x => x.grade === 'CP' && x.contextSentence)!;
+    const card = page.locator(`article.mot#${w.id}`);
+    await card.locator('[data-action="corriger"]').click();
+    await page.waitForTimeout(1500);
+    await card.locator('[name=phrase]').fill('Une phrase tapée pendant un envoi qui échoue.');
+    await expect.poll(() => page.evaluate(() => (window as unknown as { __failed: number }).__failed), { timeout: 6000 }).toBe(1);
+    await expect.poll(() => posted.map(p => p.decisions[w.id]?.contextSentence), { timeout: 8000 }).toContain('Une phrase tapée pendant un envoi qui échoue.');
+});
+
+test('the opening announcement never restarts the second card (fifteenth Codex review of 2026-11-20)', async ({ page }) => {
+    await page.addInitScript(() => { HTMLMediaElement.prototype.play = function play() { return Promise.resolve(); }; });
+    const pool = shipped.words.filter(w => w.grade === 'CE1' && w.audio.mode === 'word_only' && /^[a-z]+$/.test(w.expectedForm)).map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    await feed(page, 'CE1', 5);
+    const first = await word(page);
+    await page.keyboard.type(first.expectedForm); await page.keyboard.press('Enter'); await page.keyboard.press('ArrowDown');
+    await expect.poll(async () => (await probe(page)).feed!.index, { intervals: [20] }).toBe(1);
+    const second = await word(page);
+    await page.waitForTimeout(2000);
+    expect((await probe(page)).played.filter(p => p.path === second.pronunciationAsset)).toHaveLength(1);
+});

@@ -164,24 +164,55 @@ print(g.version('k1', '0123456789abcdef'))`;
             if (!heard) expect(r.stdout).toContain('écoute non faite : fr-air');
         }
     });
-    it('a recording replaced while the catalogue is assembled stops the assembly before it writes (fourteenth Codex review)', () => {
+    it('--approuver-tout stops too while a corrected form waits for the reassembly (fifteenth Codex review)', () => {
+        const dir = copy();
+        const f = join(dir, 'scripts/dictee/relectures.json');
+        const r = JSON.parse(readFileSync(f, 'utf8')) as Record<string, { expectedForm: string }>;
+        r.huit!.expectedForm = 'huitt';
+        writeFileSync(f, JSON.stringify(r));
+        const before = readFileSync(f, 'utf8');
+        const t = run(dir, 'importer_validation.py', '--approuver-tout', '--par', 'Test', '--note', 'essai');
+        expect(t.status).not.toBe(0);
+        expect(t.stderr).toContain('catalogue en retard');
+        expect(readFileSync(f, 'utf8')).toBe(before);
+    });
+    it('the assembly never runs while the generator holds the audio lock, and stops before writing (fifteenth Codex review)', () => {
         const dir = copy();
         const catalogue = readFileSync(join(dir, 'public/dictee/catalogue.json'), 'utf8');
-        // The generator replaces fr-huit.ogg between the assembler's reading and its writing.
+        // generer_audio.py running: it holds the lock; the assembler started meanwhile stops.
         const r = spawnSync('python3', ['-B', '-c', `
-import sys; sys.path.insert(0, 'scripts/dictee')
-import assembler_catalogue as A
-vrai, vu = A.lecture, set()
-def lecture(a):
-    if a.endswith('fr-huit.ogg') and a in vu: return '0' * 64
-    vu.add(a); return vrai(a)
-A.lecture = lecture
-A.main()
+import subprocess, sys; sys.path.insert(0, 'scripts/dictee')
+import generer_audio as G
+v = G.prendre_verrou('generer_audio.py')
+r = subprocess.run([sys.executable, '-B', 'scripts/dictee/assembler_catalogue.py'], capture_output=True, text=True)
+print(r.returncode); print(r.stderr)
 `], { cwd: dir, encoding: 'utf8' });
-        expect(r.status).not.toBe(0);
-        expect(r.stderr).toContain('remplacés pendant l\'assemblage');
-        expect(r.stderr).toContain('fr-huit');
+        expect(r.stdout.split('\n')[0]).not.toBe('0');
+        expect(r.stdout).toContain('l\'autre script audio tourne');
         expect(readFileSync(join(dir, 'public/dictee/catalogue.json'), 'utf8')).toBe(catalogue);
+        // And the other way round: the generator refuses to start while an assembly holds it.
+        const g = spawnSync('python3', ['-B', '-c', `
+import sys; sys.path.insert(0, 'scripts/dictee')
+import generer_audio as G
+v = G.prendre_verrou('assembler_catalogue.py')
+try:
+    G.prendre_verrou('generer_audio.py'); print('pris')
+except SystemExit as e:
+    print(e)
+`], { cwd: dir, encoding: 'utf8' });
+        expect(g.stdout).toContain('l\'autre script audio tourne');
+    });
+    it('a recording already made that disappears stops the assembly: its word never stays approved without bytes (fifteenth Codex review)', () => {
+        const dir = copy();
+        rmSync(join(dir, 'public/dictee/audio'));
+        cpSync('public/dictee/audio', join(dir, 'public/dictee/audio'), { recursive: true });
+        rmSync(join(dir, 'public/dictee/audio/fr-huit.ogg'));
+        const o = json(dir, 'audio-octets.json') as Record<string, string>;
+        delete o['dictee/audio/fr-huit.ogg'];
+        writeFileSync(join(dir, 'scripts/dictee/audio-octets.json'), JSON.stringify(o));
+        const r = run(dir, 'assembler_catalogue.py');
+        expect(r.status).not.toBe(0);
+        expect(r.stderr).toContain('fr-huit.ogg');
     });
     it('a stale « Retirer » never removes a word that changed since (eighth Codex review)', () => {
         const dir = copy();
