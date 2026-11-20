@@ -163,7 +163,7 @@ def main() -> None:
         a = w['audio']
         actuel = {'expectedForm': w['expectedForm'], 'contextSentence': w['contextSentence'], 'explanation': w['explanation'],
                   'wordVersion': a.get('wordVersion'), 'contextVersion': a.get('contextVersion'), 'wordSha256': a.get('wordSha256'), 'contextSha256': a.get('contextSha256')}
-        if action != 'retirer' and d.get('seen') != actuel:
+        if d.get('seen') != actuel:  # « Retirer » aussi (huitième revue) : retirer une autre fiche que celle vue, jamais
             compte['inconnu'] += 1
             print(f'ignoré : {ident} a changé depuis la décision (texte ou enregistrement), à relire')
             continue

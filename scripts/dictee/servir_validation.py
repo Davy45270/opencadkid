@@ -15,6 +15,7 @@ Puis : python3 scripts/dictee/importer_validation.py ~/relecture-dictee/dictee-r
 from __future__ import annotations
 
 import argparse
+import hashlib
 import ipaddress
 import json
 import os
@@ -23,6 +24,7 @@ import tempfile
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from urllib.parse import parse_qs, urlsplit
 
 ICI = Path(__file__).resolve().parent
 RACINE = ICI.parents[1]
@@ -66,7 +68,13 @@ def main() -> None:
             if chemin == '/decisions' and (a.sortie / 'dictee-relecture.json').exists():
                 return self.envoyer(200, (a.sortie / 'dictee-relecture.json').read_bytes(), 'application/json')
             if AUDIO.match(chemin) and (PUBLIC / chemin[1:]).is_file():
-                return self.envoyer(200, (PUBLIC / chemin[1:]).read_bytes(), 'audio/ogg')
+                # Huitième revue Codex : seuls les octets que la page a nommés (?sha=, ceux du catalogue qu'elle a chargé)
+                # sont servis ; un fichier remplacé depuis répond 409, l'adulte recharge avant de décider.
+                octets = (PUBLIC / chemin[1:]).read_bytes()
+                voulu = parse_qs(urlsplit(self.path).query).get('sha', [''])[0]
+                if voulu != hashlib.sha256(octets).hexdigest():
+                    return self.envoyer(409, b'enregistrement change : recharger la page', 'text/plain; charset=utf-8')
+                return self.envoyer(200, octets, 'audio/ogg')
             self.envoyer(404, b'introuvable', 'text/plain; charset=utf-8')
 
         def do_POST(self) -> None:  # noqa: N802

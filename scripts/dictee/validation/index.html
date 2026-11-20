@@ -98,10 +98,13 @@ const el = (tag, attrs = {}, ...enfants) => {
   return n;
 };
 let lecteur = null;
-function jouer(chemin) {
+// The file is asked with the digest of the bytes the catalogue (and so the decision) names: the server refuses other
+// bytes, so the adult never hears a recording other than the one the decision records (eighth Codex review).
+function jouer(chemin, sha) {
   if (!chemin) return;
   if (lecteur) lecteur.pause();
-  lecteur = new Audio(chemin);
+  lecteur = new Audio(`${chemin}?sha=${encodeURIComponent(sha || '')}`);
+  lecteur.addEventListener('error', () => etat('Cet enregistrement a changé depuis le chargement de la page : la recharger avant de décider.', true));
   lecteur.play().catch(() => {});
 }
 function compter() {
@@ -156,8 +159,8 @@ function carte(m) {
       ...Object.entries(m.homophoneNotes || {}).map(([h, n]) => `(${h} : ${n}) `),
       douteux ? el('span', { class: 'alerte' }, `Écoute obligatoire : ${cas.map(c => `${c.kind === 'mot' ? 'le mot' : 'la phrase'} a été entendu « ${c.observed} » par la machine`).join(' ; ')}. Valider = « j'ai écouté, c'est juste ».`) : ''),
     el('div', { class: 'ecoute' },
-      el('button', { type: 'button', onclick: () => jouer(m.pronunciationAsset) }, '▶ Le mot'),
-      m.contextAsset ? el('button', { type: 'button', onclick: () => jouer(m.contextAsset) }, '▶ La phrase') : null),
+      el('button', { type: 'button', onclick: () => jouer(m.pronunciationAsset, m.audio?.wordSha256) }, '▶ Le mot'),
+      m.contextAsset ? el('button', { type: 'button', onclick: () => jouer(m.contextAsset, m.audio?.contextSha256) }, '▶ La phrase') : null),
     el('div', { class: 'choix' },
       el('button', { type: 'button', class: 'v', 'data-action': 'valider', 'aria-pressed': 'false', onclick: () => decider(m, 'valider', c) }, 'Valider'),
       el('button', { type: 'button', class: 'c', 'data-action': 'corriger', 'aria-pressed': 'false', onclick: () => decider(m, 'corriger', c) }, 'Corriger'),

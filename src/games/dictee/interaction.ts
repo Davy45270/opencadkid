@@ -131,7 +131,8 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         // Without sound (or if the word never reports its end) the sentence still follows, 3.5 s after the word's last
         // turn came: counted from its file's arrival or refusal, never from the request (third and fifth Codex reviews).
         const settled = pending && w && path === w.pronunciationAsset ? (): void => armSafety(w) : undefined;
-        if (path !== pending && path !== current()?.pronunciationAsset) pending = null;
+        // The waiting sentence asked now (its button), or anything else: it plays once, nothing more waits (eighth review).
+        if (path !== current()?.pronunciationAsset) { pending = null; cancel(safety); safety = null; }
         // La Dictée parle toujours : sans le mot entendu, il n'y a pas de dictée (2026-11-17).
         // A new turn of the waiting word stops the safety at once: it re-arms when THIS turn settles (sixth Codex review).
         if (settled) { cancel(safety); safety = null; }
@@ -150,7 +151,8 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
                 audio.pause(); audio.src = src; audio.playbackRate = rate; audio.preservesPitch = true;
                 observed.heard.push({ path, at: performance.now() });
                 // The safety counts from the moment the word really starts (or cannot), not from the call (seventh review).
-                void audio.play().then(() => settled?.(), () => settled?.());
+                const mine = (): void => { if (turn === turns && !disposed) settled?.(); };
+                void audio.play().then(mine, mine);
                 return;
             }
             settled?.();
@@ -254,7 +256,9 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         const card = root.querySelector('.dictee-card');
         card?.classList.add('dictee-sortie');
         later(LEAVE_MS, () => {
-            session.feed = next(session.feed!);
+            // Back pressed during the card's exit: the feed is gone, nothing moves (eighth Codex review).
+            if (!session.feed || session.screen !== 'fil') return;
+            session.feed = next(session.feed);
             if (session.feed.finished) { end(); return; }
             fresh(); arrive();
         });
