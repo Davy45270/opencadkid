@@ -180,9 +180,12 @@ print(g.version('k1', '0123456789abcdef'))`;
     });
     it('the review server listens only on a private address: a public one is refused', () => {
         const dir = copy();
-        const r = run(dir, 'servir_validation.py', '--ecoute', '8.8.8.8:18080', '--sortie', join(dir, 'sortie'));
-        expect(r.status).not.toBe(0);
-        expect(r.stderr).toContain('refus');
+        // 0.0.0.0 listens on every interface, public ones included: refused too (eleventh Codex review).
+        for (const hote of ['8.8.8.8', '0.0.0.0', '::', '224.0.0.1']) {
+            const r = run(dir, 'servir_validation.py', '--ecoute', `${hote}:18080`, '--sortie', join(dir, 'sortie'));
+            expect(r.status, hote).not.toBe(0);
+            expect(r.stderr).toContain('refus');
+        }
     });
     it('a decision or an approval against a catalogue behind phrases.json stops: reassemble first (ninth Codex review)', () => {
         const dir = copy();
@@ -219,6 +222,15 @@ print(g.version('k1', '0123456789abcdef'))`;
             expect(r.stderr).toContain('fr-huit');
         }
     });
+    it('the tips that count letters count them right: appeler and rappeler take one l at the infinitive (eleventh Codex review)', () => {
+        const ws = [...words(process.cwd()).values()] as unknown as { lemma: string; expectedForm: string; explanation: string | null }[];
+        for (const lemma of ['appeler', 'rappeler']) {
+            const w = ws.find(x => x.lemma === lemma)!;
+            expect(w.explanation).toContain('un seul l');
+            expect(w.expectedForm.split('l').length - 1).toBe(1);
+            expect(w.expectedForm).toContain('pp');
+        }
+    });
     it('the review server keeps every choice it confirmed: two phones, two words, both kept (ninth Codex review)', async () => {
         const dir = copy();
         const out = join(dir, 'sortie');
@@ -234,12 +246,13 @@ print(g.version('k1', '0123456789abcdef'))`;
         try {
             expect(await post({ 'fr-huit': { action: 'valider', lemma: 'huit', at: '2026-11-20T10:00:00Z' } })).toBe(200);
             expect(await post({ 'fr-air': { action: 'retirer', lemma: 'air', at: '2026-11-20T10:00:01Z' } })).toBe(200);
-            // An older copy of a choice never replaces a newer one; an undone choice (dated, empty) does.
-            expect(await post({ 'fr-huit': { action: 'retirer', lemma: 'huit', at: '2026-11-20T09:00:00Z' } })).toBe(200);
-            expect(await post({ 'fr-air': { action: null, lemma: 'air', at: '2026-11-20T10:00:02Z' } })).toBe(200);
+            // The last choice received wins, whatever the phones' clocks say (eleventh Codex review): an undo sent after a
+            // validation stamped two minutes ahead still wins.
+            expect(await post({ 'fr-huit': { action: 'valider', lemma: 'huit', at: '2026-11-20T10:02:00Z' } })).toBe(200);
+            expect(await post({ 'fr-huit': { action: null, lemma: 'huit', at: '2026-11-20T10:01:00Z' } })).toBe(200);
             const kept = JSON.parse(readFileSync(join(out, 'dictee-relecture.json'), 'utf8')) as { decisions: Record<string, { action: string | null }> };
-            expect(kept.decisions['fr-huit']!.action).toBe('valider');
-            expect(kept.decisions['fr-air']!.action).toBeNull();
+            expect(kept.decisions['fr-air']!.action).toBe('retirer');
+            expect(kept.decisions['fr-huit']!.action).toBeNull();
         } finally { server.kill(); }
     });
     it('the review page records what the adult saw with each decision', () => {

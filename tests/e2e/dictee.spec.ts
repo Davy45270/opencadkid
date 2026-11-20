@@ -745,3 +745,52 @@ test('a word asked before the announcement whose bytes come late is never cut by
     const heard = p.heard.find(h => h.path === w.pronunciationAsset)!;
     expect(p.played.find(x => x.path === w.contextAsset)!.at - heard.at).toBeGreaterThanOrEqual(1900);
 });
+
+test('the review page never takes back a decision made on another version of the word, and sends only what changed (eleventh Codex review of 2026-11-20)', async ({ page }) => {
+    const posted: { decisions: Record<string, unknown> }[] = [];
+    await page.route('http://relecture.test/**', async route => {
+        const path = new URL(route.request().url()).pathname;
+        if (path === '/') await route.fulfill({ contentType: 'text/html', body: readFileSync('scripts/dictee/validation/index.html', 'utf8') });
+        else if (path === '/dictee/catalogue.json') await route.fulfill({ contentType: 'application/json', body: readFileSync('public/dictee/catalogue.json', 'utf8') });
+        else if (path === '/audio-non-regression.json') await route.fulfill({ contentType: 'application/json', body: readFileSync('scripts/dictee/audio-non-regression.json', 'utf8') });
+        else if (path === '/decisions' && route.request().method() === 'POST') { posted.push(route.request().postDataJSON() as (typeof posted)[number]); await route.fulfill({ status: 200, body: '{}' }); }
+        else if (path === '/decisions') await route.fulfill({ contentType: 'application/json', body: '{"decisions":{}}' });
+        else await route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg"/>' });
+    });
+    const seen = (w: Word) => ({ expectedForm: w.expectedForm, contextSentence: w.contextSentence ?? null, explanation: w.explanation ?? null,
+        wordVersion: w.audio.wordVersion ?? null, contextVersion: w.audio.contextVersion ?? null, wordSha256: w.audio.wordSha256 ?? null, contextSha256: w.audio.contextSha256 ?? null });
+    const [a, b, c] = shipped.words.filter(w => w.grade === 'CP' && w.contextSentence) as [Word, Word, Word];
+    // A correction made on an older sentence of a, and a choice on b already sent to the server.
+    const old = { action: 'corriger', lemma: a.lemma, at: '2026-11-20T09:00:00.000Z', expectedForm: a.expectedForm, contextSentence: 'Une ancienne phrase.', explanation: '', seen: { ...seen(a), contextSentence: 'Une ancienne phrase.' } };
+    const sent = { action: 'valider', lemma: b.lemma, at: '2026-11-20T09:01:00.000Z', seen: seen(b) };
+    await page.addInitScript(([o, s, ia, ib]) => {
+        localStorage.setItem('dictee-relecture-v1', JSON.stringify({ [ia]: o, [ib]: s }));
+        localStorage.setItem('dictee-relecture-v1.envoyes', JSON.stringify({ [ib]: JSON.stringify(s) }));
+    }, [old, sent, a.id, b.id] as const);
+    await page.goto('http://relecture.test/');
+    const ca = page.locator(`article.mot#${a.id}`);
+    await expect(ca).toBeVisible();
+    await expect(ca).not.toHaveAttribute('data-etat', 'corriger');
+    expect(await ca.locator('[name=phrase]').inputValue()).not.toBe('Une ancienne phrase.');
+    await page.locator(`article.mot#${c.id} [data-action="valider"]`).click();
+    await expect.poll(() => posted.length, { timeout: 5000 }).toBeGreaterThan(0);
+    expect(Object.keys(posted[0]!.decisions)).toEqual([c.id]);
+});
+
+test('a second « next » during a card\'s exit never clears the next card (eleventh Codex review of 2026-11-20)', async ({ page }) => {
+    const pool = shipped.words.filter(w => w.grade === 'CE1' && w.audio.mode === 'word_only').map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    await feed(page, 'CE1', 5);
+    const w = await word(page);
+    await page.keyboard.type(w.expectedForm); await page.keyboard.press('Enter');
+    await page.keyboard.press('ArrowDown');
+    await page.waitForTimeout(200);
+    await page.keyboard.press('ArrowDown');
+    await expect.poll(async () => (await probe(page)).feed!.index).toBe(1);
+    const next = await word(page);
+    await page.keyboard.type(next.expectedForm.slice(0, 1));
+    await page.waitForTimeout(500);
+    const p = await probe(page);
+    expect(p.feed!.index).toBe(1);
+    expect(p.typed).toBe(next.expectedForm.slice(0, 1));
+});
