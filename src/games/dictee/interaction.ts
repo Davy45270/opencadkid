@@ -73,7 +73,8 @@ async function keep(paths: readonly string[]): Promise<void> {
 }
 async function shipped(path: string, r: Response): Promise<boolean> {
     const want = digests.get(path);
-    if (!want) return true;
+    // No digest (an older or partial catalogue): the bytes cannot be checked, so they are neither kept nor played.
+    if (!want) return false;
     if (typeof crypto === 'undefined' || typeof crypto.subtle === 'undefined') return false; // an insecure context has no SubtleCrypto: keep nothing
     const got = [...new Uint8Array(await crypto.subtle.digest('sha-256', await r.arrayBuffer()))].map(b => b.toString(16).padStart(2, '0')).join('');
     return got === want;
@@ -111,14 +112,25 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
     let disposed = false, words: Word[] = [];
     const timers = new Set<number>();
     // Reduced motion shortens animations, never a wait for a sound (`exact`): the sentence's safety must not cut the word.
-    const later = (ms: number, f: () => void, exact = false): void => { const id = window.setTimeout(() => { timers.delete(id); if (!disposed) f(); }, reduce && !exact ? Math.min(ms, 30) : ms); timers.add(id); };
+    const later = (ms: number, f: () => void, exact = false): number => { const id = window.setTimeout(() => { timers.delete(id); if (!disposed) f(); }, reduce && !exact ? Math.min(ms, 30) : ms); timers.add(id); return id; };
+    const cancel = (id: number | null): void => { if (id !== null) { window.clearTimeout(id); timers.delete(id); } };
     const audio = typeof Audio === 'function' ? new Audio() : null;
     /** A sentence waiting for the word to end (a word heard only in context: verre, vert, vers). */
     let pending: string | null = null;
+    /** The sentence's safety, re-armed each time the current word gets its turn (a slow replay is never cut). */
+    let safety: number | null = null;
+    const armSafety = (w: Word): void => {
+        cancel(safety);
+        safety = later(3500, () => { safety = null; if (pending === w.contextAsset && current()?.id === w.id) { const p = pending; pending = null; play(p); } }, true);
+    };
     let turns = 0;
     /** `settled` runs once the file's turn has come: its bytes are in the player, or were refused. */
-    const play = (path: string | null, rate = 1, settled?: () => void): void => {
+    const play = (path: string | null, rate = 1): void => {
         if (!path) return;
+        const w = current();
+        // Without sound (or if the word never reports its end) the sentence still follows, 3.5 s after the word's last
+        // turn came: counted from its file's arrival or refusal, never from the request (third and fifth Codex reviews).
+        const settled = pending && w && path === w.pronunciationAsset ? (): void => armSafety(w) : undefined;
         if (path !== pending && path !== current()?.pronunciationAsset) pending = null;
         // La Dictée parle toujours : sans le mot entendu, il n'y a pas de dictée (2026-11-17).
         if (!audio) { settled?.(); return; }
@@ -145,11 +157,9 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
     const arrive = (): void => {
         const w = current();
         if (!w) return;
-        if (!sentenceOnArrival(w)) { play(w.pronunciationAsset); return; }
-        pending = w.contextAsset;
-        // Without sound (or if the word never reports its end) the sentence still follows, 3.5 s after the word's turn came:
-        // counted from its file's arrival, never from the request, so a slow word is never overtaken (third Codex review).
-        play(w.pronunciationAsset, 1, () => later(3500, () => { if (pending === w.contextAsset && current()?.id === w.id) { const p = pending; pending = null; play(p); } }, true));
+        cancel(safety); safety = null;
+        pending = sentenceOnArrival(w) ? w.contextAsset : null;
+        play(w.pronunciationAsset);
     };
     const rng = makeRng(crypto.getRandomValues(new Uint32Array(1))[0]!);
     const wordOf = (id: string): Word => words.find(w => w.id === id)!;
@@ -227,7 +237,8 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         recordActivation(`dictee:answer:${e.exact ? 'juste' : e.errors[0]?.type ?? 'faux'}`, 'action', e.exact, w.id);
         draw_();
         if (e.exact) { chime(sound()); speak([t.right[session.praise]!]); }
-        else later(reduce ? 0 : 700, () => play(w.pronunciationAsset));
+        // Only on its own card: the child may have moved on before the replay is due (fifth Codex review).
+        else later(reduce ? 0 : 700, () => { if (current()?.id === w.id && session.evaluation) play(w.pronunciationAsset); });
     };
     const goNext = (): void => {
         if (!session.feed || !session.evaluation) return;

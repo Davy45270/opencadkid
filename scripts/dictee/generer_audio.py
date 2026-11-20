@@ -53,6 +53,18 @@ def empreinte(texte: str, sorte: str) -> str:
     return hashlib.sha256(json.dumps([texte, MODELE_SHA256, REGLAGES[sorte], OPUS, PORTEUSE], ensure_ascii=False).encode()).hexdigest()[:16]
 
 
+def version(chemin: str, cle: str, connues: dict[str, str], sha: str) -> str:
+    """Version d'un fichier qu'on vient de produire. Une recette nouvelle donne sa clé ; la même recette déjà produite
+    (fichier perdu ou altéré, puis refait : Piper ne rend jamais deux fois les mêmes octets) donne une AUTRE version,
+    `clé.octets`, pour qu'aucune approbation ni écoute de l'ancien fichier ne passe à ces octets (5e revue Codex)."""
+    return f'{cle}.{sha[:8]}' if connues.get(chemin, '').split('.')[0] == cle else cle
+
+
+def fait(chemin: str, cle: str, connues: dict[str, str], ecrits: dict[str, str], cible: Path) -> bool:
+    """Le fichier est à jour : même recette, et ses octets sont ceux que ce script a écrits."""
+    return cible.exists() and connues.get(chemin, '').split('.')[0] == cle and ecrits.get(chemin) == hashlib.sha256(cible.read_bytes()).hexdigest()
+
+
 def main() -> None:
     from piper import PiperVoice, SynthesisConfig  # noqa: PLC0415 — installé seulement là où l'on génère
 
@@ -73,18 +85,19 @@ def main() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         for chemin, texte, sorte in taches:
             cible, cle = SORTIE / chemin, empreinte(texte, sorte)
-            if cible.exists() and connues.get(chemin) == cle:
+            if fait(chemin, cle, connues, octets, cible):
                 continue
             cible.parent.mkdir(parents=True, exist_ok=True)
             wav = Path(tmp) / 'a.wav'
             with wave.open(str(wav), 'wb') as f:
                 voix.synthesize_wav(texte, f, syn_config=SynthesisConfig(**REGLAGES[sorte]))
             subprocess.run(['ffmpeg', '-loglevel', 'error', '-y', '-i', str(wav), *OPUS, str(cible)], check=True)
-            connues[chemin] = cle
             octets[chemin] = hashlib.sha256(cible.read_bytes()).hexdigest()
+            connues[chemin] = version(chemin, cle, connues, octets[chemin])
             faits += 1
             if faits % 50 == 0:
                 EMPREINTES.write_text(json.dumps(dict(sorted(connues.items())), indent=0) + '\n', encoding='utf-8')
+                OCTETS.write_text(json.dumps(dict(sorted(octets.items())), indent=0) + '\n', encoding='utf-8')  # reprise sûre
                 print(f'{faits} fichiers', flush=True)
     # Les fichiers qui ne correspondent plus à aucun mot sont retirés.
     attendus = {c for c, _, _ in taches}

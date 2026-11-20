@@ -497,25 +497,27 @@ test('the word_then_context word says its sentence after the word, without a tou
 });
 
 test('a slow replay of the word is never cut by its sentence (fifth Codex review of 2026-11-20)', async ({ page }) => {
+    // A player that never reports an end: only the sentence's safety decides, and it must count from the slow replay.
+    await page.addInitScript(() => { HTMLMediaElement.prototype.play = function play() { return Promise.resolve(); }; });
     const pool = shipped.words.filter(w => w.grade === 'CP' && w.audio.mode === 'context_required' && w.expectedForm !== 'un').map(w => w.id);
     await reviewed(page, w => pool.includes(w.id));
     await feed(page, 'CP', 5);
     const w = await word(page);
     await expect.poll(async () => (await probe(page)).heard.map(h => h.path)).toContain(w.pronunciationAsset);
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(1500);
     const card = (await probe(page)).card!;
     await page.mouse.move(card.x + card.width / 2, card.y + 40); await page.mouse.down(); await page.waitForTimeout(700); await page.mouse.up();
     await expect.poll(async () => (await probe(page)).played.map(p => p.path), { timeout: 10_000 }).toContain(w.contextAsset);
     const played = (await probe(page)).played;
     const slow = played.find(p => p.rate === .75)!, sentence = played.find(p => p.path === w.contextAsset)!;
-    // The slow word lasts about 2.6 s: the sentence waits for its end, or for 3.5 s after it, never the first word's safety.
-    expect(sentence.at - slow.at).toBeGreaterThanOrEqual(2300);
+    expect(slow).toBeDefined();
+    expect(sentence.at - slow.at).toBeGreaterThanOrEqual(3400);
 });
 
 test('the delayed replay of a wrong word never plays on the next card (fifth Codex review of 2026-11-20)', async ({ page }) => {
-    const pool = shipped.words.filter(w => w.grade === 'CP' && w.audio.mode === 'word_only').map(w => w.id);
+    const pool = shipped.words.filter(w => w.grade === 'CE1' && w.audio.mode === 'word_only').map(w => w.id);
     await reviewed(page, w => pool.includes(w.id));
-    await feed(page, 'CP', 5);
+    await feed(page, 'CE1', 5);  // the big keyboard: CP's tiles would drop the wrong letter
     const w1 = await word(page);
     await page.keyboard.type(`${w1.expectedForm}x`);
     // Checked, then straight on with Enter: the card leaves before the wrong word's replay (700 ms) is due.

@@ -79,8 +79,10 @@ def main() -> None:
     empreintes = lire(EMPREINTES, {})
     # Quatrième revue Codex (2026-11-20) : un fichier dont les octets ne sont pas ceux qu'a écrits generer_audio.py
     # (un ancien enregistrement recopié sous le même nom) arrêterait l'assemblage avant d'hériter d'une approbation.
+    # Tout fichier attendu doit y figurer (5e revue) : une entrée absente n'est pas une exemption.
     ecrits = lire(OCTETS, {})
-    faux = sorted(a for a, h in ecrits.items() if octets(a) != h)
+    attendus = [f"dictee/audio/{m['id']}.ogg" for m in mots] + [f"dictee/audio/{m['id']}-phrase.ogg" for m in mots if phrases.get(m['lemma'], {}).get('contextSentence')]
+    faux = sorted(a for a in attendus if a not in ecrits or octets(a) != ecrits[a])
     if faux:
         raise SystemExit(f"octets différents de ceux qu'a écrits generer_audio.py (régénérer, ou recopier le bon fichier) : {', '.join(faux)}")
     signales: dict[str, list[dict]] = {}
