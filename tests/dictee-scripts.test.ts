@@ -151,6 +151,38 @@ print(g.version('k1', '0123456789abcdef'))`;
         expect(run(dir, 'importer_validation.py', 'lot.json').stdout).toContain('1 validés');
         expect((json(dir, 'relectures.json') as Record<string, { by: string }>)[w.lemma]!.by).toBe('Test');
     });
+    it('« Valider » lifts a required listening only if the page played the word and its sentence to the end (fourteenth Codex review)', () => {
+        const w = words(process.cwd()).get('fr-air')! as unknown as { lemma: string; expectedForm: string; contextSentence: string; explanation: string; audio: Record<string, string | null> };
+        const seen = { expectedForm: w.expectedForm, contextSentence: w.contextSentence, explanation: w.explanation, wordVersion: w.audio.wordVersion, contextVersion: w.audio.contextVersion, wordSha256: w.audio.wordSha256, contextSha256: w.audio.contextSha256 };
+        const statut = (dir: string): string[] => (json(dir, 'audio-non-regression.json') as { cases: { id: string; listening: { status: string } }[] }).cases.filter(c => c.id === 'fr-air').map(c => c.listening.status);
+        for (const heard of [false, true]) {
+            const dir = copy();
+            writeFileSync(join(dir, 'lot.json'), JSON.stringify({ format: 'dictee-relecture', version: 1, reviewer: 'Test', decisions: { 'fr-air': { action: 'valider', lemma: w.lemma, at: '2026-11-20T10:00:00Z', seen, heard } } }));
+            const r = run(dir, 'importer_validation.py', 'lot.json');
+            expect(r.status, r.stderr).toBe(0);
+            expect(statut(dir).every(x => x === (heard ? 'ok' : 'pending'))).toBe(true);
+            if (!heard) expect(r.stdout).toContain('écoute non faite : fr-air');
+        }
+    });
+    it('a recording replaced while the catalogue is assembled stops the assembly before it writes (fourteenth Codex review)', () => {
+        const dir = copy();
+        const catalogue = readFileSync(join(dir, 'public/dictee/catalogue.json'), 'utf8');
+        // The generator replaces fr-huit.ogg between the assembler's reading and its writing.
+        const r = spawnSync('python3', ['-B', '-c', `
+import sys; sys.path.insert(0, 'scripts/dictee')
+import assembler_catalogue as A
+vrai, vu = A.lecture, set()
+def lecture(a):
+    if a.endswith('fr-huit.ogg') and a in vu: return '0' * 64
+    vu.add(a); return vrai(a)
+A.lecture = lecture
+A.main()
+`], { cwd: dir, encoding: 'utf8' });
+        expect(r.status).not.toBe(0);
+        expect(r.stderr).toContain('remplacés pendant l\'assemblage');
+        expect(r.stderr).toContain('fr-huit');
+        expect(readFileSync(join(dir, 'public/dictee/catalogue.json'), 'utf8')).toBe(catalogue);
+    });
     it('a stale « Retirer » never removes a word that changed since (eighth Codex review)', () => {
         const dir = copy();
         const w = words(dir).get('fr-huit')! as unknown as { lemma: string; expectedForm: string; contextSentence: string; explanation: string; audio: Record<string, string | null> };
@@ -284,7 +316,7 @@ print(g.version('k1', '0123456789abcdef'))`;
     });
     it('the review page records what the adult saw with each decision', () => {
         const page = readFileSync('scripts/dictee/validation/index.html', 'utf8');
-        expect(page).toMatch(/const d = \{ action, lemma: m\.lemma, at: new Date\(\)\.toISOString\(\), seen: vu\(m\) \};/);
+        expect(page).toMatch(/const d = \{ action, lemma: m\.lemma, at: new Date\(\)\.toISOString\(\), seen: vu\(m\), heard: entendu\(m\) \};/);
         for (const k of ['expectedForm', 'contextSentence', 'explanation', 'wordVersion', 'contextVersion', 'wordSha256', 'contextSha256']) expect(page).toContain(`${k}: `);
     });
     it('a targeted approval shows the exact text and writes nothing without --oui', () => {

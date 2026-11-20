@@ -608,7 +608,9 @@ test('the review page, for an adult on a phone: Validate, Correct, Remove, and e
     });
     await page.setViewportSize({ width: 360, height: 800 });
     await page.goto('http://relecture.test/');
-    const first = shipped.words.find(w => w.grade === 'CP')!;
+    // A word without a required listening: « Valider » records at once (the listening case is the fourteenth review's test).
+    const cases = new Set((JSON.parse(readFileSync('scripts/dictee/audio-non-regression.json', 'utf8')) as { cases: { id: string }[] }).cases.map(c => c.id));
+    const first = shipped.words.find(w => w.grade === 'CP' && !cases.has(w.id))!;
     const card = page.locator(`article.mot#${first.id}`);
     await expect(card).toBeVisible();
     for (const action of ['valider', 'corriger', 'retirer']) {
@@ -893,4 +895,30 @@ test('the replay of a missed word never plays on its second card (thirteenth Cod
     const base = (await probe(page)).played.filter(p => p.path === w.pronunciationAsset).length;
     await page.waitForTimeout(1200);
     expect((await probe(page)).played.filter(p => p.path === w.pronunciationAsset)).toHaveLength(base);
+});
+
+test('a choice kept on the phone and never sent leaves after a reload; a required listening needs the recordings heard to the end (fourteenth Codex review of 2026-11-20)', async ({ page }) => {
+    const posted: { decisions: Record<string, { action: string | null; heard?: boolean }> }[] = [];
+    await page.route('http://relecture.test/**', async route => {
+        const path = new URL(route.request().url()).pathname;
+        if (path === '/') await route.fulfill({ contentType: 'text/html', body: readFileSync('scripts/dictee/validation/index.html', 'utf8') });
+        else if (path === '/dictee/catalogue.json') await route.fulfill({ contentType: 'application/json', body: readFileSync('public/dictee/catalogue.json', 'utf8') });
+        else if (path === '/audio-non-regression.json') await route.fulfill({ contentType: 'application/json', body: readFileSync('scripts/dictee/audio-non-regression.json', 'utf8') });
+        else if (path === '/decisions' && route.request().method() === 'POST') { posted.push(route.request().postDataJSON() as (typeof posted)[number]); await route.fulfill({ status: 200, body: '{}' }); }
+        else if (path === '/decisions') await route.fulfill({ contentType: 'application/json', body: '{"decisions":{}}' });
+        else await route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg"/>' });
+    });
+    const seen = (w: Word) => ({ expectedForm: w.expectedForm, contextSentence: w.contextSentence ?? null, explanation: w.explanation ?? null,
+        wordVersion: w.audio.wordVersion ?? null, contextVersion: w.audio.contextVersion ?? null, wordSha256: w.audio.wordSha256 ?? null, contextSha256: w.audio.contextSha256 ?? null });
+    const kept = shipped.words.find(w => w.grade === 'CP' && w.id !== 'fr-air')!;
+    const choice = { action: 'retirer', lemma: kept.lemma, at: '2026-11-20T09:00:00.000Z', seen: seen(kept) };
+    await page.addInitScript(([c, id]) => { if (!sessionStorage.getItem('fait')) { sessionStorage.setItem('fait', '1'); localStorage.setItem('dictee-relecture-v1', JSON.stringify({ [id]: c })); } }, [choice, kept.id] as const);
+    await page.goto('http://relecture.test/');
+    await expect.poll(() => posted.flatMap(p => Object.keys(p.decisions)), { timeout: 5000 }).toContain(kept.id);
+    // fr-air has listening cases: « Valider » without the recordings heard to the end records nothing.
+    const air = page.locator('article.mot#fr-air');
+    await air.locator('[data-action="valider"]').click();
+    await expect(page.locator('#etat')).toContainText('jusqu\'au bout');
+    await page.waitForTimeout(1500);
+    expect(posted.flatMap(p => Object.keys(p.decisions))).not.toContain('fr-air');
 });
