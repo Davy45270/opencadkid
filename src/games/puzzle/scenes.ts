@@ -7,7 +7,9 @@ export const sceneNames: Record<Locale, Record<Scene, string>> = {
     fr: { castle: 'Pestouille au château', bamboo: 'Boubou dans les bambous', rainbow: 'Lumi sous l’arc-en-ciel', jungle: 'Tutu dans la jungle', autumn: 'CaliRoux et les feuilles', picnic: 'Le pique-nique des amis', zen: 'Boubou au jardin zen', ardennes: 'CaliRoux dans la forêt des Ardennes', volcano: 'Pestouille au volcan ardent', islands: 'Tutu sur les îles tropicales', galaxy: 'Lumi dans la galaxie étoilée', valley: 'La vallée au printemps' },
     en: { castle: 'Pestouille above the castle', bamboo: 'Boubou in the bamboo forest', rainbow: 'Lumi under the rainbow', jungle: 'Tutu in the jungle', autumn: 'CaliRoux and the leaves', picnic: 'A picnic with friends', zen: 'Boubou in the zen garden', ardennes: 'CaliRoux in the Ardennes forest', volcano: 'Pestouille at the fiery volcano', islands: 'Tutu on the tropical islands', galaxy: 'Lumi in the starry galaxy', valley: 'The valley in spring' }
 };
-const guide = (id: CharacterId, x: number, y: number, size: number): string => `<g transform="translate(${x} ${y}) scale(${size / 240})">${characterSvg(id, 'joie', 'repos', 'reduce').replace('<svg ', '<svg style="width:240px;height:240px" ')}</g>`;
+// A nested <svg> takes its size from its width/height attributes only (CSS width is ignored there): without them it fills
+// the piece's viewport and the guide shrinks in every piece narrower than the model.
+const guide = (id: CharacterId, x: number, y: number, size: number): string => `<g transform="translate(${x} ${y}) scale(${size / 240})">${characterSvg(id, 'joie', 'repos', 'reduce').replace('<svg ', '<svg width="240" height="240" ')}</g>`;
 /** Bundled, hashed WebP URLs (600×480 or 450×360, 5:4). Not precached: the service worker keeps them once a puzzle has shown them. */
 // `new URL(literal, import.meta.url)`: Vite emits each file hashed; Node-side test runners can load this module (no binary import).
 export const paintedSceneUrl: Record<PaintedScene, string> = {

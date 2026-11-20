@@ -53,5 +53,5 @@ export function scenery(): string {
     <g fill="#88b880"><ellipse cx="849" cy="105" rx="39" ry="51"/><ellipse cx="817" cy="141" rx="29" ry="35"/><ellipse cx="881" cy="142" rx="32" ry="39"/></g>
     <g stroke="#56865b" stroke-width="2" fill="none"><path d="M24 289l-7 -14m7 14l8 -18M302 285l-6 -15m6 15l7 -19M612 282l-5 -13m5 13l9 -16M872 287l-5 -18m5 18l9 -12"/></g>
     <g fill="#ffe9c1"><path d="M25 276c-14 -8 -7 -15 0 -7c8 -10 15 -1 0 7Z"/><path d="M610 272c-12 -9 -4 -15 1 -7c9 -6 13 4 -1 7Z"/></g>
-    <g fill="#f3b6c8"><path d="M303 275c-12 -7 -7 -15 0 -8c8 -8 15 2 0 8Z"/><path d="M874 276c-13 -8 -6 -15 0 -8c9 -9 16 2 0 8Z"/></g>`), '0 0 900 300');
+    <g fill="#f3b6c8"><path d="M303 275c-12 -7 -7 -15 0 -8c8 -8 15 2 0 8Z"/><path d="M874 276c-13 -8 -6 -15 0 -8c9 -9 16 2 0 8Z"/></g>`), '0 0 900 300').replace('xMidYMid meet', 'xMidYMid slice'); // the banner is taller than 3:1 on phones (min-height): fill it, crop the sides
 }
