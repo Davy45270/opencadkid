@@ -1,4 +1,4 @@
-# Opencadkid — game specification 1.0.0
+# Opencadkid — game specification 1.1.0
 
 Audience: ages 4–8, primarily touch phones. French first, English included. No reading is required in child play, except in the one game for readers, `dictee` (6 and up, its card says so), whose rules are below and change nothing for the others. Spoken instructions, procedural SVG pictograms, object illustrations and dot patterns convey the task. No timer, lives, punishment, advertising, purchase, account, analytics or external runtime resource. The first home gesture unlocks browser audio. Reduced motion removes shakes, bounces and decorative particles. Local speech voices are preferred; speech availability offline depends on installed device voices.
 
@@ -45,7 +45,7 @@ Audience: ages 4–8, primarily touch phones. French first, English included. No
 | dictee | La dictée magique | The magic dictation | Lumi | For readers, 6 and up: a finite vertical feed of word cards; hear a French word, write it on a big keyboard (letters in order at the first grade), the card answers at once; spaced review of missed words. No clock, lives, streak or endless scrolling. |
 | atelier | L'atelier de Boubou | Boubou's studio | Boubou | Colour drawing regions and the background, paint over the model or on a blank page, play the model's animation; creation rather than scoring. |
 
-Learning the time belongs to TicTac. Its home card opens the sister app only after the adult gate. No other future-game cards appear.
+Learning the time belongs to TicTac, and discovering the sky to Petit Astronome, two sister apps. After the game cards, the home shows one card for each, in the same style: the game's own icon, its name and a short skill, no lock. A touch opens the sister app directly in the same tab, without the adult gate. No other future-game cards appear.
 
 ## Counting levels
 
@@ -150,7 +150,7 @@ Never zero stars. Complete the session to unlock the next level. Save the maximu
 
 The home shows all five original SVG guides in a soft landscape, the title and one large card per playable game with a pictogram and stars. A touch speaks the game's name, followed by the level-choice prompt. No voice is expected before the initial gesture. The default locale is French except when the device language starts with `en`; saved preferences take precedence. HTML language follows the saved choice.
 
-The settings gear and TicTac card trigger a written multiplication of two integers 3…9. Three distinct options include the product once, shuffled by a seeded generator. The panel is never read aloud. An incorrect answer closes it. Success opens settings or requests `https://davy45270.github.io/tictac/` in a new context with `noopener noreferrer`. Before success there is no actionable external anchor. Settings change FR/EN, voice and sounds, or clear progress after a second confirmation. The gate is a gentle adult check, not secure age verification.
+The settings gear triggers a written multiplication of two integers 3…9. Three distinct options include the product once, shuffled by a seeded generator. The panel is never read aloud. An incorrect answer closes it and goes back home. Success opens settings. The TicTac and Petit Astronome cards are not gated: a touch navigates the same tab to `https://davy45270.github.io/tictac/` or `https://davy45270.github.io/petit-astronome/`. Settings change FR/EN, voice and sounds, or clear progress after a second confirmation. The gate is a gentle adult check, not secure age verification.
 
 ## Test oracle
 
@@ -167,7 +167,7 @@ Tests are written for independent execution; no Vitest, Playwright or browser wa
 - Brand guard: public text excludes commercial game names and uppercase internal issue identifiers. Lockfile and PNG bytes are excluded from prose inspection.
 - PWA: manifest uses relative start/scope, three valid PNG dimensions and standalone display; configuration uses generateSW, relative base and complete asset globs without runtime network caching. E2E establishes worker control, disables network, reloads and completes a session.
 - Browser: both desktop and phone show home and all guides, two playable cards, targets ≥ 48, cards ≥ 120, language persistence, zero console errors and no external home requests. Widths 320…1280 have no horizontal overflow.
-- Parental E2E: wrong answers cannot open a link; correct answers request precisely the sister app URL, intercepted before loading, with the required rel attributes.
+- Parental E2E: each sister-app card requests precisely its URL, intercepted before loading, in the same page and without the adult question; the settings gear still asks it, and a wrong answer goes back home without opening settings.
 - Counting E2E: DOM objects and every answer constellation form the counting oracle; the read-only hook only checks agreement. Answer cards and validation controls measure at least 72 px in each dimension; other targets measure at least 48 px. A full session in each mode and in the fewer level, exact star counts, progress after reload, low-score unlocking, removal from basket, retry encouragement and two-error hints. The read-only hook exposes a detached snapshot of screen, game, level, question index, current question including answer, basket count and target rectangles; it exposes no mutation function.
 - Media E2E: injected local speech and WebAudio doubles record utterances and oscillator starts. No speech precedes the first touch; both counting and filling check every question instruction, replay, retry and the full highlighted hint count. Filling tests basket-first order, restart on a transfer and excess highlighting. Comparison hints count the selected basket. Correct answers start oscillators only with sound enabled.
 - Noisy touch: fixed-seed ±10 px offsets, a 10–16-step noisy drag, an accidental double tap, completed sessions for all modes and unchanged scroll offsets. Touches use the touchscreen or Chromium touch events, never engine mutation.

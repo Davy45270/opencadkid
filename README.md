@@ -14,7 +14,7 @@ Boubou's baskets — count, fill and compare across sixteen levels, up to basket
 
 **CaliRoux's shapes** is also available: twenty levels of shapes, colours, combinations, sizes, an odd one out and finger sorting into two to four colour boxes. Eight outlined SVG shapes and eight named colours accompany spoken prompts; close colour pairs never share a question. Two errors make the answer glow and repeat its name.
 
-The complete catalogue is described in [GAME_SPEC.md](GAME_SPEC.md). Learning to tell time is available in the sister application TicTac, through an adult-gated home card.
+The complete catalogue is described in [GAME_SPEC.md](GAME_SPEC.md). Learning to tell time is available in the sister application TicTac, and discovering the sky in Petit Astronome: each has a card on the home page that opens it directly, without the adult question.
 
 No reading is required to play: spoken instructions accompany pictograms, objects and dot constellations. The first touch enables browser audio. Voice availability depends on the device's speech service; install a local French or English voice for spoken play offline. The ear button repeats an instruction. A silent device still shows the visual prompts.
 
