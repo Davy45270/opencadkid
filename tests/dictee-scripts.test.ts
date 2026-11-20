@@ -3,6 +3,7 @@ import { spawnSync } from 'node:child_process';
 import { cpSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { sentenceOnArrival, type Word } from '../src/engines/dictee';
 
 /** The offline scripts of the dictation run on a copy of their inputs (scripts/dictee and the shipped catalogue):
  * the repository is never written. */
@@ -111,6 +112,16 @@ describe('the offline scripts of the dictation', { timeout: 30_000 }, () => {
             expect(b.subarray(0, 4).toString('latin1'), f).toBe('OggS');
             expect(b.subarray(28, 36).toString('latin1'), f).toBe('OpusHead');
             expect(b[37], f).toBe(1);
+        }
+    });
+    it('a word_then_context word says its sentence after the word, and its homophones are only nuances', () => {
+        const all = [...words('.').values()].filter(w => w.audio.mode === 'word_then_context');
+        expect(all.length).toBeGreaterThan(0);
+        for (const w of all) {
+            const raw = w as unknown as Word;
+            expect(sentenceOnArrival(raw), w.id).toBe(true);
+            expect(w.homophones.length, w.id).toBeGreaterThan(0);
+            expect(w.homophones.every(h => h in raw.homophoneNotes), w.id).toBe(true);
         }
     });
     it('« sol » is heard in its sentence: « sole » sounds the same (2026-11-20)', () => {

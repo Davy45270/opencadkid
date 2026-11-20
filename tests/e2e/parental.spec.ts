@@ -1,4 +1,4 @@
-import { test, expect, passGate } from './helpers';
+import { test, expect, passGate, prepare, clearSpeech, media } from './helpers';
 for (const [id, url] of [['tictac', 'https://davy45270.github.io/tictac/'], ['petit-astronome', 'https://davy45270.github.io/petit-astronome/']] as const) {
     test(`the ${id} card opens its game straight away, in the same tab, without the adult question`, async ({ page, context }) => {
         const requests: string[] = [];
@@ -25,4 +25,12 @@ test('the parents panel shows the released version', async ({ page }) => {
     const { version } = JSON.parse((await import('node:fs')).readFileSync('package.json', 'utf8')) as { version: string };
     await page.goto('/'); await page.locator('#parents').click(); await passGate(page);
     await expect(page.locator('.app-version')).toHaveText(`Opencadkid ${version}`);
+});
+test('the adult question is never read aloud', async ({ page }) => {
+    await prepare(page); await page.locator('#back').click();
+    await clearSpeech(page);
+    await page.locator('#parents').click();
+    await expect(page.locator('.calculation')).toBeVisible();
+    await page.waitForTimeout(1000);
+    expect((await media(page)).speech).toEqual([]);
 });
