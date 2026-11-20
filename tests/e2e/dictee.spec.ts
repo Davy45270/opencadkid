@@ -1407,3 +1407,44 @@ test('a checked card hidden and shown again gives its word and its required sent
     await visibility(false);
     await expect.poll(async () => (await probe(page)).played.map(p => p.path), { timeout: 10_000 }).toEqual(expect.arrayContaining([w.pronunciationAsset, w.contextAsset]));
 });
+
+test('a sentence asked before the first announcement is never cut by it: the word follows the sentence (final Codex review of 2026-11-20)', async ({ page }) => {
+    // No sound ever reports its end: the announcement waits 3.5 s after the sentence really started.
+    await page.addInitScript(() => { HTMLMediaElement.prototype.play = function play() { return Promise.resolve(); }; });
+    const pool = shipped.words.filter(w => w.grade === 'CP' && w.audio.mode === 'context_required' && w.expectedForm !== 'un').map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    await feed(page, 'CP', 5);
+    const w = await word(page);
+    await page.locator('#dictee-sentence').click();
+    await expect.poll(async () => (await probe(page)).played.map(p => p.path), { timeout: 10_000 }).toContain(w.pronunciationAsset);
+    const p = await probe(page);
+    const sentence = p.heard.find(h => h.path === w.contextAsset)!.at;
+    const announced = p.played.find(x => x.path === w.pronunciationAsset)!.at;
+    expect(p.played[0]!.path).toBe(w.contextAsset);
+    expect(announced - sentence).toBeGreaterThanOrEqual(3400);
+});
+
+test('the keeping and the player share one request per recording: a wrong HTTP cache is bypassed once, not twice (final Codex review of 2026-11-20)', async ({ page }) => {
+    await page.addInitScript(() => { HTMLMediaElement.prototype.play = function play() { return Promise.resolve(); }; });
+    // A stale HTTP cache answers another file's bytes to every plain request; the request past it (« reload ») is slow.
+    await page.addInitScript(() => {
+        const real = window.fetch.bind(window);
+        const asked: string[] = [];
+        (window as unknown as { __asked: string[] }).__asked = asked;
+        window.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
+            const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
+            if (!url.includes('dictee/audio/')) return real(input, init);
+            asked.push(`${init?.cache === 'reload' ? 'reload' : 'plain'} ${url.replace(/\?.*$/, '')}`);
+            if (init?.cache !== 'reload') return new Response(new Uint8Array([79, 103, 103, 83, 0, 1, 2]), { headers: { 'Content-Type': 'audio/ogg' } });
+            await new Promise(r => setTimeout(r, 2500));
+            return real(input, init);
+        };
+    });
+    const pool = shipped.words.filter(w => w.grade === 'CE1' && w.audio.mode === 'word_only').map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    await feed(page, 'CE1', 5);
+    const w = await word(page);
+    await expect.poll(async () => (await probe(page)).heard.map(p => p.path), { timeout: 15_000 }).toContain(w.pronunciationAsset);
+    const asked = await page.evaluate(() => (window as unknown as { __asked: string[] }).__asked);
+    expect(asked.filter(a => a === `reload ${w.pronunciationAsset}`)).toHaveLength(1);
+});
