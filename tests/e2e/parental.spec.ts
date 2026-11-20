@@ -45,3 +45,21 @@ test('unticking sounds in the parents panel silences the sounds at once, ticking
     await expect.poll(async () => (await media(page)).resumes).toBeGreaterThan(muted.resumes);
     expect((await media(page)).suspends).toBe(muted.suspends);
 });
+test('hiding the page during a game suspends the audio context', async ({ page }) => {
+    await prepare(page);
+    const before = await media(page);
+    await page.evaluate(() => {
+        Object.defineProperty(document, 'hidden', { configurable: true, value: true });
+        document.dispatchEvent(new Event('visibilitychange'));
+    });
+    await expect.poll(async () => (await media(page)).suspends).toBe(before.suspends + 1);
+});
+test('sounds unticked in the parents panel stay unticked after a reload', async ({ page }) => {
+    await prepare(page); await page.locator('#back').click();
+    await page.locator('#parents').click(); await passGate(page);
+    await page.locator('#sound').uncheck();
+    await page.reload();
+    await page.locator('#parents').click(); await passGate(page);
+    await expect(page.locator('#sound')).not.toBeChecked();
+    await expect(page.locator('#voice')).toBeChecked();
+});

@@ -28,3 +28,11 @@ it('turns voice and sounds back on once per device, then respects the parents', 
     expect(soundBackOn(storage, readSave(storage)).sound).toBe(false);
     expect(soundBackOn(undefined, { ...fresh(), voice: false }).voice).toBe(false);
 });
+it('the one-time sound reset keeps every other preference, the English language included', () => {
+    const data = new Map<string, string>();
+    const storage = { getItem: (k: string) => data.get(k) ?? null, setItem: (k: string, v: string) => { data.set(k, v); } };
+    writeSave(storage, { ...fresh('en'), voice: false, sound: false, records: { 2: 1 } });
+    const on = soundBackOn(storage, readSave(storage));
+    expect(on.locale).toBe('en'); expect(readSave(storage).locale).toBe('en');
+    expect(readSave(storage)).toEqual({ ...fresh('en'), voice: true, sound: true, records: { 2: 1 } });
+});
