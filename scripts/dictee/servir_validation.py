@@ -84,8 +84,11 @@ def main() -> None:
                 return self.envoyer(200, a.verification.read_bytes(), 'application/json')
             if chemin == '/audio-non-regression.json':
                 return self.envoyer(200, (ICI / 'audio-non-regression.json').read_bytes(), 'application/json')
-            if chemin == '/decisions' and (a.sortie / 'dictee-relecture.json').exists():
-                return self.envoyer(200, (a.sortie / 'dictee-relecture.json').read_bytes(), 'application/json')
+            if chemin == '/decisions':
+                # Vingtième revue Codex : un serveur neuf n'a rien reçu ; il le dit (200, vide), ce n'est pas une panne.
+                garde = a.sortie / 'dictee-relecture.json'
+                corps = garde.read_bytes() if garde.exists() else json.dumps({'format': 'dictee-relecture', 'version': 1, 'decisions': {}, 'recus': {}}).encode()
+                return self.envoyer(200, corps, 'application/json')
             if AUDIO.match(chemin) and (PUBLIC / chemin[1:]).is_file():
                 # Huitième revue Codex : seuls les octets que la page a nommés (?sha=, ceux du catalogue qu'elle a chargé)
                 # sont servis ; un fichier remplacé depuis répond 409, l'adulte recharge avant de décider.

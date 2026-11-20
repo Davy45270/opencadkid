@@ -90,7 +90,17 @@ let enVol = false, redemande = false;
 // Dix-neuvième revue : après un envoi dont l'issue est inconnue (réponse perdue ou illisible), le téléphone relit ce que
 // le serveur a reçu avant tout nouvel envoi, au lieu de renvoyer à l'aveugle.
 let incertain = false;
+// Vingtième revue : un choix écarté par le serveur n'est plus compté relu ; il reste dit jusqu'à ce que l'adulte relise le mot.
+const nonEnregistres = new Set();
 const non_enregistres = ids => etat(`Non enregistré : ${ids.join(', ')} a changé depuis le chargement. Recharger la page et relire ce mot.`, true);
+function ecarter(ids) {
+  for (const id of ids) { nonEnregistres.add(id); delete decisions[id]; delete envoyes[id]; }
+  if (!ids.length) return;
+  try { localStorage.setItem(CLE, JSON.stringify(decisions)); } catch { /* sans effet */ }
+  memoriser();
+  if (mots.length) afficher();
+  non_enregistres([...nonEnregistres]);
+}
 // Ce que le serveur a reçu (rev → garde | perime) : les choix reçus sont notés envoyés ; rend ceux qu'il a écartés.
 function rapprocher(recus) {
   const sorts = Array.isArray(recus) ? Object.fromEntries(recus.map(r => [r, 'garde'])) : (recus || {});
@@ -113,11 +123,12 @@ async function envoyer() {
   try {
     if (incertain) {
       const g = await fetch('decisions', { cache: 'no-store' });
-      if (!g.ok) throw new Error(String(g.status));
-      const ecartes = rapprocher((await g.json()).recus);
+      // 404 : un serveur d'avant le 2026-11-20 qui n'a encore rien reçu ; rien à rapprocher (vingtième revue).
+      if (!g.ok && g.status !== 404) throw new Error(String(g.status));
+      const ecartes = g.ok ? rapprocher((await g.json()).recus) : [];
       incertain = false;
       memoriser();
-      if (ecartes.length) non_enregistres(ecartes);
+      ecarter(ecartes);
       const reste = changes();
       for (const id of Object.keys(part)) if (!(id in reste)) delete part[id];
       for (const [id, t] of Object.entries(reste)) part[id] = t;
@@ -134,7 +145,8 @@ async function envoyer() {
     const perimes = reponse.perimes;
     if (Object.keys(changes()).length) ecrire();  // tapé pendant l'envoi : un nouvel envoi suit
     memoriser();
-    if (perimes.length) non_enregistres(perimes);
+    ecarter(perimes.filter(id => decisions[id] && JSON.stringify(decisions[id]) === part[id]));
+    if (nonEnregistres.size) non_enregistres([...nonEnregistres]);
     else etat(`Enregistré sur le serveur à ${new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}.`);
   } catch {
     incertain = true;
@@ -186,6 +198,7 @@ function vu(m) {
 }
 function decider(m, action, carte) {
   const avant = decisions[m.id];
+  nonEnregistres.delete(m.id);
   // Undone: kept as a dated empty choice, so the server's merge (latest wins) carries the undo too (ninth Codex review).
   if (avant?.action === action && action !== 'corriger') { decisions[m.id] = { action: null, lemma: m.lemma, at: new Date().toISOString(), seen: vu(m), rev: rev() }; }
   else {
@@ -286,10 +299,13 @@ async function demarrer() {
       for (const [id, d] of Object.entries(corps.decisions || {})) {
         if (!decisions[id] || JSON.stringify(decisions[id]) === envoyes[id]) { decisions[id] = d; envoyes[id] = JSON.stringify(d); }
       }
-    }
+    } else if (r.status !== 404) incertain = true;
     // Reçu du serveur = déjà envoyé : noté tout de suite, jamais réexpédié après un rechargement (quinzième revue).
     memoriser();
-  } catch { /* page ouverte sans serveur */ }
+  } catch {
+    // Page ouverte sans serveur joignable : avant tout envoi, le serveur sera interrogé (vingtième revue).
+    incertain = true;
+  }
   try { niveau = localStorage.getItem(CLE + '.niveau') || 'CP'; } catch { niveau = 'CP'; }
   const cat = await (await fetch('dictee/catalogue.json', { cache: 'no-store' })).json();
   mots = cat.words;
@@ -311,7 +327,7 @@ async function demarrer() {
   document.getElementById('exporter').addEventListener('click', exporter);
   document.getElementById('suivant').addEventListener('click', prochain);
   afficher();
-  if (ecartesAuChargement.length) non_enregistres(ecartesAuChargement);
+  ecarter(ecartesAuChargement);
 }
 demarrer().catch(e => { document.getElementById('compte').textContent = 'Impossible de charger le catalogue : ' + e.message; });
 </script>

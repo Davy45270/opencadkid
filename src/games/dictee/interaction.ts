@@ -128,7 +128,8 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
     };
     let turns = 0;
     /** The card whose word the child already asked for (touch or hold) before its announcement. */
-    let asked: string | null = null;
+    // The card itself (its place in the feed), not only its word: a missed word comes back as a later card (twentieth review).
+    let asked: { id: string; index: number } | null = null;
     /** The last sound asked: waiting for its bytes, started (or refused), or ended. */
     let last: { path: string; turn: number; state: 'waiting' | 'started' | 'ended'; at?: number } | null = null;
     /** A turn has come (its bytes are in the player and it started, or they were refused): if the sentence waits for
@@ -177,7 +178,7 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
     audio?.addEventListener('ended', () => { if (last?.turn === turns) last.state = 'ended'; if (pending) { const p = pending; pending = null; play(p); } });
     /** A card arrives: its word is said; a word that needs its sentence gets it said right after, every time. */
     /** The child asks for the word (tap, hold, space): remembered, so the announcement never cuts it. */
-    const ask = (rate = 1): void => { const w = current(); if (w) asked = w.id; play(w?.pronunciationAsset ?? null, rate); };
+    const ask = (rate = 1): void => { const w = current(); if (w && session.feed) asked = { id: w.id, index: session.feed.index }; play(w?.pronunciationAsset ?? null, rate); };
     const arrive = (): void => {
         const w = current();
         if (!w) return;
@@ -186,7 +187,7 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         // Asked already (a slow replay held at once, ninth Codex review): the announcement does not restart the word.
         // Its sentence follows the end of that word: at once if it already ended, at its end (or 3.5 s after it really
         // started) if it plays, and once its bytes come if they are still on their way (tenth Codex review).
-        if (asked === w.id && last?.turn === turns && last.path === w.pronunciationAsset) {
+        if (asked?.id === w.id && asked.index === session.feed?.index && last?.turn === turns && last.path === w.pronunciationAsset) {
             asked = null;
             if (!pending) return;
             if (last.state === 'ended') { const p = pending; pending = null; play(p); }
