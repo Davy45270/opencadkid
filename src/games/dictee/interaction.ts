@@ -45,8 +45,9 @@ const AUDIO_CACHE = 'opencadkid-dictee-audio';
 /** A regenerated recording keeps its file name: the kept copy is tied to the audio version the catalogue names
  * (`?v=`), so a device never replays an older recording than the one the adult approved (Codex review, 2026-11-20). */
 const versions = new Map<string, string>();
-/** The sha256 digest of the bytes the catalogue ships for each file: a response with other bytes (a catalogue and recordings from
- * two states of a deployment) is played but never kept, so it cannot pass for the version it was asked under. */
+/** The sha256 digest of the bytes the catalogue ships for each file: a response or a kept copy with other bytes (a catalogue
+ * and recordings from two states of a deployment) is neither kept nor played, so it cannot pass for the version it was
+ * asked under. */
 const digests = new Map<string, string>();
 const versioned = (path: string): string => { const v = versions.get(path); return v ? `${path}?v=${encodeURIComponent(v)}` : path; };
 function remember(w: Word): string[] {
@@ -62,7 +63,9 @@ async function keep(paths: readonly string[]): Promise<void> {
         const c = await caches.open(AUDIO_CACHE);
         await Promise.all(paths.map(async path => {
             const p = versioned(path);
-            if (await c.match(p)) return;
+            // A kept copy is trusted for its bytes only: a stale one under the current key is replaced (fourth Codex review).
+            const kept = await c.match(p);
+            if (kept && await shipped(path, kept)) return;
             const r = await fetch(p);
             if (r.ok && await shipped(path, r.clone())) await c.put(p, r);
         }));
@@ -85,8 +88,12 @@ async function source(path: string): Promise<string | null> {
     let r: Response | undefined;
     try { if (typeof caches !== 'undefined') r = await (await caches.open(AUDIO_CACHE)).match(key); } catch { r = undefined; }
     try {
-        if (!r || !await shipped(path, r.clone())) r = await fetch(key);
-        if (!r.ok || !await shipped(path, r.clone())) return null;
+        if (!r || !await shipped(path, r.clone())) {
+            r = await fetch(key);
+            if (!r.ok || !await shipped(path, r.clone())) return null;
+            // The right bytes replace a missing or stale kept copy, so they still play offline after a reload.
+            try { if (typeof caches !== 'undefined') await (await caches.open(AUDIO_CACHE)).put(key, r.clone()); } catch { /* Played anyway. */ }
+        }
         const url = URL.createObjectURL(await r.blob()); blobs.set(key, url); return url;
     } catch { return null; }
 }
@@ -108,6 +115,7 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
     const audio = typeof Audio === 'function' ? new Audio() : null;
     /** A sentence waiting for the word to end (a word heard only in context: verre, vert, vers). */
     let pending: string | null = null;
+    let turns = 0;
     /** `settled` runs once the file's turn has come: its bytes are in the player, or were refused. */
     const play = (path: string | null, rate = 1, settled?: () => void): void => {
         if (!path) return;
@@ -118,8 +126,12 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         observed.played.push({ path, rate, at: performance.now() });
         // Stopped now, not once the file arrives: the end of the previous sound must not release a waiting sentence.
         audio.pause();
+        // Only the last request may reach the player: a late file (a replay of the previous card) is dropped.
+        const turn = ++turns;
         void source(path).then(src => {
             if (disposed) return;
+            // The sentence's safety still starts (it checks its card itself), but the player keeps the newer request.
+            if (turn !== turns) { settled?.(); return; }
             if (src) {
                 audio.pause(); audio.src = src; audio.playbackRate = rate; audio.preservesPitch = true;
                 observed.heard.push({ path, at: performance.now() });

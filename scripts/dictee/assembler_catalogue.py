@@ -31,6 +31,7 @@ PHRASES = ICI / 'phrases.json'
 RELECTURES = ICI / 'relectures.json'
 SIGNALEMENTS = ICI / 'audio-non-regression.json'
 EMPREINTES = ICI / 'audio-empreintes.json'
+OCTETS = ICI / 'audio-octets.json'
 CATALOGUE = RACINE / 'public/dictee/catalogue.json'
 VERSION = 3
 REVUES = ('orthography', 'pedagogy', 'context', 'audio')
@@ -76,6 +77,12 @@ def main() -> None:
     phrases = {r['lemma']: r for r in lire(PHRASES, [])}
     relus = lire(RELECTURES, {})
     empreintes = lire(EMPREINTES, {})
+    # Quatrième revue Codex (2026-11-20) : un fichier dont les octets ne sont pas ceux qu'a écrits generer_audio.py
+    # (un ancien enregistrement recopié sous le même nom) arrêterait l'assemblage avant d'hériter d'une approbation.
+    ecrits = lire(OCTETS, {})
+    faux = sorted(a for a, h in ecrits.items() if octets(a) != h)
+    if faux:
+        raise SystemExit(f"octets différents de ceux qu'a écrits generer_audio.py (régénérer, ou recopier le bon fichier) : {', '.join(faux)}")
     signales: dict[str, list[dict]] = {}
     for cas in lire(SIGNALEMENTS, {'cases': []})['cases']:
         signales.setdefault(cas['id'], []).append(cas)

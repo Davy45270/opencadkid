@@ -34,6 +34,9 @@ RACINE = Path(__file__).resolve().parents[2]
 CATALOGUE = RACINE / 'public/dictee/catalogue.json'
 SORTIE = RACINE / 'public'
 EMPREINTES = RACINE / 'scripts/dictee/audio-empreintes.json'
+# Octets écrits par CE script (sha256 de chaque fichier) : l'assembleur refuse tout autre fichier sous le même nom
+# (quatrième revue Codex, 2026-11-20), l'approbation d'un enregistrement ne passe donc jamais à d'autres octets.
+OCTETS = RACINE / 'scripts/dictee/audio-octets.json'
 MODELE_SHA256 = 'b1d946fd68d0347155fa59bce0a018924abbef3c1561181db45ca463d83963ef'
 # Le mot est dit dans une courte phrase porteuse : la voix prononce mal un mot isolé (mesure du 2026-11-16 avec
 # verifier_audio.py : 2 à 5 mots sur 20 reconnus seuls, 12 sur 20 dans « Écris le mot … »). Les deux-points posent
@@ -63,6 +66,7 @@ def main() -> None:
     voix = PiperVoice.load(str(a.modele))
     mots = json.loads(a.catalogue.read_text(encoding='utf-8'))['words']
     connues = json.loads(EMPREINTES.read_text(encoding='utf-8')) if EMPREINTES.exists() else {}
+    octets = json.loads(OCTETS.read_text(encoding='utf-8')) if OCTETS.exists() else {}
     faits = 0
     taches = [(w['pronunciationAsset'], PORTEUSE.format(PRONONCIATION.get(w['expectedForm'], w['expectedForm'])), 'mot') for w in mots]
     taches += [(w['contextAsset'], w['contextSentence'], 'phrase') for w in mots if w['contextAsset'] and w['contextSentence']]
@@ -77,6 +81,7 @@ def main() -> None:
                 voix.synthesize_wav(texte, f, syn_config=SynthesisConfig(**REGLAGES[sorte]))
             subprocess.run(['ffmpeg', '-loglevel', 'error', '-y', '-i', str(wav), *OPUS, str(cible)], check=True)
             connues[chemin] = cle
+            octets[chemin] = hashlib.sha256(cible.read_bytes()).hexdigest()
             faits += 1
             if faits % 50 == 0:
                 EMPREINTES.write_text(json.dumps(dict(sorted(connues.items())), indent=0) + '\n', encoding='utf-8')
@@ -87,7 +92,9 @@ def main() -> None:
         if f'dictee/audio/{f.name}' not in attendus:
             f.unlink()
             connues.pop(f'dictee/audio/{f.name}', None)
+            octets.pop(f'dictee/audio/{f.name}', None)
     EMPREINTES.write_text(json.dumps(dict(sorted((k, v) for k, v in connues.items() if k in attendus)), indent=0) + '\n', encoding='utf-8')
+    OCTETS.write_text(json.dumps(dict(sorted((k, v) for k, v in octets.items() if k in attendus)), indent=0) + '\n', encoding='utf-8')
     print(f'{faits} fichiers générés, {len(taches)} attendus')
 
 
