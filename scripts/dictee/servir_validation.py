@@ -116,7 +116,9 @@ def main() -> None:
                 avant = json.loads(garde.read_text(encoding='utf-8')) if garde.exists() else {'format': 'dictee-relecture', 'version': 1, 'decisions': {}}
                 # Revue Codex de a7c7148 : un fichier écrit par l'ancien serveur ne nomme son adulte qu'en tête ; chaque
                 # décision le reçoit avant la fusion, pour que l'en-tête du prochain envoi ne le remplace pas.
-                fusion = {k: ({**v, 'reviewer': v.get('reviewer') or avant.get('reviewer')} if isinstance(v, dict) else v)
+                # Sans aucun nom, l'importeur a toujours retenu « David » : ce défaut est figé ici, pour qu'un envoi suivant
+                # ne le remplace pas (revue Codex de 88a6323).
+                fusion = {k: ({**v, 'reviewer': v.get('reviewer') or avant.get('reviewer') or 'David'} if isinstance(v, dict) else v)
                           for k, v in (avant.get('decisions') or {}).items()}
                 # Dix-huitième revue : chaque rev reçu garde son sort (« garde » ou « perime »), pour qu'un renvoi après un
                 # accusé perdu reçoive la même réponse que le premier envoi.
@@ -143,13 +145,15 @@ def main() -> None:
                         continue
                     if isinstance(d.get('rev'), str):
                         recus[d['rev']] = 'garde'
-                    # Revue Codex de f08e85c : chaque décision garde l'adulte qui l'a prise ; le fichier consolidé mêle
-                    # plusieurs lots, son `reviewer` de tête n'est que celui du dernier. L'auteur est celui qui envoie : une décision reçue puis éditée sur un autre téléphone ne garde pas
-                    # le nom de l'adulte précédent (revue Codex de a7c7148).
-                    fusion[ident] = {**d, 'reviewer': lot.get('reviewer')}
+                    # Chaque décision garde l'adulte qui l'a prise (revue Codex de f08e85c) : celui qui l'envoie, pas le nom
+                    # qu'elle portait sur un autre téléphone (a7c7148) ; un lot sans en-tête garde le nom de la décision,
+                    # sinon le défaut historique de l'importeur (88a6323).
+                    fusion[ident] = {**d, 'reviewer': lot.get('reviewer') or d.get('reviewer') or 'David'}
                 tout = {**lot, 'decisions': dict(sorted(fusion.items())), 'recus': dict(sorted(recus.items()))}
-                ecrire(garde, json.dumps(tout, ensure_ascii=False, indent=1).encode())
+                # L'envoi est archivé sous son nom AVANT que le consolidé le liste comme reçu : une archive impossible ne
+                # laisse jamais un téléphone croire son choix gardé (revue Codex de 88a6323).
                 ecrire(a.sortie / f'dictee-relecture-envoi-{time.time_ns()}.json', json.dumps(lot, ensure_ascii=False, indent=1).encode())
+                ecrire(garde, json.dumps(tout, ensure_ascii=False, indent=1).encode())
             self.envoyer(200, json.dumps({'enregistre': len(lot['decisions']) - len(perimes), 'perimes': sorted(perimes)}).encode(), 'application/json')
 
         def log_message(self, fmt: str, *args: object) -> None:
