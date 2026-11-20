@@ -610,7 +610,7 @@ test('the review page, for an adult on a phone: Validate, Correct, Remove, and e
     await page.goto('http://relecture.test/');
     // A word without a required listening: « Valider » records at once (the listening case is the fourteenth review's test).
     const cases = new Set((JSON.parse(readFileSync('scripts/dictee/audio-non-regression.json', 'utf8')) as { cases: { id: string }[] }).cases.map(c => c.id));
-    const first = shipped.words.find(w => w.grade === 'CP' && !cases.has(w.id))!;
+    const first = shipped.words.find(w => w.grade === 'CP' && !cases.has(w.id) && w.audio.mode !== 'audio_manual_review')!;
     const card = page.locator(`article.mot#${first.id}`);
     await expect(card).toBeVisible();
     for (const action of ['valider', 'corriger', 'retirer']) {
@@ -1115,4 +1115,41 @@ test('a decision kept for a word that no longer exists never leaves, and a choic
     expect(Object.keys(posted[0]!.decisions)).toEqual([a.id]);
     await expect(page.locator('body')).toContainText('Non enregistré');
     await expect(page.locator('body')).not.toContainText('Enregistré sur le serveur');
+});
+
+test('a word the assembly marked « audio to hear » is never validated unheard, even without a reported case (eighteenth Codex review of 2026-11-20)', async ({ page }) => {
+    const cases = new Set((JSON.parse(readFileSync('scripts/dictee/audio-non-regression.json', 'utf8')) as { cases: { id: string }[] }).cases.map(c => c.id));
+    const catalogue = JSON.parse(readFileSync('public/dictee/catalogue.json', 'utf8')) as { words: (Word & { audio: { mode: string } })[] };
+    const a = catalogue.words.find(w => w.grade === 'CP' && !cases.has(w.id))!;
+    a.audio.mode = 'audio_manual_review';  // a stale recipe: the assembly asks for a listening, no case reported
+    const posted: unknown[] = [];
+    await page.route('http://relecture.test/**', async route => {
+        const path = new URL(route.request().url()).pathname;
+        if (path === '/') await route.fulfill({ contentType: 'text/html', body: readFileSync('scripts/dictee/validation/index.html', 'utf8') });
+        else if (path === '/dictee/catalogue.json') await route.fulfill({ contentType: 'application/json', body: JSON.stringify(catalogue) });
+        else if (path === '/audio-non-regression.json') await route.fulfill({ contentType: 'application/json', body: readFileSync('scripts/dictee/audio-non-regression.json', 'utf8') });
+        else if (path === '/decisions' && route.request().method() === 'POST') { posted.push(route.request().postDataJSON()); await route.fulfill({ status: 200, body: '{}' }); }
+        else if (path === '/decisions') await route.fulfill({ contentType: 'application/json', body: '{"decisions":{}}' });
+        else await route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg"/>' });
+    });
+    await page.goto('http://relecture.test/');
+    const card = page.locator(`article.mot#${a.id}`);
+    await expect(card).toContainText('Écoute obligatoire');
+    await card.locator('[data-action="valider"]').click();
+    await expect(page.locator('body')).toContainText('avant de valider');
+    await expect(card).not.toHaveAttribute('data-etat', 'valider');
+    await page.waitForTimeout(1500);
+    expect(posted).toEqual([]);
+});
+
+test('once checked, the right arrow goes to the next card too (eighteenth Codex review of 2026-11-20)', async ({ page }) => {
+    await page.addInitScript(() => { HTMLMediaElement.prototype.play = function play() { return Promise.resolve(); }; });
+    const pool = shipped.words.filter(w => w.grade === 'CE1' && w.audio.mode === 'word_only' && /^[a-z]+$/.test(w.expectedForm)).map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    await feed(page, 'CE1', 5);
+    const w = await word(page);
+    await page.keyboard.type(w.expectedForm); await page.keyboard.press('Enter');
+    await expect(page.locator('.dictee-card.juste')).toHaveCount(1);
+    await page.keyboard.press('ArrowRight');
+    await expect.poll(async () => (await probe(page)).feed!.index).toBe(1);
 });

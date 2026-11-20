@@ -351,11 +351,15 @@ except SystemExit as e:
             expect(await post({ 'fr-huit': { action: null, lemma: 'huit', at: '2026-11-20T10:01:00Z', seen: huit, rev: 'r2' } })).toBe(200);
             // An undo (or a choice) made on another version of the word never overwrites anything (sixteenth review).
             expect(await post({ 'fr-air': { action: null, lemma: 'air', at: '2026-11-20T10:03:00Z', seen: { ...air, contextSentence: 'Une ancienne phrase.' }, rev: 'r3' } })).toBe(200);
-            const kept = JSON.parse(readFileSync(join(out, 'dictee-relecture.json'), 'utf8')) as { decisions: Record<string, { action: string | null }>; recus: string[] };
+            const kept = JSON.parse(readFileSync(join(out, 'dictee-relecture.json'), 'utf8')) as { decisions: Record<string, { action: string | null }>; recus: Record<string, string> };
             expect(kept.decisions['fr-air']!.action).toBe('retirer');
             expect(kept.decisions['fr-huit']!.action).toBeNull();
             // Every decision received is listed by its rev, the stale one too: a phone whose answer got lost never resends it.
-            expect(kept.recus).toEqual(['r1', 'r2', 'r3']);
+            // Every decision received is kept with its fate, the stale one too (eighteenth review).
+            expect(kept.recus).toEqual({ r1: 'garde', r2: 'garde', r3: 'perime' });
+            // Sent again after a lost answer, the stale one is reported stale again, never as saved (eighteenth review).
+            const again = await fetch(`http://127.0.0.1:${port}/decisions`, { method: 'POST', body: JSON.stringify({ format: 'dictee-relecture', version: 1, reviewer: 'Test', decisions: { 'fr-air': { action: null, lemma: 'air', at: '2026-11-20T10:03:00Z', seen: { ...air, contextSentence: 'Une ancienne phrase.' }, rev: 'r3' } } }) });
+            expect(((await again.json()) as { perimes: string[] }).perimes).toEqual(['fr-air']);
             // A state already received, sent again after a lost answer, is never applied again (seventeenth review).
             expect(await post({ 'fr-huit': { action: 'valider', lemma: 'huit', at: '2026-11-20T10:02:00Z', seen: huit, rev: 'r1' } })).toBe(200);
             expect((JSON.parse(readFileSync(join(out, 'dictee-relecture.json'), 'utf8')) as { decisions: Record<string, { action: string | null }> }).decisions['fr-huit']!.action).toBeNull();
