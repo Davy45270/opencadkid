@@ -432,6 +432,57 @@ except SystemExit as e:
             expect((json(dir, 'relectures.json') as Record<string, { by: string }>).huit!.by, cas).toBe(cas === 'ancien fichier' ? 'Alice' : 'Bob');
         }
     });
+    it('a batch with no author in its header keeps the author of its decisions, else the importer\'s historical default (Codex review of 88a6323)', async () => {
+        for (const cas of ['nom sur la décision', 'ancien fichier sans nom'] as const) {
+            const dir = copy();
+            const out = join(dir, 'sortie');
+            const w = words(dir).get('fr-huit')! as unknown as { expectedForm: string; contextSentence: string | null; explanation: string | null; audio: Record<string, string | null> };
+            const seen = { expectedForm: w.expectedForm, contextSentence: w.contextSentence, explanation: w.explanation, wordVersion: w.audio.wordVersion, contextVersion: w.audio.contextVersion, wordSha256: w.audio.wordSha256, contextSha256: w.audio.contextSha256 };
+            const huit = { action: 'valider', lemma: 'huit', at: '2026-11-20T10:00:00Z', seen, rev: 'a1' };
+            if (cas === 'ancien fichier sans nom') {
+                mkdirSync(out, { recursive: true });
+                writeFileSync(join(out, 'dictee-relecture.json'), JSON.stringify({ format: 'dictee-relecture', version: 1, decisions: { 'fr-huit': huit }, recus: { a1: 'garde' } }));
+            }
+            const port = 18000 + Math.floor(Math.random() * 2000);
+            const server = spawn('python3', ['-B', 'scripts/dictee/servir_validation.py', '--ecoute', `127.0.0.1:${port}`, '--sortie', out], { cwd: dir, stdio: 'ignore' });
+            const post = async (body: object): Promise<number> => {
+                for (let i = 0; i < 50; i++) {
+                    try { return (await fetch(`http://127.0.0.1:${port}/decisions`, { method: 'POST', body: JSON.stringify(body) })).status; } catch { await new Promise(r => setTimeout(r, 100)); }
+                }
+                return 0;
+            };
+            try {
+                if (cas === 'nom sur la décision') expect(await post({ format: 'dictee-relecture', version: 1, decisions: { 'fr-huit': { ...huit, reviewer: 'Alice' } } })).toBe(200);
+                expect(await post({ format: 'dictee-relecture', version: 1, reviewer: 'Bob', decisions: { 'fr-air': { action: 'retirer', lemma: 'air', at: '2026-11-20T10:01:00Z', seen: {}, rev: 'b1' } } })).toBe(200);
+            } finally { server.kill(); }
+            const r = run(dir, 'importer_validation.py', join('sortie', 'dictee-relecture.json'));
+            expect(r.status, r.stderr).toBe(0);
+            expect((json(dir, 'relectures.json') as Record<string, { by: string }>).huit!.by, cas).toBe(cas === 'nom sur la décision' ? 'Alice' : 'David');
+        }
+    });
+    it('a sending is archived under its own name before the server lists it as received (Codex review of 88a6323)', async () => {
+        const dir = copy();
+        const out = join(dir, 'sortie');
+        // The archive cannot be written (disk full, say): the consolidated file must not already list the sending.
+        const site = join(dir, 'panne');
+        mkdirSync(site, { recursive: true });
+        writeFileSync(join(site, 'sitecustomize.py'), "import os\n_r = os.replace\ndef replace(a, b, *k, **kw):\n    if 'dictee-relecture-envoi-' in str(b):\n        raise OSError(28, 'No space left on device')\n    return _r(a, b, *k, **kw)\nos.replace = replace\n");
+        const port = 18000 + Math.floor(Math.random() * 2000);
+        const server = spawn('python3', ['-B', 'scripts/dictee/servir_validation.py', '--ecoute', `127.0.0.1:${port}`, '--sortie', out], { cwd: dir, stdio: 'ignore', env: { ...process.env, PYTHONPATH: site } });
+        const w = words(dir).get('fr-air')! as unknown as { expectedForm: string; contextSentence: string | null; explanation: string | null; audio: Record<string, string | null> };
+        const seen = { expectedForm: w.expectedForm, contextSentence: w.contextSentence, explanation: w.explanation, wordVersion: w.audio.wordVersion, contextVersion: w.audio.contextVersion, wordSha256: w.audio.wordSha256, contextSha256: w.audio.contextSha256 };
+        const body = JSON.stringify({ format: 'dictee-relecture', version: 1, reviewer: 'Test', decisions: { 'fr-air': { action: 'retirer', lemma: 'air', at: '2026-11-20T10:00:00Z', seen, rev: 'r1' } } });
+        try {
+            let pret = false;
+            for (let i = 0; i < 50 && !pret; i++) { try { pret = (await fetch(`http://127.0.0.1:${port}/decisions`)).ok; } catch { await new Promise(r => setTimeout(r, 100)); } }
+            expect(pret).toBe(true);
+            // The answer is lost (error or closed connection): the phone then asks what the server kept.
+            const rep = await fetch(`http://127.0.0.1:${port}/decisions`, { method: 'POST', body }).catch(() => null);
+            expect(rep?.status).not.toBe(200);
+            const kept = await (await fetch(`http://127.0.0.1:${port}/decisions`)).json() as { recus: Record<string, string> };
+            expect(kept.recus.r1).toBeUndefined();
+        } finally { server.kill(); }
+    });
     it('the review page records what the adult saw with each decision', () => {
         const page = readFileSync('scripts/dictee/validation/index.html', 'utf8');
         expect(page).toMatch(/const d = \{ action, lemma: m\.lemma, at: new Date\(\)\.toISOString\(\), seen: vu\(m\), heard: entendu\(m\), rev: rev\(\) \};/);
