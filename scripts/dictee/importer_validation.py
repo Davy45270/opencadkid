@@ -158,6 +158,15 @@ def main() -> None:
             print(f'ignoré : {ident} ne correspond plus au catalogue')
             continue
         action = d['action']
+        # Septième revue Codex : une décision ne vaut que pour le texte et les enregistrements que l'adulte a eus sous
+        # les yeux et dans l'oreille ; changés depuis (ou décision exportée sans eux), elle est ignorée, à refaire.
+        a = w['audio']
+        actuel = {'expectedForm': w['expectedForm'], 'contextSentence': w['contextSentence'], 'explanation': w['explanation'],
+                  'wordVersion': a.get('wordVersion'), 'contextVersion': a.get('contextVersion'), 'wordSha256': a.get('wordSha256'), 'contextSha256': a.get('contextSha256')}
+        if action != 'retirer' and d.get('seen') != actuel:
+            compte['inconnu'] += 1
+            print(f'ignoré : {ident} a changé depuis la décision (texte ou enregistrement), à relire')
+            continue
         if action == 'retirer':
             retires.add(w['lemma'])
             relus.pop(w['lemma'], None)

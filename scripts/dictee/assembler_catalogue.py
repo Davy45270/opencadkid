@@ -34,6 +34,9 @@ RELECTURES = ICI / 'relectures.json'
 SIGNALEMENTS = ICI / 'audio-non-regression.json'
 EMPREINTES = ICI / 'audio-empreintes.json'
 OCTETS = ICI / 'audio-octets.json'
+# Octets des enregistrements faits avant le 2026-11-20, dont la version est la clé de recette seule (sans « .octets ») :
+# figés une fois pour toutes, ils lient ces versions-là à leurs octets (septième revue Codex).
+ANCIENS = ICI / 'audio-octets-anciens.json'
 CATALOGUE = RACINE / 'public/dictee/catalogue.json'
 VERSION = 3
 REVUES = ('orthography', 'pedagogy', 'context', 'audio')
@@ -84,7 +87,18 @@ def main() -> None:
     # Tout fichier attendu doit y figurer (5e revue) : une entrée absente n'est pas une exemption.
     ecrits = lire(OCTETS, {})
     attendus = [f"dictee/audio/{m['id']}.ogg" for m in mots] + [f"dictee/audio/{m['id']}-phrase.ogg" for m in mots if phrases.get(m['lemma'], {}).get('contextSentence')]
-    faux = sorted(a for a in attendus if a not in ecrits or octets(a) != ecrits[a])
+    # Un fichier encore jamais produit (mot remplacé après « Retirer ») n'arrête rien : son mot reste en écoute
+    # (a_regenerer) jusqu'à generer_audio.py. Un fichier présent doit être au manifeste, avec ses octets, et sa version
+    # doit nommer ces octets : « clé.octets », ou la clé seule pour les octets figés d'avant le 2026-11-20.
+    anciens = lire(ANCIENS, {})
+    def lie(a: str) -> bool:
+        h, v = octets(a), empreintes.get(a, '')
+        if h is None and a not in ecrits:
+            return True
+        if h is None or ecrits.get(a) != h:
+            return False
+        return v.split('.', 1)[1] == h[:8] if '.' in v else anciens.get(a) == h
+    faux = sorted(a for a in attendus if not lie(a))
     if faux:
         raise SystemExit(f"octets différents de ceux qu'a écrits generer_audio.py (régénérer, ou recopier le bon fichier) : {', '.join(faux)}")
     signales: dict[str, list[dict]] = {}

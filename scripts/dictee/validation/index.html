@@ -114,11 +114,17 @@ function compter() {
     b.querySelector('small').textContent = `${tous.filter(m => decisions[m.id]).length}/${tous.length}`;
   }
 }
+function vu(m) {
+  const a = m.audio || {};
+  return { expectedForm: m.expectedForm, contextSentence: m.contextSentence ?? null, explanation: m.explanation ?? null,
+    wordVersion: a.wordVersion ?? null, contextVersion: a.contextVersion ?? null, wordSha256: a.wordSha256 ?? null, contextSha256: a.contextSha256 ?? null };
+}
 function decider(m, action, carte) {
   const avant = decisions[m.id];
   if (avant?.action === action && action !== 'corriger') { delete decisions[m.id]; }
   else {
-    const d = { action, lemma: m.lemma, at: new Date().toISOString() };
+    // What the adult saw and heard: the import applies the decision only to this very text and these very recordings.
+    const d = { action, lemma: m.lemma, at: new Date().toISOString(), seen: vu(m) };
     if (action === 'corriger') Object.assign(d, { expectedForm: avant?.expectedForm ?? m.expectedForm, contextSentence: avant?.contextSentence ?? (m.contextSentence || ''), explanation: avant?.explanation ?? (m.explanation || '') });
     decisions[m.id] = d;
   }

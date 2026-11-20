@@ -149,7 +149,9 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
             if (src) {
                 audio.pause(); audio.src = src; audio.playbackRate = rate; audio.preservesPitch = true;
                 observed.heard.push({ path, at: performance.now() });
-                void audio.play().catch(() => undefined);
+                // The safety counts from the moment the word really starts (or cannot), not from the call (seventh review).
+                void audio.play().then(() => settled?.(), () => settled?.());
+                return;
             }
             settled?.();
         });
