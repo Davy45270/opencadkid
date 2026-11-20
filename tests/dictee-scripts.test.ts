@@ -199,6 +199,26 @@ print(g.version('k1', '0123456789abcdef'))`;
         expect(a.status).not.toBe(0);
         expect(a.stderr).toContain('catalogue en retard');
     });
+    it('a word gone from phrases.json, or bytes regenerated since the catalogue, stop the import too (tenth Codex review)', () => {
+        for (const change of ['retiree', 'octets'] as const) {
+            const dir = copy();
+            if (change === 'retiree') {
+                const f = join(dir, 'scripts/dictee/phrases.json');
+                writeFileSync(f, JSON.stringify((JSON.parse(readFileSync(f, 'utf8')) as { id: string }[]).filter(r => r.id !== 'fr-huit')));
+            } else {
+                // The catalogue still names the old bytes while the file on disk is another one.
+                const f = join(dir, 'public/dictee/catalogue.json');
+                const c = JSON.parse(readFileSync(f, 'utf8')) as { words: { id: string; audio: { wordSha256: string } }[] };
+                c.words.find(w => w.id === 'fr-huit')!.audio.wordSha256 = '0'.repeat(64);
+                writeFileSync(f, JSON.stringify(c));
+            }
+            writeFileSync(join(dir, 'lot.json'), JSON.stringify({ format: 'dictee-relecture', version: 1, reviewer: 'Test', decisions: { 'fr-huit': { action: 'retirer', lemma: 'huit', at: '2026-11-20T10:00:00Z', seen: {} } } }));
+            const r = run(dir, 'importer_validation.py', 'lot.json');
+            expect(r.status, change).not.toBe(0);
+            expect(r.stderr).toContain('catalogue en retard');
+            expect(r.stderr).toContain('fr-huit');
+        }
+    });
     it('the review server keeps every choice it confirmed: two phones, two words, both kept (ninth Codex review)', async () => {
         const dir = copy();
         const out = join(dir, 'sortie');

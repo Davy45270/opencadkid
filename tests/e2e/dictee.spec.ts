@@ -705,3 +705,43 @@ test('a card\'s exit left behind never moves a new feed (ninth Codex review of 2
     expect(p.feed!.index).toBe(0);
     expect(p.played.length).toBe(before);
 });
+
+test('a word asked before the announcement and already ended gets its sentence at the announcement, never 3.5 s later (tenth Codex review of 2026-11-20)', async ({ page }) => {
+    // A player that ends each sound 200 ms after it starts.
+    await page.addInitScript(() => {
+        HTMLMediaElement.prototype.play = function play(this: HTMLMediaElement) { window.setTimeout(() => this.dispatchEvent(new Event('ended')), 200); return Promise.resolve(); };
+    });
+    const pool = shipped.words.filter(w => w.grade === 'CP' && w.audio.mode === 'context_required' && w.expectedForm !== 'un').map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    await feed(page, 'CP', 5);
+    const w = await word(page);
+    const card = (await probe(page)).card!;
+    await page.mouse.click(card.x + card.width / 2, card.y + 40);
+    await expect.poll(async () => (await probe(page)).heard.map(h => h.path)).toContain(w.pronunciationAsset);
+    const asked = (await probe(page)).heard.find(h => h.path === w.pronunciationAsset)!.at;
+    await expect.poll(async () => (await probe(page)).played.map(p => p.path), { timeout: 10_000 }).toContain(w.contextAsset);
+    const p = await probe(page);
+    expect(p.played.filter(x => x.path === w.pronunciationAsset)).toHaveLength(1);
+    expect(p.played.find(x => x.path === w.contextAsset)!.at - asked).toBeLessThan(2500);
+});
+
+test('a word asked before the announcement whose bytes come late is never cut by its sentence (tenth Codex review of 2026-11-20)', async ({ page }) => {
+    // The word's file takes 4 s; the player then ends the word 2 s after it starts.
+    await page.addInitScript(() => {
+        HTMLMediaElement.prototype.play = function play(this: HTMLMediaElement) { window.setTimeout(() => this.dispatchEvent(new Event('ended')), 2000); return Promise.resolve(); };
+    });
+    await page.route('**/dictee/audio/*.ogg*', async route => {
+        if (!route.request().url().includes('-phrase.ogg')) await new Promise(r => setTimeout(r, 4000));
+        await route.continue();
+    });
+    const pool = shipped.words.filter(w => w.grade === 'CP' && w.audio.mode === 'context_required' && w.expectedForm !== 'un').map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    await feed(page, 'CP', 5);
+    const w = await word(page);
+    const card = (await probe(page)).card!;
+    await page.mouse.click(card.x + card.width / 2, card.y + 40);
+    await expect.poll(async () => (await probe(page)).played.map(p => p.path), { timeout: 15_000 }).toContain(w.contextAsset);
+    const p = await probe(page);
+    const heard = p.heard.find(h => h.path === w.pronunciationAsset)!;
+    expect(p.played.find(x => x.path === w.contextAsset)!.at - heard.at).toBeGreaterThanOrEqual(1900);
+});
