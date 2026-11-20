@@ -79,6 +79,9 @@ export function closeFeed(p: Progress, f: Feed): Progress {
     return { session, words, recent: [...seen, ...p.recent.filter(id => !seen.includes(id))].slice(0, RECENT) };
 }
 
+/** A word id of the catalogue (fr-air, fr-plutot, fr-c-est): the old pattern (fr-x-001) matched none of the 500 shipped
+ * ids, so every reload lost the boxes, misses and recent words (ninth Codex review, 2026-11-20). */
+const WORD_ID = /^fr-[a-z0-9]+(?:-[a-z0-9]+)*$/;
 /** Reads a stored progress; anything malformed is dropped, never trusted. */
 export function parseProgress(data: unknown): Progress {
     if (!data || typeof data !== 'object' || Array.isArray(data)) return freshProgress();
@@ -87,11 +90,11 @@ export function parseProgress(data: unknown): Progress {
     const words: Record<string, WordProgress> = {};
     if (v.words && typeof v.words === 'object' && !Array.isArray(v.words))
         for (const [id, raw] of Object.entries(v.words as Record<string, unknown>)) {
-            if (!/^fr-[a-z0-9]+-\d{3}$/.test(id) || !raw || typeof raw !== 'object') continue;
+            if (!WORD_ID.test(id) || !raw || typeof raw !== 'object') continue;
             const w = raw as Record<string, unknown>;
             const ok = (x: unknown, max: number): x is number => Number.isInteger(x) && (x as number) >= 0 && (x as number) <= max;
             if (ok(w.box, BOXES) && ok(w.seen, 1e6) && ok(w.misses, 1e6) && ok(w.last, session)) words[id] = { box: w.box, seen: w.seen, misses: w.misses, last: w.last };
         }
-    const recent = Array.isArray(v.recent) ? [...new Set(v.recent.filter((x): x is string => typeof x === 'string' && /^fr-[a-z0-9]+-\d{3}$/.test(x)))].slice(0, RECENT) : [];
+    const recent = Array.isArray(v.recent) ? [...new Set(v.recent.filter((x): x is string => typeof x === 'string' && WORD_ID.test(x)))].slice(0, RECENT) : [];
     return { session, words, recent };
 }

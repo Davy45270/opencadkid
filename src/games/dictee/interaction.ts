@@ -124,6 +124,8 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         safety = later(3500, () => { safety = null; if (pending === w.contextAsset && current()?.id === w.id) { const p = pending; pending = null; play(p); } }, true);
     };
     let turns = 0;
+    /** The card whose word the child already asked for (touch or hold) before its announcement. */
+    let asked: string | null = null;
     /** `settled` runs once the file's turn has come: its bytes are in the player, or were refused. */
     const play = (path: string | null, rate = 1): void => {
         if (!path) return;
@@ -159,14 +161,21 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         });
     };
     /** Leaving the feed (summary, length, class, profile, quit): no late file, safety or sentence may sound after it. */
-    const silence = (): void => { turns++; audio?.pause(); cancel(safety); safety = null; pending = null; };
+    // Every timer of the feed goes too: a card's exit or an announcement due later never acts on a new feed (ninth review).
+    const silence = (): void => { turns++; audio?.pause(); for (const id of timers) window.clearTimeout(id); timers.clear(); safety = null; pending = null; asked = null; };
     audio?.addEventListener('ended', () => { if (pending) { const p = pending; pending = null; play(p); } });
     /** A card arrives: its word is said; a word that needs its sentence gets it said right after, every time. */
+    /** The child asks for the word (tap, hold, space): remembered, so the announcement never cuts it. */
+    const ask = (rate = 1): void => { const w = current(); if (w) asked = w.id; play(w?.pronunciationAsset ?? null, rate); };
     const arrive = (): void => {
         const w = current();
         if (!w) return;
         cancel(safety); safety = null;
         pending = sentenceOnArrival(w) ? w.contextAsset : null;
+        // Asked already (a slow replay held at once, ninth Codex review): the announcement does not restart the word;
+        // a sentence still follows its end, or the safety.
+        if (asked === w.id) { asked = null; if (pending) armSafety(w); return; }
+        asked = null;
         play(w.pronunciationAsset);
     };
     const rng = makeRng(crypto.getRandomValues(new Uint32Array(1))[0]!);
@@ -278,7 +287,7 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
             if (!e.isPrimary || (e.target as Element).closest('button')) return;
             start = { x: e.clientX, y: e.clientY, id: e.pointerId }; long = false; moved = false;
             try { card.setPointerCapture(e.pointerId); } catch { /* Synthetic pointers. */ }
-            timer = window.setTimeout(() => { if (start && !moved) { long = true; play(current()?.pronunciationAsset ?? null, SLOW_RATE); recordActivation('dictee:slow', 'action', true, 'long-press'); } }, LONG_PRESS_MS);
+            timer = window.setTimeout(() => { if (start && !moved) { long = true; ask(SLOW_RATE); recordActivation('dictee:slow', 'action', true, 'long-press'); } }, LONG_PRESS_MS);
         });
         card.addEventListener('pointermove', e => {
             if (!start || e.pointerId !== start.id) return;
@@ -292,7 +301,7 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
             const dy = e.clientY - start.y; start = null; card.style.transform = '';
             if (cancelled) return;
             if (dy <= -SWIPE_PX) { if (session.evaluation) { recordActivation('dictee:swipe', 'action', true, 'up'); goNext(); } else speak([t.writeFirst]); return; }
-            if (!moved && !long) { play(current()?.pronunciationAsset ?? null); recordActivation('dictee:replay', 'action', true, 'tap'); }
+            if (!moved && !long) { ask(); recordActivation('dictee:replay', 'action', true, 'tap'); }
         };
         card.addEventListener('pointerup', e => release(e, false));
         card.addEventListener('pointercancel', e => release(e, true));
@@ -363,7 +372,7 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         }
         if (k === 'Backspace') { e.preventDefault(); erase(); }
         else if (k === 'Enter') { e.preventDefault(); validate(); }
-        else if (k === ' ') { e.preventDefault(); play(current()?.pronunciationAsset ?? null); }
+        else if (k === ' ') { e.preventDefault(); ask(); }
         else if (k.length === 1 && (LETTERS.includes(k.toLowerCase()) || ACCENTS.includes(k.toLowerCase()) || /^[A-Z]$/.test(k))) { e.preventDefault(); type(k); }
     };
     document.addEventListener('keydown', keys);

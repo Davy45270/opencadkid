@@ -76,7 +76,7 @@ const NIVEAUX = ['CP', 'CE1', 'CE2', 'CM1', 'CM2'];
 let mots = [], signales = {}, niveau = 'CP', decisions = {};
 const lire = () => { try { return JSON.parse(localStorage.getItem(CLE) || '{}'); } catch { return {}; } };
 let minuterie = 0;
-const lot = () => ({ format: 'dictee-relecture', version: 1, reviewer: 'David', exportedAt: new Date().toISOString(), decisions: Object.fromEntries(Object.entries(decisions).filter(([, d]) => d.action)) });
+const lot = () => ({ format: 'dictee-relecture', version: 1, reviewer: 'David', exportedAt: new Date().toISOString(), decisions: Object.fromEntries(Object.entries(decisions).filter(([, d]) => d.at)) });
 function etat(texte, ko = false) { const e = document.getElementById('etat'); e.textContent = texte; e.classList.toggle('ko', ko); }
 async function envoyer() {
   try {
@@ -109,12 +109,12 @@ function jouer(chemin, sha) {
 }
 function compter() {
   const ici = mots.filter(m => m.grade === niveau);
-  const faits = ici.filter(m => decisions[m.id]).length;
+  const faits = ici.filter(m => decisions[m.id]?.action).length;
   const n = a => ici.filter(m => decisions[m.id]?.action === a).length;
   document.getElementById('compte').textContent = `${niveau} : ${faits}/${ici.length} relus — ${n('valider')} validés, ${n('corriger')} corrigés, ${n('retirer')} retirés`;
   for (const b of document.querySelectorAll('.niveaux button')) {
     const g = b.dataset.niveau, tous = mots.filter(m => m.grade === g);
-    b.querySelector('small').textContent = `${tous.filter(m => decisions[m.id]).length}/${tous.length}`;
+    b.querySelector('small').textContent = `${tous.filter(m => decisions[m.id]?.action).length}/${tous.length}`;
   }
 }
 function vu(m) {
@@ -124,7 +124,8 @@ function vu(m) {
 }
 function decider(m, action, carte) {
   const avant = decisions[m.id];
-  if (avant?.action === action && action !== 'corriger') { delete decisions[m.id]; }
+  // Undone: kept as a dated empty choice, so the server's merge (latest wins) carries the undo too (ninth Codex review).
+  if (avant?.action === action && action !== 'corriger') { decisions[m.id] = { action: null, lemma: m.lemma, at: new Date().toISOString() }; }
   else {
     // What the adult saw and heard: the import applies the decision only to this very text and these very recordings.
     const d = { action, lemma: m.lemma, at: new Date().toISOString(), seen: vu(m) };
@@ -137,7 +138,7 @@ function decider(m, action, carte) {
 }
 function peindre(carte, m) {
   const d = decisions[m.id];
-  carte.dataset.etat = d ? d.action : '';
+  carte.dataset.etat = d?.action || '';
   for (const b of carte.querySelectorAll('.choix button')) b.setAttribute('aria-pressed', String(d?.action === b.dataset.action));
   if (d?.action === 'corriger') {
     carte.querySelector('[name=forme]').value = d.expectedForm;
@@ -171,7 +172,7 @@ function carte(m) {
       el('label', { for: m.id + '-p' }, 'Phrase'), el('textarea', { id: m.id + '-p', name: 'phrase' }),
       el('label', { for: m.id + '-e' }, 'Explication (vide = aucune)'), el('textarea', { id: m.id + '-e', name: 'expl' })));
   c.querySelector('.correction').addEventListener('input', e => {
-    const d = decisions[m.id]; if (!d) return;
+    const d = decisions[m.id]; if (!d?.action) return;
     const champ = { forme: 'expectedForm', phrase: 'contextSentence', expl: 'explanation' }[e.target.name];
     d[champ] = e.target.value; d.at = new Date().toISOString(); ecrire();
   });
@@ -199,7 +200,7 @@ async function exporter() {
   document.body.append(a); a.click(); a.remove();
 }
 function prochain() {
-  const m = mots.find(x => x.grade === niveau && !decisions[x.id]);
+  const m = mots.find(x => x.grade === niveau && !decisions[x.id]?.action);
   if (m) document.getElementById(m.id).scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
 }
 async function demarrer() {

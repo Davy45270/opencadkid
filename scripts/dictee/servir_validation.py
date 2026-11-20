@@ -21,6 +21,7 @@ import json
 import os
 import re
 import tempfile
+import threading
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -32,6 +33,7 @@ PAGE = ICI / 'validation/index.html'
 PUBLIC = RACINE / 'public'
 AUDIO = re.compile(r'^/dictee/audio/[a-z0-9-]+\.ogg$')
 MAX = 1 << 20
+VERROU = threading.Lock()
 
 
 def main() -> None:
@@ -44,6 +46,11 @@ def main() -> None:
     if not ipaddress.ip_address(hote).is_private and not ipaddress.ip_address(hote) in ipaddress.ip_network('100.64.0.0/10'):
         raise SystemExit(f'{hote} n\'est pas une adresse privée : refus')
     a.sortie.mkdir(parents=True, exist_ok=True)
+
+    def ecrire(cible: Path, corps: bytes) -> None:
+        with tempfile.NamedTemporaryFile(dir=a.sortie, delete=False) as f:
+            f.write(corps)
+        os.replace(f.name, cible)
 
     class H(BaseHTTPRequestHandler):
         def envoyer(self, code: int, corps: bytes, type_: str) -> None:
@@ -86,11 +93,19 @@ def main() -> None:
                 assert lot.get('format') == 'dictee-relecture' and isinstance(lot.get('decisions'), dict)
             except (ValueError, AssertionError):
                 return self.envoyer(400, b'format inattendu', 'text/plain; charset=utf-8')
-            corps = json.dumps(lot, ensure_ascii=False, indent=1).encode()
-            for cible in (a.sortie / 'dictee-relecture.json', a.sortie / f'dictee-relecture-{time.strftime("%Y%m%d-%H%M")}.json'):
-                with tempfile.NamedTemporaryFile(dir=a.sortie, delete=False) as f:
-                    f.write(corps)
-                os.replace(f.name, cible)
+            # Neuvième revue Codex : chaque choix reçu est gardé. Deux téléphones envoient chacun leur copie complète :
+            # le serveur fusionne par mot (le plus récent gagne, un choix défait compris), sans jamais écraser l'autre,
+            # et garde chaque envoi tel quel sous un nom unique.
+            with VERROU:
+                garde = a.sortie / 'dictee-relecture.json'
+                avant = json.loads(garde.read_text(encoding='utf-8')) if garde.exists() else {'format': 'dictee-relecture', 'version': 1, 'decisions': {}}
+                fusion = dict(avant.get('decisions') or {})
+                for ident, d in lot['decisions'].items():
+                    if isinstance(d, dict) and str(d.get('at') or '') >= str((fusion.get(ident) or {}).get('at') or ''):
+                        fusion[ident] = d
+                tout = {**lot, 'decisions': dict(sorted(fusion.items()))}
+                ecrire(garde, json.dumps(tout, ensure_ascii=False, indent=1).encode())
+                ecrire(a.sortie / f'dictee-relecture-envoi-{time.time_ns()}.json', json.dumps(lot, ensure_ascii=False, indent=1).encode())
             self.envoyer(200, json.dumps({'enregistre': len(lot['decisions'])}).encode(), 'application/json')
 
         def log_message(self, fmt: str, *args: object) -> None:

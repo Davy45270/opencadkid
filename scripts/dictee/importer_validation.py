@@ -66,6 +66,17 @@ def approuver_tout(qui: str, note: str) -> None:
     print(f'{len(mots)} mots approuvés par {qui} ({note}) ; relancer assembler_catalogue.py')
 
 
+def catalogue_a_jour(mots: list[dict]) -> None:
+    """Neuvième revue Codex : une décision ou une approbation se juge contre le catalogue que l'adulte a eu sous les
+    yeux, et ce catalogue doit être celui des textes versionnés. Une phrase ou une astuce changée dans phrases.json
+    sans réassemblage arrête tout : relancer assembler_catalogue.py d'abord."""
+    phrases = {r['id']: r for r in json.loads(PHRASES.read_text(encoding='utf-8'))} if PHRASES.exists() else {}
+    en_retard = sorted(w['id'] for w in mots if w['id'] in phrases
+                       and (phrases[w['id']].get('contextSentence') != w['contextSentence'] or (phrases[w['id']].get('explanation') or None) != (w['explanation'] or None)))
+    if en_retard:
+        raise SystemExit(f"catalogue en retard sur phrases.json, relancer assembler_catalogue.py d'abord : {', '.join(en_retard)}")
+
+
 def approuver(ids: list[str], qui: str, note: str, ecrire: bool) -> None:
     """Approuve des mots désignés (ou « en-attente » : tous ceux qui ne sont pas approuvés), pour leurs textes et leurs
     versions audio ACTUELS, affichés avant. Sans --oui, rien n'est écrit : on lit d'abord ce qu'on approuve."""
@@ -73,6 +84,7 @@ def approuver(ids: list[str], qui: str, note: str, ecrire: bool) -> None:
     if 'en-attente' in ids and ids != ['en-attente']:
         raise SystemExit('« en-attente » se donne seul, sans identifiant')
     mots = json.loads(CATALOGUE.read_text(encoding='utf-8'))['words']
+    catalogue_a_jour(mots)
     choisis = [w for w in mots if w['status'] != 'approved'] if ids == ['en-attente'] else [w for w in mots if w['id'] in ids]
     inconnus = sorted(set(ids) - {w['id'] for w in mots} - {'en-attente'})
     if inconnus:
@@ -138,6 +150,7 @@ def main() -> None:
         raise SystemExit('ce fichier ne vient pas de la page de relecture')
     qui = lot.get('reviewer') or 'David'
     mots = {w['id']: w for w in json.loads(CATALOGUE.read_text(encoding='utf-8'))['words']}
+    catalogue_a_jour(list(mots.values()))
     phrases = json.loads(PHRASES.read_text(encoding='utf-8'))
     par_lemme = {r['lemma']: r for r in phrases}
     relus = json.loads(RELECTURES.read_text(encoding='utf-8')) if RELECTURES.exists() else {}
@@ -157,7 +170,9 @@ def main() -> None:
             compte['inconnu'] += 1
             print(f'ignoré : {ident} ne correspond plus au catalogue')
             continue
-        action = d['action']
+        action = d.get('action')
+        if not action:
+            continue  # un choix défait sur la page (daté, vide) : rien à appliquer
         # Septième revue Codex : une décision ne vaut que pour le texte et les enregistrements que l'adulte a eus sous
         # les yeux et dans l'oreille ; changés depuis (ou décision exportée sans eux), elle est ignorée, à refaire.
         a = w['audio']
