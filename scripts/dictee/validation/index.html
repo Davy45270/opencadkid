@@ -93,22 +93,28 @@ let incertain = false;
 // Vingtième revue : un choix écarté par le serveur n'est plus compté relu ; il reste dit jusqu'à ce que l'adulte relise le mot.
 const nonEnregistres = new Set();
 const non_enregistres = ids => etat(`Non enregistré : ${ids.join(', ')} a changé depuis le chargement. Recharger la page et relire ce mot.`, true);
-function ecarter(ids) {
-  for (const id of ids) { nonEnregistres.add(id); delete decisions[id]; delete envoyes[id]; }
+function ecarter(paires, rendre = true) {
+  const ids = [];
+  for (const [id, r] of paires) {
+    if (decisions[id]?.rev !== r) continue;  // remplacée depuis (autre téléphone, nouveau choix) : gardée
+    nonEnregistres.add(id); ids.push(id); delete decisions[id]; delete envoyes[id];
+  }
   if (!ids.length) return;
   try { localStorage.setItem(CLE, JSON.stringify(decisions)); } catch { /* sans effet */ }
   memoriser();
-  if (mots.length) afficher();
+  if (rendre && mots.length) afficher();
   non_enregistres([...nonEnregistres]);
 }
 // Ce que le serveur a reçu (rev → garde | perime) : les choix reçus sont notés envoyés ; rend ceux qu'il a écartés.
 function rapprocher(recus) {
   const sorts = Array.isArray(recus) ? Object.fromEntries(recus.map(r => [r, 'garde'])) : (recus || {});
+  // Chaque écart nomme le mot ET l'état écarté (rev) : une décision plus récente du même mot n'est jamais retirée
+  // à sa place (vingt et unième revue).
   const ecartes = [];
   for (const [id, d] of Object.entries(decisions)) {
     if (!d.rev || !sorts[d.rev]) continue;
     envoyes[id] = JSON.stringify(d);
-    if (sorts[d.rev] === 'perime') ecartes.push(id);
+    if (sorts[d.rev] === 'perime') ecartes.push([id, d.rev]);
   }
   return ecartes;
 }
@@ -145,7 +151,7 @@ async function envoyer() {
     const perimes = reponse.perimes;
     if (Object.keys(changes()).length) ecrire();  // tapé pendant l'envoi : un nouvel envoi suit
     memoriser();
-    ecarter(perimes.filter(id => decisions[id] && JSON.stringify(decisions[id]) === part[id]));
+    ecarter(perimes.filter(id => part[id]).map(id => [id, JSON.parse(part[id]).rev]));
     if (nonEnregistres.size) non_enregistres([...nonEnregistres]);
     else etat(`Enregistré sur le serveur à ${new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}.`);
   } catch {
@@ -312,6 +318,8 @@ async function demarrer() {
   // Une décision prise sur une autre version de la fiche n'est jamais reprise : ni ses champs, ni son rattachement à la
   // fiche nouvelle (onzième revue Codex). Le mot est à relire.
   // Une décision sur une fiche qui n'existe plus (mot remplacé) n'est ni renvoyée ni exportée (dix-septième revue).
+  // Un écart découvert à la réouverture est dit avant que la fiche changée n'efface la décision (vingt et unième revue).
+  ecarter(ecartesAuChargement, false);
   const ids = new Set(mots.map(m => m.id));
   for (const id of Object.keys(decisions)) if (!ids.has(id)) delete decisions[id];
   for (const m of mots) {
@@ -327,7 +335,7 @@ async function demarrer() {
   document.getElementById('exporter').addEventListener('click', exporter);
   document.getElementById('suivant').addEventListener('click', prochain);
   afficher();
-  ecarter(ecartesAuChargement);
+  if (nonEnregistres.size) non_enregistres([...nonEnregistres]);
 }
 demarrer().catch(e => { document.getElementById('compte').textContent = 'Impossible de charger le catalogue : ' + e.message; });
 </script>

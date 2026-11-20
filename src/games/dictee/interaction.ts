@@ -127,6 +127,18 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         safety = later(Math.max(0, ms), () => { safety = null; if (pending === w.contextAsset && current()?.id === w.id) { const p = pending; pending = null; play(p); } }, true);
     };
     let turns = 0;
+    /** The sentence button: while the word is on its way or playing, the sentence follows it and never cuts it
+     * (twenty-first Codex review); otherwise it plays at once. */
+    const askSentence = (): void => {
+        const w = current();
+        if (!w?.contextAsset) return;
+        if (last && last.turn === turns && last.path === w.pronunciationAsset && last.state !== 'ended') {
+            pending = w.contextAsset;
+            if (last.state === 'started') armSafety(w, 3500 - (performance.now() - (last.at ?? performance.now())));
+            return;
+        }
+        play(w.contextAsset);
+    };
     /** The card whose word the child already asked for (touch or hold) before its announcement. */
     // The card itself (its place in the feed), not only its word: a missed word comes back as a later card (twentieth review).
     let asked: { id: string; index: number } | null = null;
@@ -358,7 +370,7 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         backTo(() => lengthScreen(false), 'dictee:lengths');
         gestures(root.querySelector<HTMLElement>('.dictee-card')!);
         const sentence = root.querySelector<HTMLElement>('#dictee-sentence');
-        if (sentence) bindAction(sentence, () => play(current()?.contextAsset ?? null), 'dictee:sentence');
+        if (sentence) bindAction(sentence, askSentence, 'dictee:sentence');
         // Report this word (once checked): what is wrong, an optional note; saved on the device with the audio version.
         const report = root.querySelector<HTMLElement>('#dictee-report');
         if (report) bindAction(report, () => {
@@ -416,7 +428,8 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
             draw_();
             // Back from a hidden page (or a reload): the card arrives again, its word then its required sentence; the
             // players and timers of the hidden page are gone with it (nineteenth Codex review).
-            if (session.screen === 'fil' && !session.evaluation) arrive();
+            // A checked card too: its word and its required sentence come back (twenty-first Codex review).
+            if (session.screen === 'fil') arrive();
         }
         else if (session.screen === 'longueur' && session.grade) lengthScreen(false);
         else if (session.screen === 'niveaux' && session.profile) gradesScreen(false);
