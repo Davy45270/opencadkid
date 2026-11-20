@@ -54,6 +54,17 @@ describe('the offline scripts of the dictation', { timeout: 30_000 }, () => {
         expect(after.status).toBe('needs_review');
         expect(after.validatedBy).toBeNull();
     });
+    it('a recording whose bytes are not those generer_audio.py wrote stops the assembly: an approval never passes to other bytes (Codex review of 2026-11-20)', () => {
+        const dir = copy();
+        rmSync(join(dir, 'public/dictee/audio'));
+        cpSync('public/dictee/audio', join(dir, 'public/dictee/audio'), { recursive: true });
+        // An older recording copied back under the same name: same text, same settings, other bytes.
+        writeFileSync(join(dir, 'public/dictee/audio/fr-huit.ogg'), readFileSync('public/dictee/audio/fr-nuit.ogg'));
+        const r = run(dir, 'assembler_catalogue.py');
+        expect(r.status).not.toBe(0);
+        expect(r.stderr).toContain('fr-huit.ogg');
+        expect(readFileSync(join(dir, 'public/dictee/catalogue.json'), 'utf8')).toBe(shipped);
+    });
     it('a targeted approval shows the exact text and writes nothing without --oui', () => {
         const dir = copy();
         const relus = readFileSync(join(dir, 'scripts/dictee/relectures.json'), 'utf8');
@@ -62,6 +73,7 @@ describe('the offline scripts of the dictation', { timeout: 30_000 }, () => {
         expect(r.stdout).toContain("Un h au début, qu'on n'entend pas ; le t de la fin s'entend.");
         expect(r.stdout).toContain('RIEN écrit');
         const w = words(dir).get('fr-huit')! as unknown as { homophones: string[]; audio: { wordVersion: string; contextVersion: string | null } };
+        expect(r.stdout).toContain(`phrase : ${(w as unknown as { contextSentence: string }).contextSentence}`);
         expect(r.stdout).toContain(`homophones : ${w.homophones.join(', ') || '-'}`);
         expect(r.stdout).toContain(`audio mot ${w.audio.wordVersion}, phrase ${w.audio.contextVersion}`);
         expect(readFileSync(join(dir, 'scripts/dictee/relectures.json'), 'utf8')).toBe(relus);

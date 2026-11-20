@@ -111,3 +111,27 @@ test('the home landscape painting fills its whole banner, with no empty band, at
         expect(sky.x).toBeLessThanOrEqual(banner.x + 1); expect(sky.x + sky.width).toBeGreaterThanOrEqual(banner.x + banner.width - 1);
     }
 });
+test('the two sister cards come after the games, each with its own name, icon and skill in both languages (Codex review of 2026-11-20)', async ({ page }) => {
+    // Literal oracle, independent of the code: the names and skills are written here, not read from the registry.
+    const expected = { fr: [['TicTac', 'Lire l’heure'], ['Petit Astronome', 'Découvrir le ciel']], en: [['TicTac', 'Tell the time'], ['Petit Astronome', 'Discover the sky']] };
+    for (const locale of ['fr', 'en'] as const) {
+        await page.addInitScript(l => localStorage.setItem('opencadkid.v1', JSON.stringify({ version: 1, locale: l, voice: false, sound: false, records: {} })), locale);
+        await page.goto('/');
+        const cards = page.locator('.game-grid > button');
+        const all = await cards.evaluateAll(list => list.map(b => (b as HTMLElement).dataset.direct ?? `game:${(b as HTMLElement).dataset.game}`));
+        expect(all.slice(-2)).toEqual(['tictac', 'petit-astronome']);
+        expect(all.slice(0, -2).every(id => id.startsWith('game:'))).toBe(true);
+        for (const [i, id] of (['tictac', 'petit-astronome'] as const).entries()) {
+            const card = page.locator(`[data-direct="${id}"]`);
+            await expect(card.locator('strong')).toHaveText(expected[locale][i]![0]!);
+            await expect(card.locator('span').last()).toHaveText(expected[locale][i]![1]!);
+            expect(await card.locator('img').getAttribute('src')).toMatch(new RegExp(`autres-jeux/${id}\\.png$`));
+        }
+    }
+});
+test('the sky of the home landscape is painted, opaque, never transparent (Codex review of 2026-11-20)', async ({ page }) => {
+    await page.goto('/');
+    const sky = await page.locator('.landscape > svg > rect').first().evaluate(r => { const s = getComputedStyle(r); return { fill: s.fill, opacity: s.opacity, fillOpacity: s.fillOpacity, attr: r.getAttribute('opacity') ?? '1' }; });
+    expect(sky.fill).not.toMatch(/^none$|transparent|rgba\(\s*\d+,\s*\d+,\s*\d+,\s*0\s*\)/);
+    expect([sky.opacity, sky.fillOpacity, sky.attr]).toEqual(['1', '1', '1']);
+});

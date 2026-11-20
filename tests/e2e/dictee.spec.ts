@@ -432,3 +432,65 @@ test('a recording whose bytes are not those of its catalogue version is never ke
     // Nor played: the child never hears bytes that are not the version the catalogue names.
     expect((await probe(page)).heard).toEqual([]);
 });
+
+test('a late replay of the previous card never plays over the current word (Codex review of 2026-11-20)', async ({ page }) => {
+    // The replay of the first word takes 4 s to arrive; the child has moved on: only the second word is heard after it.
+    let asked = 0, first = '';
+    await page.route('**/dictee/audio/*.ogg*', async route => {
+        const url = route.request().url();
+        if (first && url.includes(first) && ++asked > 1) await new Promise(r => setTimeout(r, 4000));
+        await route.continue();
+    });
+    const pool = shipped.words.filter(w => w.grade === 'CP' && w.audio.mode === 'word_only').map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    await page.addInitScript(() => { try { void caches.delete('opencadkid-dictee-audio'); } catch { /* none */ } });
+    await feed(page, 'CP', 5);
+    const w1 = await word(page);
+    first = w1.pronunciationAsset.split('/').pop()!;
+    await expect.poll(async () => (await probe(page)).heard.map(h => h.path)).toContain(w1.pronunciationAsset);
+    // The first file was fetched once already by the feed's keeping: the replay is the slow one only if it goes to the network.
+    await page.evaluate(() => caches.delete('opencadkid-dictee-audio'));
+    const card = (await probe(page)).card!;
+    await page.mouse.click(card.x + card.width / 2, card.y + 40);
+    await page.keyboard.type(w1.expectedForm); await page.keyboard.press('Enter');
+    await page.locator('#dictee-next').click();
+    await expect.poll(async () => (await probe(page)).feed!.index).toBe(1);
+    const w2 = await word(page);
+    await page.waitForTimeout(5000);
+    const heard = (await probe(page)).heard.map(h => h.path);
+    expect(heard[heard.length - 1]).toBe(w2.pronunciationAsset);
+});
+
+test('a stale recording kept under the current version is replaced by the right bytes, which then play offline (Codex review of 2026-11-20)', async ({ page, context }) => {
+    const pool = shipped.words.filter(w => w.grade === 'CP' && w.audio.mode === 'word_only').map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    // Before the game: every file of the class is kept under its current key with other bytes (a stale copy).
+    await page.goto('/');
+    await page.evaluate(async (files: [string, string | null | undefined][]) => {
+        const c = await caches.open('opencadkid-dictee-audio');
+        for (const [path, v] of files) await c.put(`${path}${v ? `?v=${encodeURIComponent(v)}` : ''}`, new Response('OggS stale bytes', { headers: { 'content-type': 'audio/ogg' } }));
+    }, pool.map(id => [byId.get(id)!.pronunciationAsset, byId.get(id)!.audio.wordVersion] as [string, string | null | undefined]));
+    await feed(page, 'CP', 5);
+    const w = await word(page);
+    await expect.poll(async () => (await probe(page)).heard.map(h => h.path)).toContain(w.pronunciationAsset);
+    // The kept copy is now the shipped one.
+    await expect.poll(() => page.evaluate(async (k: string) => {
+        const r = await (await caches.open('opencadkid-dictee-audio')).match(k);
+        return r ? (await r.arrayBuffer()).byteLength : 0;
+    }, `${w.pronunciationAsset}?v=${encodeURIComponent(w.audio.wordVersion ?? '')}`)).toBe(readFileSync(`public/${w.pronunciationAsset}`).length);
+    await context.setOffline(true);
+    const card = (await probe(page)).card!;
+    const before = (await probe(page)).heard.length;
+    await page.mouse.click(card.x + card.width / 2, card.y + 40);
+    await expect.poll(async () => (await probe(page)).heard.length).toBe(before + 1);
+    await context.setOffline(false);
+});
+
+test('the word_then_context word says its sentence after the word, without a touch', async ({ page }) => {
+    const pool = shipped.words.filter(w => w.audio.mode === 'word_then_context').map(w => w.id);
+    expect(pool).toEqual(['fr-pensee']);
+    await reviewed(page, w => pool.includes(w.id));
+    await feed(page, byId.get(pool[0]!)!.grade, 5);
+    const w = await word(page);
+    await expect.poll(async () => (await probe(page)).played.map(p => p.path), { timeout: 8000 }).toEqual([w.pronunciationAsset, w.contextAsset]);
+});
