@@ -78,6 +78,8 @@ test('a finite feed: the word is heard, never shown before checking; right, wron
     await expect(page.locator('.dictee-back .dictee-word')).toHaveText(first.expectedForm);
     await expect(page.locator('.dictee-word .faux')).not.toHaveCount(0);
     await expect(page.locator('#dictee-explain')).not.toBeEmpty();
+    // The word's own reviewed tip, as the catalogue has it (spec: « the word’s own reviewed tip »).
+    if (first.explanation) await expect(page.locator('.dictee-tip')).toContainText(first.explanation);
     // Swipe up: the next card.
     const c = (await probe(page)).card!;
     await page.mouse.move(c.x + c.width / 2, c.y + c.height * .6); await page.mouse.down();

@@ -85,6 +85,34 @@ describe('the offline scripts of the dictation', { timeout: 30_000 }, () => {
         for (const w of waiting) expect(String(w.provenance.correction), w.id).toMatch(/relecture Codex et Google, 19\/11/);
         for (const w of all.filter(w => w.status === 'approved')) expect(w.validatedBy, w.id).toBe('David');
     });
+    it('every context sentence holds its exact word and has 3 to 14 words', () => {
+        for (const w of words('.').values()) {
+            const raw = w as unknown as { expectedForm: string; contextSentence: string | null };
+            if (!raw.contextSentence) continue;
+            const n = raw.contextSentence.split(/\s+/).filter(Boolean).length;
+            expect(n, w.id).toBeGreaterThanOrEqual(3); expect(n, w.id).toBeLessThanOrEqual(14);
+            const form = raw.expectedForm.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            expect(raw.contextSentence.toLowerCase(), w.id).toMatch(new RegExp(`(?<![\\p{L}])${form}(?![\\p{L}])`, 'u'));
+        }
+    });
+    it('the ambiguous words the spec names are heard in their sentence (context_required)', () => {
+        const byLemma = new Map([...words('.').values()].map(w => [w.lemma, w]));
+        for (const lemma of ['vert', 'verre', 'sept', 'un', 'rose', 'orange', 'marron', 'sol']) {
+            const w = byLemma.get(lemma);
+            expect(w, lemma).toBeDefined();
+            expect(w!.audio.mode, lemma).toBe('context_required');
+        }
+    });
+    it('every recording is an Ogg Opus mono file', () => {
+        const all = [...words('.').values()].flatMap(w => { const r = w as unknown as { pronunciationAsset: string; contextAsset: string | null }; return [r.pronunciationAsset, ...(r.contextAsset ? [r.contextAsset] : [])]; });
+        expect(all.length).toBe(1000);
+        for (const f of all) {
+            const b = readFileSync(join('public', f));
+            expect(b.subarray(0, 4).toString('latin1'), f).toBe('OggS');
+            expect(b.subarray(28, 36).toString('latin1'), f).toBe('OpusHead');
+            expect(b[37], f).toBe(1);
+        }
+    });
     it('« sol » is heard in its sentence: « sole » sounds the same (2026-11-20)', () => {
         // Codex review of 2026-11-20: fr-sol was approved word_only, with no homophone, so a child could write « sole ».
         const w = words('.').get('fr-sol')!;
