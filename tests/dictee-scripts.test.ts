@@ -38,6 +38,18 @@ describe('the offline scripts of the dictation', { timeout: 30_000 }, () => {
         expect(after.status).toBe('needs_review');
         expect(after.validatedBy).toBeNull();
     });
+    it('a word whose tip changes after its approval goes back to needs_review, with no reviewer', () => {
+        const dir = copy();
+        const all = [...words(dir).values()];
+        const before = all.find(w => w.status === 'approved' && (w as unknown as { explanation: string | null }).explanation)!;
+        const phrases = json(dir, 'phrases.json') as { lemma: string; explanation: string }[];
+        phrases.find(p => p.lemma === before.lemma)!.explanation += ' Encore.';
+        writeFileSync(join(dir, 'scripts/dictee/phrases.json'), JSON.stringify(phrases));
+        expect(run(dir, 'assembler_catalogue.py').status).toBe(0);
+        const after = words(dir).get(before.id)!;
+        expect(after.status).toBe('needs_review');
+        expect(after.validatedBy).toBeNull();
+    });
     it('a targeted approval shows the exact text and writes nothing without --oui', () => {
         const dir = copy();
         const relus = readFileSync(join(dir, 'scripts/dictee/relectures.json'), 'utf8');
