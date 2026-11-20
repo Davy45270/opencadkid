@@ -333,21 +333,31 @@ except SystemExit as e:
             }
             return 0;
         };
+        // What the page shows of each word (« seen »): a decision on another version is never kept (sixteenth review).
+        const seen = (id: string): object => {
+            const w = words(dir).get(id)! as unknown as { expectedForm: string; contextSentence: string | null; explanation: string | null; audio: Record<string, string | null> };
+            return { expectedForm: w.expectedForm, contextSentence: w.contextSentence, explanation: w.explanation, wordVersion: w.audio.wordVersion, contextVersion: w.audio.contextVersion, wordSha256: w.audio.wordSha256, contextSha256: w.audio.contextSha256 };
+        };
+        const huit = seen('fr-huit'), air = seen('fr-air');
         try {
-            expect(await post({ 'fr-huit': { action: 'valider', lemma: 'huit', at: '2026-11-20T10:00:00Z' } })).toBe(200);
-            expect(await post({ 'fr-air': { action: 'retirer', lemma: 'air', at: '2026-11-20T10:00:01Z' } })).toBe(200);
+            expect(await post({ 'fr-huit': { action: 'valider', lemma: 'huit', at: '2026-11-20T10:00:00Z', seen: huit } })).toBe(200);
+            expect(await post({ 'fr-air': { action: 'retirer', lemma: 'air', at: '2026-11-20T10:00:01Z', seen: air } })).toBe(200);
             // The last choice received wins, whatever the phones' clocks say (eleventh Codex review): an undo sent after a
             // validation stamped two minutes ahead still wins.
-            expect(await post({ 'fr-huit': { action: 'valider', lemma: 'huit', at: '2026-11-20T10:02:00Z' } })).toBe(200);
-            expect(await post({ 'fr-huit': { action: null, lemma: 'huit', at: '2026-11-20T10:01:00Z' } })).toBe(200);
-            const kept = JSON.parse(readFileSync(join(out, 'dictee-relecture.json'), 'utf8')) as { decisions: Record<string, { action: string | null }> };
+            expect(await post({ 'fr-huit': { action: 'valider', lemma: 'huit', at: '2026-11-20T10:02:00Z', seen: huit, rev: 'r1' } })).toBe(200);
+            expect(await post({ 'fr-huit': { action: null, lemma: 'huit', at: '2026-11-20T10:01:00Z', seen: huit, rev: 'r2' } })).toBe(200);
+            // An undo (or a choice) made on another version of the word never overwrites anything (sixteenth review).
+            expect(await post({ 'fr-air': { action: null, lemma: 'air', at: '2026-11-20T10:03:00Z', seen: { ...air, contextSentence: 'Une ancienne phrase.' }, rev: 'r3' } })).toBe(200);
+            const kept = JSON.parse(readFileSync(join(out, 'dictee-relecture.json'), 'utf8')) as { decisions: Record<string, { action: string | null }>; recus: string[] };
             expect(kept.decisions['fr-air']!.action).toBe('retirer');
             expect(kept.decisions['fr-huit']!.action).toBeNull();
+            // Every decision received is listed by its rev, the stale one too: a phone whose answer got lost never resends it.
+            expect(kept.recus).toEqual(['r1', 'r2', 'r3']);
         } finally { server.kill(); }
     });
     it('the review page records what the adult saw with each decision', () => {
         const page = readFileSync('scripts/dictee/validation/index.html', 'utf8');
-        expect(page).toMatch(/const d = \{ action, lemma: m\.lemma, at: new Date\(\)\.toISOString\(\), seen: vu\(m\), heard: entendu\(m\) \};/);
+        expect(page).toMatch(/const d = \{ action, lemma: m\.lemma, at: new Date\(\)\.toISOString\(\), seen: vu\(m\), heard: entendu\(m\), rev: rev\(\) \};/);
         for (const k of ['expectedForm', 'contextSentence', 'explanation', 'wordVersion', 'contextVersion', 'wordSha256', 'contextSha256']) expect(page).toContain(`${k}: `);
     });
     it('a targeted approval shows the exact text and writes nothing without --oui', () => {

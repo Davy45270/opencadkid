@@ -996,3 +996,91 @@ test('the opening announcement never restarts the second card (fifteenth Codex r
     await page.waitForTimeout(2000);
     expect((await probe(page)).played.filter(p => p.path === second.pronunciationAsset)).toHaveLength(1);
 });
+
+test('a decision the server received without its answer reaching the phone is never sent again, and an old undo never leaves (sixteenth Codex review of 2026-11-20)', async ({ page }) => {
+    // The first sending reaches the server, then the connection drops before the answer.
+    await page.addInitScript(() => {
+        const real = window.fetch.bind(window);
+        if (sessionStorage.getItem('perdu')) return;
+        window.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
+            const r = await real(input, init);
+            if (init?.method === 'POST' && !sessionStorage.getItem('perdu')) { sessionStorage.setItem('perdu', '1'); throw new TypeError('answer lost'); }
+            return r;
+        };
+    });
+    const cases = new Set((JSON.parse(readFileSync('scripts/dictee/audio-non-regression.json', 'utf8')) as { cases: { id: string }[] }).cases.map(c => c.id));
+    const [a, b] = shipped.words.filter(w => w.grade === 'CP' && !cases.has(w.id)) as [Word, Word];
+    const served: { decisions: Record<string, unknown>; recus: string[] } = { decisions: {}, recus: [] };
+    const posted: { decisions: Record<string, { rev?: string }> }[] = [];
+    await page.route('http://relecture.test/**', async route => {
+        const path = new URL(route.request().url()).pathname;
+        if (path === '/') await route.fulfill({ contentType: 'text/html', body: readFileSync('scripts/dictee/validation/index.html', 'utf8') });
+        else if (path === '/dictee/catalogue.json') await route.fulfill({ contentType: 'application/json', body: readFileSync('public/dictee/catalogue.json', 'utf8') });
+        else if (path === '/audio-non-regression.json') await route.fulfill({ contentType: 'application/json', body: readFileSync('scripts/dictee/audio-non-regression.json', 'utf8') });
+        else if (path === '/decisions' && route.request().method() === 'POST') {
+            const lot = route.request().postDataJSON() as (typeof posted)[number];
+            posted.push(lot);
+            for (const [id, d] of Object.entries(lot.decisions)) { served.decisions[id] = d; if (d.rev) served.recus.push(d.rev); }
+            await route.fulfill({ status: 200, body: '{}' });
+        }
+        else if (path === '/decisions') await route.fulfill({ contentType: 'application/json', body: JSON.stringify(served) });
+        else await route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg"/>' });
+    });
+    // An undo kept on this phone for an older version of b: never sent.
+    await page.addInitScript(([id, lemma]) => {
+        if (!sessionStorage.getItem('vieux')) {
+            sessionStorage.setItem('vieux', '1');
+            localStorage.setItem('dictee-relecture-v1', JSON.stringify({ [id]: { action: null, lemma, at: '2026-11-20T08:00:00.000Z', seen: { expectedForm: 'autre' }, rev: 'vieux' } }));
+        }
+    }, [b.id, b.lemma] as const);
+    await page.goto('http://relecture.test/');
+    await page.locator(`article.mot#${a.id} [data-action="valider"]`).click();
+    await expect.poll(() => posted.length, { timeout: 5000 }).toBe(1);
+    // Meanwhile another phone removes a; this phone reopens.
+    served.decisions[a.id] = { action: 'retirer', lemma: a.lemma, at: '2026-11-20T09:05:00.000Z', seen: seenOf(a), rev: 'autre-telephone' };
+    await page.reload();
+    await expect(page.locator(`article.mot#${a.id}`)).toHaveAttribute('data-etat', 'retirer');
+    await page.waitForTimeout(2000);
+    expect(posted).toHaveLength(1);
+    expect(Object.keys(posted[0]!.decisions)).toEqual([a.id]);
+});
+
+test('a hold begun on a card never replays the same word coming back as the next card (sixteenth Codex review of 2026-11-20)', async ({ page }) => {
+    await page.addInitScript(() => { HTMLMediaElement.prototype.play = function play() { return Promise.resolve(); }; });
+    const pool = shipped.words.filter(w => w.grade === 'CE1' && w.audio.mode === 'word_only' && /^[a-z]+$/.test(w.expectedForm)).map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    await feed(page, 'CE1', 5);
+    for (let k = 0; k < 3; k++) {
+        const w = await word(page);
+        await page.keyboard.type(w.expectedForm); await page.keyboard.press('Enter'); await page.keyboard.press('ArrowDown');
+        await expect.poll(async () => (await probe(page)).feed!.index).toBe(k + 1);
+    }
+    const w = await word(page);
+    await page.keyboard.type(`${w.expectedForm}x`); await page.keyboard.press('Enter');
+    await page.waitForTimeout(800);
+    const card = (await probe(page)).card!;
+    await page.mouse.move(card.x + card.width / 2, card.y + 20); await page.mouse.down();
+    await page.keyboard.press('ArrowDown');
+    await page.waitForTimeout(900);
+    await page.mouse.up();
+    const p = await probe(page);
+    expect(p.feed!.index).toBe(4);
+    expect(p.feed!.cards[4]!.id).toBe(w.id);
+    expect(p.played.filter(x => x.rate < 1)).toEqual([]);
+});
+
+test('a word asked before the announcement and already started gets its sentence 3.5 s after its real start (sixteenth Codex review of 2026-11-20)', async ({ page }) => {
+    await page.addInitScript(() => { HTMLMediaElement.prototype.play = function play() { return Promise.resolve(); }; });
+    const pool = shipped.words.filter(w => w.grade === 'CP' && w.audio.mode === 'context_required' && w.expectedForm !== 'un').map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    await feed(page, 'CP', 5);
+    const w = await word(page);
+    const card = (await probe(page)).card!;
+    await page.mouse.click(card.x + card.width / 2, card.y + 40);
+    await expect.poll(async () => (await probe(page)).played.map(p => p.path), { timeout: 10_000 }).toContain(w.contextAsset);
+    const p = await probe(page);
+    const started = p.heard.find(h => h.path === w.pronunciationAsset)!.at;
+    const sentence = p.played.find(x => x.path === w.contextAsset)!.at;
+    expect(sentence - started).toBeGreaterThanOrEqual(3400);
+    expect(sentence - started).toBeLessThan(3900);
+});
