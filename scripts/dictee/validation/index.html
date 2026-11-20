@@ -158,7 +158,8 @@ function decider(m, action, carte) {
   // Undone: kept as a dated empty choice, so the server's merge (latest wins) carries the undo too (ninth Codex review).
   if (avant?.action === action && action !== 'corriger') { decisions[m.id] = { action: null, lemma: m.lemma, at: new Date().toISOString(), seen: vu(m), rev: rev() }; }
   else {
-    if (action === 'valider' && signales[m.id] && !entendu(m)) {
+    // Listening required: a reported case, or any word the assembly marked « audio to hear » (eighteenth review).
+    if (action === 'valider' && (signales[m.id] || m.audio?.mode === 'audio_manual_review') && !entendu(m)) {
       etat('Écouter le mot et la phrase jusqu\'au bout avant de valider : leur écoute est demandée.', true);
       return;
     }
@@ -248,7 +249,7 @@ async function demarrer() {
     if (r.ok) {
       const corps = await r.json();
       // Reçu par le serveur, même sans accusé (connexion perdue) : déjà envoyé, jamais renvoyé (seizième revue).
-      const recus = new Set(corps.recus || []);
+      const recus = new Set(Array.isArray(corps.recus) ? corps.recus : Object.keys(corps.recus || {}));
       for (const [id, d] of Object.entries(decisions)) if (d.rev && recus.has(d.rev)) envoyes[id] = JSON.stringify(d);
       for (const [id, d] of Object.entries(corps.decisions || {})) {
         if (!decisions[id] || JSON.stringify(decisions[id]) === envoyes[id]) { decisions[id] = d; envoyes[id] = JSON.stringify(d); }

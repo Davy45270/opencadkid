@@ -395,7 +395,7 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         if (e.target instanceof Element && (e.target.closest('#back') || e.target.closest('#dictee-report-panel'))) return;
         const k = e.key;
         if (session.evaluation) {
-            if (['Enter', 'ArrowUp', 'ArrowDown', 'PageDown', 'ArrowLeft', ' '].includes(k)) { e.preventDefault(); goNext(); }
+            if (['Enter', 'ArrowUp', 'ArrowDown', 'ArrowRight', 'PageDown', 'ArrowLeft', ' '].includes(k)) { e.preventDefault(); goNext(); }
             return;
         }
         if (k === 'Backspace') { e.preventDefault(); erase(); }

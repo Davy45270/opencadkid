@@ -112,7 +112,10 @@ def main() -> None:
                 garde = a.sortie / 'dictee-relecture.json'
                 avant = json.loads(garde.read_text(encoding='utf-8')) if garde.exists() else {'format': 'dictee-relecture', 'version': 1, 'decisions': {}}
                 fusion = dict(avant.get('decisions') or {})
-                recus = set(avant.get('recus') or [])
+                # Dix-huitième revue : chaque rev reçu garde son sort (« garde » ou « perime »), pour qu'un renvoi après un
+                # accusé perdu reçoive la même réponse que le premier envoi.
+                anciens = avant.get('recus') or {}
+                recus = dict.fromkeys(anciens, 'garde') if isinstance(anciens, list) else dict(anciens)
                 # Seizième revue Codex : une décision (ou une annulation) prise sur une autre version de la fiche que celle
                 # du catalogue servi n'écrase jamais rien ; chaque décision reçue est notée par son identifiant (rev), pour
                 # qu'un téléphone dont l'accusé s'est perdu ne la renvoie pas.
@@ -124,13 +127,18 @@ def main() -> None:
                     # Dix-septième revue : un état déjà reçu (renvoyé après un accusé perdu) n'est jamais réappliqué.
                     if isinstance(d.get('rev'), str):
                         if d['rev'] in recus:
+                            if recus[d['rev']] == 'perime':
+                                perimes.append(ident)
                             continue
-                        recus.add(d['rev'])
                     if ident not in mots or d.get('seen') != vu(mots[ident]):
                         perimes.append(ident)
+                        if isinstance(d.get('rev'), str):
+                            recus[d['rev']] = 'perime'
                         continue
+                    if isinstance(d.get('rev'), str):
+                        recus[d['rev']] = 'garde'
                     fusion[ident] = d
-                tout = {**lot, 'decisions': dict(sorted(fusion.items())), 'recus': sorted(recus)}
+                tout = {**lot, 'decisions': dict(sorted(fusion.items())), 'recus': dict(sorted(recus.items()))}
                 ecrire(garde, json.dumps(tout, ensure_ascii=False, indent=1).encode())
                 ecrire(a.sortie / f'dictee-relecture-envoi-{time.time_ns()}.json', json.dumps(lot, ensure_ascii=False, indent=1).encode())
             self.envoyer(200, json.dumps({'enregistre': len(lot['decisions']) - len(perimes), 'perimes': sorted(perimes)}).encode(), 'application/json')
