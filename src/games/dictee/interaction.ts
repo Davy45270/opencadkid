@@ -126,25 +126,33 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
     let turns = 0;
     /** The card whose word the child already asked for (touch or hold) before its announcement. */
     let asked: string | null = null;
-    /** `settled` runs once the file's turn has come: its bytes are in the player, or were refused. */
+    /** The last sound asked: waiting for its bytes, started (or refused), or ended. */
+    let last: { path: string; turn: number; state: 'waiting' | 'started' | 'ended' } | null = null;
+    /** A turn has come (its bytes are in the player and it started, or they were refused): if the sentence waits for
+     * this word, its safety counts from now. Read when the turn comes, not when it was asked (tenth Codex review). */
+    const settle = (path: string, turn: number): void => {
+        if (turn !== turns || disposed) return;
+        if (last?.turn === turn && last.state === 'waiting') last.state = 'started';
+        const w = current();
+        if (pending && w && path === w.pronunciationAsset) armSafety(w);
+    };
     const play = (path: string | null, rate = 1): void => {
         if (!path) return;
-        const w = current();
         // Without sound (or if the word never reports its end) the sentence still follows, 3.5 s after the word's last
         // turn came: counted from its file's arrival or refusal, never from the request (third and fifth Codex reviews).
-        const settled = pending && w && path === w.pronunciationAsset ? (): void => armSafety(w) : undefined;
         // The waiting sentence asked now (its button), or anything else: it plays once, nothing more waits (eighth review).
-        if (path !== current()?.pronunciationAsset) { pending = null; cancel(safety); safety = null; }
+        if (path !== current()?.pronunciationAsset) pending = null;
         // La Dictée parle toujours : sans le mot entendu, il n'y a pas de dictée (2026-11-17).
-        // A new turn of the waiting word stops the safety at once: it re-arms when THIS turn settles (sixth Codex review).
-        if (settled) { cancel(safety); safety = null; }
-        if (!audio) { settled?.(); return; }
+        // A new turn stops the safety at once: it re-arms when THIS turn settles (sixth Codex review).
+        cancel(safety); safety = null;
+        if (!audio) { const turn = ++turns; last = { path, turn, state: 'waiting' }; settle(path, turn); return; }
         // Recorded once the sound is really asked for, so a test sees a word that the settings would have silenced.
         observed.played.push({ path, rate, at: performance.now() });
         // Stopped now, not once the file arrives: the end of the previous sound must not release a waiting sentence.
         audio.pause();
         // Only the last request may reach the player: a late file (a replay of the previous card) is dropped.
         const turn = ++turns;
+        last = { path, turn, state: 'waiting' };
         void source(path).then(src => {
             if (disposed) return;
             // A stale turn touches nothing: neither the player nor the safety of a newer turn.
@@ -153,17 +161,17 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
                 audio.pause(); audio.src = src; audio.playbackRate = rate; audio.preservesPitch = true;
                 observed.heard.push({ path, at: performance.now() });
                 // The safety counts from the moment the word really starts (or cannot), not from the call (seventh review).
-                const mine = (): void => { if (turn === turns && !disposed) settled?.(); };
+                const mine = (): void => settle(path, turn);
                 void audio.play().then(mine, mine);
                 return;
             }
-            settled?.();
+            settle(path, turn);
         });
     };
     /** Leaving the feed (summary, length, class, profile, quit): no late file, safety or sentence may sound after it. */
     // Every timer of the feed goes too: a card's exit or an announcement due later never acts on a new feed (ninth review).
     const silence = (): void => { turns++; audio?.pause(); for (const id of timers) window.clearTimeout(id); timers.clear(); safety = null; pending = null; asked = null; };
-    audio?.addEventListener('ended', () => { if (pending) { const p = pending; pending = null; play(p); } });
+    audio?.addEventListener('ended', () => { if (last?.turn === turns) last.state = 'ended'; if (pending) { const p = pending; pending = null; play(p); } });
     /** A card arrives: its word is said; a word that needs its sentence gets it said right after, every time. */
     /** The child asks for the word (tap, hold, space): remembered, so the announcement never cuts it. */
     const ask = (rate = 1): void => { const w = current(); if (w) asked = w.id; play(w?.pronunciationAsset ?? null, rate); };
@@ -172,9 +180,16 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         if (!w) return;
         cancel(safety); safety = null;
         pending = sentenceOnArrival(w) ? w.contextAsset : null;
-        // Asked already (a slow replay held at once, ninth Codex review): the announcement does not restart the word;
-        // a sentence still follows its end, or the safety.
-        if (asked === w.id) { asked = null; if (pending) armSafety(w); return; }
+        // Asked already (a slow replay held at once, ninth Codex review): the announcement does not restart the word.
+        // Its sentence follows the end of that word: at once if it already ended, at its end (or 3.5 s after it really
+        // started) if it plays, and once its bytes come if they are still on their way (tenth Codex review).
+        if (asked === w.id && last?.turn === turns && last.path === w.pronunciationAsset) {
+            asked = null;
+            if (!pending) return;
+            if (last.state === 'ended') { const p = pending; pending = null; play(p); }
+            else if (last.state === 'started') armSafety(w);
+            return;
+        }
         asked = null;
         play(w.pronunciationAsset);
     };

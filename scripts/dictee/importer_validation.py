@@ -34,6 +34,7 @@ changé, fait redescendre le mot en relecture.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import unicodedata
 from pathlib import Path
@@ -69,10 +70,22 @@ def approuver_tout(qui: str, note: str) -> None:
 def catalogue_a_jour(mots: list[dict]) -> None:
     """Neuvième revue Codex : une décision ou une approbation se juge contre le catalogue que l'adulte a eu sous les
     yeux, et ce catalogue doit être celui des textes versionnés. Une phrase ou une astuce changée dans phrases.json
-    sans réassemblage arrête tout : relancer assembler_catalogue.py d'abord."""
+    sans réassemblage, une fiche retirée, ou un fichier audio régénéré depuis, arrête tout : relancer
+    assembler_catalogue.py d'abord."""
     phrases = {r['id']: r for r in json.loads(PHRASES.read_text(encoding='utf-8'))} if PHRASES.exists() else {}
-    en_retard = sorted(w['id'] for w in mots if w['id'] in phrases
-                       and (phrases[w['id']].get('contextSentence') != w['contextSentence'] or (phrases[w['id']].get('explanation') or None) != (w['explanation'] or None)))
+
+    def octets(chemin: str | None) -> str | None:
+        f = RACINE / 'public' / chemin if chemin else None
+        return hashlib.sha256(f.read_bytes()).hexdigest() if f and f.is_file() else None
+
+    # Dixième revue : une fiche retirée de phrases.json est aussi en retard, et des octets régénérés sans réassemblage
+    # (fichier présent qui n'est plus celui que le catalogue nomme) aussi.
+    en_retard = sorted(w['id'] for w in mots
+                       if w['id'] not in phrases
+                       or phrases[w['id']].get('contextSentence') != w['contextSentence']
+                       or (phrases[w['id']].get('explanation') or None) != (w['explanation'] or None)
+                       or octets(w.get('pronunciationAsset')) != (w.get('audio') or {}).get('wordSha256')
+                       or octets(w.get('contextAsset')) != (w.get('audio') or {}).get('contextSha256'))
     if en_retard:
         raise SystemExit(f"catalogue en retard sur phrases.json, relancer assembler_catalogue.py d'abord : {', '.join(en_retard)}")
 
