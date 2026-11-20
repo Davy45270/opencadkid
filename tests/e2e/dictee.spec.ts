@@ -546,7 +546,8 @@ test('a word replayed while its sentence waits keeps its turn: the sentence neve
         if (url.includes('-phrase.ogg')) { await route.continue(); return; }
         const file = new URL(url).pathname;
         asked.set(file, (asked.get(file) ?? 0) + 1);
-        if (asked.get(file)! <= 2) { await route.fulfill({ contentType: 'audio/ogg', body: 'OggS other bytes' }); return; }  // keeping, then first turn
+        // keeping, then first turn, each asked again once without the HTTP cache (nineteenth review)
+        if (asked.get(file)! <= 4) { await route.fulfill({ contentType: 'audio/ogg', body: 'OggS other bytes' }); return; }
         await new Promise(r => setTimeout(r, 2000)); await route.continue();
     });
     const pool = shipped.words.filter(w => w.grade === 'CP' && w.audio.mode === 'context_required' && w.expectedForm !== 'un').map(w => w.id);
@@ -1152,4 +1153,104 @@ test('once checked, the right arrow goes to the next card too (eighteenth Codex 
     await expect(page.locator('.dictee-card.juste')).toHaveCount(1);
     await page.keyboard.press('ArrowRight');
     await expect.poll(async () => (await probe(page)).feed!.index).toBe(1);
+});
+
+test('after a sending whose answer got lost, the next sending asks the server first and never sends the received choice again (nineteenth Codex review of 2026-11-20)', async ({ page }) => {
+    await page.addInitScript(() => {
+        const real = window.fetch.bind(window);
+        let lost = false;
+        window.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
+            const r = await real(input, init);
+            if (init?.method === 'POST' && !lost) { lost = true; throw new TypeError('answer lost'); }
+            return r;
+        };
+    });
+    const cases = new Set((JSON.parse(readFileSync('scripts/dictee/audio-non-regression.json', 'utf8')) as { cases: { id: string }[] }).cases.map(c => c.id));
+    const [a, b] = shipped.words.filter(w => w.grade === 'CP' && !cases.has(w.id) && w.audio.mode !== 'audio_manual_review') as [Word, Word];
+    const served: { decisions: Record<string, unknown>; recus: Record<string, string> } = { decisions: {}, recus: {} };
+    const posted: { decisions: Record<string, { rev?: string }> }[] = [];
+    await page.route('http://relecture.test/**', async route => {
+        const path = new URL(route.request().url()).pathname;
+        if (path === '/') await route.fulfill({ contentType: 'text/html', body: readFileSync('scripts/dictee/validation/index.html', 'utf8') });
+        else if (path === '/dictee/catalogue.json') await route.fulfill({ contentType: 'application/json', body: readFileSync('public/dictee/catalogue.json', 'utf8') });
+        else if (path === '/audio-non-regression.json') await route.fulfill({ contentType: 'application/json', body: readFileSync('scripts/dictee/audio-non-regression.json', 'utf8') });
+        else if (path === '/decisions' && route.request().method() === 'POST') {
+            const lot = route.request().postDataJSON() as (typeof posted)[number];
+            posted.push(lot);
+            for (const [id, d] of Object.entries(lot.decisions)) { served.decisions[id] = d; if (d.rev) served.recus[d.rev] = 'garde'; }
+            await route.fulfill({ contentType: 'application/json', body: '{"perimes":[]}' });
+        }
+        else if (path === '/decisions') await route.fulfill({ contentType: 'application/json', body: JSON.stringify(served) });
+        else await route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg"/>' });
+    });
+    await page.goto('http://relecture.test/');
+    await page.locator(`article.mot#${a.id} [data-action="valider"]`).click();
+    await expect.poll(() => posted.length, { timeout: 5000 }).toBe(1);
+    await page.locator(`article.mot#${b.id} [data-action="retirer"]`).click();
+    await expect.poll(() => posted.length, { timeout: 5000 }).toBe(2);
+    expect(Object.keys(posted[1]!.decisions)).toEqual([b.id]);
+    await expect(page.locator('#etat')).toContainText('Enregistré sur le serveur');
+});
+
+test('a choice the server set aside is said, after an unreadable answer and at the next opening, never shown as saved (nineteenth Codex review of 2026-11-20)', async ({ page }) => {
+    const cases = new Set((JSON.parse(readFileSync('scripts/dictee/audio-non-regression.json', 'utf8')) as { cases: { id: string }[] }).cases.map(c => c.id));
+    const a = shipped.words.find(w => w.grade === 'CP' && !cases.has(w.id) && w.audio.mode !== 'audio_manual_review') as Word;
+    const served: { decisions: Record<string, unknown>; recus: Record<string, string> } = { decisions: {}, recus: {} };
+    await page.route('http://relecture.test/**', async route => {
+        const path = new URL(route.request().url()).pathname;
+        if (path === '/') await route.fulfill({ contentType: 'text/html', body: readFileSync('scripts/dictee/validation/index.html', 'utf8') });
+        else if (path === '/dictee/catalogue.json') await route.fulfill({ contentType: 'application/json', body: readFileSync('public/dictee/catalogue.json', 'utf8') });
+        else if (path === '/audio-non-regression.json') await route.fulfill({ contentType: 'application/json', body: readFileSync('scripts/dictee/audio-non-regression.json', 'utf8') });
+        else if (path === '/decisions' && route.request().method() === 'POST') {
+            // The server sets the choice aside (its word changed meanwhile), then the answer is cut short.
+            for (const d of Object.values((route.request().postDataJSON() as { decisions: Record<string, { rev: string }> }).decisions)) served.recus[d.rev] = 'perime';
+            await route.fulfill({ contentType: 'application/json', body: '{"enregis' });
+        }
+        else if (path === '/decisions') await route.fulfill({ contentType: 'application/json', body: JSON.stringify(served) });
+        else await route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg"/>' });
+    });
+    await page.goto('http://relecture.test/');
+    await page.locator(`article.mot#${a.id} [data-action="valider"]`).click();
+    await expect.poll(() => Object.keys(served.recus).length, { timeout: 5000 }).toBe(1);
+    await page.waitForTimeout(500);
+    await expect(page.locator('#etat')).not.toContainText('Enregistré sur le serveur');
+    await page.reload();
+    await expect(page.locator('#etat')).toContainText(`Non enregistré : ${a.id}`);
+});
+
+test('a wrong recording kept by the HTTP cache is asked again from the server, and the right bytes play (nineteenth Codex review of 2026-11-20)', async ({ page }) => {
+    await page.addInitScript(() => { HTMLMediaElement.prototype.play = function play() { return Promise.resolve(); }; });
+    const pool = shipped.words.filter(w => w.grade === 'CE1' && w.audio.mode === 'word_only').map(w => w.id);
+    // A stale HTTP cache: every plain request for a recording answers another file's bytes; only a request that
+    // bypasses the HTTP cache (« reload ») reaches the server's right bytes.
+    await page.addInitScript(() => {
+        const real = window.fetch.bind(window);
+        window.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
+            const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
+            if (url.includes('dictee/audio/') && init?.cache !== 'reload') return new Response(new Uint8Array([79, 103, 103, 83, 0, 1, 2]), { headers: { 'Content-Type': 'audio/ogg' } });
+            return real(input, init);
+        };
+    });
+    await reviewed(page, w => pool.includes(w.id));
+    await feed(page, 'CE1', 5);
+    const w = await word(page);
+    await expect.poll(async () => (await probe(page)).heard.map(p => p.path), { timeout: 10_000 }).toContain(w.pronunciationAsset);
+});
+
+test('a page hidden between a word and its required sentence gives the sentence when it comes back (nineteenth Codex review of 2026-11-20)', async ({ page }) => {
+    await page.addInitScript(() => { HTMLMediaElement.prototype.play = function play() { return Promise.resolve(); }; });
+    const pool = shipped.words.filter(w => w.grade === 'CP' && w.audio.mode === 'context_required' && w.expectedForm !== 'un').map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    await feed(page, 'CP', 5);
+    const w = await word(page);
+    await expect.poll(async () => (await probe(page)).played.map(p => p.path), { timeout: 10_000 }).toContain(w.pronunciationAsset);
+    const visibility = async (hidden: boolean): Promise<void> => page.evaluate(h => {
+        Object.defineProperty(document, 'hidden', { configurable: true, get: () => h });
+        Object.defineProperty(document, 'visibilityState', { configurable: true, get: () => (h ? 'hidden' : 'visible') });
+        document.dispatchEvent(new Event('visibilitychange'));
+    }, hidden);
+    await visibility(true);
+    await page.waitForTimeout(300);
+    await visibility(false);
+    await expect.poll(async () => (await probe(page)).played.map(p => p.path), { timeout: 10_000 }).toContain(w.contextAsset);
 });
