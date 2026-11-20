@@ -140,7 +140,9 @@ def main() -> None:
                         continue
                     if isinstance(d.get('rev'), str):
                         recus[d['rev']] = 'garde'
-                    fusion[ident] = d
+                    # Revue Codex de f08e85c : chaque décision garde l'adulte qui l'a prise ; le fichier consolidé mêle
+                    # plusieurs lots, son `reviewer` de tête n'est que celui du dernier.
+                    fusion[ident] = {**d, 'reviewer': d.get('reviewer') or lot.get('reviewer')}
                 tout = {**lot, 'decisions': dict(sorted(fusion.items())), 'recus': dict(sorted(recus.items()))}
                 ecrire(garde, json.dumps(tout, ensure_ascii=False, indent=1).encode())
                 ecrire(a.sortie / f'dictee-relecture-envoi-{time.time_ns()}.json', json.dumps(lot, ensure_ascii=False, indent=1).encode())

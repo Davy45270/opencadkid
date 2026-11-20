@@ -176,7 +176,7 @@ def main() -> None:
     retires = set(json.loads(RETIRES.read_text(encoding='utf-8'))) if RETIRES.exists() else set()
     signalements = json.loads(SIGNALEMENTS.read_text(encoding='utf-8')) if SIGNALEMENTS.exists() else {'cases': []}
 
-    def ecoute(ident: str, statut: str, quand: str) -> None:
+    def ecoute(ident: str, statut: str, quand: str, qui: str) -> None:
         for cas in signalements['cases']:
             if cas['id'] == ident:
                 version = mots[ident]['audio']['wordVersion'] if cas['kind'] == 'mot' else mots[ident]['audio']['contextVersion']
@@ -189,6 +189,9 @@ def main() -> None:
             compte['inconnu'] += 1
             print(f'ignoré : {ident} ne correspond plus au catalogue')
             continue
+        # Revue Codex de f08e85c : l'auteur d'une décision est le sien (fichier consolidé de plusieurs adultes), à défaut
+        # celui du lot.
+        qui_d = d.get('reviewer') or qui
         action = d.get('action')
         if not action:
             continue  # un choix défait sur la page (daté, vide) : rien à appliquer
@@ -205,7 +208,7 @@ def main() -> None:
             retires.add(w['lemma'])
             relus.pop(w['lemma'], None)
         elif action == 'audio_faux':
-            ecoute(ident, 'failed', d.get('at', ''))
+            ecoute(ident, 'failed', d.get('at', ''), qui_d)
         elif action in ('valider', 'corriger'):
             forme, phrase, expl = w['expectedForm'], w['contextSentence'], w['explanation']
             if action == 'corriger':
@@ -214,14 +217,14 @@ def main() -> None:
                 ph = par_lemme.setdefault(w['lemma'], {'id': ident, 'lemma': w['lemma']})
                 if ph not in phrases:
                     phrases.append(ph)
-                ph.update({'contextSentence': phrase, 'explanation': expl, 'generatedBy': {'by': f'{qui}, corrected at review', 'date': d.get('at', '')[:10]}})
+                ph.update({'contextSentence': phrase, 'explanation': expl, 'generatedBy': {'by': f'{qui_d}, corrected at review', 'date': d.get('at', '')[:10]}})
             audio_inchange = forme == w['expectedForm'] and phrase == w['contextSentence']
             revue = {'orthography': 'approved', 'pedagogy': 'approved', 'context': 'approved', 'audio': 'approved' if audio_inchange else 'pending'}
-            relus[w['lemma']] = {'by': qui, 'at': d.get('at', ''), 'expectedForm': forme, 'contextSentence': phrase, 'explanation': expl,
+            relus[w['lemma']] = {'by': qui_d, 'at': d.get('at', ''), 'expectedForm': forme, 'contextSentence': phrase, 'explanation': expl,
                                  'review': revue, 'wordVersion': w['audio']['wordVersion'], 'contextVersion': w['audio']['contextVersion']}
             # Quatorzième revue : l'écoute n'est levée que si la page a lu le mot et la phrase jusqu'au bout.
             if action == 'valider' and d.get('heard') is True:
-                ecoute(ident, 'ok', d.get('at', ''))
+                ecoute(ident, 'ok', d.get('at', ''), qui_d)
             elif action == 'valider' and any(c['id'] == ident for c in signalements['cases']):
                 print(f'écoute non faite : {ident} validé, ses enregistrements restent à écouter')
         else:

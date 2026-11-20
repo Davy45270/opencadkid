@@ -370,6 +370,32 @@ except SystemExit as e:
             expect((JSON.parse(readFileSync(join(out, 'dictee-relecture.json'), 'utf8')) as { decisions: Record<string, { action: string | null }> }).decisions['fr-huit']!.action).toBeNull();
         } finally { server.kill(); }
     });
+    it('two adults on two phones: the consolidated file keeps who validated each word, and the import names each one (Codex review of f08e85c)', async () => {
+        const dir = copy();
+        const out = join(dir, 'sortie');
+        const port = 18000 + Math.floor(Math.random() * 2000);
+        const server = spawn('python3', ['-B', 'scripts/dictee/servir_validation.py', '--ecoute', `127.0.0.1:${port}`, '--sortie', out], { cwd: dir, stdio: 'ignore' });
+        const seen = (id: string): object => {
+            const w = words(dir).get(id)! as unknown as { expectedForm: string; contextSentence: string | null; explanation: string | null; audio: Record<string, string | null> };
+            return { expectedForm: w.expectedForm, contextSentence: w.contextSentence, explanation: w.explanation, wordVersion: w.audio.wordVersion, contextVersion: w.audio.contextVersion, wordSha256: w.audio.wordSha256, contextSha256: w.audio.contextSha256 };
+        };
+        const post = async (reviewer: string, decisions: object): Promise<number> => {
+            const body = JSON.stringify({ format: 'dictee-relecture', version: 1, reviewer, decisions });
+            for (let i = 0; i < 50; i++) {
+                try { return (await fetch(`http://127.0.0.1:${port}/decisions`, { method: 'POST', body })).status; } catch { await new Promise(r => setTimeout(r, 100)); }
+            }
+            return 0;
+        };
+        try {
+            expect(await post('Alice', { 'fr-huit': { action: 'valider', lemma: 'huit', at: '2026-11-20T10:00:00Z', seen: seen('fr-huit'), rev: 'a1' } })).toBe(200);
+            expect(await post('Bob', { 'fr-air': { action: 'valider', lemma: 'air', at: '2026-11-20T10:01:00Z', seen: seen('fr-air'), rev: 'b1' } })).toBe(200);
+        } finally { server.kill(); }
+        const r = run(dir, 'importer_validation.py', join('sortie', 'dictee-relecture.json'));
+        expect(r.status, r.stderr).toBe(0);
+        const relus = json(dir, 'relectures.json') as Record<string, { by: string }>;
+        expect(relus.huit!.by).toBe('Alice');
+        expect(relus.air!.by).toBe('Bob');
+    });
     it('the review page records what the adult saw with each decision', () => {
         const page = readFileSync('scripts/dictee/validation/index.html', 'utf8');
         expect(page).toMatch(/const d = \{ action, lemma: m\.lemma, at: new Date\(\)\.toISOString\(\), seen: vu\(m\), heard: entendu\(m\), rev: rev\(\) \};/);
