@@ -77,6 +77,14 @@ describe('the offline scripts of the dictation', { timeout: 30_000 }, () => {
         const relus = json(dir, 'relectures.json') as Record<string, { audioNonEcoute?: boolean }>;
         expect(Object.values(relus).every(r => r.audioNonEcoute === true)).toBe(true);
     });
+    it('the words waiting for an adult are exactly those whose text the spelling review of 2026-11-19 corrected', () => {
+        // Spec 1.1.0: approved by David on 2026-11-16, then the 45 corrected words wait for an adult again.
+        const all = [...words('.').values()];
+        const waiting = all.filter(w => w.status !== 'approved');
+        expect(waiting).toHaveLength(45);
+        for (const w of waiting) expect(String(w.provenance.correction), w.id).toMatch(/relecture Codex et Google, 19\/11/);
+        for (const w of all.filter(w => w.status === 'approved')) expect(w.validatedBy, w.id).toBe('David');
+    });
     it('« sol » is heard in its sentence: « sole » sounds the same (2026-11-20)', () => {
         // Codex review of 2026-11-20: fr-sol was approved word_only, with no homophone, so a child could write « sole ».
         const w = words('.').get('fr-sol')!;

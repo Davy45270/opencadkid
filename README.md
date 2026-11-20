@@ -18,7 +18,7 @@ The complete catalogue is described in [GAME_SPEC.md](GAME_SPEC.md). Learning to
 
 No reading is required to play: spoken instructions accompany pictograms, objects and dot constellations. The first touch enables browser audio. Voice availability depends on the device's speech service; install a local French or English voice for spoken play offline. The ear button repeats an instruction. A silent device still shows the visual prompts.
 
-There are no timers, lives, punitive failures, ads, purchases, accounts or analytics. Mistakes invite another try; two mistakes trigger a counting hint. Finishing a guided game always earns stars and unlocks the next level. The studio has no score or imposed goal. Each game keeps its own best stars and unlocks; older counting saves remain valid. Progress and preferences stay in local browser storage. The app makes no external runtime requests. An adult's written challenge protects settings and the external TicTac link. This is a light parental gate, not an identity or security check.
+There are no timers, lives, punitive failures, ads, purchases, accounts or analytics. Mistakes invite another try; two mistakes trigger a counting hint. Finishing a guided game always earns stars and unlocks the next level. The studio has no score or imposed goal. Each game keeps its own best stars and unlocks; older counting saves remain valid. Progress and preferences stay in local browser storage. The app makes no external runtime requests. An adult's written challenge protects settings and the links to the author's other games, in the parents' space; only the TicTac and Petit Astronome cards of the home page open without it. This is a light parental gate, not an identity or security check.
 
 ## Install and play offline
 

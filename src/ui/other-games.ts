@@ -1,7 +1,8 @@
 import type { Locale } from '../shell/i18n';
 
 /**
- * The author's other games, listed in the parents' space (behind the adult question, like every way out).
+ * The author's other games, listed in the parents' space (behind the adult question). The two sister apps, TicTac and
+ * Petit Astronome, also have a card on the home page that opens them directly (decision of 2026-11-19).
  * A plain link opens a game in the same tab: this page makes no request, and the icons are local files
  * cached with the rest of the app.
  */
