@@ -101,3 +101,13 @@ test('a game opened from the bottom of the home page starts at its first levels'
     expect(await page.evaluate(() => scrollY)).toBe(0);
     await expect(page.locator('[data-bonbons-level]').first()).toBeInViewport();
 });
+test('the home landscape painting fills its whole banner, with no empty band, at phone and desktop widths', async ({ page }) => {
+    await page.goto('/');
+    for (const width of [320, 360, 390, 768, 1280]) {
+        await page.setViewportSize({ width, height: 900 });
+        const banner = (await page.locator('.landscape').boundingBox())!;
+        const sky = (await page.locator('.landscape > svg > rect').first().boundingBox())!;
+        expect(sky.y).toBeLessThanOrEqual(banner.y + 1); expect(sky.y + sky.height).toBeGreaterThanOrEqual(banner.y + banner.height - 1);
+        expect(sky.x).toBeLessThanOrEqual(banner.x + 1); expect(sky.x + sky.width).toBeGreaterThanOrEqual(banner.x + banner.width - 1);
+    }
+});

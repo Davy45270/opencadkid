@@ -173,3 +173,27 @@ test('puzzle 16: twenty-four pieces without the eye, rebuilt to three stars, no 
     for (const r of boxes) { expect(r.left).toBeGreaterThanOrEqual(0); expect(r.right).toBeLessThanOrEqual(390); expect(r.width).toBeGreaterThanOrEqual(64); expect(r.height).toBeGreaterThanOrEqual(64); }
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
+test('a guide drawn in a piece has the size and place it has in the model', async ({ page }) => {
+    await page.setViewportSize({ width: 360, height: 740 }); await preparePuzzle(page, 1);
+    const boxes = await page.evaluate(() => {
+        const rect = (e: Element) => { const r = e.getBoundingClientRect(); return { x: r.x, y: r.y, w: r.width, h: r.height }; };
+        const board = document.querySelector('[data-puzzle-board] > svg')!;
+        const origin = rect(board);
+        const model = [...board.querySelectorAll('svg')].map(rect).map(r => ({ ...r, x: r.x - origin.x, y: r.y - origin.y }));
+        const pieces = [...document.querySelectorAll('.puzzle-piece > svg')].map(piece => {
+            const vb = piece.getAttribute('viewBox')!.split(' ').map(Number), at = rect(piece), scale = at.w / vb[2]!;
+            // Back to model coordinates: the piece shows the scene region starting at its viewBox origin.
+            return [...piece.querySelectorAll('svg')].map(rect).map(r => ({ x: (r.x - at.x) / scale + vb[0]!, y: (r.y - at.y) / scale + vb[1]!, w: r.w / scale, h: r.h / scale }));
+        });
+        return { model, pieces, scale: origin.w / 300 };
+    });
+    expect(boxes.model.length).toBeGreaterThan(0);
+    for (const guides of boxes.pieces) {
+        expect(guides).toHaveLength(boxes.model.length);
+        guides.forEach((g, i) => {
+            const m = boxes.model[i]!;
+            expect(Math.abs(g.w - m.w / boxes.scale)).toBeLessThan(1.5); expect(Math.abs(g.h - m.h / boxes.scale)).toBeLessThan(1.5);
+            expect(Math.abs(g.x - m.x / boxes.scale)).toBeLessThan(1.5); expect(Math.abs(g.y - m.y / boxes.scale)).toBeLessThan(1.5);
+        });
+    }
+});
