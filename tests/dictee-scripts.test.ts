@@ -178,6 +178,12 @@ print(g.version('k1', '0123456789abcdef'))`;
             expect(await get('')).toBe(409);
         } finally { server.kill(); }
     });
+    it('the review server listens only on a private address: a public one is refused', () => {
+        const dir = copy();
+        const r = run(dir, 'servir_validation.py', '--ecoute', '8.8.8.8:18080', '--sortie', join(dir, 'sortie'));
+        expect(r.status).not.toBe(0);
+        expect(r.stderr).toContain('refus');
+    });
     it('the review page records what the adult saw with each decision', () => {
         const page = readFileSync('scripts/dictee/validation/index.html', 'utf8');
         expect(page).toMatch(/const d = \{ action, lemma: m\.lemma, at: new Date\(\)\.toISOString\(\), seen: vu\(m\) \};/);
