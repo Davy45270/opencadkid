@@ -20,8 +20,11 @@ it('turns voice and sounds back on once per device, then respects the parents', 
     writeSave(storage, { ...fresh(), voice: false, sound: false, records: { 1: 3 } });
     const on = soundBackOn(storage, readSave(storage));
     expect(on.voice).toBe(true); expect(on.sound).toBe(true); expect(on.records).toEqual({ 1: 3 });
-    expect(readSave(storage).voice).toBe(true);
+    expect(readSave(storage).voice).toBe(true); expect(readSave(storage).sound).toBe(true);
+    expect(data.get('opencadkid-son-2026-11-17')).toBe('1');
     writeSave(storage, { ...on, voice: false });
     expect(soundBackOn(storage, readSave(storage)).voice).toBe(false);
+    writeSave(storage, { ...on, sound: false });
+    expect(soundBackOn(storage, readSave(storage)).sound).toBe(false);
     expect(soundBackOn(undefined, { ...fresh(), voice: false }).voice).toBe(false);
 });

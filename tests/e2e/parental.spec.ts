@@ -34,3 +34,14 @@ test('the adult question is never read aloud', async ({ page }) => {
     await page.waitForTimeout(1000);
     expect((await media(page)).speech).toEqual([]);
 });
+test('unticking sounds in the parents panel silences the sounds at once, ticking them again wakes them up', async ({ page }) => {
+    await prepare(page); await page.locator('#back').click();
+    await page.locator('#parents').click(); await passGate(page);
+    const before = await media(page);
+    await page.locator('#sound').uncheck();
+    await expect.poll(async () => (await media(page)).suspends).toBe(before.suspends + 1);
+    const muted = await media(page);
+    await page.locator('#sound').check();
+    await expect.poll(async () => (await media(page)).resumes).toBeGreaterThan(muted.resumes);
+    expect((await media(page)).suspends).toBe(muted.suspends);
+});
