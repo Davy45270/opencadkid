@@ -76,12 +76,22 @@ const NIVEAUX = ['CP', 'CE1', 'CE2', 'CM1', 'CM2'];
 let mots = [], signales = {}, niveau = 'CP', decisions = {};
 const lire = () => { try { return JSON.parse(localStorage.getItem(CLE) || '{}'); } catch { return {}; } };
 let minuterie = 0;
+// Onzième revue Codex : chaque téléphone n'envoie que les choix changés depuis son dernier envoi réussi, et le serveur
+// les applique dans l'ordre où il les reçoit. Aucune horloge de téléphone n'arbitre entre deux téléphones.
+const ENVOYES = CLE + '.envoyes';
+let envoyes = {};
+const memoriser = () => { try { localStorage.setItem(ENVOYES, JSON.stringify(envoyes)); } catch { /* sans effet */ } };
+const changes = () => Object.fromEntries(Object.entries(decisions).filter(([id, d]) => d.at && JSON.stringify(d) !== envoyes[id]));
 const lot = () => ({ format: 'dictee-relecture', version: 1, reviewer: 'David', exportedAt: new Date().toISOString(), decisions: Object.fromEntries(Object.entries(decisions).filter(([, d]) => d.at)) });
 function etat(texte, ko = false) { const e = document.getElementById('etat'); e.textContent = texte; e.classList.toggle('ko', ko); }
 async function envoyer() {
+  const part = changes();
+  if (!Object.keys(part).length) return;
   try {
-    const r = await fetch('decisions', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(lot()) });
+    const r = await fetch('decisions', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...lot(), decisions: part }) });
     if (!r.ok) throw new Error(String(r.status));
+    for (const [id, d] of Object.entries(part)) envoyes[id] = JSON.stringify(d);
+    memoriser();
     etat(`Enregistré sur le serveur à ${new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}.`);
   } catch {
     etat('Pas de serveur joignable : gardé sur ce téléphone seulement. Exporter un fichier pour ne rien perdre.', true);
@@ -205,14 +215,24 @@ function prochain() {
 }
 async function demarrer() {
   decisions = lire();
-  // Le serveur garde la dernière version envoyée : elle complète ce navigateur (la décision la plus récente gagne).
+  try { envoyes = JSON.parse(localStorage.getItem(ENVOYES) || '{}'); } catch { envoyes = {}; }
+  // Le serveur garde les choix de tous les téléphones : ils remplacent ceux de ce navigateur, sauf un choix fait ici
+  // et pas encore envoyé (onzième revue : aucune comparaison d'horloges).
   try {
     const r = await fetch('decisions', { cache: 'no-store' });
-    if (r.ok) for (const [id, d] of Object.entries((await r.json()).decisions || {})) if (!decisions[id] || (d.at || '') > (decisions[id].at || '')) decisions[id] = d;
+    if (r.ok) for (const [id, d] of Object.entries((await r.json()).decisions || {})) {
+      if (!decisions[id] || JSON.stringify(decisions[id]) === envoyes[id]) { decisions[id] = d; envoyes[id] = JSON.stringify(d); }
+    }
   } catch { /* page ouverte sans serveur */ }
   try { niveau = localStorage.getItem(CLE + '.niveau') || 'CP'; } catch { niveau = 'CP'; }
   const cat = await (await fetch('dictee/catalogue.json', { cache: 'no-store' })).json();
   mots = cat.words;
+  // Une décision prise sur une autre version de la fiche n'est jamais reprise : ni ses champs, ni son rattachement à la
+  // fiche nouvelle (onzième revue Codex). Le mot est à relire.
+  for (const m of mots) {
+    const d = decisions[m.id];
+    if (d?.action && JSON.stringify(d.seen) !== JSON.stringify(vu(m))) delete decisions[m.id];
+  }
   try { for (const c of (await (await fetch('audio-non-regression.json', { cache: 'no-store' })).json()).cases) (signales[c.id] ||= []).push(c); } catch { /* facultatif */ }
   const barre = document.getElementById('niveaux');
   for (const g of NIVEAUX) barre.append(el('button', { type: 'button', 'data-niveau': g, 'aria-pressed': 'false', onclick: () => { niveau = g; afficher(); scrollTo(0, 0); } }, g, el('small', {}, '')));

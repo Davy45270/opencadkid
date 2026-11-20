@@ -43,8 +43,12 @@ def main() -> None:
     p.add_argument('--verification', type=Path)
     a = p.parse_args()
     hote, port = a.ecoute.rsplit(':', 1)
-    if not ipaddress.ip_address(hote).is_private and not ipaddress.ip_address(hote) in ipaddress.ip_network('100.64.0.0/10'):
-        raise SystemExit(f'{hote} n\'est pas une adresse privée : refus')
+    ip = ipaddress.ip_address(hote)
+    # Onzième revue Codex : 0.0.0.0 (toutes les interfaces, publiques comprises) est classée « privée » par ipaddress ;
+    # seule une adresse précise d'un réseau local, du tailnet ou de la boucle locale est acceptée.
+    prive = any(ip in ipaddress.ip_network(r) for r in ('10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/16', '100.64.0.0/10', '127.0.0.0/8', 'fd00::/8', '::1/128'))
+    if ip.is_unspecified or ip.is_multicast or not prive:
+        raise SystemExit(f'{hote} n\'est pas une adresse privée précise : refus')
     a.sortie.mkdir(parents=True, exist_ok=True)
 
     def ecrire(cible: Path, corps: bytes) -> None:
@@ -93,15 +97,15 @@ def main() -> None:
                 assert lot.get('format') == 'dictee-relecture' and isinstance(lot.get('decisions'), dict)
             except (ValueError, AssertionError):
                 return self.envoyer(400, b'format inattendu', 'text/plain; charset=utf-8')
-            # Neuvième revue Codex : chaque choix reçu est gardé. Deux téléphones envoient chacun leur copie complète :
-            # le serveur fusionne par mot (le plus récent gagne, un choix défait compris), sans jamais écraser l'autre,
-            # et garde chaque envoi tel quel sous un nom unique.
+            # Neuvième et onzième revues Codex : chaque choix reçu est gardé. Un téléphone n'envoie que les choix changés
+            # depuis son dernier envoi ; le serveur les applique mot par mot dans l'ordre d'arrivée (le dernier reçu gagne,
+            # un choix défait compris ; aucune horloge de téléphone n'est crue), et garde chaque envoi sous un nom unique.
             with VERROU:
                 garde = a.sortie / 'dictee-relecture.json'
                 avant = json.loads(garde.read_text(encoding='utf-8')) if garde.exists() else {'format': 'dictee-relecture', 'version': 1, 'decisions': {}}
                 fusion = dict(avant.get('decisions') or {})
                 for ident, d in lot['decisions'].items():
-                    if isinstance(d, dict) and str(d.get('at') or '') >= str((fusion.get(ident) or {}).get('at') or ''):
+                    if isinstance(d, dict):
                         fusion[ident] = d
                 tout = {**lot, 'decisions': dict(sorted(fusion.items()))}
                 ecrire(garde, json.dumps(tout, ensure_ascii=False, indent=1).encode())

@@ -275,13 +275,18 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         // Only on its own card: the child may have moved on before the replay is due (fifth Codex review).
         else later(reduce ? 0 : 700, () => { if (current()?.id === w.id && session.evaluation) play(w.pronunciationAsset); });
     };
+    /** The card's exit under way: a second « next » during it does nothing (eleventh Codex review). */
+    let leaving: number | null = null;
     const goNext = (): void => {
-        if (!session.feed || !session.evaluation) return;
+        if (!session.feed || !session.evaluation || (leaving !== null && timers.has(leaving))) return;
         const card = root.querySelector('.dictee-card');
         card?.classList.add('dictee-sortie');
-        later(LEAVE_MS, () => {
-            // Back pressed during the card's exit: the feed is gone, nothing moves (eighth Codex review).
-            if (!session.feed || session.screen !== 'fil') return;
+        const from = session.feed;
+        leaving = later(LEAVE_MS, () => {
+            leaving = null;
+            // Back pressed during the card's exit: the feed is gone, nothing moves (eighth Codex review); and only the
+            // card that was answered ever leaves (eleventh).
+            if (!session.feed || session.screen !== 'fil' || session.feed !== from) return;
             session.feed = next(session.feed);
             if (session.feed.finished) { end(); return; }
             fresh(); arrive();
