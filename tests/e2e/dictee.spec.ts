@@ -1358,3 +1358,52 @@ test('a word heard again on its card never stands for the announcement of the sa
     expect((await probe(page)).feed!.cards[4]!.id).toBe(w.id);
     await expect.poll(async () => (await probe(page)).played.filter(p => p.path === w.pronunciationAsset).length, { timeout: 5000 }).toBeGreaterThan(before);
 });
+
+test('the sentence button pressed while the word plays waits for the word, never cuts it (twenty-first Codex review of 2026-11-20)', async ({ page }) => {
+    // The word never reports its end: its sentence comes 3.5 s after the word really started, never sooner.
+    await page.addInitScript(() => { HTMLMediaElement.prototype.play = function play() { return Promise.resolve(); }; });
+    const pool = shipped.words.filter(w => w.grade === 'CP' && w.audio.mode === 'context_required' && w.expectedForm !== 'un').map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    await feed(page, 'CP', 5);
+    const w = await word(page);
+    await expect.poll(async () => (await probe(page)).heard.map(h => h.path), { timeout: 10_000 }).toContain(w.pronunciationAsset);
+    await page.locator('#dictee-sentence').click();
+    await expect.poll(async () => (await probe(page)).played.map(p => p.path), { timeout: 10_000 }).toContain(w.contextAsset);
+    const p = await probe(page);
+    const started = p.heard.find(h => h.path === w.pronunciationAsset)!.at;
+    expect(p.played.find(x => x.path === w.contextAsset)!.at - started).toBeGreaterThanOrEqual(3400);
+    expect(p.played.filter(x => x.path === w.contextAsset)).toHaveLength(1);
+});
+
+test('a stale choice set aside never hides a newer valid decision of the same word at the next opening (twenty-first Codex review of 2026-11-20)', async ({ page }) => {
+    const [a] = plainCP() as [Word];
+    // This phone's old choice (r1) was set aside; another phone then validated the current word (r2).
+    await page.addInitScript(([id, lemma]) => {
+        if (sessionStorage.getItem('vieux')) return;
+        sessionStorage.setItem('vieux', '1');
+        localStorage.setItem('dictee-relecture-v1', JSON.stringify({ [id]: { action: 'retirer', lemma, at: '2026-11-20T08:00:00.000Z', seen: { expectedForm: 'autre' }, rev: 'r1' } }));
+    }, [a.id, a.lemma] as const);
+    await reviewSite(page, { post: () => '{"perimes":[]}', get: () => ({ status: 200, body: JSON.stringify({ decisions: { [a.id]: { action: 'valider', lemma: a.lemma, at: '2026-11-20T09:00:00.000Z', seen: seenOf(a), heard: true, rev: 'r2' } }, recus: { r1: 'perime', r2: 'garde' } }) }) });
+    await page.goto('http://relecture.test/');
+    await expect(page.locator(`article.mot#${a.id}`)).toHaveAttribute('data-etat', 'valider');
+    await expect(page.locator('#etat')).not.toContainText('Non enregistré');
+});
+
+test('a checked card hidden and shown again gives its word and its required sentence again (twenty-first Codex review of 2026-11-20)', async ({ page }) => {
+    await page.addInitScript(() => { HTMLMediaElement.prototype.play = function play() { return Promise.resolve(); }; });
+    const pool = shipped.words.filter(w => w.grade === 'CP' && w.audio.mode === 'context_required' && w.expectedForm !== 'un' && /^[a-z]+$/.test(w.expectedForm)).map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    await feed(page, 'CP', 5);
+    const w = await word(page);
+    await page.keyboard.type(`${w.expectedForm}x`); await page.keyboard.press('Enter');
+    await page.waitForTimeout(200);
+    const visibility = async (hidden: boolean): Promise<void> => page.evaluate(h => {
+        Object.defineProperty(document, 'hidden', { configurable: true, get: () => h });
+        Object.defineProperty(document, 'visibilityState', { configurable: true, get: () => (h ? 'hidden' : 'visible') });
+        document.dispatchEvent(new Event('visibilitychange'));
+    }, hidden);
+    await visibility(true);
+    await page.waitForTimeout(300);
+    await visibility(false);
+    await expect.poll(async () => (await probe(page)).played.map(p => p.path), { timeout: 10_000 }).toEqual(expect.arrayContaining([w.pronunciationAsset, w.contextAsset]));
+});
