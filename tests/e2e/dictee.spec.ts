@@ -360,3 +360,24 @@ test('the word is heard even when the voice is off in the parents\u2019 space (2
     await expect.poll(async () => (await probe(page)).played.map(p => p.path)).toContain(first.pronunciationAsset);
     await expect(page.locator('.dictee-note')).toHaveCount(0);
 });
+
+test('an audio file kept from an older catalogue is fetched again when its version changed, never replayed (2026-11-20)', async ({ page }) => {
+    // Codex review of 2026-11-20: the 13 regenerated sentences kept their file names; a device that had kept the old file
+    // would play it again after the word is approved anew. The kept copy is tied to the version the catalogue names.
+    const pool = shipped.words.filter(w => w.grade === 'CE1' && plain(w) && w.audio.wordVersion).slice(0, 6);
+    await reviewed(page, w => pool.some(p => p.id === w.id));
+    await open(page);
+    await page.evaluate(async paths => {
+        const c = await caches.open('opencadkid-dictee-audio');
+        for (const p of paths) await c.put(p, new Response('old bytes', { headers: { 'content-type': 'audio/ogg' } }));
+    }, pool.map(w => w.pronunciationAsset));
+    const asked: string[] = [];
+    page.on('request', r => { if (r.url().includes('/dictee/audio/')) asked.push(r.url()); });
+    await page.locator('[data-dictee-profile="licorne"]').click();
+    await page.locator('[data-dictee-grade="CE1"]').click();
+    await page.locator('[data-dictee-length="5"]').click();
+    await expect(page.locator('.dictee-card')).toHaveCount(1);
+    const fed = (await probe(page)).feed!.cards.map(c => byId.get(c.id)!);
+    for (const w of fed)
+        await expect.poll(() => asked.some(u => u.endsWith(`${w.pronunciationAsset}?v=${w.audio.wordVersion}`)), w.id).toBe(true);
+});
