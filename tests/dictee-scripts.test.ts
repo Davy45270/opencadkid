@@ -222,6 +222,18 @@ print(g.version('k1', '0123456789abcdef'))`;
             expect(r.stderr).toContain('fr-huit');
         }
     });
+    it('a private IPv6 address it accepts, it really listens on (twelfth Codex review)', async () => {
+        const dir = copy();
+        const port = 18000 + Math.floor(Math.random() * 2000);
+        const server = spawn('python3', ['-B', 'scripts/dictee/servir_validation.py', '--ecoute', `::1:${port}`, '--sortie', join(dir, 'sortie')], { cwd: dir, stdio: 'ignore' });
+        try {
+            let status = 0;
+            for (let i = 0; i < 50 && !status; i++) {
+                try { status = (await fetch(`http://[::1]:${port}/`)).status; } catch { await new Promise(r => setTimeout(r, 100)); }
+            }
+            expect(status).toBe(200);
+        } finally { server.kill(); }
+    });
     it('the tips that count letters count them right: appeler and rappeler take one l at the infinitive (eleventh Codex review)', () => {
         const ws = [...words(process.cwd()).values()] as unknown as { lemma: string; expectedForm: string; explanation: string | null }[];
         for (const lemma of ['appeler', 'rappeler']) {

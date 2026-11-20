@@ -794,3 +794,49 @@ test('a second « next » during a card\'s exit never clears the next card (elev
     expect(p.feed!.index).toBe(1);
     expect(p.typed).toBe(next.expectedForm.slice(0, 1));
 });
+
+test('a correction typed while its sending is on its way is sent after it, never lost (twelfth Codex review of 2026-11-20)', async ({ page }) => {
+    const posted: { decisions: Record<string, { contextSentence?: string }> }[] = [];
+    let first = true;
+    let inFlight: () => void = () => {};
+    const started = new Promise<void>(r => { inFlight = r; });
+    await page.route('http://relecture.test/**', async route => {
+        const path = new URL(route.request().url()).pathname;
+        if (path === '/') await route.fulfill({ contentType: 'text/html', body: readFileSync('scripts/dictee/validation/index.html', 'utf8') });
+        else if (path === '/dictee/catalogue.json') await route.fulfill({ contentType: 'application/json', body: readFileSync('public/dictee/catalogue.json', 'utf8') });
+        else if (path === '/audio-non-regression.json') await route.fulfill({ contentType: 'application/json', body: readFileSync('scripts/dictee/audio-non-regression.json', 'utf8') });
+        else if (path === '/decisions' && route.request().method() === 'POST') {
+            posted.push(route.request().postDataJSON() as (typeof posted)[number]);
+            // The first sending takes 3 s: the adult types meanwhile.
+            if (first) { first = false; inFlight(); await new Promise(r => setTimeout(r, 3000)); }
+            await route.fulfill({ status: 200, body: '{}' });
+        }
+        else if (path === '/decisions') await route.fulfill({ contentType: 'application/json', body: '{"decisions":{}}' });
+        else await route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg"/>' });
+    });
+    await page.goto('http://relecture.test/');
+    const w = shipped.words.find(x => x.grade === 'CP' && x.contextSentence)!;
+    const card = page.locator(`article.mot#${w.id}`);
+    await card.locator('[data-action="corriger"]').click();
+    await started;
+    await page.waitForTimeout(2000);
+    await card.locator('[name=phrase]').fill('Une phrase tapée pendant l\'envoi.');
+    await expect.poll(() => posted.map(p => p.decisions[w.id]?.contextSentence), { timeout: 10_000 }).toContain('Une phrase tapée pendant l\'envoi.');
+});
+
+test('a hold begun on a card never replays the next one (twelfth Codex review of 2026-11-20)', async ({ page }) => {
+    await page.addInitScript(() => { HTMLMediaElement.prototype.play = function play() { return Promise.resolve(); }; });
+    const pool = shipped.words.filter(w => w.grade === 'CE1' && w.audio.mode === 'word_only').map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    await feed(page, 'CE1', 5);
+    const w = await word(page);
+    await page.keyboard.type(w.expectedForm); await page.keyboard.press('Enter');
+    const card = (await probe(page)).card!;
+    await page.mouse.move(card.x + card.width / 2, card.y + 20); await page.mouse.down();
+    await page.keyboard.press('ArrowDown');
+    await page.waitForTimeout(900);
+    await page.mouse.up();
+    const p = await probe(page);
+    expect(p.feed!.index).toBe(1);
+    expect(p.played.filter(x => x.rate < 1)).toEqual([]);
+});
