@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest';
+import { afterAll, describe, it, expect } from 'vitest';
 import { spawnSync } from 'node:child_process';
-import { cpSync, mkdirSync, mkdtempSync, readFileSync, symlinkSync, writeFileSync } from 'node:fs';
+import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { sentenceOnArrival, type Word } from '../src/engines/dictee';
@@ -8,8 +8,11 @@ import { sentenceOnArrival, type Word } from '../src/engines/dictee';
 /** The offline scripts of the dictation run on a copy of their inputs (scripts/dictee and the shipped catalogue):
  * the repository is never written. */
 interface W { id: string; lemma: string; status: string; validatedBy: string | null; homophones: string[]; contextSentence: string | null; audio: { mode: string }; provenance: Record<string, unknown> }
+const made: string[] = [];
+afterAll(() => { for (const d of made) rmSync(d, { recursive: true, force: true }); });
 function copy(): string {
     const dir = mkdtempSync(join(tmpdir(), 'dictee-'));
+    made.push(dir);
     cpSync('scripts/dictee', join(dir, 'scripts/dictee'), { recursive: true });
     mkdirSync(join(dir, 'public/dictee'), { recursive: true });
     cpSync('public/dictee/catalogue.json', join(dir, 'public/dictee/catalogue.json'));
@@ -58,6 +61,9 @@ describe('the offline scripts of the dictation', { timeout: 30_000 }, () => {
         expect(r.status, r.stderr).toBe(0);
         expect(r.stdout).toContain("Un h au début, qu'on n'entend pas ; le t de la fin s'entend.");
         expect(r.stdout).toContain('RIEN écrit');
+        const w = words(dir).get('fr-huit')! as unknown as { homophones: string[]; audio: { wordVersion: string; contextVersion: string | null } };
+        expect(r.stdout).toContain(`homophones : ${w.homophones.join(', ') || '-'}`);
+        expect(r.stdout).toContain(`audio mot ${w.audio.wordVersion}, phrase ${w.audio.contextVersion}`);
         expect(readFileSync(join(dir, 'scripts/dictee/relectures.json'), 'utf8')).toBe(relus);
     });
     it('a targeted approval with --oui approves the text shown, named, with its note kept in provenance.validation', () => {
@@ -91,11 +97,34 @@ describe('the offline scripts of the dictation', { timeout: 30_000 }, () => {
         cases.cases.push({ id: 'fr-huit', lemma: 'huit', grade: w.id ? 'CP' : 'CP', kind: 'mot', asset: 'dictee/audio/fr-huit.ogg', text: 'Écris le mot : huit.', observed: 'Écris le mot nuit.',
             observedBy: 'test', audioVersion: versions['dictee/audio/fr-huit.ogg'], listening: { status: 'pending', by: null, date: null, note: null }, batch: 'test' });
         writeFileSync(join(dir, 'scripts/dictee/audio-non-regression.json'), JSON.stringify(cases));
-        expect(run(dir, 'importer_validation.py', '--approuver', 'fr-huit', '--par', 'Test', '--note', 'essai', '--oui').status).toBe(0);
+        // Third Codex review: the refusal reads the cases themselves, not the last assembled catalogue; nothing is written.
+        const relus = readFileSync(join(dir, 'scripts/dictee/relectures.json'), 'utf8');
+        const r = run(dir, 'importer_validation.py', '--approuver', 'fr-huit', '--par', 'Test', '--note', 'essai', '--oui');
+        expect(r.status).not.toBe(0);
+        expect(r.stderr).toContain('fr-huit');
+        expect(readFileSync(join(dir, 'scripts/dictee/relectures.json'), 'utf8')).toBe(relus);
         expect(run(dir, 'assembler_catalogue.py').status).toBe(0);
         const after = words(dir).get('fr-huit')!;
         expect(after.audio.mode).toBe('audio_manual_review');
         expect(after.status).not.toBe('approved');
+    });
+    it('« en-attente » approves the waiting words and leaves aside a word whose recording waits for an adult ear (Codex review of 2026-11-20)', () => {
+        const dir = copy();
+        // Words already flagged in the catalogue (audio_manual_review) are left aside too: only a clean recording is approved.
+        const waiting = [...words(dir).values()].filter(w => w.status !== 'approved' && w.audio.mode !== 'audio_manual_review').map(w => w.id);
+        const aside = waiting[0]!;
+        const cases = json(dir, 'audio-non-regression.json') as { cases: Record<string, unknown>[] };
+        const versions = json(dir, 'audio-empreintes.json') as Record<string, string>;
+        cases.cases.push({ id: aside, lemma: aside.slice(3), grade: 'CP', kind: 'mot', asset: `dictee/audio/${aside}.ogg`, text: 'x', observed: 'y',
+            observedBy: 'test', audioVersion: versions[`dictee/audio/${aside}.ogg`], listening: { status: 'pending', by: null, date: null, note: null }, batch: 'test' });
+        writeFileSync(join(dir, 'scripts/dictee/audio-non-regression.json'), JSON.stringify(cases));
+        const r = run(dir, 'importer_validation.py', '--approuver', 'en-attente', '--par', 'Test', '--note', 'essai', '--oui');
+        expect(r.status, r.stderr).toBe(0);
+        expect(r.stdout).not.toContain(` ${aside} — `);
+        expect(run(dir, 'assembler_catalogue.py').status).toBe(0);
+        const after = words(dir);
+        expect(after.get(aside)!.status).not.toBe('approved');
+        for (const id of waiting.slice(1)) expect(after.get(id)!.status, id).toBe('approved');
     });
     it('« en-attente » is given alone: mixed with an id, nothing is shown nor written', () => {
         const dir = copy();
@@ -113,12 +142,13 @@ describe('the offline scripts of the dictation', { timeout: 30_000 }, () => {
         const relus = json(dir, 'relectures.json') as Record<string, { audioNonEcoute?: boolean }>;
         expect(Object.values(relus).every(r => r.audioNonEcoute === true)).toBe(true);
     });
-    it('the words waiting for an adult are exactly those whose text the spelling review of 2026-11-19 corrected', () => {
-        // Spec 1.1.0: approved by David on 2026-11-16, then the 45 corrected words wait for an adult again.
+    it('the words waiting for an adult are exactly those whose text the spelling reviews of 2026-11-19 and 2026-11-20 corrected', () => {
+        // Spec 1.1.0: approved by David on 2026-11-16, then the 45 words corrected on 19/11 and « plutôt » (20/11) wait again.
         const all = [...words('.').values()];
         const waiting = all.filter(w => w.status !== 'approved');
-        expect(waiting).toHaveLength(45);
-        for (const w of waiting) expect(String(w.provenance.correction), w.id).toMatch(/relecture Codex et Google, 19\/11/);
+        expect(waiting).toHaveLength(46);
+        for (const w of waiting) expect(String(w.provenance.correction), w.id).toMatch(/relecture Codex et Google, 19\/11|relecture Codex, 20\/11/);
+        expect(waiting.filter(w => /relecture Codex, 20\/11/.test(String(w.provenance.correction))).map(w => w.id)).toEqual(['fr-plutot']);
         for (const w of all.filter(w => w.status === 'approved')) expect(w.validatedBy, w.id).toBe('David');
     });
     it('every context sentence holds its exact word and has 3 to 14 words', () => {
@@ -158,6 +188,15 @@ describe('the offline scripts of the dictation', { timeout: 30_000 }, () => {
             expect(w.homophones.length, w.id).toBeGreaterThan(0);
             expect(w.homophones.every(h => h in raw.homophoneNotes), w.id).toBe(true);
         }
+    });
+    it('the sentence of « plutôt » leaves one answer: « plus tôt » cannot be read in it (Codex review of 2026-11-20)', () => {
+        const w = words('.').get('fr-plutot')! as unknown as { contextSentence: string; contextAsset: string; audio: { contextVersion: string } };
+        expect(w.contextSentence).toMatch(/plutôt que /);
+        // Its recording is the one generated from this sentence (generer_audio.py records the text's fingerprint).
+        const versions = JSON.parse(readFileSync('scripts/dictee/audio-empreintes.json', 'utf8')) as Record<string, string>;
+        expect(w.audio.contextVersion).toBe(versions[w.contextAsset]);
+        const recorded = JSON.parse(readFileSync('scripts/dictee/phrases.json', 'utf8')) as { lemma: string; contextSentence: string }[];
+        expect(recorded.find(p => p.lemma === 'plutôt')!.contextSentence).toBe(w.contextSentence);
     });
     it('« sol » is heard in its sentence: « sole » sounds the same (2026-11-20)', () => {
         // Codex review of 2026-11-20: fr-sol was approved word_only, with no homophone, so a child could write « sole ».

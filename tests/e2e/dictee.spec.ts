@@ -5,7 +5,7 @@ import { test, expect, media, passGate, prepare } from './helpers';
 import { grades, type Evaluation, type Feed, type Grade, type Word } from '../../src/engines/dictee';
 
 interface Rect { x: number; y: number; width: number; height: number }
-interface Probe { screen: string; grade: Grade | null; feed: Feed | null; typed: string; tiles: string[]; evaluation: Evaluation | null; played: { path: string; rate: number }[]; card: Rect | null; keys: (Rect & { key: string })[] }
+interface Probe { screen: string; grade: Grade | null; feed: Feed | null; typed: string; tiles: string[]; evaluation: Evaluation | null; played: { path: string; rate: number; at: number }[]; heard: { path: string; at: number }[]; card: Rect | null; keys: (Rect & { key: string })[] }
 const probe = (page: Page): Promise<Probe> => page.evaluate(() => (window as unknown as { __kid: { state: () => { dictee: Probe } } }).__kid.state().dictee);
 const shipped = JSON.parse(readFileSync('public/dictee/catalogue.json', 'utf8')) as { words: Word[] };
 const byId = new Map(shipped.words.map(w => [w.id, w]));
@@ -388,18 +388,31 @@ test('an audio file kept from an older catalogue is fetched again when its versi
 });
 
 test('in reduced motion, the sentence of a word heard in context still waits for the word (Codex review of 2026-11-20)', async ({ page }) => {
-    // The audio never arrives here (requests held), so the word never ends: only the 3.5 s safety may bring the sentence,
-    // never the 30 ms that reduced motion gives to animations.
+    // The word's recording is refused here (wrong bytes): only the 3.5 s safety brings the sentence, counted from the word's
+    // turn, never the 30 ms that reduced motion gives to animations, nor a shorter wait.
     await page.emulateMedia({ reducedMotion: 'reduce' });
-    await page.route('**/dictee/audio/*.ogg*', () => undefined);
+    await page.route('**/dictee/audio/*.ogg*', route => route.request().url().includes('-phrase.ogg') ? route.continue() : route.fulfill({ contentType: 'audio/ogg', body: 'OggS other bytes' }));
     const pool = shipped.words.filter(w => w.grade === 'CP' && w.audio.mode === 'context_required' && w.expectedForm !== 'un').map(w => w.id);
     await reviewed(page, w => pool.includes(w.id));
     await feed(page, 'CP', 5);
     const w = await word(page);
-    await expect.poll(async () => (await probe(page)).played.map(p => p.path)).toEqual([w.pronunciationAsset]);
-    await page.waitForTimeout(1500);
-    expect((await probe(page)).played.map(p => p.path)).toEqual([w.pronunciationAsset]);
     await expect.poll(async () => (await probe(page)).played.map(p => p.path), { timeout: 8000 }).toEqual([w.pronunciationAsset, w.contextAsset]);
+    const p = await probe(page);
+    expect(p.played[1]!.at - p.played[0]!.at).toBeGreaterThanOrEqual(3400);
+    await expect.poll(async () => (await probe(page)).heard.map(h => h.path)).toEqual([w.contextAsset]);
+});
+
+test('a slow word is never overtaken by its sentence (Codex review of 2026-11-20)', async ({ page }) => {
+    // The word's file takes 5 s to arrive, the sentence's is at hand: the child hears the word first, then the sentence.
+    await page.route('**/dictee/audio/*.ogg*', async route => {
+        if (!route.request().url().includes('-phrase.ogg')) await new Promise(r => setTimeout(r, 5000));
+        await route.continue();
+    });
+    const pool = shipped.words.filter(w => w.grade === 'CP' && w.audio.mode === 'context_required' && w.expectedForm !== 'un').map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    await feed(page, 'CP', 5);
+    const w = await word(page);
+    await expect.poll(async () => (await probe(page)).heard.map(h => h.path), { timeout: 20_000 }).toEqual([w.pronunciationAsset, w.contextAsset]);
 });
 
 test('a recording whose bytes are not those of its catalogue version is never kept (Codex review of 2026-11-20)', async ({ page }) => {
@@ -416,4 +429,6 @@ test('a recording whose bytes are not those of its catalogue version is never ke
     await page.waitForTimeout(2000);
     const kept = await page.evaluate(async () => (await (await caches.open('opencadkid-dictee-audio')).keys()).length);
     expect(kept, fed.map(w => w.id).join(',')).toBe(0);
+    // Nor played: the child never hears bytes that are not the version the catalogue names.
+    expect((await probe(page)).heard).toEqual([]);
 });
