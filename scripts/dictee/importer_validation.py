@@ -87,7 +87,10 @@ def approuver(ids: list[str], qui: str, note: str, ecrire: bool) -> None:
     empreintes = json.loads(EMPREINTES.read_text(encoding='utf-8')) if EMPREINTES.exists() else {}
     cas = json.loads(SIGNALEMENTS.read_text(encoding='utf-8'))['cases'] if SIGNALEMENTS.exists() else []
     signales = {c['id'] for c in cas if c['listening']['status'] != 'ok' or c['listening'].get('audioVersion') != empreintes.get(c['asset'])}
-    a_ecouter = [w['id'] for w in choisis if w['audio']['mode'] == 'audio_manual_review' or w['id'] in signales]
+    # Sixième revue : un texte corrigé sans régénérer l'enregistrement n'est jamais approuvé avec l'ancien.
+    from generer_audio import a_regenerer  # noqa: PLC0415
+    perimes = {w['id'] for w in choisis if a_regenerer(w['expectedForm'], w['contextSentence'], w['id'], empreintes)}
+    a_ecouter = [w['id'] for w in choisis if w['audio']['mode'] == 'audio_manual_review' or w['id'] in signales or w['id'] in perimes]
     if a_ecouter and ids != ['en-attente']:
         raise SystemExit(f"enregistrement en attente d'écoute, à entendre sur la page de relecture : {', '.join(a_ecouter)}")
     choisis = [w for w in choisis if w['id'] not in a_ecouter]

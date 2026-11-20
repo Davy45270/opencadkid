@@ -24,6 +24,8 @@ import json
 import unicodedata
 from pathlib import Path
 
+from generer_audio import a_regenerer  # même recette que le générateur (sixième revue Codex)
+
 ICI = Path(__file__).resolve().parent
 RACINE = ICI.parents[1]
 SELECTION = ICI / 'mots-selection.json'
@@ -106,6 +108,9 @@ def main() -> None:
         if a_ecouter and textes_relus and r.get('audioNonEcoute') and r.get('wordVersion') == empreintes.get(f"dictee/audio/{m['id']}.ogg") \
                 and r.get('contextVersion') == (empreintes.get(f"dictee/audio/{m['id']}-phrase.ogg") if phrase else None):
             a_ecouter = []
+        # Un texte corrigé sans régénérer : l'enregistrement dit l'ancien texte. Le mot reste en écoute, sans exemption.
+        perimes = a_regenerer(unicodedata.normalize('NFC', forme), phrase, m['id'], empreintes)
+        a_ecouter = a_ecouter + [{'asset': a, 'recette': 'périmée'} for a in perimes]
         homos = homophones_relus(m['lemma'], m['homophones'])
         tags = [t for t in m['tags'] if t != 'homophone'] + (['homophone'] if homos else [])
         nuances = NUANCES.get(m['lemma'], {})

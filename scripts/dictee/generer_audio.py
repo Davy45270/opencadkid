@@ -53,11 +53,21 @@ def empreinte(texte: str, sorte: str) -> str:
     return hashlib.sha256(json.dumps([texte, MODELE_SHA256, REGLAGES[sorte], OPUS, PORTEUSE], ensure_ascii=False).encode()).hexdigest()[:16]
 
 
-def version(chemin: str, cle: str, connues: dict[str, str], sha: str) -> str:
-    """Version d'un fichier qu'on vient de produire. Une recette nouvelle donne sa clé ; la même recette déjà produite
-    (fichier perdu ou altéré, puis refait : Piper ne rend jamais deux fois les mêmes octets) donne une AUTRE version,
-    `clé.octets`, pour qu'aucune approbation ni écoute de l'ancien fichier ne passe à ces octets (5e revue Codex)."""
-    return f'{cle}.{sha[:8]}' if connues.get(chemin, '').split('.')[0] == cle else cle
+def version(cle: str, sha: str) -> str:
+    """Version d'un fichier qu'on vient de produire : sa recette ET ses octets (`clé.octets`). Piper ne rend jamais deux
+    fois les mêmes octets ; une recette refaite, ou reprise après une autre (A, B, puis A), donne donc une AUTRE version,
+    et aucune approbation ni écoute d'un ancien fichier ne passe à ces octets (5e et 6e revues Codex). Les fichiers
+    produits avant le 2026-11-20 gardent leur clé seule, liée à leurs octets par audio-octets.json."""
+    return f'{cle}.{sha[:8]}'
+
+
+def a_regenerer(forme: str, phrase: str | None, mid: str, empreintes: dict[str, str]) -> list[str]:
+    """Les fichiers d'un mot dont la recette ne correspond plus au texte actuel (un texte corrigé sans régénérer) : leur
+    enregistrement dit autre chose que ce que l'adulte lit ; l'assemblage les bloque, l'approbation ciblée les refuse."""
+    attendus = {f'dictee/audio/{mid}.ogg': empreinte(PORTEUSE.format(PRONONCIATION.get(forme, forme)), 'mot')}
+    if phrase:
+        attendus[f'dictee/audio/{mid}-phrase.ogg'] = empreinte(phrase, 'phrase')
+    return sorted(a for a, cle in attendus.items() if empreintes.get(a, '').split('.')[0] != cle)
 
 
 def fait(chemin: str, cle: str, connues: dict[str, str], ecrits: dict[str, str], cible: Path) -> bool:
@@ -93,7 +103,7 @@ def main() -> None:
                 voix.synthesize_wav(texte, f, syn_config=SynthesisConfig(**REGLAGES[sorte]))
             subprocess.run(['ffmpeg', '-loglevel', 'error', '-y', '-i', str(wav), *OPUS, str(cible)], check=True)
             octets[chemin] = hashlib.sha256(cible.read_bytes()).hexdigest()
-            connues[chemin] = version(chemin, cle, connues, octets[chemin])
+            connues[chemin] = version(cle, octets[chemin])
             faits += 1
             if faits % 50 == 0:
                 EMPREINTES.write_text(json.dumps(dict(sorted(connues.items())), indent=0) + '\n', encoding='utf-8')

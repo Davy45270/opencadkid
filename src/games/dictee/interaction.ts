@@ -133,6 +133,8 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         const settled = pending && w && path === w.pronunciationAsset ? (): void => armSafety(w) : undefined;
         if (path !== pending && path !== current()?.pronunciationAsset) pending = null;
         // La Dictée parle toujours : sans le mot entendu, il n'y a pas de dictée (2026-11-17).
+        // A new turn of the waiting word stops the safety at once: it re-arms when THIS turn settles (sixth Codex review).
+        if (settled) { cancel(safety); safety = null; }
         if (!audio) { settled?.(); return; }
         // Recorded once the sound is really asked for, so a test sees a word that the settings would have silenced.
         observed.played.push({ path, rate, at: performance.now() });
@@ -142,8 +144,8 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         const turn = ++turns;
         void source(path).then(src => {
             if (disposed) return;
-            // The sentence's safety still starts (it checks its card itself), but the player keeps the newer request.
-            if (turn !== turns) { settled?.(); return; }
+            // A stale turn touches nothing: neither the player nor the safety of a newer turn.
+            if (turn !== turns) return;
             if (src) {
                 audio.pause(); audio.src = src; audio.playbackRate = rate; audio.preservesPitch = true;
                 observed.heard.push({ path, at: performance.now() });
@@ -152,6 +154,8 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
             settled?.();
         });
     };
+    /** Leaving the feed (summary, length, class, profile, quit): no late file, safety or sentence may sound after it. */
+    const silence = (): void => { turns++; audio?.pause(); cancel(safety); safety = null; pending = null; };
     audio?.addEventListener('ended', () => { if (pending) { const p = pending; pending = null; play(p); } });
     /** A card arrives: its word is said; a word that needs its sentence gets it said right after, every time. */
     const arrive = (): void => {
@@ -167,12 +171,14 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
 
     const backTo = (f: () => void, key: string): void => bindAction(root.querySelector<HTMLElement>('#back')!, f, key);
     const profilesScreen = (): void => {
+        silence();
         session.screen = 'profils';
         root.innerHTML = profileView(locale);
         backTo(home, 'dictee:home');
         root.querySelectorAll<HTMLElement>('[data-dictee-profile]').forEach(el => bindAction(el, () => { session.profile = el.dataset.dicteeProfile as Profile; gradesScreen(true); }, () => `dictee:profile:${el.dataset.dicteeProfile!}`));
     };
     const gradesScreen = (aloud: boolean): void => {
+        silence();
         session.screen = 'niveaux';
         root.innerHTML = `<p class="dictee-note">${t.loading}</p>`;
         void loadCatalogue().then(c => {
@@ -185,6 +191,7 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         });
     };
     const lengthScreen = (aloud: boolean): void => {
+        silence();
         session.screen = 'longueur'; session.feed = null;
         void loadCatalogue().then(c => {
             if (disposed || session.screen !== 'longueur') return;
@@ -251,6 +258,7 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         });
     };
     const end = (): void => {
+        silence();
         const f = session.feed!;
         session.records = withProgress(session.records, session.profile!, session.grade!, closeFeed(progressOf(session.records, session.profile!, session.grade!), f));
         writeRecords(storage, session.records);
