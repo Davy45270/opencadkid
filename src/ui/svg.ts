@@ -40,7 +40,7 @@ export function icon(name: Icon): string {
     return svg(`<g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">${paths[name]}</g>`);
 }
 export function scenery(): string {
-    return svg(volume(`<rect width="900" height="300" fill="#c5eaf0"/>
+    return svg(volume(`<rect y="-300" width="900" height="600" fill="#c5eaf0"/>
     <circle cx="748" cy="63" r="50" fill="#fff0b0" opacity=".35"/><circle cx="748" cy="63" r="35" fill="#f8d982"/>
     <g fill="#fffdf5"><path d="M101 66C70 42 113 23 138 38C142 10 199 15 203 39C247 37 254 68 217 72Z"/><path d="M499 65C475 45 505 30 526 39C537 11 581 18 587 36C627 28 647 63 613 68Z"/></g>
     <path d="M0 211Q128 107 292 174Q427 106 564 191Q740 117 900 179V300H0Z" fill="#badbb3"/>
@@ -53,5 +53,7 @@ export function scenery(): string {
     <g fill="#88b880"><ellipse cx="849" cy="105" rx="39" ry="51"/><ellipse cx="817" cy="141" rx="29" ry="35"/><ellipse cx="881" cy="142" rx="32" ry="39"/></g>
     <g stroke="#56865b" stroke-width="2" fill="none"><path d="M24 289l-7 -14m7 14l8 -18M302 285l-6 -15m6 15l7 -19M612 282l-5 -13m5 13l9 -16M872 287l-5 -18m5 18l9 -12"/></g>
     <g fill="#ffe9c1"><path d="M25 276c-14 -8 -7 -15 0 -7c8 -10 15 -1 0 7Z"/><path d="M610 272c-12 -9 -4 -15 1 -7c9 -6 13 4 -1 7Z"/></g>
-    <g fill="#f3b6c8"><path d="M303 275c-12 -7 -7 -15 0 -8c8 -8 15 2 0 8Z"/><path d="M874 276c-13 -8 -6 -15 0 -8c9 -9 16 2 0 8Z"/></g>`), '0 0 900 300').replace('xMidYMid meet', 'xMidYMid slice'); // the banner is taller than 3:1 on phones (min-height): fill it, crop the sides
+    <g fill="#f3b6c8"><path d="M303 275c-12 -7 -7 -15 0 -8c8 -8 15 2 0 8Z"/><path d="M874 276c-13 -8 -6 -15 0 -8c9 -9 16 2 0 8Z"/></g>`), '0 0 900 300').replace('xMidYMid meet', 'xMidYMax meet').replace('<svg ', '<svg overflow="visible" ');
+    // The banner is taller than 3:1 on phones (min-height): the whole drawing sits on the bottom edge (guides and sun kept),
+    // and its sky, drawn 300 units taller than the view box, fills the band above (the banner clips it).
 }
