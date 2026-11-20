@@ -184,6 +184,44 @@ print(g.version('k1', '0123456789abcdef'))`;
         expect(r.status).not.toBe(0);
         expect(r.stderr).toContain('refus');
     });
+    it('a decision or an approval against a catalogue behind phrases.json stops: reassemble first (ninth Codex review)', () => {
+        const dir = copy();
+        const f = join(dir, 'scripts/dictee/phrases.json');
+        const ph = JSON.parse(readFileSync(f, 'utf8')) as { id: string; contextSentence: string }[];
+        ph.find(r => r.id === 'fr-huit')!.contextSentence = 'Une phrase corrigée, pas encore assemblée.';
+        writeFileSync(f, JSON.stringify(ph));
+        const w = words(dir).get('fr-huit')! as unknown as { lemma: string };
+        writeFileSync(join(dir, 'lot.json'), JSON.stringify({ format: 'dictee-relecture', version: 1, reviewer: 'Test', decisions: { 'fr-huit': { action: 'retirer', lemma: w.lemma, at: '2026-11-20T10:00:00Z', seen: {} } } }));
+        const r = run(dir, 'importer_validation.py', 'lot.json');
+        expect(r.status).not.toBe(0);
+        expect(r.stderr).toContain('catalogue en retard');
+        const a = run(dir, 'importer_validation.py', '--approuver', 'fr-huit', '--par', 'Test', '--note', 'écoute', '--oui');
+        expect(a.status).not.toBe(0);
+        expect(a.stderr).toContain('catalogue en retard');
+    });
+    it('the review server keeps every choice it confirmed: two phones, two words, both kept (ninth Codex review)', async () => {
+        const dir = copy();
+        const out = join(dir, 'sortie');
+        const port = 18000 + Math.floor(Math.random() * 2000);
+        const server = spawn('python3', ['-B', 'scripts/dictee/servir_validation.py', '--ecoute', `127.0.0.1:${port}`, '--sortie', out], { cwd: dir, stdio: 'ignore' });
+        const post = async (decisions: object): Promise<number> => {
+            const body = JSON.stringify({ format: 'dictee-relecture', version: 1, reviewer: 'Test', decisions });
+            for (let i = 0; i < 50; i++) {
+                try { return (await fetch(`http://127.0.0.1:${port}/decisions`, { method: 'POST', body })).status; } catch { await new Promise(r => setTimeout(r, 100)); }
+            }
+            return 0;
+        };
+        try {
+            expect(await post({ 'fr-huit': { action: 'valider', lemma: 'huit', at: '2026-11-20T10:00:00Z' } })).toBe(200);
+            expect(await post({ 'fr-air': { action: 'retirer', lemma: 'air', at: '2026-11-20T10:00:01Z' } })).toBe(200);
+            // An older copy of a choice never replaces a newer one; an undone choice (dated, empty) does.
+            expect(await post({ 'fr-huit': { action: 'retirer', lemma: 'huit', at: '2026-11-20T09:00:00Z' } })).toBe(200);
+            expect(await post({ 'fr-air': { action: null, lemma: 'air', at: '2026-11-20T10:00:02Z' } })).toBe(200);
+            const kept = JSON.parse(readFileSync(join(out, 'dictee-relecture.json'), 'utf8')) as { decisions: Record<string, { action: string | null }> };
+            expect(kept.decisions['fr-huit']!.action).toBe('valider');
+            expect(kept.decisions['fr-air']!.action).toBeNull();
+        } finally { server.kill(); }
+    });
     it('the review page records what the adult saw with each decision', () => {
         const page = readFileSync('scripts/dictee/validation/index.html', 'utf8');
         expect(page).toMatch(/const d = \{ action, lemma: m\.lemma, at: new Date\(\)\.toISOString\(\), seen: vu\(m\) \};/);

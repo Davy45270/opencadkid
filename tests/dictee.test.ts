@@ -260,6 +260,12 @@ describe('the feed and the spaced review', () => {
         expect(p.words['fr-cp-002']).toEqual({ box: 2, seen: 1, misses: 0, last: 1 });
         expect(p.session).toBe(1);
     });
+    it('keeps the history of the real catalogue ids across a reload (ninth Codex review of 2026-11-20)', () => {
+        const stored = { session: 1, words: { 'fr-air': { box: 2, seen: 1, misses: 0, last: 1 }, 'fr-c-est': { box: 1, seen: 1, misses: 1, last: 1 } }, recent: ['fr-air', 'fr-c-est'] };
+        expect(parseProgress(JSON.parse(JSON.stringify(stored)))).toEqual(stored);
+        expect(parseProgress({ session: 1, words: { 'FR-AIR': { box: 1, seen: 1, misses: 0, last: 1 }, 'fr-': { box: 1, seen: 1, misses: 0, last: 1 } }, recent: ['fr-air-', '<x>'] }))
+            .toEqual({ session: 1, words: {}, recent: [] });
+    });
     it('reads stored progress safely and keeps profiles apart', () => {
         expect(parseProgress({ session: 2, words: { 'fr-cp-001': { box: 9, seen: 1, misses: 0, last: 1 }, 'fr-cp-002': { box: 2, seen: 1, misses: 0, last: 1 } }, recent: ['fr-cp-002', 3] }))
             .toEqual({ session: 2, words: { 'fr-cp-002': { box: 2, seen: 1, misses: 0, last: 1 } }, recent: ['fr-cp-002'] });

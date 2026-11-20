@@ -669,3 +669,39 @@ test('the review page asks each recording under the digest of its decision (eigh
     await card.getByRole('button', { name: '▶ La phrase' }).click();
     await expect.poll(() => asked).toEqual([`/${first.pronunciationAsset}?sha=${first.audio.wordSha256}`, `/${first.contextAsset}?sha=${first.audio.contextSha256}`]);
 });
+
+test('a slow replay held at once is never cut by the announcement (ninth Codex review of 2026-11-20)', async ({ page }) => {
+    // A player that never ends: the word asked slowly at 300 ms is still playing when the announcement comes (1.6 s).
+    await page.addInitScript(() => { HTMLMediaElement.prototype.play = function play() { return Promise.resolve(); }; });
+    const pool = shipped.words.filter(w => w.grade === 'CE1' && w.audio.mode === 'word_only').map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    await feed(page, 'CE1', 5);
+    const w = await word(page);
+    const box = (await page.locator('.dictee-card').boundingBox())!;
+    await page.mouse.move(box.x + box.width / 2, box.y + 20); await page.mouse.down();
+    await page.waitForTimeout(900); await page.mouse.up();
+    await page.waitForTimeout(1500);
+    const plays = (await probe(page)).played.filter(p => p.path === w.pronunciationAsset);
+    expect(plays.length).toBeGreaterThan(0);
+    expect(plays.every(p => p.rate < 1)).toBe(true);
+});
+
+test('a card\'s exit left behind never moves a new feed (ninth Codex review of 2026-11-20)', async ({ page }) => {
+    const pool = shipped.words.filter(w => w.grade === 'CE1' && w.audio.mode === 'word_only').map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    await feed(page, 'CE1', 5);
+    const w = await word(page);
+    await page.keyboard.type(w.expectedForm); await page.keyboard.press('Enter');
+    await page.evaluate(async () => {
+        document.activeElement?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+        (document.querySelector('#back') as HTMLElement).click();
+        for (let i = 0; i < 100 && !document.querySelector('[data-dictee-length]'); i++) await new Promise(r => setTimeout(r, 1));
+        (document.querySelector('[data-dictee-length]') as HTMLElement).click();
+    });
+    // The new feed announces its first word at 1.6 s, never earlier: an old exit timer would start it at once.
+    const before = (await probe(page)).played.length;
+    await page.waitForTimeout(800);
+    const p = await probe(page);
+    expect(p.feed!.index).toBe(0);
+    expect(p.played.length).toBe(before);
+});
