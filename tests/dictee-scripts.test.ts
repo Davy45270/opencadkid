@@ -396,6 +396,42 @@ except SystemExit as e:
         expect(relus.huit!.by).toBe('Alice');
         expect(relus.air!.by).toBe('Bob');
     });
+    it('the author of a decision is whoever sent it: an older consolidated file keeps its adult, a decision edited and sent again takes the new sender (Codex review of a7c7148)', async () => {
+        for (const cas of ['ancien fichier', 'reprise'] as const) {
+            const dir = copy();
+            const out = join(dir, 'sortie');
+            const seen = (id: string): object => {
+                const w = words(dir).get(id)! as unknown as { expectedForm: string; contextSentence: string | null; explanation: string | null; audio: Record<string, string | null> };
+                return { expectedForm: w.expectedForm, contextSentence: w.contextSentence, explanation: w.explanation, wordVersion: w.audio.wordVersion, contextVersion: w.audio.contextVersion, wordSha256: w.audio.wordSha256, contextSha256: w.audio.contextSha256 };
+            };
+            const huit = { action: 'valider', lemma: 'huit', at: '2026-11-20T10:00:00Z', seen: seen('fr-huit'), rev: 'a1' };
+            if (cas === 'ancien fichier') {
+                // Written by the previous server: one batch by Alice, the author only in the header.
+                mkdirSync(out, { recursive: true });
+                writeFileSync(join(out, 'dictee-relecture.json'), JSON.stringify({ format: 'dictee-relecture', version: 1, reviewer: 'Alice', decisions: { 'fr-huit': huit }, recus: { a1: 'garde' } }));
+            }
+            const port = 18000 + Math.floor(Math.random() * 2000);
+            const server = spawn('python3', ['-B', 'scripts/dictee/servir_validation.py', '--ecoute', `127.0.0.1:${port}`, '--sortie', out], { cwd: dir, stdio: 'ignore' });
+            const post = async (reviewer: string, decisions: object): Promise<number> => {
+                const body = JSON.stringify({ format: 'dictee-relecture', version: 1, reviewer, decisions });
+                for (let i = 0; i < 50; i++) {
+                    try { return (await fetch(`http://127.0.0.1:${port}/decisions`, { method: 'POST', body })).status; } catch { await new Promise(r => setTimeout(r, 100)); }
+                }
+                return 0;
+            };
+            try {
+                if (cas === 'ancien fichier') expect(await post('Bob', { 'fr-air': { action: 'valider', lemma: 'air', at: '2026-11-20T10:01:00Z', seen: seen('fr-air'), rev: 'b1' } })).toBe(200);
+                else {
+                    expect(await post('Alice', { 'fr-huit': huit })).toBe(200);
+                    // Bob edits the decision he received (it carries Alice's name) and sends it again.
+                    expect(await post('Bob', { 'fr-huit': { ...huit, reviewer: 'Alice', at: '2026-11-20T10:02:00Z', rev: 'b2' } })).toBe(200);
+                }
+            } finally { server.kill(); }
+            const r = run(dir, 'importer_validation.py', join('sortie', 'dictee-relecture.json'));
+            expect(r.status, r.stderr).toBe(0);
+            expect((json(dir, 'relectures.json') as Record<string, { by: string }>).huit!.by, cas).toBe(cas === 'ancien fichier' ? 'Alice' : 'Bob');
+        }
+    });
     it('the review page records what the adult saw with each decision', () => {
         const page = readFileSync('scripts/dictee/validation/index.html', 'utf8');
         expect(page).toMatch(/const d = \{ action, lemma: m\.lemma, at: new Date\(\)\.toISOString\(\), seen: vu\(m\), heard: entendu\(m\), rev: rev\(\) \};/);
