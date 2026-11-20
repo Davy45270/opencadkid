@@ -1,5 +1,6 @@
 import { afterAll, describe, it, expect } from 'vitest';
-import { spawnSync } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
@@ -149,6 +150,33 @@ print(g.version('k1', '0123456789abcdef'))`;
         writeFileSync(join(dir, 'lot.json'), lot(seen));
         expect(run(dir, 'importer_validation.py', 'lot.json').stdout).toContain('1 validés');
         expect((json(dir, 'relectures.json') as Record<string, { by: string }>)[w.lemma]!.by).toBe('Test');
+    });
+    it('a stale « Retirer » never removes a word that changed since (eighth Codex review)', () => {
+        const dir = copy();
+        const w = words(dir).get('fr-huit')! as unknown as { lemma: string; expectedForm: string; contextSentence: string; explanation: string; audio: Record<string, string | null> };
+        const seen = { expectedForm: w.expectedForm, contextSentence: 'Une ancienne phrase.', explanation: w.explanation, wordVersion: w.audio.wordVersion, contextVersion: w.audio.contextVersion, wordSha256: w.audio.wordSha256, contextSha256: w.audio.contextSha256 };
+        writeFileSync(join(dir, 'lot.json'), JSON.stringify({ format: 'dictee-relecture', version: 1, reviewer: 'Test', decisions: { 'fr-huit': { action: 'retirer', lemma: w.lemma, at: '2026-11-20T10:00:00Z', seen } } }));
+        const r = run(dir, 'importer_validation.py', 'lot.json');
+        expect(r.stdout).toContain('ignoré : fr-huit');
+        expect(JSON.parse(readFileSync(join(dir, 'scripts/dictee/mots-retires.json'), 'utf8'))).not.toContain(w.lemma);
+    });
+    it('the review server serves a recording only under the digest the page names: other bytes answer 409 (eighth Codex review)', async () => {
+        const dir = copy();
+        const out = join(dir, 'sortie');
+        const port = 18000 + Math.floor(Math.random() * 2000);
+        const server = spawn('python3', ['-B', 'scripts/dictee/servir_validation.py', '--ecoute', `127.0.0.1:${port}`, '--sortie', out], { cwd: dir, stdio: 'ignore' });
+        try {
+            const get = async (q: string): Promise<number> => {
+                for (let i = 0; i < 50; i++) {
+                    try { return (await fetch(`http://127.0.0.1:${port}/dictee/audio/fr-huit.ogg${q}`)).status; } catch { await new Promise(r => setTimeout(r, 100)); }
+                }
+                return 0;
+            };
+            const sha = createHash('sha256').update(readFileSync('public/dictee/audio/fr-huit.ogg')).digest('hex');
+            expect(await get(`?sha=${sha}`)).toBe(200);
+            expect(await get('?sha=' + '0'.repeat(64))).toBe(409);
+            expect(await get('')).toBe(409);
+        } finally { server.kill(); }
     });
     it('the review page records what the adult saw with each decision', () => {
         const page = readFileSync('scripts/dictee/validation/index.html', 'utf8');

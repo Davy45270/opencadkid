@@ -623,3 +623,49 @@ test('the review page, for an adult on a phone: Validate, Correct, Remove, and e
     expect(d.seen).toEqual({ expectedForm: first.expectedForm, contextSentence: first.contextSentence ?? null, explanation: first.explanation ?? null,
         wordVersion: first.audio.wordVersion ?? null, contextVersion: first.audio.contextVersion ?? null, wordSha256: first.audio.wordSha256 ?? null, contextSha256: first.audio.contextSha256 ?? null });
 });
+
+test('back during a card\'s exit never breaks the game (eighth Codex review of 2026-11-20)', async ({ page }) => {
+    const errors: string[] = [];
+    page.on('pageerror', e => errors.push(e.message));
+    const pool = shipped.words.filter(w => w.grade === 'CE1' && w.audio.mode === 'word_only').map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    await feed(page, 'CE1', 5);
+    const w = await word(page);
+    await page.keyboard.type(w.expectedForm); await page.keyboard.press('Enter');
+    await page.evaluate(() => { document.activeElement?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })); (document.querySelector('#back') as HTMLElement).click(); });
+    await page.waitForTimeout(800);
+    expect(errors).toEqual([]);
+    await expect(page.locator('[data-dictee-length]').first()).toBeVisible();
+});
+
+test('the sentence button while the sentence waits says it once, never twice (eighth Codex review of 2026-11-20)', async ({ page }) => {
+    // A player that never reports an end: only the safety could say the sentence again.
+    await page.addInitScript(() => { HTMLMediaElement.prototype.play = function play() { return Promise.resolve(); }; });
+    const pool = shipped.words.filter(w => w.grade === 'CP' && w.audio.mode === 'context_required' && w.expectedForm !== 'un').map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    await feed(page, 'CP', 5);
+    const w = await word(page);
+    await expect.poll(async () => (await probe(page)).heard.map(h => h.path)).toContain(w.pronunciationAsset);
+    await page.locator('#dictee-sentence').click();
+    await page.waitForTimeout(5000);
+    expect((await probe(page)).played.filter(p => p.path === w.contextAsset)).toHaveLength(1);
+});
+
+test('the review page asks each recording under the digest of its decision (eighth Codex review of 2026-11-20)', async ({ page }) => {
+    const asked: string[] = [];
+    await page.route('http://relecture.test/**', async route => {
+        const u = new URL(route.request().url());
+        if (u.pathname === '/') await route.fulfill({ contentType: 'text/html', body: readFileSync('scripts/dictee/validation/index.html', 'utf8') });
+        else if (u.pathname === '/dictee/catalogue.json') await route.fulfill({ contentType: 'application/json', body: readFileSync('public/dictee/catalogue.json', 'utf8') });
+        else if (u.pathname === '/audio-non-regression.json') await route.fulfill({ contentType: 'application/json', body: readFileSync('scripts/dictee/audio-non-regression.json', 'utf8') });
+        else if (u.pathname === '/decisions') await route.fulfill({ contentType: 'application/json', body: '{"decisions":{}}' });
+        else if (u.pathname.startsWith('/dictee/audio/')) { asked.push(`${u.pathname}${u.search}`); await route.fulfill({ contentType: 'audio/ogg', body: readFileSync(`public${u.pathname}`) }); }
+        else await route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg"/>' });
+    });
+    await page.goto('http://relecture.test/');
+    const first = shipped.words.find(w => w.grade === 'CP')!;
+    const card = page.locator(`article.mot#${first.id}`);
+    await card.getByRole('button', { name: '▶ Le mot' }).click();
+    await card.getByRole('button', { name: '▶ La phrase' }).click();
+    await expect.poll(() => asked).toEqual([`/${first.pronunciationAsset}?sha=${first.audio.wordSha256}`, `/${first.contextAsset}?sha=${first.audio.contextSha256}`]);
+});
