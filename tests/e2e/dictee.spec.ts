@@ -382,4 +382,7 @@ test('an audio file kept from an older catalogue is fetched again when its versi
     const fed = (await probe(page)).feed!.cards.map(c => byId.get(c.id)!);
     for (const w of fed)
         await expect.poll(() => asked.some(u => u.endsWith(`${w.pronunciationAsset}?v=${w.audio.wordVersion}`)), w.id).toBe(true);
+    // Each of them is kept in the browser cache under its version, for offline play: the old copy no longer answers.
+    const kept = (paths: string[]) => page.evaluate(async ps => { const c = await caches.open('opencadkid-dictee-audio'); return Promise.all(ps.map(async p => !!await c.match(p))); }, paths);
+    await expect.poll(() => kept(fed.map(w => `${w.pronunciationAsset}?v=${encodeURIComponent(w.audio.wordVersion!)}`))).toEqual(fed.map(() => true));
 });
