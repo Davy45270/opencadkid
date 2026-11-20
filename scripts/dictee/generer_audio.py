@@ -73,8 +73,9 @@ def version(cle: str, sha: str) -> str:
     """Version d'un fichier qu'on vient de produire : sa recette ET ses octets (`clé.octets`). Piper ne rend jamais deux
     fois les mêmes octets ; une recette refaite, ou reprise après une autre (A, B, puis A), donne donc une AUTRE version,
     et aucune approbation ni écoute d'un ancien fichier ne passe à ces octets (5e et 6e revues Codex). Les fichiers
-    produits avant le 2026-11-20 gardent leur clé seule, liée à leurs octets par audio-octets.json."""
-    return f'{cle}.{sha[:8]}'
+    produits avant le 2026-11-20 gardent leur clé seule, liée à leurs octets par audio-octets.json. L'empreinte entière :
+    un préfixe court laisserait deux enregistrements partager une version (dix-septième revue Codex)."""
+    return f'{cle}.{sha}'
 
 
 def a_regenerer(forme: str, phrase: str | None, mid: str, empreintes: dict[str, str]) -> list[str]:

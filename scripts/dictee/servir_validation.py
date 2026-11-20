@@ -121,7 +121,10 @@ def main() -> None:
                 for ident, d in lot['decisions'].items():
                     if not isinstance(d, dict):
                         continue
+                    # Dix-septième revue : un état déjà reçu (renvoyé après un accusé perdu) n'est jamais réappliqué.
                     if isinstance(d.get('rev'), str):
+                        if d['rev'] in recus:
+                            continue
                         recus.add(d['rev'])
                     if ident not in mots or d.get('seen') != vu(mots[ident]):
                         perimes.append(ident)

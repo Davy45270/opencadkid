@@ -111,7 +111,7 @@ def main() -> None:
             return True
         if h is None or ecrits.get(a) != h:
             return False
-        return v.split('.', 1)[1] == h[:8] if '.' in v else anciens.get(a) == h
+        return v.split('.', 1)[1] == h if '.' in v else anciens.get(a) == h
     faux = sorted(a for a in attendus if not lie(a))
     if faux:
         raise SystemExit(f"octets différents de ceux qu'a écrits generer_audio.py (régénérer, ou recopier le bon fichier) : {', '.join(faux)}")

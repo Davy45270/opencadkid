@@ -100,9 +100,12 @@ async function envoyer() {
     const r = await fetch('decisions', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...lot(), decisions: corps }) });
     if (!r.ok) throw new Error(String(r.status));
     for (const [id, t] of Object.entries(part)) envoyes[id] = t;
+    // Écartées par le serveur (fiche changée depuis) : dit à l'adulte, jamais annoncé comme enregistré.
+    const perimes = (await r.json().catch(() => ({}))).perimes || [];
     if (Object.keys(changes()).length) ecrire();  // tapé pendant l'envoi : un nouvel envoi suit
     memoriser();
-    etat(`Enregistré sur le serveur à ${new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}.`);
+    if (perimes.length) etat(`Non enregistré : ${perimes.join(', ')} a changé depuis le chargement. Recharger la page et relire ce mot.`, true);
+    else etat(`Enregistré sur le serveur à ${new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}.`);
   } catch {
     etat('Pas de serveur joignable : gardé sur ce téléphone seulement. Exporter un fichier pour ne rien perdre.', true);
   } finally {
@@ -259,6 +262,9 @@ async function demarrer() {
   mots = cat.words;
   // Une décision prise sur une autre version de la fiche n'est jamais reprise : ni ses champs, ni son rattachement à la
   // fiche nouvelle (onzième revue Codex). Le mot est à relire.
+  // Une décision sur une fiche qui n'existe plus (mot remplacé) n'est ni renvoyée ni exportée (dix-septième revue).
+  const ids = new Set(mots.map(m => m.id));
+  for (const id of Object.keys(decisions)) if (!ids.has(id)) delete decisions[id];
   for (const m of mots) {
     const d = decisions[m.id];
     // Une annulation aussi : elle porte la version de sa fiche (seizième revue).
