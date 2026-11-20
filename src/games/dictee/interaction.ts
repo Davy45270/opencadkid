@@ -66,12 +66,29 @@ async function keep(paths: readonly string[]): Promise<void> {
             // A kept copy is trusted for its bytes only: a stale one under the current key is replaced (fourth Codex review).
             const kept = await c.match(p);
             if (kept && await shipped(path, kept)) return;
-            // A wrong answer may sit in the HTTP cache under the current URL: ask the server again once (nineteenth review).
-            let r = await fetch(p);
-            if (!r.ok || !await shipped(path, r.clone())) r = await fetch(p, { cache: 'reload' });
-            if (r.ok && await shipped(path, r.clone())) await c.put(p, r);
+            const bytes = await network(path);
+            if (bytes) await c.put(p, new Response(bytes, { headers: { 'Content-Type': 'audio/ogg' } }));
         }));
     } catch { /* Audio stays available from the network. */ }
+}
+/** One network request per file at a time, shared by the keeping and the player (final Codex review): the right bytes, or
+ * null. A wrong answer may sit in the HTTP cache under the current URL: the server is asked again once (nineteenth review). */
+const inFlight = new Map<string, Promise<Blob | null>>();
+function network(path: string): Promise<Blob | null> {
+    const key = versioned(path);
+    let p = inFlight.get(key);
+    if (!p) {
+        p = (async (): Promise<Blob | null> => {
+            try {
+                let r = await fetch(key);
+                if (!r.ok || !await shipped(path, r.clone())) r = await fetch(key, { cache: 'reload' });
+                return r.ok && await shipped(path, r.clone()) ? await r.blob() : null;
+            } catch { return null; }
+        })();
+        inFlight.set(key, p);
+        void p.finally(() => inFlight.delete(key));
+    }
+    return p;
 }
 async function shipped(path: string, r: Response): Promise<boolean> {
     const want = digests.get(path);
@@ -91,14 +108,15 @@ async function source(path: string): Promise<string | null> {
     let r: Response | undefined;
     try { if (typeof caches !== 'undefined') r = await (await caches.open(AUDIO_CACHE)).match(key); } catch { r = undefined; }
     try {
-        if (!r || !await shipped(path, r.clone())) {
-            r = await fetch(key);
-            if (!r.ok || !await shipped(path, r.clone())) r = await fetch(key, { cache: 'reload' });
-            if (!r.ok || !await shipped(path, r.clone())) return null;
+        let bytes: Blob | null;
+        if (r && await shipped(path, r.clone())) bytes = await r.blob();
+        else {
+            bytes = await network(path);
+            if (!bytes) return null;
             // The right bytes replace a missing or stale kept copy, so they still play offline after a reload.
-            try { if (typeof caches !== 'undefined') await (await caches.open(AUDIO_CACHE)).put(key, r.clone()); } catch { /* Played anyway. */ }
+            try { if (typeof caches !== 'undefined') await (await caches.open(AUDIO_CACHE)).put(key, new Response(bytes, { headers: { 'Content-Type': 'audio/ogg' } })); } catch { /* Played anyway. */ }
         }
-        const url = URL.createObjectURL(await r.blob()); blobs.set(key, url); return url;
+        const url = URL.createObjectURL(bytes); blobs.set(key, url); return url;
     } catch { return null; }
 }
 
@@ -186,14 +204,29 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
     };
     /** Leaving the feed (summary, length, class, profile, quit): no late file, safety or sentence may sound after it. */
     // Every timer of the feed goes too: a card's exit or an announcement due later never acts on a new feed (ninth review).
-    const silence = (): void => { turns++; audio?.pause(); for (const id of timers) window.clearTimeout(id); timers.clear(); safety = null; pending = null; asked = null; };
-    audio?.addEventListener('ended', () => { if (last?.turn === turns) last.state = 'ended'; if (pending) { const p = pending; pending = null; play(p); } });
+    const silence = (): void => { turns++; audio?.pause(); for (const id of timers) window.clearTimeout(id); timers.clear(); safety = null; pending = null; asked = null; deferred = null; };
+    audio?.addEventListener('ended', () => {
+        if (last?.turn === turns) last.state = 'ended';
+        if (deferred && session.feed?.index === deferred.index && current()?.id === deferred.id) { deferred = null; arrive(true); return; }
+        if (pending) { const p = pending; pending = null; play(p); } });
     /** A card arrives: its word is said; a word that needs its sentence gets it said right after, every time. */
     /** The child asks for the word (tap, hold, space): remembered, so the announcement never cuts it. */
     const ask = (rate = 1): void => { const w = current(); if (w && session.feed) asked = { id: w.id, index: session.feed.index }; play(w?.pronunciationAsset ?? null, rate); };
-    const arrive = (): void => {
+    /** The card whose announcement waits for a sentence the child asked before it (final review). */
+    let deferred: { id: string; index: number } | null = null;
+    const arrive = (force = false): void => {
         const w = current();
         if (!w) return;
+        // A sentence asked before the announcement is still playing: the announcement waits for its end (or 3.5 s after
+        // it really started), never cuts it (final Codex review of 2026-11-20).
+        if (!force && w.contextAsset && last?.turn === turns && last.path === w.contextAsset && last.state !== 'ended') {
+            const mine = { id: w.id, index: session.feed!.index };
+            deferred = mine;
+            const wait = last.state === 'started' ? 3500 - (performance.now() - (last.at ?? performance.now())) : 3500;
+            later(Math.max(0, wait), () => { if (deferred === mine && session.feed?.index === mine.index) { deferred = null; arrive(true); } }, true);
+            return;
+        }
+        deferred = null;
         cancel(safety); safety = null;
         pending = sentenceOnArrival(w) ? w.contextAsset : null;
         // Asked already (a slow replay held at once, ninth Codex review): the announcement does not restart the word.
