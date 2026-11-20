@@ -119,20 +119,20 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
     let pending: string | null = null;
     /** The sentence's safety, re-armed each time the current word gets its turn (a slow replay is never cut). */
     let safety: number | null = null;
-    const armSafety = (w: Word): void => {
+    const armSafety = (w: Word, ms = 3500): void => {
         cancel(safety);
-        safety = later(3500, () => { safety = null; if (pending === w.contextAsset && current()?.id === w.id) { const p = pending; pending = null; play(p); } }, true);
+        safety = later(Math.max(0, ms), () => { safety = null; if (pending === w.contextAsset && current()?.id === w.id) { const p = pending; pending = null; play(p); } }, true);
     };
     let turns = 0;
     /** The card whose word the child already asked for (touch or hold) before its announcement. */
     let asked: string | null = null;
     /** The last sound asked: waiting for its bytes, started (or refused), or ended. */
-    let last: { path: string; turn: number; state: 'waiting' | 'started' | 'ended' } | null = null;
+    let last: { path: string; turn: number; state: 'waiting' | 'started' | 'ended'; at?: number } | null = null;
     /** A turn has come (its bytes are in the player and it started, or they were refused): if the sentence waits for
      * this word, its safety counts from now. Read when the turn comes, not when it was asked (tenth Codex review). */
     const settle = (path: string, turn: number): void => {
         if (turn !== turns || disposed) return;
-        if (last?.turn === turn && last.state === 'waiting') last.state = 'started';
+        if (last?.turn === turn && last.state === 'waiting') { last.state = 'started'; last.at = performance.now(); }
         const w = current();
         if (pending && w && path === w.pronunciationAsset) armSafety(w);
     };
@@ -187,7 +187,8 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
             asked = null;
             if (!pending) return;
             if (last.state === 'ended') { const p = pending; pending = null; play(p); }
-            else if (last.state === 'started') armSafety(w);
+            // Counted from the word's real start, not from the announcement (sixteenth Codex review).
+            else if (last.state === 'started') armSafety(w, 3500 - (performance.now() - (last.at ?? performance.now())));
             return;
         }
         asked = null;
@@ -312,8 +313,9 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
             start = { x: e.clientX, y: e.clientY, id: e.pointerId }; long = false; moved = false;
             try { card.setPointerCapture(e.pointerId); } catch { /* Synthetic pointers. */ }
             // The hold belongs to its card: a card changed meanwhile (next during the hold) never gets it (twelfth review).
-            const held = current()?.id;
-            timer = window.setTimeout(() => { if (start && !moved && session.screen === 'fil' && current()?.id === held) { long = true; ask(SLOW_RATE); recordActivation('dictee:slow', 'action', true, 'long-press'); } }, LONG_PRESS_MS);
+            // The card, not only its word: a missed word may come back as the next card (sixteenth review).
+            const held = current()?.id, heldAt = session.feed?.index;
+            timer = window.setTimeout(() => { if (start && !moved && session.screen === 'fil' && current()?.id === held && session.feed?.index === heldAt) { long = true; ask(SLOW_RATE); recordActivation('dictee:slow', 'action', true, 'long-press'); } }, LONG_PRESS_MS);
         });
         card.addEventListener('pointermove', e => {
             if (!start || e.pointerId !== start.id) return;

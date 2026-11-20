@@ -87,6 +87,8 @@ const lot = () => ({ format: 'dictee-relecture', version: 1, reviewer: 'David', 
 function etat(texte, ko = false) { const e = document.getElementById('etat'); e.textContent = texte; e.classList.toggle('ko', ko); }
 // Un seul envoi à la fois par téléphone (treizième revue Codex) : un envoi demandé pendant un autre attend sa fin.
 let enVol = false, redemande = false;
+// Seizième revue Codex : chaque état d'une décision porte un identifiant ; le serveur liste ceux qu'il a reçus.
+const rev = () => (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`);
 async function envoyer() {
   // Demandé pendant un autre envoi : il repart à la fin de celui-ci, réussi ou non (quinzième revue Codex).
   if (enVol) { redemande = true; return; }
@@ -151,14 +153,14 @@ function vu(m) {
 function decider(m, action, carte) {
   const avant = decisions[m.id];
   // Undone: kept as a dated empty choice, so the server's merge (latest wins) carries the undo too (ninth Codex review).
-  if (avant?.action === action && action !== 'corriger') { decisions[m.id] = { action: null, lemma: m.lemma, at: new Date().toISOString() }; }
+  if (avant?.action === action && action !== 'corriger') { decisions[m.id] = { action: null, lemma: m.lemma, at: new Date().toISOString(), seen: vu(m), rev: rev() }; }
   else {
     if (action === 'valider' && signales[m.id] && !entendu(m)) {
       etat('Écouter le mot et la phrase jusqu\'au bout avant de valider : leur écoute est demandée.', true);
       return;
     }
     // What the adult saw and heard: the import applies the decision only to this very text and these very recordings.
-    const d = { action, lemma: m.lemma, at: new Date().toISOString(), seen: vu(m), heard: entendu(m) };
+    const d = { action, lemma: m.lemma, at: new Date().toISOString(), seen: vu(m), heard: entendu(m), rev: rev() };
     if (action === 'corriger') Object.assign(d, { expectedForm: avant?.expectedForm ?? m.expectedForm, contextSentence: avant?.contextSentence ?? (m.contextSentence || ''), explanation: avant?.explanation ?? (m.explanation || '') });
     decisions[m.id] = d;
   }
@@ -204,7 +206,7 @@ function carte(m) {
   c.querySelector('.correction').addEventListener('input', e => {
     const d = decisions[m.id]; if (!d?.action) return;
     const champ = { forme: 'expectedForm', phrase: 'contextSentence', expl: 'explanation' }[e.target.name];
-    d[champ] = e.target.value; d.at = new Date().toISOString(); ecrire();
+    d[champ] = e.target.value; d.at = new Date().toISOString(); d.rev = rev(); ecrire();
   });
   peindre(c, m);
   return c;
@@ -240,8 +242,14 @@ async function demarrer() {
   // et pas encore envoyé (onzième revue : aucune comparaison d'horloges).
   try {
     const r = await fetch('decisions', { cache: 'no-store' });
-    if (r.ok) for (const [id, d] of Object.entries((await r.json()).decisions || {})) {
-      if (!decisions[id] || JSON.stringify(decisions[id]) === envoyes[id]) { decisions[id] = d; envoyes[id] = JSON.stringify(d); }
+    if (r.ok) {
+      const corps = await r.json();
+      // Reçu par le serveur, même sans accusé (connexion perdue) : déjà envoyé, jamais renvoyé (seizième revue).
+      const recus = new Set(corps.recus || []);
+      for (const [id, d] of Object.entries(decisions)) if (d.rev && recus.has(d.rev)) envoyes[id] = JSON.stringify(d);
+      for (const [id, d] of Object.entries(corps.decisions || {})) {
+        if (!decisions[id] || JSON.stringify(decisions[id]) === envoyes[id]) { decisions[id] = d; envoyes[id] = JSON.stringify(d); }
+      }
     }
     // Reçu du serveur = déjà envoyé : noté tout de suite, jamais réexpédié après un rechargement (quinzième revue).
     memoriser();
@@ -253,7 +261,8 @@ async function demarrer() {
   // fiche nouvelle (onzième revue Codex). Le mot est à relire.
   for (const m of mots) {
     const d = decisions[m.id];
-    if (d?.action && JSON.stringify(d.seen) !== JSON.stringify(vu(m))) delete decisions[m.id];
+    // Une annulation aussi : elle porte la version de sa fiche (seizième revue).
+    if (d && JSON.stringify(d.seen) !== JSON.stringify(vu(m))) delete decisions[m.id];
   }
   // Un choix gardé sur ce téléphone et jamais envoyé (rechargement avant l'envoi, serveur absent) part maintenant.
   if (Object.keys(changes()).length) ecrire();

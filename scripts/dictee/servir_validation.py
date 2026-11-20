@@ -37,6 +37,13 @@ MAX = 1 << 20
 VERROU = threading.Lock()
 
 
+def vu(w: dict) -> dict:
+    """Ce que la page montre d'une fiche (son champ « seen ») : textes, versions et empreintes."""
+    a = w.get('audio') or {}
+    return {'expectedForm': w['expectedForm'], 'contextSentence': w.get('contextSentence'), 'explanation': w.get('explanation'),
+            'wordVersion': a.get('wordVersion'), 'contextVersion': a.get('contextVersion'), 'wordSha256': a.get('wordSha256'), 'contextSha256': a.get('contextSha256')}
+
+
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument('--ecoute', required=True, help='adresse:port privée')
@@ -105,13 +112,25 @@ def main() -> None:
                 garde = a.sortie / 'dictee-relecture.json'
                 avant = json.loads(garde.read_text(encoding='utf-8')) if garde.exists() else {'format': 'dictee-relecture', 'version': 1, 'decisions': {}}
                 fusion = dict(avant.get('decisions') or {})
+                recus = set(avant.get('recus') or [])
+                # Seizième revue Codex : une décision (ou une annulation) prise sur une autre version de la fiche que celle
+                # du catalogue servi n'écrase jamais rien ; chaque décision reçue est notée par son identifiant (rev), pour
+                # qu'un téléphone dont l'accusé s'est perdu ne la renvoie pas.
+                mots = {w['id']: w for w in json.loads((PUBLIC / 'dictee/catalogue.json').read_text(encoding='utf-8'))['words']}
+                perimes = []
                 for ident, d in lot['decisions'].items():
-                    if isinstance(d, dict):
-                        fusion[ident] = d
-                tout = {**lot, 'decisions': dict(sorted(fusion.items()))}
+                    if not isinstance(d, dict):
+                        continue
+                    if isinstance(d.get('rev'), str):
+                        recus.add(d['rev'])
+                    if ident not in mots or d.get('seen') != vu(mots[ident]):
+                        perimes.append(ident)
+                        continue
+                    fusion[ident] = d
+                tout = {**lot, 'decisions': dict(sorted(fusion.items())), 'recus': sorted(recus)}
                 ecrire(garde, json.dumps(tout, ensure_ascii=False, indent=1).encode())
                 ecrire(a.sortie / f'dictee-relecture-envoi-{time.time_ns()}.json', json.dumps(lot, ensure_ascii=False, indent=1).encode())
-            self.envoyer(200, json.dumps({'enregistre': len(lot['decisions'])}).encode(), 'application/json')
+            self.envoyer(200, json.dumps({'enregistre': len(lot['decisions']) - len(perimes), 'perimes': sorted(perimes)}).encode(), 'application/json')
 
         def log_message(self, fmt: str, *args: object) -> None:
             print(f'{self.address_string()} {fmt % args}', flush=True)
