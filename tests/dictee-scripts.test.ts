@@ -97,6 +97,64 @@ print(g.version('k1', '0123456789abcdef'))`;
         expect(run(dir, 'assembler_catalogue.py').status).toBe(0);
         expect(words(dir).get('fr-huit')!.status).not.toBe('approved');
     });
+    it('a word whose recordings were never made (a replacement after « Retirer ») does not stop the assembly: it waits in listening (seventh Codex review)', () => {
+        const dir = copy();
+        rmSync(join(dir, 'public/dictee/audio'));
+        cpSync('public/dictee/audio', join(dir, 'public/dictee/audio'), { recursive: true });
+        for (const f of ['fr-huit.ogg', 'fr-huit-phrase.ogg']) rmSync(join(dir, 'public/dictee/audio', f));
+        for (const m of ['audio-octets.json', 'audio-empreintes.json']) {
+            const o = json(dir, m) as Record<string, string>;
+            delete o['dictee/audio/fr-huit.ogg']; delete o['dictee/audio/fr-huit-phrase.ogg'];
+            writeFileSync(join(dir, 'scripts/dictee', m), JSON.stringify(o));
+        }
+        const r = run(dir, 'assembler_catalogue.py');
+        expect(r.status, r.stderr).toBe(0);
+        const w = words(dir).get('fr-huit')!;
+        expect(w.audio.mode).toBe('audio_manual_review');
+        expect(w.status).not.toBe('approved');
+    });
+    it('a version that does not name its bytes stops the assembly: other bytes never pass under an approved version (seventh Codex review)', () => {
+        for (const [version, hint] of [[null, 'plain key of 2026-11-16, bytes of another file'], ['.deadbeef', 'recipe.bytes that are not these bytes']] as const) {
+            const dir = copy();
+            rmSync(join(dir, 'public/dictee/audio'));
+            cpSync('public/dictee/audio', join(dir, 'public/dictee/audio'), { recursive: true });
+            const other = readFileSync('public/dictee/audio/fr-nuit.ogg');
+            writeFileSync(join(dir, 'public/dictee/audio/fr-huit.ogg'), other);
+            const ecrits = json(dir, 'audio-octets.json') as Record<string, string>;
+            ecrits['dictee/audio/fr-huit.ogg'] = ecrits['dictee/audio/fr-nuit.ogg']!;  // the manifest follows the bytes
+            writeFileSync(join(dir, 'scripts/dictee/audio-octets.json'), JSON.stringify(ecrits));
+            if (version) {
+                const v = json(dir, 'audio-empreintes.json') as Record<string, string>;
+                v['dictee/audio/fr-huit.ogg'] = v['dictee/audio/fr-huit.ogg']!.split('.')[0]! + version;
+                writeFileSync(join(dir, 'scripts/dictee/audio-empreintes.json'), JSON.stringify(v));
+            }
+            const r = run(dir, 'assembler_catalogue.py');
+            expect(r.status, hint).not.toBe(0);
+            expect(r.stderr, hint).toContain('fr-huit.ogg');
+        }
+    });
+    it('a review decision applies only to the text and recordings the adult saw: changed since, or exported without them, it is ignored (seventh Codex review)', () => {
+        const dir = copy();
+        const w = words(dir).get('fr-huit')! as unknown as { lemma: string; expectedForm: string; contextSentence: string; explanation: string; audio: Record<string, string | null> };
+        const seen = { expectedForm: w.expectedForm, contextSentence: w.contextSentence, explanation: w.explanation, wordVersion: w.audio.wordVersion, contextVersion: w.audio.contextVersion, wordSha256: w.audio.wordSha256, contextSha256: w.audio.contextSha256 };
+        const lot = (s: unknown) => JSON.stringify({ format: 'dictee-relecture', version: 1, reviewer: 'Test', decisions: { 'fr-huit': { action: 'valider', lemma: w.lemma, at: '2026-11-20T10:00:00Z', ...(s ? { seen: s } : {}) } } });
+        const relus = readFileSync(join(dir, 'scripts/dictee/relectures.json'), 'utf8');
+        for (const s of [null, { ...seen, contextVersion: 'autre' }, { ...seen, contextSentence: 'Une autre phrase.' }]) {
+            writeFileSync(join(dir, 'lot.json'), lot(s));
+            const r = run(dir, 'importer_validation.py', 'lot.json');
+            expect(r.status, r.stderr).toBe(0);
+            expect(r.stdout).toContain('ignoré : fr-huit');
+            expect(readFileSync(join(dir, 'scripts/dictee/relectures.json'), 'utf8')).toBe(relus);
+        }
+        writeFileSync(join(dir, 'lot.json'), lot(seen));
+        expect(run(dir, 'importer_validation.py', 'lot.json').stdout).toContain('1 validés');
+        expect((json(dir, 'relectures.json') as Record<string, { by: string }>)[w.lemma]!.by).toBe('Test');
+    });
+    it('the review page records what the adult saw with each decision', () => {
+        const page = readFileSync('scripts/dictee/validation/index.html', 'utf8');
+        expect(page).toMatch(/const d = \{ action, lemma: m\.lemma, at: new Date\(\)\.toISOString\(\), seen: vu\(m\) \};/);
+        for (const k of ['expectedForm', 'contextSentence', 'explanation', 'wordVersion', 'contextVersion', 'wordSha256', 'contextSha256']) expect(page).toContain(`${k}: `);
+    });
     it('a targeted approval shows the exact text and writes nothing without --oui', () => {
         const dir = copy();
         const relus = readFileSync(join(dir, 'scripts/dictee/relectures.json'), 'utf8');

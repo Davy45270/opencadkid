@@ -579,3 +579,16 @@ test('leaving the feed silences it: a late file of its word never plays on the n
     await page.waitForTimeout(4000);
     expect((await probe(page)).heard.filter(h => h.at >= left)).toEqual([]);
 });
+
+test('the sentence safety counts from the moment the word really starts playing (seventh Codex review of 2026-11-20)', async ({ page }) => {
+    // A player that starts 1 s late and never reports an end.
+    await page.addInitScript(() => { HTMLMediaElement.prototype.play = function play() { return new Promise<void>(r => setTimeout(r, 1000)); }; });
+    const pool = shipped.words.filter(w => w.grade === 'CP' && w.audio.mode === 'context_required' && w.expectedForm !== 'un').map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    await feed(page, 'CP', 5);
+    const w = await word(page);
+    await expect.poll(async () => (await probe(page)).played.map(p => p.path), { timeout: 10_000 }).toEqual([w.pronunciationAsset, w.contextAsset]);
+    const p = await probe(page);
+    const heard = p.heard.find(h => h.path === w.pronunciationAsset)!;
+    expect(p.played[1]!.at - heard.at).toBeGreaterThanOrEqual(4400);
+});
