@@ -592,3 +592,34 @@ test('the sentence safety counts from the moment the word really starts playing 
     const heard = p.heard.find(h => h.path === w.pronunciationAsset)!;
     expect(p.played[1]!.at - heard.at).toBeGreaterThanOrEqual(4400);
 });
+
+test('the review page, for an adult on a phone: Validate, Correct, Remove, and each decision carries what the adult saw (seventh Codex review of 2026-11-20)', async ({ page }) => {
+    // Served as servir_validation.py serves it: the page, the catalogue, the cases and a decisions endpoint.
+    const posted: { decisions: Record<string, { action: string; seen?: Record<string, unknown> }> }[] = [];
+    await page.route('http://relecture.test/**', async route => {
+        const path = new URL(route.request().url()).pathname;
+        if (path === '/' || path === '/index.html') await route.fulfill({ contentType: 'text/html', body: readFileSync('scripts/dictee/validation/index.html', 'utf8') });
+        else if (path === '/dictee/catalogue.json') await route.fulfill({ contentType: 'application/json', body: readFileSync('public/dictee/catalogue.json', 'utf8') });
+        else if (path === '/audio-non-regression.json') await route.fulfill({ contentType: 'application/json', body: readFileSync('scripts/dictee/audio-non-regression.json', 'utf8') });
+        else if (path === '/decisions' && route.request().method() === 'POST') { posted.push(route.request().postDataJSON() as (typeof posted)[number]); await route.fulfill({ status: 200, body: '{}' }); }
+        else if (path === '/decisions') await route.fulfill({ contentType: 'application/json', body: '{"decisions":{}}' });
+        else if (path.startsWith('/dictee/audio/')) await route.fulfill({ contentType: 'audio/ogg', body: readFileSync(`public${path}`) });
+        else await route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg"/>' });  // favicon
+    });
+    await page.setViewportSize({ width: 360, height: 800 });
+    await page.goto('http://relecture.test/');
+    const first = shipped.words.find(w => w.grade === 'CP')!;
+    const card = page.locator(`article.mot#${first.id}`);
+    await expect(card).toBeVisible();
+    for (const action of ['valider', 'corriger', 'retirer']) {
+        const b = (await card.locator(`[data-action="${action}"]`).boundingBox())!;
+        expect(b.height).toBeGreaterThanOrEqual(44);
+    }
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    await card.locator('[data-action="valider"]').click();
+    await expect.poll(() => posted.length, { timeout: 5000 }).toBeGreaterThan(0);
+    const d = posted[posted.length - 1]!.decisions[first.id]!;
+    expect(d.action).toBe('valider');
+    expect(d.seen).toEqual({ expectedForm: first.expectedForm, contextSentence: first.contextSentence ?? null, explanation: first.explanation ?? null,
+        wordVersion: first.audio.wordVersion ?? null, contextVersion: first.audio.contextVersion ?? null, wordSha256: first.audio.wordSha256 ?? null, contextSha256: first.audio.contextSha256 ?? null });
+});
