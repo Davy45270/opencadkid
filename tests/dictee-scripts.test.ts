@@ -80,7 +80,7 @@ print(g.version('a.ogg', 'k1', {'a.ogg': 'k1'}, 'abcdef0123456789'))
 print(g.version('a.ogg', 'k2', {'a.ogg': 'k1'}, 'abcdef0123456789'))
 print(g.version('a.ogg', 'k1', {'a.ogg': 'k1.00000000'}, 'abcdef0123456789'))
 print(g.version('b.ogg', 'k1', {}, 'abcdef0123456789'))`;
-        const r = spawnSync('python3', ['-c', code], { encoding: 'utf8' });
+        const r = spawnSync('python3', ['-B', '-c', code], { encoding: 'utf8' });
         expect(r.status, r.stderr).toBe(0);
         expect(r.stdout.trim().split('\n')).toEqual(['k1.abcdef01', 'k2', 'k1.abcdef01', 'k1']);
     });
