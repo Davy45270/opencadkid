@@ -47,7 +47,9 @@ export async function prepare(page: Page, level = 1, options: { voice?: boolean;
         Object.defineProperty(window, 'AudioContext', { value: FakeAudioContext, configurable: true });
         const records: Record<number, number> = {};
         for (let i = 1; i < level; i++) records[i] = 1;
-        if (!localStorage.getItem('opencadkid.v1')) localStorage.setItem('opencadkid.v1', JSON.stringify({ version: 1, locale: 'fr', voice, sound, records }));
+        // The one-time "sound comes back" reset (src/shell/storage.ts) already happened for this player: the voice and
+        // sound settings this helper writes are the parent's choice, made after it, and must stay as written.
+        if (!localStorage.getItem('opencadkid.v1')) { localStorage.setItem('opencadkid.v1', JSON.stringify({ version: 1, locale: 'fr', voice, sound, records })); localStorage.setItem('opencadkid-son-2026-11-17', '1'); }
     }, { level, voice: options.voice ?? true, sound: options.sound ?? true });
     await page.goto('/');
     expect((await media(page)).speech).toEqual([]);
