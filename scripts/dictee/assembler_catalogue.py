@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import unicodedata
 from pathlib import Path
@@ -56,6 +57,11 @@ HOMOPHONES_RELUS: dict[str, tuple[list[str], list[str]]] = {
 def homophones_relus(lemme: str, homos: list[str]) -> list[str]:
     ajouts, retraits = HOMOPHONES_RELUS.get(lemme, ([], []))
     return [h for h in homos if h not in retraits] + [h for h in ajouts if h not in homos]
+
+
+def octets(asset: str) -> str | None:
+    f = RACINE / 'public' / asset
+    return hashlib.sha256(f.read_bytes()).hexdigest() if f.is_file() else None
 
 
 def lire(chemin: Path, defaut):
@@ -107,7 +113,9 @@ def main() -> None:
             'id': m['id'], 'lemma': m['lemma'], 'expectedForm': unicodedata.normalize('NFC', forme), 'grade': m['grade'],
             'tags': tags, 'homophones': homos, 'homophoneNotes': nuances, 'contextSentence': phrase, 'explanation': expl,
             'pronunciationAsset': mot_audio, 'contextAsset': phrase_audio,
+            # Empreinte des OCTETS livrés (revue Codex du 2026-11-20) : le jeu ne garde en cache que ces octets-là.
             'audio': {'mode': mode, 'wordVersion': empreintes.get(mot_audio), 'contextVersion': empreintes.get(phrase_audio) if phrase_audio else None,
+                      'wordSha256': octets(mot_audio), 'contextSha256': octets(phrase_audio) if phrase_audio else None,
                       'voice': 'fr_FR-siwis-medium', 'engine': 'piper-tts 1.8.0', 'locale': 'fr-FR'},
             'difficulty': m['difficulty'], 'status': 'needs_review', 'review': {k: 'pending' for k in REVUES}, 'validatedBy': None, 'version': VERSION,
             'provenance': {'list': m['source']['list'], 'listRank': m['source']['rank'], 'listFrequency': m['source']['frequency'],

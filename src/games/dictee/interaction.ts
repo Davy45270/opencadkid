@@ -45,18 +45,35 @@ const AUDIO_CACHE = 'opencadkid-dictee-audio';
 /** A regenerated recording keeps its file name: the kept copy is tied to the audio version the catalogue names
  * (`?v=`), so a device never replays an older recording than the one the adult approved (Codex review, 2026-11-20). */
 const versions = new Map<string, string>();
+/** The SHA-256 of the bytes the catalogue ships for each file: a response with other bytes (a catalogue and recordings from
+ * two states of a deployment) is played but never kept, so it cannot pass for the version it was asked under. */
+const digests = new Map<string, string>();
 const versioned = (path: string): string => { const v = versions.get(path); return v ? `${path}?v=${encodeURIComponent(v)}` : path; };
 function remember(w: Word): string[] {
     if (w.audio.wordVersion) versions.set(w.pronunciationAsset, w.audio.wordVersion);
     if (w.contextAsset && w.audio.contextVersion) versions.set(w.contextAsset, w.audio.contextVersion);
+    if (w.audio.wordSha256) digests.set(w.pronunciationAsset, w.audio.wordSha256);
+    if (w.contextAsset && w.audio.contextSha256) digests.set(w.contextAsset, w.audio.contextSha256);
     return [w.pronunciationAsset, ...(w.contextAsset ? [w.contextAsset] : [])];
 }
 async function keep(paths: readonly string[]): Promise<void> {
     try {
         if (typeof caches === 'undefined') return;
         const c = await caches.open(AUDIO_CACHE);
-        await Promise.all(paths.map(versioned).map(async p => { if (!await c.match(p)) { const r = await fetch(p); if (r.ok) await c.put(p, r); } }));
+        await Promise.all(paths.map(async path => {
+            const p = versioned(path);
+            if (await c.match(p)) return;
+            const r = await fetch(p);
+            if (r.ok && await shipped(path, r.clone())) await c.put(p, r);
+        }));
     } catch { /* Audio stays available from the network. */ }
+}
+async function shipped(path: string, r: Response): Promise<boolean> {
+    const want = digests.get(path);
+    if (!want) return true;
+    if (typeof crypto === 'undefined' || typeof crypto.subtle === 'undefined') return false; // an insecure context has no SubtleCrypto: keep nothing
+    const got = [...new Uint8Array(await crypto.subtle.digest('SHA-256', await r.arrayBuffer()))].map(b => b.toString(16).padStart(2, '0')).join('');
+    return got === want;
 }
 const blobs = new Map<string, string>();
 async function source(path: string): Promise<string> {
@@ -83,7 +100,8 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
     const reduce = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
     let disposed = false, words: Word[] = [];
     const timers = new Set<number>();
-    const later = (ms: number, f: () => void): void => { const id = window.setTimeout(() => { timers.delete(id); if (!disposed) f(); }, reduce ? Math.min(ms, 30) : ms); timers.add(id); };
+    // Reduced motion shortens animations, never a wait for a sound (`exact`): the sentence's safety must not cut the word.
+    const later = (ms: number, f: () => void, exact = false): void => { const id = window.setTimeout(() => { timers.delete(id); if (!disposed) f(); }, reduce && !exact ? Math.min(ms, 30) : ms); timers.add(id); };
     const audio = typeof Audio === 'function' ? new Audio() : null;
     /** A sentence waiting for the word to end (a word heard only in context: verre, vert, vers). */
     let pending: string | null = null;
@@ -105,7 +123,7 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
         if (!sentenceOnArrival(w)) return;
         pending = w.contextAsset;
         // Without sound (or if the word never reports its end) the sentence still follows.
-        later(3500, () => { if (pending === w.contextAsset && current()?.id === w.id) { const p = pending; pending = null; play(p); } });
+        later(3500, () => { if (pending === w.contextAsset && current()?.id === w.id) { const p = pending; pending = null; play(p); } }, true);
     };
     const rng = makeRng(crypto.getRandomValues(new Uint32Array(1))[0]!);
     const wordOf = (id: string): Word => words.find(w => w.id === id)!;

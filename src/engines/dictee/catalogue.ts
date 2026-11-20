@@ -33,7 +33,7 @@ export interface Word {
     pronunciationAsset: string;
     contextAsset: string | null;
     /** The versions (text, voice and engine fingerprints) of the two recordings. */
-    audio: { mode: AudioMode; wordVersion?: string | null; contextVersion?: string | null };
+    audio: { mode: AudioMode; wordVersion?: string | null; contextVersion?: string | null; wordSha256?: string | null; contextSha256?: string | null };
     difficulty: number;
     status: Status;
     review: Review;
@@ -69,7 +69,7 @@ export function parseCatalogue(data: unknown): Catalogue {
         if (typeof notes !== 'object' || !Object.values(notes).every(isText)) continue;
         words.push({ id: w.id, lemma: w.lemma, expectedForm: w.expectedForm.normalize('NFC'), grade: w.grade as Grade, tags: [...w.tags], homophones: [...w.homophones],
             homophoneNotes: { ...(notes as Record<string, string>) }, contextSentence: w.contextSentence, explanation: w.explanation,
-            pronunciationAsset: w.pronunciationAsset, contextAsset: w.contextAsset, audio: { mode: audio.mode as AudioMode, wordVersion: typeof audio.wordVersion === 'string' ? audio.wordVersion : null, contextVersion: typeof audio.contextVersion === 'string' ? audio.contextVersion : null }, difficulty: w.difficulty,
+            pronunciationAsset: w.pronunciationAsset, contextAsset: w.contextAsset, audio: { mode: audio.mode as AudioMode, wordVersion: typeof audio.wordVersion === 'string' ? audio.wordVersion : null, contextVersion: typeof audio.contextVersion === 'string' ? audio.contextVersion : null, wordSha256: typeof audio.wordSha256 === 'string' ? audio.wordSha256 : null, contextSha256: typeof audio.contextSha256 === 'string' ? audio.contextSha256 : null }, difficulty: w.difficulty,
             status: w.status as Status, review: Object.fromEntries(reviewKeys.map(k => [k, review[k]])) as Review, validatedBy: w.validatedBy, version: w.version });
     }
     return { schemaVersion: '1.1', version: c.version, locale: 'fr-FR', words };

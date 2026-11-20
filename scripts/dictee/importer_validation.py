@@ -69,6 +69,8 @@ def approuver(ids: list[str], qui: str, note: str, ecrire: bool) -> None:
     """Approuve des mots désignés (ou « en-attente » : tous ceux qui ne sont pas approuvés), pour leurs textes et leurs
     versions audio ACTUELS, affichés avant. Sans --oui, rien n'est écrit : on lit d'abord ce qu'on approuve."""
     from datetime import date  # noqa: PLC0415
+    if 'en-attente' in ids and ids != ['en-attente']:
+        raise SystemExit('« en-attente » se donne seul, sans identifiant')
     mots = json.loads(CATALOGUE.read_text(encoding='utf-8'))['words']
     choisis = [w for w in mots if w['status'] != 'approved'] if ids == ['en-attente'] else [w for w in mots if w['id'] in ids]
     inconnus = sorted(set(ids) - {w['id'] for w in mots} - {'en-attente'})
@@ -76,6 +78,8 @@ def approuver(ids: list[str], qui: str, note: str, ecrire: bool) -> None:
         raise SystemExit(f'identifiants inconnus : {", ".join(inconnus)}')
     # Revue Codex du 2026-11-20 : un enregistrement signalé attend une oreille d'adulte (page de relecture, « Audio faux »
     # ou écoute validée) ; une approbation de texte ne le lève pas. « en-attente » les laisse de côté, un id désigné refuse.
+    # Revue Codex (2e passe) : l'approbation ciblée n'écrit jamais `audioNonEcoute` — un signalement ajouté depuis le dernier
+    # assemblage reste bloquant ; seule la validation en bloc, décidée et notée par l'adulte, porte cette exemption.
     a_ecouter = [w['id'] for w in choisis if w['audio']['mode'] == 'audio_manual_review']
     if a_ecouter and ids != ['en-attente']:
         raise SystemExit(f"enregistrement en attente d'écoute, à entendre sur la page de relecture : {', '.join(a_ecouter)}")
@@ -93,7 +97,7 @@ def approuver(ids: list[str], qui: str, note: str, ecrire: bool) -> None:
     for w in choisis:
         relus[w['lemma']] = {'by': qui, 'at': jour, 'expectedForm': w['expectedForm'], 'contextSentence': w['contextSentence'], 'explanation': w['explanation'],
                              'review': {k: 'approved' for k in ('orthography', 'pedagogy', 'context', 'audio')},
-                             'wordVersion': w['audio']['wordVersion'], 'contextVersion': w['audio']['contextVersion'], 'audioNonEcoute': True, 'note': note}
+                             'wordVersion': w['audio']['wordVersion'], 'contextVersion': w['audio']['contextVersion'], 'audioNonEcoute': False, 'note': note}
     RELECTURES.write_text(json.dumps(dict(sorted(relus.items())), ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
     print(f'{len(choisis)} mots approuvés par {qui} ({note}) ; relancer assembler_catalogue.py')
 

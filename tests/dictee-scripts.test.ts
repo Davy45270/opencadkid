@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { spawnSync } from 'node:child_process';
-import { cpSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+import { cpSync, mkdirSync, mkdtempSync, readFileSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 import { sentenceOnArrival, type Word } from '../src/engines/dictee';
 
 /** The offline scripts of the dictation run on a copy of their inputs (scripts/dictee and the shipped catalogue):
@@ -13,6 +13,7 @@ function copy(): string {
     cpSync('scripts/dictee', join(dir, 'scripts/dictee'), { recursive: true });
     mkdirSync(join(dir, 'public/dictee'), { recursive: true });
     cpSync('public/dictee/catalogue.json', join(dir, 'public/dictee/catalogue.json'));
+    symlinkSync(resolve('public/dictee/audio'), join(dir, 'public/dictee/audio'));  // read only: the bytes' digests
     return dir;
 }
 const run = (dir: string, script: string, ...args: string[]) => spawnSync('python3', [`scripts/dictee/${script}`, ...args], { cwd: dir, encoding: 'utf8' });
@@ -95,6 +96,12 @@ describe('the offline scripts of the dictation', { timeout: 30_000 }, () => {
         const after = words(dir).get('fr-huit')!;
         expect(after.audio.mode).toBe('audio_manual_review');
         expect(after.status).not.toBe('approved');
+    });
+    it('« en-attente » is given alone: mixed with an id, nothing is shown nor written', () => {
+        const dir = copy();
+        const r = run(dir, 'importer_validation.py', '--approuver', 'en-attente', 'fr-huit', '--par', 'Test', '--note', 'essai', '--oui');
+        expect(r.status).not.toBe(0);
+        expect(r.stdout).toBe('');
     });
     it('--approuver-tout --par --note keeps the note in provenance.validation and approves without the audio cases blocking', () => {
         const dir = copy();
