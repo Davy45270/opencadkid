@@ -74,15 +74,28 @@ describe('the offline scripts of the dictation', { timeout: 30_000 }, () => {
         expect(r.status).not.toBe(0);
         expect(r.stderr).toContain('fr-huit-phrase.ogg');
     });
-    it('generer_audio.py gives other bytes of an already made recipe a new version, so no approval passes to them (fifth Codex review)', () => {
+    it('generer_audio.py versions every recording it makes by its recipe AND its bytes: a recipe made again, even after another, never takes an older approval (sixth Codex review)', () => {
         const code = `import sys; sys.path.insert(0, 'scripts/dictee'); import generer_audio as g
-print(g.version('a.ogg', 'k1', {'a.ogg': 'k1'}, 'abcdef0123456789'))
-print(g.version('a.ogg', 'k2', {'a.ogg': 'k1'}, 'abcdef0123456789'))
-print(g.version('a.ogg', 'k1', {'a.ogg': 'k1.00000000'}, 'abcdef0123456789'))
-print(g.version('b.ogg', 'k1', {}, 'abcdef0123456789'))`;
+print(g.version('k1', 'abcdef0123456789'))
+print(g.version('k1', '0123456789abcdef'))`;
         const r = spawnSync('python3', ['-B', '-c', code], { encoding: 'utf8' });
         expect(r.status, r.stderr).toBe(0);
-        expect(r.stdout.trim().split('\n')).toEqual(['k1.abcdef01', 'k2', 'k1.abcdef01', 'k1']);
+        expect(r.stdout.trim().split('\n')).toEqual(['k1.abcdef01', 'k1.01234567']);
+    });
+    it('a sentence corrected without recording it again is never approved with the old recording (sixth Codex review)', () => {
+        const dir = copy();
+        const w = words(dir).get('fr-huit')!;
+        const phrases = json(dir, 'phrases.json') as { lemma: string; contextSentence: string }[];
+        phrases.find(p => p.lemma === w.lemma)!.contextSentence = 'Il est huit heures et demie.';
+        writeFileSync(join(dir, 'scripts/dictee/phrases.json'), JSON.stringify(phrases));
+        expect(run(dir, 'assembler_catalogue.py').status).toBe(0);
+        expect(words(dir).get('fr-huit')!.audio.mode).toBe('audio_manual_review');
+        const relus = readFileSync(join(dir, 'scripts/dictee/relectures.json'), 'utf8');
+        const r = run(dir, 'importer_validation.py', '--approuver', 'fr-huit', '--par', 'Test', '--note', 'essai', '--oui');
+        expect(r.status).not.toBe(0);
+        expect(readFileSync(join(dir, 'scripts/dictee/relectures.json'), 'utf8')).toBe(relus);
+        expect(run(dir, 'assembler_catalogue.py').status).toBe(0);
+        expect(words(dir).get('fr-huit')!.status).not.toBe('approved');
     });
     it('a targeted approval shows the exact text and writes nothing without --oui', () => {
         const dir = copy();

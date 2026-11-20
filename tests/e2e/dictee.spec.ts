@@ -536,3 +536,46 @@ test('a catalogue without the bytes\' digests gets nothing kept nor played (fift
     expect((await probe(page)).heard).toEqual([]);
     expect(await page.evaluate(async () => (await (await caches.open('opencadkid-dictee-audio')).keys()).length)).toBe(0);
 });
+
+test('a word replayed while its sentence waits keeps its turn: the sentence never starts before the replay is heard (sixth Codex review of 2026-11-20)', async ({ page }) => {
+    // No end ever reported; the word's first file is refused (no copy in memory), its replay arrives 2 s late.
+    await page.addInitScript(() => { HTMLMediaElement.prototype.play = function play() { return Promise.resolve(); }; });
+    const asked = new Map<string, number>();
+    await page.route('**/dictee/audio/*.ogg*', async route => {
+        const url = route.request().url();
+        if (url.includes('-phrase.ogg')) { await route.continue(); return; }
+        const file = new URL(url).pathname;
+        asked.set(file, (asked.get(file) ?? 0) + 1);
+        if (asked.get(file)! <= 2) { await route.fulfill({ contentType: 'audio/ogg', body: 'OggS other bytes' }); return; }  // keeping, then first turn
+        await new Promise(r => setTimeout(r, 2000)); await route.continue();
+    });
+    const pool = shipped.words.filter(w => w.grade === 'CP' && w.audio.mode === 'context_required' && w.expectedForm !== 'un').map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    await feed(page, 'CP', 5);
+    const w = await word(page);
+    await expect.poll(async () => (await probe(page)).played.length).toBeGreaterThanOrEqual(1);
+    await page.waitForTimeout(2800);
+    const card = (await probe(page)).card!;
+    await page.mouse.click(card.x + card.width / 2, card.y + 40);
+    await expect.poll(async () => (await probe(page)).played.map(p => p.path), { timeout: 15_000 }).toContain(w.contextAsset);
+    const played = (await probe(page)).played;
+    const replay = played.filter(p => p.path === w.pronunciationAsset)[1]!, sentence = played.find(p => p.path === w.contextAsset)!;
+    expect(sentence.at - replay.at).toBeGreaterThanOrEqual(5000);
+    expect((await probe(page)).heard.map(h => h.path)).toContain(w.pronunciationAsset);
+});
+
+test('leaving the feed silences it: a late file of its word never plays on the next screen (sixth Codex review of 2026-11-20)', async ({ page }) => {
+    // Every file of the word takes 2.5 s: its replay after a wrong answer is still on its way when the child leaves.
+    await page.route('**/dictee/audio/*.ogg*', async route => { await new Promise(r => setTimeout(r, 2500)); await route.continue(); });
+    const pool = shipped.words.filter(w => w.grade === 'CE1' && w.audio.mode === 'word_only').map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    await feed(page, 'CE1', 5);
+    const w = await word(page);
+    await page.keyboard.type(`${w.expectedForm}x`); await page.keyboard.press('Enter');
+    await page.waitForTimeout(900);
+    const left = await page.evaluate(() => performance.now());
+    await page.locator('#back').click();
+    await expect(page.locator('[data-dictee-length]').first()).toBeVisible();
+    await page.waitForTimeout(4000);
+    expect((await probe(page)).heard.filter(h => h.at >= left)).toEqual([]);
+});
