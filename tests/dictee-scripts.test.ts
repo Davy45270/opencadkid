@@ -343,6 +343,11 @@ except SystemExit as e:
         };
         const huit = seen('fr-huit'), air = seen('fr-air');
         try {
+            // A new server has received nothing: it says so (200, empty), never 404 (twentieth Codex review).
+            let fresh: Response | undefined;
+            for (let i = 0; i < 50 && !fresh; i++) { try { fresh = await fetch(`http://127.0.0.1:${port}/decisions`); } catch { await new Promise(r => setTimeout(r, 100)); } }
+            expect(fresh!.status).toBe(200);
+            expect(await fresh!.json()).toMatchObject({ decisions: {}, recus: {} });
             expect(await post({ 'fr-huit': { action: 'valider', lemma: 'huit', at: '2026-11-20T10:00:00Z', seen: huit } })).toBe(200);
             expect(await post({ 'fr-air': { action: 'retirer', lemma: 'air', at: '2026-11-20T10:00:01Z', seen: air } })).toBe(200);
             // The last choice received wins, whatever the phones' clocks say (eleventh Codex review): an undo sent after a

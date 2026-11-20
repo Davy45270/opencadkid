@@ -1254,3 +1254,107 @@ test('a page hidden between a word and its required sentence gives the sentence 
     await visibility(false);
     await expect.poll(async () => (await probe(page)).played.map(p => p.path), { timeout: 10_000 }).toContain(w.contextAsset);
 });
+
+/** The review page served as servir_validation.py serves it; `answer` handles the POST and the GET of /decisions. */
+async function reviewSite(page: Page, answer: { post: (lot: { decisions: Record<string, { rev?: string }> }) => string; get: () => { status: number; body: string } }): Promise<void> {
+    await page.route('http://relecture.test/**', async route => {
+        const path = new URL(route.request().url()).pathname;
+        if (path === '/') await route.fulfill({ contentType: 'text/html', body: readFileSync('scripts/dictee/validation/index.html', 'utf8') });
+        else if (path === '/dictee/catalogue.json') await route.fulfill({ contentType: 'application/json', body: readFileSync('public/dictee/catalogue.json', 'utf8') });
+        else if (path === '/audio-non-regression.json') await route.fulfill({ contentType: 'application/json', body: readFileSync('scripts/dictee/audio-non-regression.json', 'utf8') });
+        else if (path === '/decisions' && route.request().method() === 'POST') await route.fulfill({ contentType: 'application/json', body: answer.post(route.request().postDataJSON() as { decisions: Record<string, { rev?: string }> }) });
+        else if (path === '/decisions') { const g = answer.get(); await route.fulfill({ status: g.status, contentType: 'application/json', body: g.body }); }
+        else await route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg"/>' });
+    });
+}
+const plainCP = (): Word[] => {
+    const cases = new Set((JSON.parse(readFileSync('scripts/dictee/audio-non-regression.json', 'utf8')) as { cases: { id: string }[] }).cases.map(c => c.id));
+    return shipped.words.filter(w => w.grade === 'CP' && !cases.has(w.id) && w.audio.mode !== 'audio_manual_review');
+};
+
+test('after a first sending that never reached a new server, the next one still leaves (twentieth Codex review of 2026-11-20)', async ({ page }) => {
+    // The first POST fails before the server; the server, new, has no decisions file yet.
+    await page.addInitScript(() => {
+        const real = window.fetch.bind(window);
+        let failed = false, received = false;
+        window.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
+            if (init?.method === 'POST' && !failed) { failed = true; throw new TypeError('no route'); }
+            if (init?.method === 'POST') received = true;
+            // An older server answered 404 while it had received nothing: never taken for a failure.
+            const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
+            if (url.endsWith('decisions') && !init?.method && !received) return new Response('{}', { status: 404 });
+            return real(input, init);
+        };
+    });
+    const [a, b] = plainCP() as [Word, Word];
+    const posted: { decisions: Record<string, unknown> }[] = [];
+    await reviewSite(page, { post: lot => { posted.push(lot); return '{"perimes":[]}'; }, get: () => ({ status: 200, body: '{"decisions":{},"recus":{}}' }) });
+    await page.goto('http://relecture.test/');
+    await page.locator(`article.mot#${a.id} [data-action="valider"]`).click();
+    await expect(page.locator('#etat')).toContainText('Pas de serveur joignable', { timeout: 5000 });
+    await page.locator(`article.mot#${b.id} [data-action="retirer"]`).click();
+    await expect.poll(() => posted.length, { timeout: 5000 }).toBe(1);
+    expect(Object.keys(posted[0]!.decisions).sort()).toEqual([a.id, b.id].sort());
+});
+
+test('a reopening whose first reading of the server fails asks it again before sending, and never resends a received choice (twentieth Codex review of 2026-11-20)', async ({ page }) => {
+    const [a] = plainCP() as [Word];
+    // This phone's choice reached the server; its answer got lost; the phone reopens and its first GET fails.
+    await page.addInitScript(([id, lemma, seen]) => {
+        if (!sessionStorage.getItem('vieux')) {
+            sessionStorage.setItem('vieux', '1');
+            localStorage.setItem('dictee-relecture-v1', JSON.stringify({ [id]: { action: 'valider', lemma, at: '2026-11-20T08:00:00.000Z', seen, heard: true, rev: 'r1' } }));
+        }
+        const real = window.fetch.bind(window);
+        let gets = 0;
+        window.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
+            const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
+            if (url.endsWith('decisions') && !init?.method && gets++ === 0) throw new TypeError('no route');
+            return real(input, init);
+        };
+    }, [a.id, a.lemma, seenOf(a)] as const);
+    const posted: unknown[] = [];
+    await reviewSite(page, { post: lot => { posted.push(lot); return '{"perimes":[]}'; }, get: () => ({ status: 200, body: JSON.stringify({ decisions: { [a.id]: { action: 'valider', lemma: a.lemma, at: '2026-11-20T08:00:00.000Z', seen: seenOf(a), heard: true, rev: 'r1' } }, recus: { r1: 'garde' } }) }) });
+    await page.goto('http://relecture.test/');
+    await expect(page.locator(`article.mot#${a.id}`)).toHaveAttribute('data-etat', 'valider');
+    await page.waitForTimeout(2500);
+    expect(posted).toEqual([]);
+});
+
+test('a choice the server set aside no longer counts as reviewed, and stays said after another word is saved (twentieth Codex review of 2026-11-20)', async ({ page }) => {
+    const [a, b] = plainCP() as [Word, Word];
+    await reviewSite(page, { post: lot => JSON.stringify({ perimes: Object.keys(lot.decisions).filter(id => id === a.id) }), get: () => ({ status: 200, body: '{"decisions":{},"recus":{}}' }) });
+    await page.goto('http://relecture.test/');
+    await page.locator(`article.mot#${a.id} [data-action="valider"]`).click();
+    await expect(page.locator('#etat')).toContainText(`Non enregistré : ${a.id}`, { timeout: 5000 });
+    await expect(page.locator(`article.mot#${a.id}`)).not.toHaveAttribute('data-etat', 'valider');
+    await page.locator(`article.mot#${b.id} [data-action="retirer"]`).click();
+    await expect(page.locator(`article.mot#${b.id}`)).toHaveAttribute('data-etat', 'retirer');
+    await page.waitForTimeout(2000);
+    await expect(page.locator('#etat')).toContainText(`Non enregistré : ${a.id}`);
+    await page.reload();
+    await expect(page.locator(`article.mot#${a.id}`)).not.toHaveAttribute('data-etat', 'valider');
+});
+
+test('a word heard again on its card never stands for the announcement of the same word coming back as the next card (twentieth Codex review of 2026-11-20)', async ({ page }) => {
+    await page.addInitScript(() => { HTMLMediaElement.prototype.play = function play() { return Promise.resolve(); }; });
+    const pool = shipped.words.filter(w => w.grade === 'CE1' && w.audio.mode === 'word_only' && /^[a-z]+$/.test(w.expectedForm)).map(w => w.id);
+    await reviewed(page, w => pool.includes(w.id));
+    await feed(page, 'CE1', 5);
+    for (let k = 0; k < 3; k++) {
+        const w = await word(page);
+        await page.keyboard.type(w.expectedForm); await page.keyboard.press('Enter'); await page.keyboard.press('ArrowDown');
+        await expect.poll(async () => (await probe(page)).feed!.index).toBe(k + 1);
+    }
+    const w = await word(page);
+    await page.keyboard.type(`${w.expectedForm}x`); await page.keyboard.press('Enter');
+    await page.waitForTimeout(2500);
+    const card = (await probe(page)).card!;
+    await page.mouse.click(card.x + card.width / 2, card.y + 20);
+    await page.waitForTimeout(300);
+    const before = (await probe(page)).played.filter(p => p.path === w.pronunciationAsset).length;
+    await page.keyboard.press('ArrowDown');
+    await expect.poll(async () => (await probe(page)).feed!.index).toBe(4);
+    expect((await probe(page)).feed!.cards[4]!.id).toBe(w.id);
+    await expect.poll(async () => (await probe(page)).played.filter(p => p.path === w.pronunciationAsset).length, { timeout: 5000 }).toBeGreaterThan(before);
+});
