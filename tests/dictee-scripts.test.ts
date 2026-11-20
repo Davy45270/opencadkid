@@ -78,10 +78,13 @@ describe('the offline scripts of the dictation', { timeout: 30_000 }, () => {
     it('generer_audio.py versions every recording it makes by its recipe AND its bytes: a recipe made again, even after another, never takes an older approval (sixth Codex review)', () => {
         const code = `import sys; sys.path.insert(0, 'scripts/dictee'); import generer_audio as g
 print(g.version('k1', 'abcdef0123456789'))
-print(g.version('k1', '0123456789abcdef'))`;
+print(g.version('k1', '0123456789abcdef'))
+print(g.version('k1', 'deadbeef' + '0' * 56))
+print(g.version('k1', 'deadbeef' + '1' * 56))`;
         const r = spawnSync('python3', ['-B', '-c', code], { encoding: 'utf8' });
         expect(r.status, r.stderr).toBe(0);
-        expect(r.stdout.trim().split('\n')).toEqual(['k1.abcdef01', 'k1.01234567']);
+        // The whole digest: two recordings sharing a short prefix never share a version (seventeenth Codex review).
+        expect(r.stdout.trim().split('\n')).toEqual(['k1.abcdef0123456789', 'k1.0123456789abcdef', `k1.deadbeef${'0'.repeat(56)}`, `k1.deadbeef${'1'.repeat(56)}`]);
     });
     it('a sentence corrected without recording it again is never approved with the old recording (sixth Codex review)', () => {
         const dir = copy();
@@ -353,6 +356,9 @@ except SystemExit as e:
             expect(kept.decisions['fr-huit']!.action).toBeNull();
             // Every decision received is listed by its rev, the stale one too: a phone whose answer got lost never resends it.
             expect(kept.recus).toEqual(['r1', 'r2', 'r3']);
+            // A state already received, sent again after a lost answer, is never applied again (seventeenth review).
+            expect(await post({ 'fr-huit': { action: 'valider', lemma: 'huit', at: '2026-11-20T10:02:00Z', seen: huit, rev: 'r1' } })).toBe(200);
+            expect((JSON.parse(readFileSync(join(out, 'dictee-relecture.json'), 'utf8')) as { decisions: Record<string, { action: string | null }> }).decisions['fr-huit']!.action).toBeNull();
         } finally { server.kill(); }
     });
     it('the review page records what the adult saw with each decision', () => {

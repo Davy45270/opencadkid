@@ -1084,3 +1084,35 @@ test('a word asked before the announcement and already started gets its sentence
     expect(sentence - started).toBeGreaterThanOrEqual(3400);
     expect(sentence - started).toBeLessThan(3900);
 });
+
+test('a decision kept for a word that no longer exists never leaves, and a choice the server set aside is never shown as saved (seventeenth Codex review of 2026-11-20)', async ({ page }) => {
+    const cases = new Set((JSON.parse(readFileSync('scripts/dictee/audio-non-regression.json', 'utf8')) as { cases: { id: string }[] }).cases.map(c => c.id));
+    const a = shipped.words.find(w => w.grade === 'CP' && !cases.has(w.id)) as Word;
+    const posted: { decisions: Record<string, unknown> }[] = [];
+    await page.route('http://relecture.test/**', async route => {
+        const path = new URL(route.request().url()).pathname;
+        if (path === '/') await route.fulfill({ contentType: 'text/html', body: readFileSync('scripts/dictee/validation/index.html', 'utf8') });
+        else if (path === '/dictee/catalogue.json') await route.fulfill({ contentType: 'application/json', body: readFileSync('public/dictee/catalogue.json', 'utf8') });
+        else if (path === '/audio-non-regression.json') await route.fulfill({ contentType: 'application/json', body: readFileSync('scripts/dictee/audio-non-regression.json', 'utf8') });
+        else if (path === '/decisions' && route.request().method() === 'POST') {
+            const lot = route.request().postDataJSON() as (typeof posted)[number];
+            posted.push(lot);
+            await route.fulfill({ contentType: 'application/json', body: JSON.stringify({ enregistre: 0, perimes: Object.keys(lot.decisions) }) });
+        }
+        else if (path === '/decisions') await route.fulfill({ contentType: 'application/json', body: '{"decisions":{}}' });
+        else await route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg"/>' });
+    });
+    await page.addInitScript(() => {
+        if (sessionStorage.getItem('vieux')) return;
+        sessionStorage.setItem('vieux', '1');
+        localStorage.setItem('dictee-relecture-v1', JSON.stringify({ 'fr-mot-remplace': { action: 'valider', lemma: 'remplacé', at: '2026-11-20T08:00:00.000Z', seen: { expectedForm: 'remplacé' }, rev: 'vieux' } }));
+    });
+    await page.goto('http://relecture.test/');
+    await page.waitForTimeout(1500);
+    expect(posted).toEqual([]);
+    await page.locator(`article.mot#${a.id} [data-action="valider"]`).click();
+    await expect.poll(() => posted.length, { timeout: 5000 }).toBe(1);
+    expect(Object.keys(posted[0]!.decisions)).toEqual([a.id]);
+    await expect(page.locator('body')).toContainText('Non enregistré');
+    await expect(page.locator('body')).not.toContainText('Enregistré sur le serveur');
+});
