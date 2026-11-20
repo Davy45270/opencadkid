@@ -20,6 +20,7 @@ import ipaddress
 import json
 import os
 import re
+import socket
 import tempfile
 import threading
 import time
@@ -43,7 +44,7 @@ def main() -> None:
     p.add_argument('--verification', type=Path)
     a = p.parse_args()
     hote, port = a.ecoute.rsplit(':', 1)
-    ip = ipaddress.ip_address(hote)
+    ip = ipaddress.ip_address(hote.strip('[]'))
     # Onzième revue Codex : 0.0.0.0 (toutes les interfaces, publiques comprises) est classée « privée » par ipaddress ;
     # seule une adresse précise d'un réseau local, du tailnet ou de la boucle locale est acceptée.
     prive = any(ip in ipaddress.ip_network(r) for r in ('10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/16', '100.64.0.0/10', '127.0.0.0/8', 'fd00::/8', '::1/128'))
@@ -116,7 +117,11 @@ def main() -> None:
             print(f'{self.address_string()} {fmt % args}', flush=True)
 
     print(f'page de relecture sur http://{hote}:{port}/ ; décisions dans {a.sortie}', flush=True)
-    ThreadingHTTPServer((hote, int(port)), H).serve_forever()
+    class Serveur(ThreadingHTTPServer):
+        # Douzième revue Codex : une adresse IPv6 admise (fd00::/8, ::1) s'écoute vraiment, en IPv6.
+        address_family = socket.AF_INET6 if ip.version == 6 else socket.AF_INET
+
+    Serveur((hote.strip('[]'), int(port)), H).serve_forever()
 
 
 if __name__ == '__main__':

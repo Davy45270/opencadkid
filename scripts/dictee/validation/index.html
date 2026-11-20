@@ -81,16 +81,19 @@ let minuterie = 0;
 const ENVOYES = CLE + '.envoyes';
 let envoyes = {};
 const memoriser = () => { try { localStorage.setItem(ENVOYES, JSON.stringify(envoyes)); } catch { /* sans effet */ } };
-const changes = () => Object.fromEntries(Object.entries(decisions).filter(([id, d]) => d.at && JSON.stringify(d) !== envoyes[id]));
+// Figés en texte au moment de l'envoi : ce qui est tapé pendant l'envoi reste à envoyer (douzième revue Codex).
+const changes = () => Object.fromEntries(Object.entries(decisions).map(([id, d]) => [id, JSON.stringify(d)]).filter(([id, t]) => decisions[id].at && t !== envoyes[id]));
 const lot = () => ({ format: 'dictee-relecture', version: 1, reviewer: 'David', exportedAt: new Date().toISOString(), decisions: Object.fromEntries(Object.entries(decisions).filter(([, d]) => d.at)) });
 function etat(texte, ko = false) { const e = document.getElementById('etat'); e.textContent = texte; e.classList.toggle('ko', ko); }
 async function envoyer() {
   const part = changes();
   if (!Object.keys(part).length) return;
   try {
-    const r = await fetch('decisions', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...lot(), decisions: part }) });
+    const corps = Object.fromEntries(Object.entries(part).map(([id, t]) => [id, JSON.parse(t)]));
+    const r = await fetch('decisions', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...lot(), decisions: corps }) });
     if (!r.ok) throw new Error(String(r.status));
-    for (const [id, d] of Object.entries(part)) envoyes[id] = JSON.stringify(d);
+    for (const [id, t] of Object.entries(part)) envoyes[id] = t;
+    if (Object.keys(changes()).length) ecrire();  // tapé pendant l'envoi : un nouvel envoi suit
     memoriser();
     etat(`Enregistré sur le serveur à ${new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}.`);
   } catch {

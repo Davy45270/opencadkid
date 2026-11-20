@@ -307,7 +307,9 @@ export function mount(root: HTMLElement, session: Session, locale: Locale, stora
             if (!e.isPrimary || (e.target as Element).closest('button')) return;
             start = { x: e.clientX, y: e.clientY, id: e.pointerId }; long = false; moved = false;
             try { card.setPointerCapture(e.pointerId); } catch { /* Synthetic pointers. */ }
-            timer = window.setTimeout(() => { if (start && !moved) { long = true; ask(SLOW_RATE); recordActivation('dictee:slow', 'action', true, 'long-press'); } }, LONG_PRESS_MS);
+            // The hold belongs to its card: a card changed meanwhile (next during the hold) never gets it (twelfth review).
+            const held = current()?.id;
+            timer = window.setTimeout(() => { if (start && !moved && session.screen === 'fil' && current()?.id === held) { long = true; ask(SLOW_RATE); recordActivation('dictee:slow', 'action', true, 'long-press'); } }, LONG_PRESS_MS);
         });
         card.addEventListener('pointermove', e => {
             if (!start || e.pointerId !== start.id) return;
