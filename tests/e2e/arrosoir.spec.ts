@@ -1,3 +1,4 @@
+// CI proof: a pull request that touches this spec must play it (removed by the next commit).
 import type { CDPSession, Page } from '@playwright/test';
 import { test, expect, media, passGate, prepare } from './helpers';
 import { BASE, fire, hint, levels, start, type Miss, type Shot, type State } from '../../src/engines/arrosoir';
