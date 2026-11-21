@@ -16,7 +16,7 @@
     "preview": "vite preview",
     "check:precache": "node scripts/check-precache.js",
     "assets": "node scripts/assets.js",
-    "test:impact": "node --test scripts/test-e2e-impact.js",
+    "test:impact": "node --test scripts/test-e2e-impact.js scripts/test-ci-e2e-base.js",
     "typecheck": "tsc --noEmit",
     "lint": "oxlint --max-warnings=0",
     "test": "vitest run --pool=threads --maxWorkers=2",
