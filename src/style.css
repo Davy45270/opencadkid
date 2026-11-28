@@ -1276,12 +1276,35 @@ button:active{transform:translateY(3px);box-shadow:0 1px 0 #c7d5b7,inset 0 2px 4
 .motsmeles-actions[hidden],.motsmeles-actions [hidden]{display:none}
 .motsmeles-won .motsmeles-owl{animation:motsmeles-cheer .46s ease-out}
 .motsmeles-won #motsmeles-message{font-size:1.4rem;font-weight:800}
-.motsmeles-levels{max-width:640px;margin:auto;padding:12px}
-.motsmeles-levels header{justify-content:start}
-.motsmeles-level-guide{display:grid;justify-items:center;margin-block:16px}
-.motsmeles-level-guide .motsmeles-owl{width:130px;height:130px}
-.motsmeles-level-list{display:grid;gap:12px}
-.motsmeles-level-list button{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-inline:16px}
+.motsmeles-levels{
+    display:grid;grid-template:"header" auto "guide" minmax(0,1fr) "levels" auto / minmax(0,1fr);
+    gap:10px;height:100dvh;
+    padding:max(12px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right))
+        max(12px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));
+}
+.motsmeles-levels header{grid-area:header;justify-content:start}
+.motsmeles-level-guide{
+    grid-area:guide;display:grid;grid-template-rows:minmax(0,1fr) auto;justify-items:center;gap:6px;
+}
+.motsmeles-level-guide .motsmeles-owl{width:100%;height:100%;object-position:center bottom}
+.motsmeles-level-guide p{
+    margin:0;padding:8px 16px;border:2px solid #c4dff5;border-radius:18px;background:white;
+    font-size:1.125rem;line-height:1.2;text-align:center;
+}
+.motsmeles-level-list{grid-area:levels;display:grid;grid-auto-rows:minmax(72px,15dvh);gap:10px}
+.motsmeles-level-list button{
+    display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:8px;
+    min-height:72px;padding:8px 16px;border-color:#9dc9ef;background:white;box-shadow:none;text-align:start;
+}
+.motsmeles-level-list strong{font-size:clamp(24px,4vw,36px);line-height:1.15}
+.motsmeles-level-list span{font-size:1.125rem;white-space:nowrap}
+.motsmeles-level-list [aria-label]{color:#8a672c}
+@media (orientation:landscape){
+    .motsmeles-levels{
+        grid-template:"header header" auto "guide levels" minmax(0,1fr) / minmax(0,1fr) minmax(0,1fr);
+    }
+    .motsmeles-level-list{grid-auto-rows:minmax(72px,1fr)}
+}
 @keyframes motsmeles-cheer{50%{transform:translateY(-8px) rotate(-5deg)}}
 @keyframes motsmeles-error{50%{box-shadow:inset 0 0 0 2px #f05454}}
 @media (orientation:portrait){

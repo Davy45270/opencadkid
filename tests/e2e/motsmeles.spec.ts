@@ -200,3 +200,71 @@ for (const [width, height] of [[390, 844], [360, 740], [405, 720], [1280, 800]] 
         }
     });
 }
+
+for (const [width, height] of [[390, 844], [360, 740], [405, 720], [844, 390], [1280, 800]] as const) {
+    test(`the word search level picker fills ${width} × ${height} without scrolling`, async ({ page }, info) => {
+        test.skip(info.project.name !== (width === 1280 ? 'desktop' : 'mobile'), 'Use the matching viewport project.');
+        await page.setViewportSize({ width, height });
+        await page.addInitScript(() => {
+            localStorage.setItem('opencadkid.v1', JSON.stringify({ version: 1, locale: 'fr', voice: false, sound: false }));
+            localStorage.setItem('opencadkid-son-2026-11-17', '1');
+            localStorage.setItem('opencadkid.motsmeles.v1', '{"1":1}');
+        });
+        await page.goto('/');
+        await card(page).click();
+
+        const picker = page.locator('.motsmeles-levels');
+        const buttons = picker.locator('[data-motsmeles-level]');
+        await expect(buttons).toHaveCount(3);
+        await expect(levelButton(page, 1).getByText('4 × 4')).toBeVisible();
+        await expect(levelButton(page, 1).getByLabel('Terminé')).toHaveText('★');
+        await expect(picker.getByText('Choisis un niveau.')).toBeVisible();
+
+        const layout = await picker.evaluate(async section => {
+            const owl = section.querySelector<HTMLImageElement>('.motsmeles-owl')!;
+            await owl.decode();
+            const boxes = [...section.querySelectorAll('[data-motsmeles-level]')].map(button => {
+                const { left, top, bottom, height } = button.getBoundingClientRect();
+                const fontSize = parseFloat(getComputedStyle(button.querySelector('strong')!).fontSize);
+                return { left, top, bottom, height, fontSize };
+            });
+            const owlRect = owl.getBoundingClientRect();
+            const bubble = section.querySelector('.motsmeles-level-guide p')!.getBoundingClientRect();
+            const header = section.querySelector('header')!.getBoundingClientRect();
+            const safeBottom = parseFloat(getComputedStyle(section).paddingBottom);
+            const owlHeight = Math.min(owlRect.height, owlRect.width * owl.naturalHeight / owl.naturalWidth);
+            return {
+                boxes, owlHeight,
+                viewport: { width: innerWidth, height: innerHeight },
+                scrollWidth: document.documentElement.scrollWidth,
+                scrollHeight: document.documentElement.scrollHeight,
+                portraitGaps: [
+                    owlRect.bottom - owlHeight - header.bottom,
+                    bubble.top - owlRect.bottom,
+                    boxes[0]!.top - bubble.bottom,
+                    boxes[1]!.top - boxes[0]!.bottom,
+                    boxes[2]!.top - boxes[1]!.bottom,
+                    innerHeight - safeBottom - boxes[2]!.bottom,
+                ],
+                owlRight: owlRect.right,
+            };
+        });
+        expect(layout.scrollWidth).toBeLessThanOrEqual(layout.viewport.width);
+        expect(layout.scrollHeight).toBeLessThanOrEqual(layout.viewport.height);
+        for (const { top, bottom, height: cardHeight, fontSize } of layout.boxes) {
+            expect(cardHeight).toBeGreaterThanOrEqual(72);
+            expect(fontSize).toBeGreaterThanOrEqual(24);
+            expect(top).toBeGreaterThanOrEqual(0);
+            expect(bottom).toBeLessThanOrEqual(layout.viewport.height);
+        }
+        if (width < height) {
+            for (const gap of layout.portraitGaps) {
+                expect(gap).toBeGreaterThanOrEqual(0);
+                expect(gap).toBeLessThan(24);
+            }
+        } else {
+            expect(layout.boxes[0]!.left).toBeGreaterThan(layout.owlRight);
+        }
+        if (width === 390) expect(layout.owlHeight).toBeGreaterThanOrEqual(160);
+    });
+}
