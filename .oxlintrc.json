@@ -291,6 +291,14 @@
     },
     {
       "files": [
+        "tests/motsmeles.test.ts"
+      ],
+      "rules": {
+        "typescript/no-misused-spread": "off"
+      }
+    },
+    {
+      "files": [
         "**/*.js"
       ],
       "rules": {

@@ -26,10 +26,14 @@ for (const url of urls) {
 assert(compressed < 800_000, `Precache exceeds 800 kB gzip: ${compressed} bytes`);
 // Paintings: six puzzle scenes and the path start sign, hashed WebP files, never precached, each within its 60 kB budget.
 const webp = readdirSync(new URL('assets/', root)).filter(name => name.endsWith('.webp'));
-const props = webp.filter(name => name.startsWith('cherche-')), assets = webp.filter(name => !name.startsWith('cherche-'));
+const props = webp.filter(name => name.startsWith('cherche-'));
+const wordSearch = webp.filter(name => name.startsWith('motsmeles-'));
+const assets = webp.filter(name => !props.includes(name) && !wordSearch.includes(name));
+assert.equal(wordSearch.length, 2, 'Expected the word-search owl and logo');
+for (const name of wordSearch) assert(urls.includes(`assets/${name}`), `Word-search image not precached: ${name}`);
 assert.equal(assets.length, 7, `Expected six painted scenes and one start sign, found ${assets.length}`);
 assert.equal(assets.filter(name => /^panneau-[\w-]+\.webp$/.test(name)).length, 1, 'Missing the path start sign');
-assert(!urls.some(url => url.endsWith('.webp') && !/^assets\/cherche-/.test(url)), 'Paintings must not be precached');
+assert(!urls.some(url => url.endsWith('.webp') && !/^assets\/(?:cherche|motsmeles)-/.test(url)), 'Paintings must not be precached');
 for (const name of assets) assert(statSync(new URL(`assets/${name}`, root)).size <= 60_000, `Painting over 60 kB: ${name}`);
 // Hide-and-seek props: twenty small WebP files, all precached so a scene is never empty offline, each within 20 kB.
 assert.equal(props.length, 20, `Expected twenty hide-and-seek props, found ${props.length}`);

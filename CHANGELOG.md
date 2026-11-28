@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Word mystery brings three full-screen word searches for ages 5–7. An owl guides the player, every word can be heard aloud, and children can find words by dragging, tapping their ends or using the keyboard.
+
 - New game for readers, The magic dictation (6 and up), the first Kid game that needs reading: a finite vertical feed of word cards, one word per card, swiped up (or the « next word » button, or an arrow key) one after the other. The word is heard when its card arrives; touching the card says it again as often as wanted, holding it says it at 0.75×, and a button says it in a sentence. The voice is pre-generated at build time by a local speech engine and shipped as small OGG files, the same on every device and playable offline.
 - A big keyboard of the game's own: AZERTY letters in big keys (44 px at least, four rows on a phone), a row of accents always visible, no suggestion, and a field that never opens the device keyboard nor corrects anything; the physical keyboard works too. At the first grade, the word's letters are shuffled tiles to put back in order.
 - An answer is checked at once by a deterministic checker (Unicode NFC, spaces, letter alignment by dynamic programming, never a language model): a right word makes the mascot jump; a wrong one turns the card over and shows the word with the letters to look at and one line for a child (a missing letter, an accent, a double consonant, a sound written another way, a silent letter, an agreement ending, a homophone).

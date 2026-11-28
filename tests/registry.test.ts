@@ -3,12 +3,19 @@ import { games } from '../src/registry';
 import { ids, expressions, drawList } from '../src/characters/model';
 import { characterSvg } from '../src/characters/svg';
 it('only playable games are registered with complete bilingual metadata', () => {
-    expect(games.map(g => g.id)).toEqual(['compter', 'paires', 'formes', 'sons', 'puzzle', 'chemin', 'suites', 'ranger', 'tambours', 'gouter', 'cherche', 'promenade', 'bulles', 'bonbons', 'traverse', 'caisses', 'chenille', 'collier', 'briques', 'fusee', 'pepites', 'dedale', 'empilo', 'orbite', 'essaim', 'cartons', 'arrosoir', 'derapage', 'ferraille', 'taupes', 'eclosion', 'vis', 'grille', 'autobus', 'dictee', 'atelier']);
+    expect(games.map(g => g.id)).toEqual(['compter', 'paires', 'formes', 'sons', 'puzzle', 'chemin', 'suites', 'ranger', 'tambours', 'gouter', 'cherche', 'promenade', 'bulles', 'bonbons', 'traverse', 'caisses', 'chenille', 'collier', 'briques', 'fusee', 'pepites', 'dedale', 'empilo', 'orbite', 'essaim', 'cartons', 'arrosoir', 'derapage', 'ferraille', 'taupes', 'eclosion', 'vis', 'grille', 'autobus', 'motsmeles', 'dictee', 'atelier']);
     for (const game of games) {
-        expect(ids).toContain(game.guide);
         for (const name of Object.values(game.names)) expect(name.length).toBeGreaterThan(0);
         for (const skill of Object.values(game.skill)) expect(skill.length).toBeGreaterThan(0);
-        expect(game.pictogram).toMatch(/^<svg\s[^>]*xmlns=/); expect(game.pictogram).toMatch(/<\/svg>$/); expect(game.pictogram).not.toMatch(/NaN|undefined/);
+        if (game.id === 'motsmeles') {
+            expect(game.guide).toBeUndefined();
+            expect(game.pictogram).toMatch(/^<img\s.*\ssrc="[^"]*motsmeles-logo[^"]*"/);
+        } else {
+            expect(ids).toContain(game.guide);
+            expect(game.pictogram).toMatch(/^<svg\s[^>]*xmlns=/);
+            expect(game.pictogram).toMatch(/<\/svg>$/);
+        }
+        expect(game.pictogram).not.toMatch(/NaN|undefined/);
     }
 });
 it('no two games show the same title on the home screen, in French or in English', () => {
