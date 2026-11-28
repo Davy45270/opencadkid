@@ -1252,9 +1252,9 @@ button:active{transform:translateY(3px);box-shadow:0 1px 0 #c7d5b7,inset 0 2px 4
 }
 .motsmeles-cell:active{transform:none;box-shadow:none}
 .motsmeles-cell:focus-visible{outline:3px solid #182349;outline-offset:-5px}
-.motsmeles-cell[data-found]{background:#43b047;border-color:#25802d}
-.motsmeles-cell[data-selected]{background:#2f80ed;border-color:#225ba9;color:#091d38}
-.motsmeles-cell[data-error]{background:#f05454;border-color:#b62c2c;animation:motsmeles-error .26s ease-out}
+.motsmeles-cell[data-found]{background:#dff6dc;border-color:#43b047;color:#14361a}
+.motsmeles-cell[data-selected]{background:#d6e9ff;border-color:#2f80ed;color:#1c5fc4}
+.motsmeles-cell[data-error]{background:#ffe1e1;border-color:#f05454;color:#8a1b1b;animation:motsmeles-error .26s ease-out}
 .motsmeles-words{grid-area:words;display:flex;flex-direction:column;min-width:0}
 .motsmeles-words ul{display:grid;flex:1;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:0;padding:0;list-style:none}
 .motsmeles-word{
@@ -1263,7 +1263,7 @@ button:active{transform:translateY(3px);box-shadow:0 1px 0 #c7d5b7,inset 0 2px 4
 }
 .motsmeles-word:last-child:nth-child(odd){grid-column:1 / -1}
 .motsmeles-word strong{position:relative;font-size:clamp(1rem,4.3vw,1.6rem);letter-spacing:.01em}
-.motsmeles-word[data-found]{border-color:#43b047;background:#e7fbe8}
+.motsmeles-word[data-found]{background:#dff6dc;border-color:#43b047;color:#14361a}
 .motsmeles-word[data-found] strong::after{
     content:"";position:absolute;inset:calc(50% - 2px) -2px auto;height:4px;border-radius:4px;background:#207635;transform:rotate(-6deg);
 }
@@ -1283,7 +1283,24 @@ button:active{transform:translateY(3px);box-shadow:0 1px 0 #c7d5b7,inset 0 2px 4
 .motsmeles-level-list{display:grid;gap:12px}
 .motsmeles-level-list button{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-inline:16px}
 @keyframes motsmeles-cheer{50%{transform:translateY(-8px) rotate(-5deg)}}
-@keyframes motsmeles-error{50%{background:#ffd2d2}}
+@keyframes motsmeles-error{50%{box-shadow:inset 0 0 0 2px #f05454}}
+@media (orientation:portrait){
+    .motsmeles-play{
+        --motsmeles-gap:clamp(6px,1.4dvh,12px);
+        grid-template-rows:auto minmax(0,1fr) auto auto;
+    }
+    .motsmeles-guide{gap:8px}
+    .motsmeles-guide .motsmeles-owl{
+        width:auto;height:100%;max-width:calc(100% - 140px);min-width:0;
+    }
+    .motsmeles-bubble{flex:1;min-width:132px}
+    .motsmeles-grid{width:min(100%,max(286px,calc(100dvh - 320px)))}
+    .motsmeles-word{
+        display:grid;grid-template-columns:18px minmax(0,1fr) 44px;gap:0;padding:0 2px;
+    }
+    .motsmeles-word strong{grid-column:2;grid-row:1;justify-self:center;font-size:24px}
+    .motsmeles-check{grid-column:1;grid-row:1;justify-self:center}
+}
 @media (orientation:landscape){
     .motsmeles-play{
         grid-template:"header header" auto "board guide" minmax(0,1fr) "board words" auto / minmax(0,3fr) minmax(0,2fr);

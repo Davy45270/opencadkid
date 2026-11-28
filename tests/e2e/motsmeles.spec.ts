@@ -137,6 +137,36 @@ test('completing the grid keeps the level record after reload', async ({ page })
     expect(await page.evaluate(() => localStorage.getItem('opencadkid.motsmeles.v1'))).toBe('{"1":1}');
 });
 
+test('portrait level one fills the phone with a large owl and compact word cards', async ({ page }, info) => {
+    test.skip(info.project.name !== 'mobile', 'Use the mobile viewport project.');
+    await page.setViewportSize({ width: 390, height: 844 });
+    await openLevel(page);
+    const owl = page.getByRole('img', { name: 'La chouette' });
+    const owlHeight = await owl.evaluate(async (img: HTMLImageElement) => {
+        await img.decode();
+        const { width, height } = img.getBoundingClientRect();
+        return Math.min(height, width * img.naturalHeight / img.naturalWidth);
+    });
+    expect(owlHeight).toBeGreaterThanOrEqual(120);
+
+    const cards = await page.locator('.motsmeles-word').evaluateAll(words => words.map(word => ({
+        height: word.getBoundingClientRect().height,
+        fontSize: parseFloat(getComputedStyle(word.querySelector('strong')!).fontSize),
+    })));
+    expect(cards.length).toBeGreaterThan(0);
+    for (const { height, fontSize } of cards) {
+        expect(height).toBeLessThanOrEqual(64);
+        expect(fontSize).toBeGreaterThanOrEqual(24);
+    }
+
+    const gaps = await page.locator('.motsmeles-play').evaluate(play => {
+        const selectors = ['.motsmeles-header', '.motsmeles-guide', '.motsmeles-board', '.motsmeles-words'];
+        const blocks = selectors.map(selector => play.querySelector(selector)!.getBoundingClientRect());
+        return blocks.map((block, i) => (blocks[i + 1]?.top ?? innerHeight) - block.bottom);
+    });
+    for (const gap of gaps) expect(gap).toBeLessThanOrEqual(16);
+});
+
 for (const [width, height] of [[390, 844], [360, 740], [405, 720], [1280, 800]] as const) {
     test(`all word search levels fit at ${width} × ${height}`, async ({ page }, info) => {
         test.skip(info.project.name !== (width > height ? 'desktop' : 'mobile'), 'Use the matching viewport project.');
