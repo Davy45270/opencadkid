@@ -1,0 +1,12 @@
+{
+  "planche": "OpenCadeKids_Mots_Meles_transparent.png",
+  "sha256": "e103e95386db1f0897264315fb0091990471b7118fce72c73bae67d00d2c4513",
+  "marge": 4,
+  "alpha": "alpha of the sheet kept (no background removal); alpha under 4 % set to 0: -channel A -fx 'u<0.04?0:u'",
+  "elements": [
+    { "id": "chouette", "fichier": "motsmeles-chouette.webp", "boite": [317, 262, 1198, 88], "ancre": "bas", "taille": 256,
+      "webp": "cwebp -q 85 -m 6 -sharp_yuv -alpha_q 100", "octets": 18758, "rmse": 0.0161 },
+    { "id": "logo", "fichier": "motsmeles-logo.webp", "boite": [231, 218, 18, 126], "ancre": "centre", "taille": 192,
+      "webp": "cwebp -q 85 -m 6 -sharp_yuv -alpha_q 100", "octets": 12406, "rmse": 0.0192 }
+  ]
+}
