@@ -167,6 +167,26 @@ test('portrait level one fills the phone with a large owl and compact word cards
     for (const gap of gaps) expect(gap).toBeLessThanOrEqual(16);
 });
 
+for (const level of [1, 3]) {
+    test(`portrait level ${level} gives the instruction bubble enough room`, async ({ page }, info) => {
+        test.skip(info.project.name !== 'mobile', 'Use the mobile viewport project.');
+        await page.setViewportSize({ width: 390, height: 844 });
+        await openLevel(page, level);
+
+        const layout = await page.locator('.motsmeles-guide').evaluate(guide => {
+            const bubble = guide.querySelector('.motsmeles-bubble')!;
+            const message = guide.querySelector('#motsmeles-message')!;
+            const lineHeight = parseFloat(getComputedStyle(message).lineHeight);
+            return {
+                widthRatio: bubble.getBoundingClientRect().width / guide.getBoundingClientRect().width,
+                lines: Math.round(message.getBoundingClientRect().height / lineHeight),
+            };
+        });
+        expect(layout.widthRatio).toBeGreaterThanOrEqual(.55);
+        expect(layout.lines).toBeLessThanOrEqual(4);
+    });
+}
+
 for (const [width, height] of [[390, 844], [360, 740], [405, 720], [1280, 800]] as const) {
     test(`all word search levels fit at ${width} × ${height}`, async ({ page }, info) => {
         test.skip(info.project.name !== (width > height ? 'desktop' : 'mobile'), 'Use the matching viewport project.');

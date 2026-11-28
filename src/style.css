@@ -1324,6 +1324,9 @@ button:active{transform:translateY(3px);box-shadow:0 1px 0 #c7d5b7,inset 0 2px 4
     .motsmeles-word strong{grid-column:2;grid-row:1;justify-self:center;font-size:24px}
     .motsmeles-check{grid-column:1;grid-row:1;justify-self:center}
 }
+@media (orientation:portrait) and (max-width:420px){
+    .motsmeles-bubble{min-width:60%}
+}
 @media (orientation:landscape){
     .motsmeles-play{
         grid-template:"header header" auto "board guide" minmax(0,1fr) "board words" auto / minmax(0,3fr) minmax(0,2fr);
