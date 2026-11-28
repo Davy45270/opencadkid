@@ -1232,6 +1232,7 @@ button:active{transform:translateY(3px);box-shadow:0 1px 0 #c7d5b7,inset 0 2px 4
 .motsmeles-guide{
     grid-area:guide;display:flex;min-height:0;align-items:center;justify-content:center;gap:12px;
 }
+.motsmeles-owl-frame{display:contents}
 .motsmeles-owl{display:block;width:clamp(64px,24vw,180px);height:100%;min-height:0;object-fit:contain}
 .motsmeles-bubble{
     display:flex;align-items:center;gap:6px;max-width:28ch;
@@ -1325,7 +1326,28 @@ button:active{transform:translateY(3px);box-shadow:0 1px 0 #c7d5b7,inset 0 2px 4
     .motsmeles-check{grid-column:1;grid-row:1;justify-self:center}
 }
 @media (orientation:portrait) and (max-width:420px){
-    .motsmeles-bubble{min-width:60%}
+    .motsmeles-play{--motsmeles-gap:8px}
+    .motsmeles-guide{
+        container:motsmeles-guide / size;display:grid;align-items:stretch;
+        grid-template-columns:minmax(0,1fr) 59%;grid-template-rows:minmax(0,1fr) auto;gap:0 8px;
+    }
+    .motsmeles-owl-frame{
+        display:block;position:relative;container-type:size;overflow:hidden;grid-column:1;grid-row:1 / -1;
+    }
+    .motsmeles-guide .motsmeles-owl{
+        /* The square image has 45 transparent rows above the 211 rows of artwork. */
+        --motsmeles-owl-size:min(100cqw,calc(100cqh * 256 / 211));
+        position:absolute;left:50%;translate:-50% 0;top:calc(var(--motsmeles-owl-size) * -45 / 256);
+        width:var(--motsmeles-owl-size);height:auto;max-width:none;
+    }
+    .motsmeles-bubble{
+        grid-column:2;grid-row:1 / -1;align-self:end;min-width:0;max-width:none;
+    }
+    .motsmeles-words ul{grid-auto-rows:clamp(48px,calc(100dvh - 656px),64px)}
+    @container motsmeles-guide (min-height:150px){
+        .motsmeles-owl-frame{grid-area:1 / 1 / 2 / -1}
+        .motsmeles-bubble{grid-area:2 / 1 / 3 / -1;margin-top:6px}
+    }
 }
 @media (orientation:landscape){
     .motsmeles-play{

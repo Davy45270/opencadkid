@@ -137,54 +137,91 @@ test('completing the grid keeps the level record after reload', async ({ page })
     expect(await page.evaluate(() => localStorage.getItem('opencadkid.motsmeles.v1'))).toBe('{"1":1}');
 });
 
-test('portrait level one fills the phone with a large owl and compact word cards', async ({ page }, info) => {
-    test.skip(info.project.name !== 'mobile', 'Use the mobile viewport project.');
-    await page.setViewportSize({ width: 390, height: 844 });
-    await openLevel(page);
-    const owl = page.getByRole('img', { name: 'La chouette' });
-    const owlHeight = await owl.evaluate(async (img: HTMLImageElement) => {
-        await img.decode();
-        const { width, height } = img.getBoundingClientRect();
-        return Math.min(height, width * img.naturalHeight / img.naturalWidth);
-    });
-    expect(owlHeight).toBeGreaterThanOrEqual(120);
-
-    const cards = await page.locator('.motsmeles-word').evaluateAll(words => words.map(word => ({
-        height: word.getBoundingClientRect().height,
-        fontSize: parseFloat(getComputedStyle(word.querySelector('strong')!).fontSize),
-    })));
-    expect(cards.length).toBeGreaterThan(0);
-    for (const { height, fontSize } of cards) {
-        expect(height).toBeLessThanOrEqual(64);
-        expect(fontSize).toBeGreaterThanOrEqual(24);
+async function paintedOwlRect(img: HTMLImageElement) {
+    await img.decode();
+    const box = img.getBoundingClientRect();
+    const { objectFit, objectPosition } = getComputedStyle(img);
+    if (objectFit !== 'contain') throw new Error(`Unexpected owl object-fit: ${objectFit}`);
+    const scale = Math.min(box.width / img.naturalWidth, box.height / img.naturalHeight);
+    const width = img.naturalWidth * scale;
+    const height = img.naturalHeight * scale;
+    const [horizontal, vertical] = objectPosition.split(' ');
+    function offset(position: string | undefined, space: number): number {
+        if (position === 'left' || position === 'top') return 0;
+        if (position === 'right' || position === 'bottom') return space;
+        if (position === 'center') return space / 2;
+        if (position?.endsWith('%')) return space * parseFloat(position) / 100;
+        if (position?.endsWith('px')) return parseFloat(position);
+        throw new Error(`Unexpected owl object-position: ${objectPosition}`);
     }
 
-    const gaps = await page.locator('.motsmeles-play').evaluate(play => {
-        const selectors = ['.motsmeles-header', '.motsmeles-guide', '.motsmeles-board', '.motsmeles-words'];
-        const blocks = selectors.map(selector => play.querySelector(selector)!.getBoundingClientRect());
-        return blocks.map((block, i) => (blocks[i + 1]?.top ?? innerHeight) - block.bottom);
-    });
-    for (const gap of gaps) expect(gap).toBeLessThanOrEqual(16);
-});
+    const imageLeft = box.left + offset(horizontal, box.width - width);
+    const imageTop = box.top + offset(vertical, box.height - height);
+    const frame = img.closest('.motsmeles-owl-frame');
+    const clip = frame && getComputedStyle(frame).overflow === 'hidden' ? frame.getBoundingClientRect() : box;
+    // The first 45 of the WebP's 256 rows are fully transparent.
+    const top = Math.max(clip.top, imageTop + height * 45 / 256);
+    const bottom = Math.min(clip.bottom, imageTop + height);
+    return { left: Math.max(clip.left, imageLeft), right: Math.min(clip.right, imageLeft + width), top, bottom, height: bottom - top };
+}
 
-for (const level of [1, 3]) {
-    test(`portrait level ${level} gives the instruction bubble enough room`, async ({ page }, info) => {
-        test.skip(info.project.name !== 'mobile', 'Use the mobile viewport project.');
-        await page.setViewportSize({ width: 390, height: 844 });
-        await openLevel(page, level);
+for (const [width, height, minOwlHeight] of [[390, 844, 140], [360, 740, 110], [405, 720, 100]] as const) {
+    for (const level of [1, 3]) {
+        test(`portrait level ${level} fills ${width} × ${height} with a painted owl and compact cards`, async ({ page }, info) => {
+            test.skip(info.project.name !== 'mobile', 'Use the mobile viewport project.');
+            await page.setViewportSize({ width, height });
+            await openLevel(page, level);
 
-        const layout = await page.locator('.motsmeles-guide').evaluate(guide => {
-            const bubble = guide.querySelector('.motsmeles-bubble')!;
-            const message = guide.querySelector('#motsmeles-message')!;
-            const lineHeight = parseFloat(getComputedStyle(message).lineHeight);
-            return {
-                widthRatio: bubble.getBoundingClientRect().width / guide.getBoundingClientRect().width,
-                lines: Math.round(message.getBoundingClientRect().height / lineHeight),
-            };
+            const owl = await page.locator('.motsmeles-play .motsmeles-owl').evaluate(paintedOwlRect);
+            expect(owl.height).toBeGreaterThanOrEqual(minOwlHeight);
+            expect(owl.left).toBeGreaterThanOrEqual(0);
+            expect(owl.right).toBeLessThanOrEqual(width);
+
+            const layout = await page.locator('.motsmeles-play').evaluate(play => {
+                const rect = (selector: string) => play.querySelector(selector)!.getBoundingClientRect().toJSON() as DOMRect;
+                const message = play.querySelector('#motsmeles-message')!;
+                const lineHeight = parseFloat(getComputedStyle(message).lineHeight);
+                const cards = [...play.querySelectorAll('.motsmeles-word')].map(word => {
+                    const { top, bottom, height } = word.getBoundingClientRect();
+                    return { top, bottom, height, fontSize: parseFloat(getComputedStyle(word.querySelector('strong')!).fontSize) };
+                });
+                return {
+                    header: rect('.motsmeles-header'),
+                    guide: rect('.motsmeles-guide'),
+                    bubble: rect('.motsmeles-bubble'),
+                    grid: rect('.motsmeles-grid'),
+                    lines: Math.round(message.getBoundingClientRect().height / lineHeight),
+                    cards,
+                    scrolls: [document.documentElement, play.parentElement!].some(el =>
+                        el.scrollHeight > el.clientHeight || el.scrollWidth > el.clientWidth),
+                };
+            });
+
+            expect(layout.scrolls).toBe(false);
+            expect(layout.bubble.width / layout.guide.width).toBeGreaterThanOrEqual(.55);
+            expect(layout.lines).toBeLessThanOrEqual(4);
+            expect(layout.grid.width / width).toBeGreaterThanOrEqual(.94);
+            expect(layout.cards.length).toBeGreaterThan(0);
+            for (const card of layout.cards) {
+                expect(card.top).toBeGreaterThanOrEqual(layout.grid.bottom);
+                expect(card.height).toBeLessThanOrEqual(64);
+                expect(card.fontSize).toBeGreaterThanOrEqual(24);
+            }
+
+            const guideTop = Math.min(owl.top, layout.bubble.top);
+            const guideBottom = Math.max(owl.bottom, layout.bubble.bottom);
+            expect(guideTop).toBeGreaterThanOrEqual(layout.header.bottom);
+            expect(guideBottom).toBeLessThanOrEqual(layout.grid.top);
+            const blocks = [owl, layout.bubble, layout.grid, ...layout.cards].sort((a, b) => a.top - b.top);
+            let paintedBottom = layout.header.bottom;
+            for (const block of blocks) {
+                expect(block.top - paintedBottom).toBeLessThanOrEqual(16);
+                paintedBottom = Math.max(paintedBottom, block.bottom);
+            }
+            expect(height - paintedBottom).toBeGreaterThanOrEqual(0);
+            expect(height - paintedBottom).toBeLessThanOrEqual(16);
         });
-        expect(layout.widthRatio).toBeGreaterThanOrEqual(.55);
-        expect(layout.lines).toBeLessThanOrEqual(4);
-    });
+    }
 }
 
 for (const [width, height] of [[390, 844], [360, 740], [405, 720], [1280, 800]] as const) {

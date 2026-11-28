@@ -42,7 +42,8 @@ export function gameView(state: State, locale: Locale): string {
     const found = new Set(grid.placements.filter(p => state.found.includes(p.word)).flatMap(p => placementCells(grid.size, p)));
     return `<section class="motsmeles-play${state.finished ? ' motsmeles-won' : ''}">
         <header class="motsmeles-header">${backButton(t.back)}<h1>${levelOf(state.level).name[locale]}</h1></header>
-        <div class="motsmeles-guide">${owl(t.owl)}
+        <div class="motsmeles-guide">
+            <div class="motsmeles-owl-frame">${owl(t.owl)}</div>
             <div class="motsmeles-bubble">
                 <p id="motsmeles-message" role="status">${state.finished ? t.bravo : instruction(state, locale)}</p>
                 <button type="button" class="motsmeles-listen" data-motsmeles-instruction aria-label="${t.listen}">${icon('ear')}</button>
