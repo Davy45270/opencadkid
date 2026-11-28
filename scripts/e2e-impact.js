@@ -63,6 +63,7 @@ export const GAME_SPECS = {
     'vis': ['vis'],
     'grille': ['grille'],
     'autobus': ['autobus'],
+    'motsmeles': ['motsmeles'],
     'dictee': ['dictee'],
     'atelier': ['atelier', 'atelier-dessin', 'atelier-doigt', 'atelier-gomme'],
 };
@@ -114,6 +115,7 @@ export const SMOKE_TESTS = {
     'vis': ['vis', 'a screw under a plate is a funny try: knock knock, the plate on top wriggles'],
     'grille': ['grille', 'a fruit already in the row pulls a face, and the picture put goes back to the tray'],
     'autobus': ['autobus', 'a bus whose child is not first is a funny try: the children shake their heads, and nothing moves'],
+    'motsmeles': ['motsmeles', 'Word mystery opens a four by four grid with its owl'],
     'dictee': ['dictee', 'words waiting for review never reach the child: every class waits for an adult review'],
     'atelier': ['atelier-dessin', 'the brush draws over the coloured model, which stays visible under the stroke'],
 };
