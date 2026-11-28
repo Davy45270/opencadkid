@@ -73,8 +73,8 @@ describe('dictionary (§ 5, § 13)', () => {
     });
 });
 
-describe('generator (§ 12, GEN-001 … GEN-006, FR-001, FR-002)', () => {
-    it(`GEN-001/004/005/006: ${SEEDS} grids per level, each solvable, in its directions, no crossing, no ambiguous or blocked word`, () => {
+describe('generator (§ 12, GEN 001 … GEN 006, FR 001, FR 002)', () => {
+    it(`GEN 001/004/005/006: ${SEEDS} grids per level, each solvable, in its directions, no crossing, no ambiguous or blocked word`, () => {
         for (const l of levels) {
             let fallbacks = 0;
             for (let seed = 0; seed < SEEDS; seed++) {
@@ -89,7 +89,7 @@ describe('generator (§ 12, GEN-001 … GEN-006, FR-001, FR-002)', () => {
         }
     }, 120_000);
 
-    it('GEN-002: same seed, same level, same version: the same grid; another seed: another grid', () => {
+    it('GEN 002: same seed, same level, same version: the same grid; another seed: another grid', () => {
         for (const l of levels) {
             expect(generate(l.id, 1234)).toEqual(generate(l.id, 1234));
             expect(new Set(Array.from({ length: 20 }, (_, s) => generate(l.id, s).letters.join(''))).size).toBeGreaterThan(15);
@@ -97,7 +97,7 @@ describe('generator (§ 12, GEN-001 … GEN-006, FR-001, FR-002)', () => {
         expect(typeof generate(1, 1).version).toBe('string');
     });
 
-    it('GEN-003: a word longer than the grid is refused, not cut', () => {
+    it('GEN 003: a word longer than the grid is refused, not cut', () => {
         expect(() => place(['GIRAFES'], 4, ['E'], false, makeRng(1))).toThrow(RangeError);
         expect(() => place(['LUNE', 'DIPLODOCUS'], 6, ['E', 'S'], false, makeRng(1))).toThrow(RangeError);
     });
@@ -109,7 +109,7 @@ describe('generator (§ 12, GEN-001 … GEN-006, FR-001, FR-002)', () => {
         expect(ok?.map(p => p.word).sort()).toEqual(['LUNE', 'MARS']);
     });
 
-    it('FR-001/FR-002: accented words keep their accent, one NFC code point per cell', () => {
+    it('FR 001/FR 002: accented words keep their accent, one NFC code point per cell', () => {
         const accented = dictionary.filter(e => /[^A-Z]/u.test(e.word) && [...e.word].length <= 4).map(e => e.word);
         expect(accented.length).toBeGreaterThan(0);
         let seen = 0;
@@ -144,7 +144,7 @@ describe('generator (§ 12, GEN-001 … GEN-006, FR-001, FR-002)', () => {
     });
 });
 
-describe('selection (§ 3, SEL-001 … SEL-003)', () => {
+describe('selection (§ 3, SEL 001 … SEL 003)', () => {
     it('line(): the cells from the first to the last letter, in a row, a column or a diagonal; null otherwise', () => {
         expect(line(5, 0, 3)).toEqual([0, 1, 2, 3]);
         expect(line(5, 3, 0)).toEqual([3, 2, 1, 0]);
@@ -157,7 +157,7 @@ describe('selection (§ 3, SEL-001 … SEL-003)', () => {
     });
 
     const play = (s: State, from: number, to: number) => select(s, from, to);
-    it('SEL-001: first to last letter finds the word, either way; the word stays found', () => {
+    it('SEL 001: first to last letter finds the word, either way; the word stays found', () => {
         for (let seed = 0; seed < 200; seed++) {
             const s0 = start(3, seed), [a, b] = ends(s0.grid, 0);
             const r = play(s0, a, b);
@@ -168,7 +168,7 @@ describe('selection (§ 3, SEL-001 … SEL-003)', () => {
         }
     });
 
-    it('SEL-002: a crooked line, a wrong line or half a word is refused, with no penalty', () => {
+    it('SEL 002: a crooked line, a wrong line or half a word is refused, with no penalty', () => {
         const s0 = start(2, 7), [a, b] = ends(s0.grid, 0), size = s0.grid.size;
         const crooked = play(s0, 0, size + 2);
         expect(crooked.events).toEqual([{ kind: 'rate', cells: null }]);
@@ -182,7 +182,7 @@ describe('selection (§ 3, SEL-001 … SEL-003)', () => {
         expect(play(half.state, a, b).state.found).toEqual([s0.grid.placements[0]!.word]);
     });
 
-    it('SEL-003: a word found twice counts once', () => {
+    it('SEL 003: a word found twice counts once', () => {
         const s0 = start(2, 11), [a, b] = ends(s0.grid, 0);
         const once = play(s0, a, b), twice = play(once.state, b, a);
         expect(twice.events).toEqual([{ kind: 'deja', word: s0.grid.placements[0]!.word }]);
@@ -206,7 +206,7 @@ describe('selection (§ 3, SEL-001 … SEL-003)', () => {
     });
 });
 
-describe('records (PRF-001)', () => {
+describe('records (PRF 001)', () => {
     it('a finished grid is kept per level; garbage reads as no record', () => {
         expect(parseRecords(null)).toEqual({});
         expect(parseRecords('{oops')).toEqual({});
