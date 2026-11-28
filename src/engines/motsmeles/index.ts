@@ -69,7 +69,7 @@ function entries(language: Language) {
 }
 export const dictionary = entries('fr');
 const english = entries('en');
-export const BLOCKED = ['CON', 'CUL', 'PUTE', 'MERDE', 'CONNE', 'PÈTE', 'CHIE', 'ZIZI', 'ASS', 'FUCK', 'SHIT', 'DICK'] as const;
+export const BLOCKED = ['CON', 'CUL', 'PUTE', 'MERDE', 'CONNE', 'PÈTE', 'ZIZI', 'ASS', 'FUCK', 'SHIT', 'DICK'] as const;
 
 export interface Placement { word: string; row: number; col: number; dir: Dir }
 export interface Grid {
